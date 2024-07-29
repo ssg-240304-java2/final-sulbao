@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: sulbao
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${{ secrets.DB_URL }}
+    username: ${{ secrets.DB_USERNAME }}
+    password: ${{ secrets.DB_PASSWORD }}
+
+mybatis:
+  mapper-locations: mappers/**/*.xml
