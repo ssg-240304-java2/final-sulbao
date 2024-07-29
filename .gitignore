@@ -44,7 +44,3 @@ bin/
 
 ### Config
 src/main/resources/config/connection-info.properties
-
-# db connection info
-#src/main/resources/application.yml
-src/main/resources/application.yml
