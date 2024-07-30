@@ -3,7 +3,7 @@ spring:
     name: sulbao
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${{ secrets.DB_URL }}
+    url: ${{ secrets.DB_HOST }}
     username: ${{ secrets.DB_USERNAME }}
     password: ${{ secrets.DB_PASSWORD }}
 
