@@ -9,10 +9,12 @@
             const checkboxes = document.querySelectorAll('.checkbox-wrap input[type="checkbox"]');
             checkboxes.forEach(checkbox => checkbox.checked = source.checked);
         }
+
         function deleteProduct(button) {
             const row = button.closest('tr');
             row.remove();
         }
+
         function updateQuantity(button, increment) {
             const quantityElement = button.parentNode.querySelector('.quantity-number');
             let currentQuantity = parseInt(quantityElement.textContent);
@@ -32,10 +34,6 @@
         .table-wrap {
             width: 100%;
         }
-        .checkbox-wrap {
-            display: inline-flex;
-            align-items: center;
-        }
         .checkbox-wrap input {
             margin-right: 5px;
         }
@@ -54,38 +52,9 @@
             display: flex;
             flex-direction: column;
         }
-        .select-all-container {
-            margin-bottom: 20px;
-        }
-        .btn-close {
-            background: none;
-            border: none;
-            color: #dc3545;
-            font-size: 1.25rem;
-            cursor: pointer;
-        }
-        .btn-close:hover {
-            color: #c82333;
-        }
-        .quantity-controls {
-            display: flex;
-            align-items: center;
-        }
         .quantity-number {
             width: 40px;
             text-align: center;
-        }
-        .quantity-button {
-            background-color: white;
-            border: none;
-            color: black;
-            padding: 5px 10px;
-            cursor: pointer;
-            font-size: 1rem;
-            line-height: 1.5;
-        }
-        .quantity-button:disabled {
-            background-color: #aaa;
         }
         .img {
             width: 80px; /* 썸네일 너비 설정 */
@@ -130,7 +99,7 @@
             <div class="row align-items-center">
                 <div class="col-lg-6 mx-auto text-center">
                     <div class="intro-wrap">
-                        <h1 class="mb-0">Cart</h1>
+                        <h1 class="mb-0">Order</h1>
                     </div>
                 </div>
             </div>
@@ -139,14 +108,6 @@
     <!--    여기부터 내용-->
     <section class="ftco-section">
         <div class="container">
-            <div class="row">
-                <div class="col-12 mb-3 select-all-container">
-                    <label class="checkbox-wrap checkbox-primary">
-                        <input type="checkbox" onclick="toggleSelectAll(this)">
-                        <span class="checkmark">전체 선택/해제</span>
-                    </label>
-                </div>
-            </div>
             <div class="row">
                 <div class="table-wrap">
                     <table class="table">
@@ -164,12 +125,6 @@
                         <tbody>
                         <tr class="alert" role="alert">
                             <td>
-                                <label class="checkbox-wrap checkbox-primary">
-                                    <input type="checkbox" class="product-checkbox">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </td>
-                            <td>
                                 <div class="img" style="background-image: url(static/images/gal_1.jpg);"></div>
                             </td>
                             <td>
@@ -180,18 +135,9 @@
                             </td>
                             <td>가격</td>
                             <td class="quantity">
-                                <div class="quantity-controls">
-                                    <button class="quantity-button" onclick="updateQuantity(this, false)">-</button>
                                     <span class="quantity-number">2</span>
-                                    <button class="quantity-button" onclick="updateQuantity(this, true)">+</button>
-                                </div>
                             </td>
                             <td>$89.98</td>
-                            <td>
-                                <button type="button" class="btn-close" onclick="deleteProduct(this)">
-                                    &times;
-                                </button>
-                            </td>
                         </tr>
                         <!-- 추가 항목은 이와 유사한 구조로 작성 -->
                         </tbody>
@@ -201,16 +147,12 @@
             <div class="row">
                 <div class="col-12 text-right cart-wrap">
                     <div class="cart-total mb-3">
-                        <h3>Cart Totals</h3>
+                        <h3>Total Price</h3>
                         <hr>
                         <p class="d-flex total-price">
                             <span>Total</span>
-                            <span>구매 가격</span>
+                            <span>총 결제 가격</span>
                         </p>
-                    </div>
-                    <div class="cart-buttons">
-                        <a href="order" class="btn btn-primary py-3 px-4">구매 하기</a>
-                        <a href="presentcheckout.html" class="btn btn-primary py-3 px-4">선물 구매 하기</a>
                     </div>
                 </div>
             </div>
