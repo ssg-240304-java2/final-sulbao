@@ -9,10 +9,12 @@
             const checkboxes = document.querySelectorAll('.checkbox-wrap input[type="checkbox"]');
             checkboxes.forEach(checkbox => checkbox.checked = source.checked);
         }
+
         function deleteProduct(button) {
             const row = button.closest('tr');
             row.remove();
         }
+
         function updateQuantity(button, increment) {
             const quantityElement = button.parentNode.querySelector('.quantity-number');
             let currentQuantity = parseInt(quantityElement.textContent);
@@ -32,15 +34,8 @@
         .table-wrap {
             width: 100%;
         }
-        .checkbox-wrap {
-            display: inline-flex;
-            align-items: center;
-        }
         .checkbox-wrap input {
             margin-right: 5px;
-        }
-        .checkbox-wrap .checkmark {
-            display: inline-block;
         }
         .product-name {
             font-size: 1.25rem;
@@ -62,46 +57,9 @@
         .alchol-price {
             font-size: 0.875rem;
         }
-        .select-all-container {
-            margin-bottom: 20px;
-        }
-        .btn-close {
-            background: none;
-            border: none;
-            color: #dc3545;
-            font-size: 1.25rem;
-            cursor: pointer;
-        }
-        .btn-close:focus{
-            outline: none;
-        }
-        .btn-close:hover {
-            color: #c82333;
-        }
-        .quantity-controls {
-            display: flex;
-            align-items: center;
-            justify-content: center; /* 중앙 정렬 */
-        }
         .quantity-number {
             width: 40px;
             text-align: center;
-        }
-        .quantity-button {
-            background-color: white;
-            border: none;
-            color: black;
-            padding: 5px 10px;
-            cursor: pointer;
-            font-size: 1rem;
-            line-height: 1.5;
-            outline: white;
-        }
-        .quantity-button:focus{
-            outline: none;
-        }
-        .quantity-button:disabled {
-            background-color: #aaa;
         }
         .img {
             width: 80px; /* 썸네일 너비 설정 */
@@ -121,16 +79,10 @@
         .quantity {
             text-align: center;
         }
-
-        .cart-wrap {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end; /* 오른쪽 정렬 */
-        }
         .cart-total {
             text-align: right; /* 표의 텍스트도 우측 정렬 */
             margin-bottom: 20px; /* 버튼과의 간격 설정 */
-            width: 400px;
+            width: 100%; /* 전체 너비 사용 */
         }
         .cart-buttons {
             display: flex;
@@ -140,8 +92,42 @@
         .cart-buttons .btn {
             padding: 5px 20px; /* 버튼 크기에 맞게 패딩 조정 */
         }
-        .total-price{
-            text-align: center;
+        .total-price {
+            text-align: right; /* Total Price의 텍스트 우측 정렬 */
+        }
+        .email-total-wrapper {
+            display: flex;
+            justify-content: space-between; /* 양쪽 정렬 */
+            align-items: flex-start; /* 상단 정렬 */
+            gap: 20px; /* 섹션 간 간격 */
+        }
+        .email-section,
+        .total-section {
+            flex: 1; /* 남은 공간을 채우기 */
+        }
+        .email-section {
+            margin-right: 20px; /* 오른쪽 여백 추가 */
+        }
+        .total-section {
+            max-width: 400px; /* 총 가격 영역의 최대 너비를 설정 */
+            margin-left: auto; /* 왼쪽 마진 자동으로 설정하여 오른쪽 정렬 */
+        }
+        .total-section .cart-total {
+            text-align: right; /* 오른쪽 정렬 */
+            margin: 0; /* 기본 마진 제거 */
+        }
+        .total-section .cart-total h3 {
+            margin-bottom: 0; /* 헤더 하단의 마진 제거 */
+        }
+        .total-section .total-price {
+            text-align: left; /* "Total Payment Amount"를 왼쪽 정렬 */
+        }
+        .total-section hr {
+            margin: 10px 0; /* 수평선의 위아래 간격 조정 */
+        }
+        .email-section input,
+        .email-section select {
+            margin-bottom: 10px; /* 입력 요소 간의 간격 조정 */
         }
     </style>
 </head>
@@ -152,7 +138,7 @@
             <div class="row align-items-center">
                 <div class="col-lg-6 mx-auto text-center">
                     <div class="intro-wrap">
-                        <h1 class="mb-0">Cart</h1>
+                        <h1 class="mb-0">Gift</h1>
                     </div>
                 </div>
             </div>
@@ -162,37 +148,21 @@
     <section class="ftco-section">
         <div class="container">
             <div class="row">
-                <div class="col-12 mb-3 select-all-container">
-                    <label class="checkbox-wrap checkbox-primary">
-                        <input type="checkbox" onclick="toggleSelectAll(this)">
-                        <span class="checkmark">전체 선택/해제</span>
-                    </label>
-                </div>
-            </div>
-            <div class="row">
                 <div class="table-wrap">
                     <table class="table">
                         <thead class="thead-primary">
                         <tr>
-                            <th style="width: 5%">&nbsp;</th>
-                            <th style="width: 15%">&nbsp;</th>
+                            <th style="width: 20%">&nbsp;</th>
                             <th style="width: 35%">Product</th>
                             <th style="width: 10%">Price</th>
                             <th style="width: 15%">Quantity</th>
-                            <th style="width: 15%">Total</th>
-                            <th style="width: 5%">&nbsp;</th>
+                            <th style="width: 20%">Total</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr class="alert" role="alert">
                             <td>
-                                <label class="checkbox-wrap checkbox-primary">
-                                    <input type="checkbox" class="product-checkbox">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </td>
-                            <td>
-                                <div class="img" style="background-image: url( https://shopping-phinf.pstatic.net//main_8216453//82164530421.1.jpg);"></div>
+                                <div class="img" style="background-image: url(https://shopping-phinf.pstatic.net//main_8216453//82164530421.1.jpg);"></div>
                             </td>
                             <td>
                                 <div class="product-info">
@@ -204,42 +174,64 @@
                                 <span class="alchol-price">3150</span>
                             </td>
                             <td class="quantity">
-                                <div class="quantity-controls">
-                                    <button class="quantity-button" onclick="updateQuantity(this, false)">-</button>
-                                    <span class="quantity-number">2</span>
-                                    <button class="quantity-button" onclick="updateQuantity(this, true)">+</button>
-                                </div>
+                                <span class="quantity-number">2</span>
                             </td>
                             <td class="total-price">$89.98</td>
-                            <td>
-                                <button type="button" class="btn-close" onclick="deleteProduct(this)">
-                                    &times;
-                                </button>
-                            </td>
                         </tr>
                         <!-- 추가 항목은 이와 유사한 구조로 작성 -->
                         </tbody>
                     </table>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-12 text-right cart-wrap">
+            <div class="row email-total-wrapper">
+                <div class="email-section">
+                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                    <script>
+                        $(document).ready(function () {
+                            $('#mailAddr').on("change", function () {
+                                var selectedValue = $(this).val();
+                                if (selectedValue === "2") {
+                                    $('#mailAddr2').prop("disabled", false).val("").focus();
+                                } else {
+                                    $('#mailAddr2').val(selectedValue).prop("disabled", true);
+                                }
+                            });
+                        });
+                    </script>
+                    <h3>Email</h3>
+                    <hr>
+                    <span class="company-name">Enter the email address of the gift recipient</span>
+                    <br>
+                    <br>
+                    <br>
+                    <input type="text" id="emailId" placeholder="이메일 입력">
+                    <span>@</span>
+                    <input id="mailAddr2" placeholder="이메일을 선택하세요.">
+                    <select id="mailAddr">
+                        <option value="1" disabled selected>E-Mail 선택</option>
+                        <option value="naver.com">naver.com</option>
+                        <option value="hanmail.net">hanmail.net</option>
+                        <option value="gmail.com">gmail.com</option>
+                        <option value="nate.com">nate.com</option>
+                        <option value="2">직접 입력하기</option>
+                    </select>
+                </div>
+                <div class="total-section">
                     <div class="cart-total mb-3">
-                        <h3>Cart Totals</h3>
+                        <h3>Total Price</h3>
                         <hr>
-                        <p class="d-flex total-price">
-                            <span>Total</span>
-                            <span>구매 가격</span>
+                        <p class="total-price">
+                            Total payment amount
                         </p>
-                    </div>
-                    <div class="cart-buttons">
-                        <a href="order" class="btn btn-primary py-3 px-4">구매 하기</a>
-                        <a href="presentOrder" class="btn btn-primary py-3 px-4">선물 구매 하기</a>
+                        <div class="cart-buttons">
+                            <a href="order" class="btn btn-primary py-3 px-4">Payment</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 </div>
+
 </body>
 </html>

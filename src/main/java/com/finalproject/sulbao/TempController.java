@@ -26,4 +26,7 @@ public class TempController {
 
     @GetMapping("/order")
     public void order() {}
+
+    @GetMapping("/presentOrder")
+    public void presentOrder() {}
 }
