@@ -62,4 +62,8 @@ public class Post extends BaseEntity {
         postImages.add(postImage);
     }
 
+    public void updateHit() {
+        hit++;
+    }
+
 }
