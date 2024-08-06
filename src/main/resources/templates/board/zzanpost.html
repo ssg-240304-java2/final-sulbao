@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{common/layouts/userDefault}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title>Tour Free Bootstrap Template for Travel Agency by Untree.co</title>
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <style>
+        .post-container {
+            width: 60%;
+            margin: 30px auto 0;
+        }
+
+        .post-title {
+            font-size: 3rem;
+            font-weight: bolder;
+            margin-bottom: 10px;
+        }
+
+        .post-meta {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .post-meta img {
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .post-meta .username {
+            flex-grow: 1;
+            font-weight: bold;
+        }
+
+        .post-meta .edit-buttons {
+            display: flex;
+            gap: 5px;
+        }
+
+        .post-meta .edit-buttons button {
+            padding: 5px 10px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .post-meta .edit-buttons button:hover {
+            background-color: #0056b3;
+        }
+
+        .post-content {
+            margin-bottom: 20px;
+        }
+
+        .recommendation-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+
+        .recommend-button {
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+
+        .recommend-button:focus {
+            outline: none;
+        }
+
+        .thumbs-up {
+            width: 70px;
+            height: 70px;
+        }
+
+        .recommend-button img {
+            transition: filter 0.3s ease;
+        }
+
+        .recommend-button img.active {
+            filter: sepia(1) saturate(5) hue-rotate(180deg);
+        }
+
+        .recommend-count {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .comments-section {
+            margin-top: 30px;
+        }
+
+        .comments-count {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: large;
+        }
+
+        .comments-count span {
+            color: lightskyblue;
+        }
+
+        .comment-input {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+        }
+
+        .comment-input input {
+            height: 40px;
+        }
+
+        .comment-input img {
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+        }
+
+        .comment-input input {
+            flex-grow: 1;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .comment-input button {
+            margin-left: 10px;
+            padding: 5px 10px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .comment {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+            position: relative;
+        }
+
+        .comment img {
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .comment-content {
+            max-width: 600px;
+            flex-grow: 1;
+        }
+
+        .comment-content .username {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .comment-content .timestamp {
+            color: #aaa;
+            font-size: 0.8rem;
+        }
+
+        .comment .edit-buttons {
+            display: flex;
+            gap: 5px;
+            position: absolute;
+            right: 0;
+            top: 10px;
+        }
+
+        .comment .edit-buttons button {
+            padding: 5px 10px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .comment .edit-buttons button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="hero hero-inner">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mx-auto text-center">
+                    <div class="intro-wrap">
+                        <h1 class="mb-0">짠포스트</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--  게시글 들어갈 위치  -->
+    <div class="post-container">
+        <!-- 게시글 제목 -->
+        <div class="post-title">Hello, World!</div>
+
+        <!-- 게시글 작성자 및 버튼 -->
+        <div class="post-meta">
+            <img alt="작성자 프로필 사진" src="https://prodigits.co.uk/thumbs/wallpapers/p2ls/drawings/45/9883658412625752.jpg">
+            <div class="username">Homer</div>
+            <div class="edit-buttons">
+                <button>수정</button>
+                <button>삭제</button>
+            </div>
+        </div>
+
+        <!-- 게시글 내용 -->
+        <div class="post-content">
+            <div id="editor-content">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda dolores incidunt iusto nostrum
+                officiis recusandae veritatis. Deleniti maxime minima molestiae nesciunt nostrum optio, quis?
+                Consequuntur et numquam officia placeat quas.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda dolores incidunt iusto nostrum
+                officiis recusandae veritatis. Deleniti maxime minima molestiae nesciunt nostrum optio, quis?
+                Consequuntur et numquam officia placeat quas.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda dolores incidunt iusto nostrum
+                officiis recusandae veritatis. Deleniti maxime minima molestiae nesciunt nostrum optio, quis?
+                Consequuntur et numquam officia placeat quas.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda dolores incidunt iusto nostrum
+                officiis recusandae veritatis. Deleniti maxime minima molestiae nesciunt nostrum optio, quis?
+                Consequuntur et numquam officia placeat quas.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda dolores incidunt iusto nostrum
+                officiis recusandae veritatis. Deleniti maxime minima molestiae nesciunt nostrum optio, quis?
+                Consequuntur et numquam officia placeat quas.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda dolores incidunt iusto nostrum
+                officiis recusandae veritatis. Deleniti maxime minima molestiae nesciunt nostrum optio, quis?
+                Consequuntur et numquam officia placeat quas.
+                <br/>
+                <br/>
+                <img alt=""
+                     src="https://www.adinews.co.kr/news/photo/202310/62599_114182_4739.jpg"
+                     style="width: 50%; margin-left: 300px;">
+            </div>
+
+            <!-- 추천 버튼 및 추천수 표시 -->
+            <div class="recommendation-section">
+                <button class="recommend-button">
+                    <img alt="추천 버튼" class="thumbs-up" src="https://i.ibb.co/kQbYDQ0/thumbs-up.png">
+                </button>
+                <span class="recommend-count">10</span>
+            </div>
+        </div>
+
+        <!-- 댓글 영역 -->
+        <div class="comments-section">
+            <div class="comments-count">댓글 <span>1</span></div>
+
+            <!-- 댓글 입력 영역 -->
+            <div class="comment-input">
+                <img alt="임시 프로필 사진"
+                     src="http://eenl.skku.edu/data/file/sub3_3/1_copy1_27_1938934806_sO5V0cdX_9024501a0743b144154990f827e4912cad1daca1.png">
+                <input placeholder="댓글을 입력하세요" type="text">
+                <button>입력</button>
+            </div>
+
+            <!-- 댓글 내용 -->
+            <div class="comment">
+                <img alt="댓글 작성자 프로필 사진"
+                     src="https://prodigits.co.uk/thumbs/wallpapers/p2ls/drawings/45/9883658412625752.jpg">
+                <div class="comment-content">
+                    <div class="username">Bart</div>
+                    <div>Hi, There!</div>
+                    <div class="timestamp">몇 시간 전</div>
+                </div>
+                <div class="edit-buttons">
+                    <button>수정</button>
+                    <button>삭제</button>
+                </div>
+            </div>
+
+            <div class="comment">
+                <img alt="댓글 작성자 프로필 사진"
+                     src="https://prodigits.co.uk/thumbs/wallpapers/p2ls/drawings/45/9883658412625752.jpg">
+                <div class="comment-content">
+                    <div class="username">Bart</div>
+                    <div>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab adipisci amet aperiam assumenda
+                        consequatur corporis est expedita facilis fugit ipsam nisi, placeat quidem quos repellendus
+                        rerum saepe sapiente soluta suscipit?
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab adipisci amet aperiam assumenda
+                        consequatur corporis est expedita facilis fugit ipsam nisi, placeat quidem quos repellendus
+                        rerum saepe sapiente soluta suscipit?
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab adipisci amet aperiam assumenda
+                        consequatur corporis est expedita facilis fugit ipsam nisi, placeat quidem quos repellendus
+                        rerum saepe sapiente soluta suscipit?
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab adipisci amet aperiam assumenda
+                        consequatur corporis est expedita facilis fugit ipsam nisi, placeat quidem quos repellendus
+                        rerum saepe sapiente soluta suscipit?
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab adipisci amet aperiam assumenda
+                        consequatur corporis est expedita facilis fugit ipsam nisi, placeat quidem quos repellendus
+                        rerum saepe sapiente soluta suscipit?
+                    </div>
+                    <div class="timestamp">몇 시간 전</div>
+                </div>
+                <div class="edit-buttons">
+                    <button>수정</button>
+                    <button>삭제</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const recommendButton = document.querySelector('.recommend-button');
+            const recommendImg = document.querySelector('.recommend-button img');
+            const recommendCount = document.querySelector('.recommend-count');
+
+            const defaultImageUrl = 'https://i.ibb.co/kQbYDQ0/thumbs-up.png';
+            const activeImageUrl = 'https://i.ibb.co/j6jhNYX/thumbs-up-color.png';
+
+            recommendButton.addEventListener('click', function () {
+                if (recommendImg.src === defaultImageUrl) {
+                    recommendImg.src = activeImageUrl;
+                    recommendCount.textContent = parseInt(recommendCount.textContent) + 1;
+                } else {
+                    recommendImg.src = defaultImageUrl;
+                    recommendCount.textContent = parseInt(recommendCount.textContent) - 1;
+                }
+            });
+        });
+    </script>
+</div>
+</body>
+</html>

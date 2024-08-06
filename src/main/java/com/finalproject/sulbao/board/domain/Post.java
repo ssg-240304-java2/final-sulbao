@@ -4,44 +4,37 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static jakarta.persistence.CascadeType.*;
+import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.FetchType.LAZY;
-import static jakarta.persistence.GenerationType.*;
+import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Getter
 @NoArgsConstructor
 public class Post extends BaseEntity {
 
+    @OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
+    private final List<Likes> likes = new ArrayList<>();
+    @OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
+    private final List<PostImage> postImages = new ArrayList<>();
+    @OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
+    private final List<Comment> comments = new ArrayList<>();
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
-
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
-
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "board_id")
     private BoardCategory boardCategory;
-
     private String title;
-
     private String content;
-
-    @OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
-    private List<Likes> likes = new ArrayList<>();
-
-    @OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
-    private List<PostImage> postImages = new ArrayList<>();
-
-    @OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
-    private List<Comment> comments = new ArrayList<>();
+    private Long hit; // default value setting
 
     @Builder
     public Post(Member member, BoardCategory boardCategory, String title, String content) {
@@ -58,8 +51,8 @@ public class Post extends BaseEntity {
                 .title(title)
                 .content(content)
                 .build();
-        for (PostImage postImage : postImages) {
-            post.setPostImage(postImage);
+        if (postImages != null) {
+            postImages.forEach(post::setPostImage);
         }
         return post;
     }

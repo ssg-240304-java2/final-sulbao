@@ -15,17 +15,20 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @SpringBootTest
 @Transactional
 @Rollback(false)
 class BoardTest {
 
-    @Autowired BoardCategoryRepository boardCategoryRepository;
-    @Autowired MemberRepository memberRepository;
-    @Autowired PostImageRepository postImageRepository;
-    @Autowired PostRepository postRepository;
+    @Autowired
+    BoardCategoryRepository boardCategoryRepository;
+    @Autowired
+    MemberRepository memberRepository;
+    @Autowired
+    PostImageRepository postImageRepository;
+    @Autowired
+    PostRepository postRepository;
 
     @Test
     void load() {
@@ -34,7 +37,7 @@ class BoardTest {
         Member jane = new Member("jane", "jane", "jane", "jane@email.com", "expert");
         memberRepository.save(john);
         memberRepository.save(jane);*/
-        
+
         // Find Member
         Member john = memberRepository.findById(1L).orElseThrow();
         Member jane = memberRepository.findById(2L).orElseThrow();
@@ -50,21 +53,19 @@ class BoardTest {
 
         // Find Board
         BoardCategory zzanFeed = boardCategoryRepository.findById(1L).orElseThrow();
-        BoardCategory zzanQuestion = boardCategoryRepository.findById(2L).orElseThrow();
         BoardCategory zzanPost = boardCategoryRepository.findById(3L).orElseThrow();
+
+        postRepository.deleteAll();
 
         // Create PostImage
         /*PostImage fooImage = PostImage.createPostImage("foo");
         PostImage barImage = PostImage.createPostImage("bar");*/
 
-        // Find PostImage
-        PostImage fooImage = postImageRepository.findById(1L).orElseThrow();
-        PostImage barImage = postImageRepository.findById(2L).orElseThrow();
-        List<PostImage> postImages = List.of(fooImage, barImage);
-
         // Create Post
-        /*Post post = Post.createPost(john, zzanFeed, "Hello, World!", "Have a nice day!", postImages);
-        postRepository.save(post);*/
+        postRepository.deleteAll();
+        for (int i = 0; i < 2000; i++) {
+            postRepository.save(Post.createPost(john, zzanFeed, "Hello, World!", "Have a nice day!", List.of(PostImage.createPostImage("https://img6.yna.co.kr/etc/inner/KR/2019/11/05/AKR20191105064200060_01_i_P4.jpg"))));
+        }
 
     }
 
