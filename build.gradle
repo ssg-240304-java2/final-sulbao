@@ -37,6 +37,8 @@ dependencies {
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.3.0'
     // ftp file upload처리를 위한 의존
     implementation 'commons-net:commons-net:3.9.0'
+    // https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk
+    implementation 'com.amazonaws:aws-java-sdk:1.12.763'
 }
 
 tasks.named('test') {
