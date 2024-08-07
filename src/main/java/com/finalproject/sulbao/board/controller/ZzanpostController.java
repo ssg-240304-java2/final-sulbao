@@ -5,7 +5,6 @@ import com.finalproject.sulbao.board.domain.Post;
 import com.finalproject.sulbao.board.dto.CommentDto;
 import com.finalproject.sulbao.board.dto.MemberDto;
 import com.finalproject.sulbao.board.dto.PostDto;
-import com.finalproject.sulbao.board.repository.CommentRepository;
 import com.finalproject.sulbao.board.repository.MemberRepository;
 import com.finalproject.sulbao.board.repository.PostRepository;
 import com.finalproject.sulbao.board.service.PostService;
@@ -29,7 +28,6 @@ public class ZzanpostController {
     private final PostRepository postRepository;
     private final PostService postService;
     private final MemberRepository memberRepository;
-    private final CommentRepository commentRepository;
 
     @GetMapping
     public String zzanpostList(Model model, @RequestParam(defaultValue = "0") int page, HttpServletRequest request) {

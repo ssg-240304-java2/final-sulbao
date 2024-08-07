@@ -165,13 +165,20 @@
         }
 
         .comment-input button {
-            margin-left: 10px;
-            padding: 5px 10px;
+            background-color: #1A374D;
+            color: #ffffff;
             border: none;
-            background-color: #007bff;
-            color: white;
             border-radius: 5px;
+            padding: 7px 12px;
+            font-size: 0.9rem;
             cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            font-weight: bold;
+        }
+
+        .comment-input button:hover {
+            background-color: #2A4D6E;
+            transform: scale(1.05);
         }
 
         .comment {
@@ -214,16 +221,20 @@
         }
 
         .comment .edit-buttons button {
-            padding: 5px 10px;
+            background-color: #1A374D;
+            color: #ffffff;
             border: none;
-            background-color: #007bff;
-            color: white;
             border-radius: 5px;
+            padding: 7px 12px;
+            font-size: 0.9rem;
             cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            font-weight: bold;
         }
 
         .comment .edit-buttons button:hover {
-            background-color: #0056b3;
+            background-color: #2A4D6E;
+            transform: scale(1.05);
         }
     </style>
 </head>
@@ -274,16 +285,15 @@
         <div class="comments-section">
             <div class="comments-count">댓글 <span th:text="${commentDtoList.size()}"></span></div>
 
-            <!-- 댓글 입력 영역 -->
             <div class="comment-input">
                 <img alt="임시 프로필 사진"
                      src="http://eenl.skku.edu/data/file/sub3_3/1_copy1_27_1938934806_sO5V0cdX_9024501a0743b144154990f827e4912cad1daca1.png">
-                <input placeholder="댓글을 입력하세요" type="text">
-                <button>입력</button>
+                <input id="commentContent" placeholder="댓글을 입력하세요" type="text">
+                <button onclick="saveComment()" type="submit">입력</button>
             </div>
 
             <div class="comment" th:each="commentDto : ${commentDtoList}">
-                <img alt="댓글 작성자 프로필 사진" th:src="@{${commentDto.memberDto.profileImg}}">
+                <img alt="comment writer's profile image" th:src="@{${commentDto.memberDto.profileImg}}">
                 <div class="comment-content">
                     <div class="username" th:text="${commentDto.memberDto.name}"></div>
                     <div th:text="${commentDto.content}"></div>
@@ -350,6 +360,26 @@
                     }
                 });
             }
+        }
+
+        function saveComment() {
+            $.ajax({
+                url: `/comments`,
+                type: 'POST',
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                data: {
+                    content: $('#commentContent').val(),
+                    memberId: [[${memberDto.id}]],
+                    postId: [[${postDto.id}]]
+                },
+                success: function (response) {
+                    alert('댓글이 등록되었습니다.');
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    alert('등록 중 오류가 발생했습니다.');
+                }
+            });
         }
     </script>
 </div>
