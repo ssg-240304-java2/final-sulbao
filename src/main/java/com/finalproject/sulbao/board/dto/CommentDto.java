@@ -15,16 +15,14 @@ import java.time.LocalDateTime;
 public class CommentDto {
 
     private Long id;
-    private MemberDto memberDto;
-    //    private PostDto postDto;
+    private UserDto userDto;
     private String content;
     private LocalDateTime createdAt;
 
     public static CommentDto toCommentDto(Comment comment) {
         return CommentDto.builder()
                 .id(comment.getId())
-                .memberDto(MemberDto.toMemberDto(comment.getMember()))
-//                .postDto(PostDto.toPostDto(comment.getPost()))
+                .userDto(UserDto.toUserDto(comment.getLogin()))
                 .content(comment.getContent())
                 .createdAt(comment.getCreatedAt())
                 .build();

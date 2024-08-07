@@ -54,6 +54,11 @@
             object-fit: cover;
             border-radius: 10px;
             margin-bottom: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .post-item img:hover {
+            transform: scale(1.03);
         }
 
         .post-item h3 {
@@ -114,10 +119,12 @@
         <div class="post-grid" id="postGrid">
             <div class="post-item" th:each="postDto : ${postDtoList}">
                 <a th:href="@{|zzanposts/${postDto.id}|}">
-                    <img alt="Post Thumbnail" th:src="@{|${postDto.postImageDtoList.get(0).fileName}|}">
-                    <div class="title" th:text="${postDto.getTitle()}"></div>
+                    <!--                    <img alt="Post Thumbnail" th:src="@{|${postDto.postImageDtoList.get(0).fileName}|}">-->
+                    <img alt="Post Thumbnail"
+                         src="https://img.hankyung.com/photo/202112/AKR20211206035900003_01_i_P4.jpg">
+                    <div class="title" th:text="${postDto.title}"></div>
                 </a>
-                <div class="author" th:text="${postDto.memberDto.name}"></div>
+                <div class="author" th:text="${postDto.userDto.profileName}"></div>
                 <div class="post-meta" th:utext="'추천 수 ' + ${postDto.like} + '&nbsp;&nbsp; 조회 ' + ${postDto.hit}"></div>
             </div>
         </div>
@@ -149,10 +156,11 @@
                                 const postHtml = `
                             <div class="post-item">
                                 <a href="/zzanposts/${postDto.id}">
-                                    <img alt="Post Thumbnail" src="${postDto.postImageDtoList[0].fileName}">
+<!--                                    <img alt="Post Thumbnail" src="${postDto.postImageDtoList[0].fileName}">-->
+                                    <img alt="Post Thumbnail" src="https://img.hankyung.com/photo/202112/AKR20211206035900003_01_i_P4.jpg">
                                     <div class="title">${postDto.title}</div>
                                 </a>
-                                <div class="author">${postDto.memberDto.name}</div>
+                                <div class="author">${postDto.userDto.profileName}</div>
                                 <div class="post-meta">추천 수 ${postDto.like}&nbsp;&nbsp;조회 ${postDto.hit}</div>
                             </div>`;
                                 postGrid.append(postHtml);

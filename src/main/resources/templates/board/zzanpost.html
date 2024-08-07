@@ -7,236 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
-    <style>
-        .container {
-            max-width: 1300px;
-            padding: 20px;
-            margin: 30px auto 0;
-        }
-
-        .hero {
-            background: #f8f9fa;
-            padding: 50px 0;
-        }
-
-        .hero h1 {
-            font-size: 2.5rem;
-        }
-
-        .hero p {
-            font-size: 1.25rem;
-            color: #6c757d;
-            margin-top: 30px;
-        }
-
-        .post-container {
-            width: 60%;
-            margin: 30px auto 0;
-        }
-
-        .post-title {
-            font-size: 3rem;
-            font-weight: bolder;
-            margin-bottom: 10px;
-        }
-
-        .post-meta {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 20px;
-        }
-
-        .post-meta img {
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            margin-right: 10px;
-        }
-
-        .post-meta .username {
-            flex-grow: 1;
-            font-weight: bold;
-            font-size: 1.05rem;
-        }
-
-        .post-meta .edit-buttons {
-            display: flex;
-            gap: 5px;
-        }
-
-        .post-meta .edit-buttons button {
-            background-color: #1A374D;
-            color: #ffffff;
-            border: none;
-            border-radius: 5px;
-            padding: 7px 12px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.2s;
-            font-weight: bold;
-        }
-
-        .post-meta .edit-buttons button:hover {
-            background-color: #2A4D6E;
-            transform: scale(1.05);
-        }
-
-        .post-content {
-            margin-bottom: 20px;
-        }
-
-        .recommendation-section {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 50px;
-            margin-bottom: 50px;
-        }
-
-        .recommend-button {
-            border: none;
-            background: none;
-            cursor: pointer;
-        }
-
-        .recommend-button:focus {
-            outline: none;
-        }
-
-        .thumbs-up {
-            width: 70px;
-            height: 70px;
-        }
-
-        .recommend-button img {
-            transition: filter 0.3s ease;
-        }
-
-        .recommend-button img.active {
-            filter: sepia(1) saturate(5) hue-rotate(180deg);
-        }
-
-        .recommend-count {
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin-left: 10px;
-        }
-
-        .comments-section {
-            margin-top: 30px;
-        }
-
-        .comments-count {
-            font-weight: bold;
-            margin-bottom: 10px;
-            font-size: large;
-        }
-
-        .comments-count span {
-            color: lightskyblue;
-        }
-
-        .comment-input {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-            border-top: 1px solid #ddd;
-            padding-top: 10px;
-        }
-
-        .comment-input input {
-            height: 40px;
-        }
-
-        .comment-input img {
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            margin-right: 10px;
-        }
-
-        .comment-input input {
-            flex-grow: 1;
-            padding: 5px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-
-        .comment-input button {
-            background-color: #1A374D;
-            color: #ffffff;
-            border: none;
-            border-radius: 5px;
-            padding: 7px 12px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.2s;
-            font-weight: bold;
-        }
-
-        .comment-input button:hover {
-            background-color: #2A4D6E;
-            transform: scale(1.05);
-        }
-
-        .comment {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 15px;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 10px;
-            position: relative;
-        }
-
-        .comment img {
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            margin-right: 10px;
-        }
-
-        .comment-content {
-            max-width: 600px;
-            flex-grow: 1;
-        }
-
-        .comment-content .username {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .comment-content .timestamp {
-            color: #aaa;
-            font-size: 0.8rem;
-        }
-
-        .comment .edit-buttons {
-            display: flex;
-            gap: 5px;
-            position: absolute;
-            right: 0;
-            top: 10px;
-        }
-
-        .comment .edit-buttons button {
-            background-color: #1A374D;
-            color: #ffffff;
-            border: none;
-            border-radius: 5px;
-            padding: 7px 12px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.2s;
-            font-weight: bold;
-        }
-
-        .comment .edit-buttons button:hover {
-            background-color: #2A4D6E;
-            transform: scale(1.05);
-        }
-    </style>
+    <link href="/board/css/zzanpost.css" rel="stylesheet">
 </head>
 <body>
 <div layout:fragment="content">
@@ -260,23 +31,23 @@
         <div class="post-title" th:text="${postDto.title}"></div>
 
         <div class="post-meta">
-            <img alt="작성자 프로필 사진" th:src="@{|${postDto.memberDto.profileImg}|}">
-            <div class="username" th:text="${postDto.memberDto.getName()}"></div>
-            <div class="edit-buttons" th:if="${memberDto.id == postDto.memberDto.id}">
+            <!--            <img alt="작성자 프로필 사진" th:src="@{|${postDto.userDto.profileImageFileName}|}">-->
+            <img alt="작성자 프로필 사진"
+                 src="https://cdn.icon-icons.com/icons2/2468/PNG/512/user_user_profile_user_icon_user_thump_icon_149321.png">
+            <div class="username" th:text="${postDto.userDto.getProfileName()}"></div>
+            <div class="edit-buttons" th:if="${userDto.id == postDto.userDto.id}">
                 <button>수정</button>
                 <button onclick="deletePost()">삭제</button>
             </div>
         </div>
 
-        <!-- 게시글 내용 -->
         <div class="post-content">
             <div id="editor-content" th:utext="${postDto.content}">
             </div>
 
-            <!-- 추천 버튼 및 추천수 표시 -->
             <div class="recommendation-section">
                 <button class="recommend-button">
-                    <img alt="추천 버튼" class="thumbs-up" src="https://i.ibb.co/kQbYDQ0/thumbs-up.png">
+                    <img alt="thumbs up" class="thumbs-up" src="https://i.ibb.co/kQbYDQ0/thumbs-up.png">
                 </button>
                 <span class="recommend-count">10</span>
             </div>
@@ -286,26 +57,29 @@
             <div class="comments-count">댓글 <span th:text="${commentDtoList.size()}"></span></div>
 
             <div class="comment-input">
-                <img alt="임시 프로필 사진"
+                <img alt="default profile"
                      src="http://eenl.skku.edu/data/file/sub3_3/1_copy1_27_1938934806_sO5V0cdX_9024501a0743b144154990f827e4912cad1daca1.png">
                 <input id="commentContent" placeholder="댓글을 입력하세요" type="text">
                 <button onclick="saveComment()" type="submit">입력</button>
             </div>
 
             <div class="comment" th:each="commentDto : ${commentDtoList}">
-                <img alt="comment writer's profile image" th:src="@{${commentDto.memberDto.profileImg}}">
+                <!--                <img alt="comment writer's profile image" th:src="@{${commentDto.userDto.profileImageFileName}}">-->
+                <img alt="comment writer's profile image"
+                     src="https://cdn.icon-icons.com/icons2/2468/PNG/512/user_user_profile_user_icon_user_thump_icon_149317.png">
                 <div class="comment-content">
-                    <div class="username" th:text="${commentDto.memberDto.name}"></div>
+                    <div class="username" th:text="${commentDto.userDto.profileName}"></div>
                     <div th:text="${commentDto.content}"></div>
                     <div class="timestamp" th:text="${commentDto.createdAt}"></div>
                 </div>
-                <div class="edit-buttons" th:if="${memberDto.id == commentDto.memberDto.id}">
+                <div class="edit-buttons" th:if="${userDto.id == commentDto.userDto.id}">
                     <button>수정</button>
                     <button onclick="deleteComment(this)" th:data-id="${commentDto.id}">삭제</button>
                 </div>
             </div>
         </div>
     </div>
+
     <script th:inline="javascript">
         document.addEventListener('DOMContentLoaded', function () {
             const recommendButton = document.querySelector('.recommend-button');
@@ -369,7 +143,7 @@
                 contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
                 data: {
                     content: $('#commentContent').val(),
-                    memberId: [[${memberDto.id}]],
+                    userId: [[${userDto.id}]],
                     postId: [[${postDto.id}]]
                 },
                 success: function (response) {

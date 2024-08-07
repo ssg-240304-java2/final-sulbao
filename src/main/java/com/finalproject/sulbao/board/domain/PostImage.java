@@ -1,6 +1,5 @@
 package com.finalproject.sulbao.board.domain;
 
-import com.finalproject.sulbao.board.repository.PostImageRepository;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,6 +11,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Entity
 @Getter
 @NoArgsConstructor
+@Table(name = "tbl_post_image")
 public class PostImage {
 
     @Id

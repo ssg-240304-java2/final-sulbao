@@ -20,16 +20,16 @@ public class PostDto {
     private List<PostImageDto> postImageDtoList;
     private Long like;
     private Long hit;
-    private MemberDto memberDto;
+    private UserDto userDto;
 
     public static PostDto toPostDto(Post post) {
         return PostDto.builder()
                 .id(post.getId())
                 .title(post.getTitle())
                 .content(post.getContent())
-                .memberDto(MemberDto.toMemberDto(post.getMember()))
+                .userDto(UserDto.toUserDto(post.getLogin()))
                 .postImageDtoList(post.getPostImages().stream().map(PostImageDto::toPostImageDto).toList())
-                .like((long) post.getLikes().size())
+                .like((long) post.getLike().size())
                 .hit(post.getHit())
                 .build();
     }

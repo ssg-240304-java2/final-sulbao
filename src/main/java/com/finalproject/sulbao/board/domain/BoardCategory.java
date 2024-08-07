@@ -1,9 +1,6 @@
 package com.finalproject.sulbao.board.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,13 +13,16 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Entity
 @Getter
 @NoArgsConstructor
+@Table(name = "tbl_board_category")
 public class BoardCategory {
 
     @OneToMany(mappedBy = "boardCategory", cascade = ALL, orphanRemoval = true)
     private final List<Post> posts = new ArrayList<>();
+
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
+
     private String name;
 
     public BoardCategory(String name) {

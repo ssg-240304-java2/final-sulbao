@@ -1,5 +1,6 @@
 package com.finalproject.sulbao.board.domain;
 
+import com.finalproject.sulbao.login.model.entity.Login;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,6 +12,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Entity
 @Getter
 @NoArgsConstructor
+@Table(name = "tbl_comment")
 public class Comment extends BaseEntity {
 
     @Id
@@ -18,8 +20,8 @@ public class Comment extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @JoinColumn(name = "user_id")
+    private Login login;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "post_id")
@@ -28,23 +30,23 @@ public class Comment extends BaseEntity {
     private String content;
 
     @Builder
-    public Comment(Member member, Post post, String content) {
-        this.member = member;
+    public Comment(Login login, Post post, String content) {
+        this.login = login;
         this.post = post;
         this.content = content;
     }
 
-    public static Comment createComment(String content, Member member, Post post) {
+    public static Comment createComment(String content, Login login, Post post) {
         Comment comment = Comment.builder()
                 .content(content)
                 .build();
-        comment.setMember(member);
+        comment.setLogin(login);
         comment.setPost(post);
         return comment;
     }
 
-    private void setMember(Member member) {
-        this.member = member;
+    private void setLogin(Login login) {
+        this.login = login;
     }
 
     private void setPost(Post post) {

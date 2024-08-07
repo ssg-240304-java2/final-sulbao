@@ -1,13 +1,14 @@
 package com.finalproject.sulbao.board.controller;
 
-import com.finalproject.sulbao.board.domain.Member;
 import com.finalproject.sulbao.board.domain.Post;
 import com.finalproject.sulbao.board.dto.CommentDto;
-import com.finalproject.sulbao.board.dto.MemberDto;
 import com.finalproject.sulbao.board.dto.PostDto;
-import com.finalproject.sulbao.board.repository.MemberRepository;
+import com.finalproject.sulbao.board.dto.UserDto;
+import com.finalproject.sulbao.board.repository.LikeRepository;
 import com.finalproject.sulbao.board.repository.PostRepository;
 import com.finalproject.sulbao.board.service.PostService;
+import com.finalproject.sulbao.login.model.repository.LoginRepository;
+import com.finalproject.sulbao.login.model.repository.MemberInfoRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,7 +28,9 @@ public class ZzanpostController {
 
     private final PostRepository postRepository;
     private final PostService postService;
-    private final MemberRepository memberRepository;
+    private final LoginRepository loginRepository;
+    private final LikeRepository likeRepository;
+    private final MemberInfoRepository memberInfoRepository;
 
     @GetMapping
     public String zzanpostList(Model model, @RequestParam(defaultValue = "0") int page, HttpServletRequest request) {
@@ -54,15 +57,14 @@ public class ZzanpostController {
 
     @GetMapping("/{id}")
     public String zzanpost(@PathVariable Long id, Model model, HttpServletRequest request) {
-        // 임시로 로그인한 회원 세션에 저장
-        request.getSession().setAttribute("member", memberRepository.findById(2L).orElseThrow());
+//         임시로 로그인한 회원 세션에 저장
+        request.getSession().setAttribute("userDto", UserDto.toUserDto(loginRepository.findById(1L).orElseThrow()));
 
         postService.updateHit(id);
         Post post = postRepository.findById(id).orElseThrow();
-        model.addAttribute("memberDto", MemberDto.toMemberDto((Member) request.getSession().getAttribute("member")));
+        model.addAttribute("userDto", request.getSession().getAttribute("userDto"));
         model.addAttribute("postDto", PostDto.toPostDto(post));
         model.addAttribute("commentDtoList", post.getComments().stream().map(CommentDto::toCommentDto).toList());
-
         return "/board/zzanpost";
     }
 

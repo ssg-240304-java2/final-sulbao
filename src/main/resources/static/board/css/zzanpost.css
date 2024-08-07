@@ -1,0 +1,262 @@
+.container {
+    max-width: 1300px;
+    padding: 20px;
+    margin: 30px auto 0;
+}
+
+.hero {
+    background: #f8f9fa;
+    padding: 50px 0;
+}
+
+.hero h1 {
+    font-size: 2.5rem;
+}
+
+.hero p {
+    font-size: 1.25rem;
+    color: #6c757d;
+    margin-top: 30px;
+}
+
+.post-container {
+    width: 60%;
+    margin: 30px auto 0;
+}
+
+.post-title {
+    font-size: 3rem;
+    font-weight: bolder;
+    margin-bottom: 10px;
+}
+
+.post-meta {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 20px;
+}
+
+.post-meta img {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+}
+
+.post-meta .username {
+    flex-grow: 1;
+    font-weight: bold;
+    font-size: 1.05rem;
+}
+
+.post-meta .edit-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+.post-meta .edit-buttons button {
+    background-color: #1A374D;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 7px 12px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    font-weight: bold;
+}
+
+.post-meta .edit-buttons button:hover {
+    background-color: #2A4D6E;
+    transform: scale(1.05);
+}
+
+.post-content {
+    margin-bottom: 20px;
+}
+
+.recommendation-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.recommend-button {
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.recommend-button:focus {
+    outline: none;
+}
+
+.thumbs-up {
+    width: 70px;
+    height: 70px;
+}
+
+.recommend-button img {
+    transition: filter 0.3s ease;
+}
+
+.recommend-button img.active {
+    filter: sepia(1) saturate(5) hue-rotate(180deg);
+}
+
+.recommend-count {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.comments-section {
+    margin-top: 30px;
+}
+
+.comments-count {
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: large;
+}
+
+.comments-count span {
+    color: lightskyblue;
+}
+
+.comment-input {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+}
+
+.comment-input img {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.comment-input input {
+    flex-grow: 1;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    height: 50px;
+    margin-right: 1%;
+}
+
+.comment-input button {
+    background-color: #1A374D;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 16px;
+    /*font-size: 0.9rem;*/
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    font-weight: bold;
+}
+
+.comment-input button:hover {
+    background-color: #2A4D6E;
+    transform: scale(1.05);
+}
+
+.comment {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    position: relative;
+}
+
+.comment img {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.comment-content {
+    max-width: 600px;
+    flex-grow: 1;
+}
+
+.comment-content .username {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.comment-content .timestamp {
+    color: #aaa;
+    font-size: 0.8rem;
+}
+
+.comment .edit-buttons {
+    display: flex;
+    gap: 5px;
+    position: absolute;
+    right: 0;
+    top: 10px;
+}
+
+.comment .edit-buttons button {
+    background-color: #1A374D;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 7px 12px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    font-weight: bold;
+}
+
+.comment .edit-buttons button:hover {
+    background-color: #2A4D6E;
+    transform: scale(1.05);
+}
+
+.comment-edit-form {
+    display: none;
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    display: flex;
+    align-items: center;
+}
+
+.comment-edit-form input {
+    flex-grow: 1;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.comment-edit-form button {
+    background-color: #1A374D;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.comment-edit-form button.cancel {
+    background-color: #ccc;
+    color: #000;
+}
