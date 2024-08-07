@@ -30,9 +30,10 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member member;
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "board_id")
+    @JoinColumn(name = "board_category_id")
     private BoardCategory boardCategory;
     private String title;
+    @Column(columnDefinition = "longtext")
     private String content;
     private Long hit; // default value setting
 
@@ -44,7 +45,9 @@ public class Post extends BaseEntity {
         this.content = content;
     }
 
-    public static Post createPost(Member member, BoardCategory boardCategory, String title, String content, List<PostImage> postImages) {
+    public static Post createPost(
+            Member member, BoardCategory boardCategory, String title,
+            String content, List<PostImage> postImages) {
         Post post = Post.builder()
                 .member(member)
                 .boardCategory(boardCategory)

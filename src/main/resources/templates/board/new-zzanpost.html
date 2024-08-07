@@ -1,14 +1,37 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{common/layouts/userDefault}">
+      layout:decorate="~{common/layouts/userDefault}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-    <title>Tour Free Bootstrap Template for Travel Agency by Untree.co</title>
-    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+    <title>술포스트</title>
     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script crossorigin="anonymous"
+            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+            src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
     <style>
+        .container {
+            max-width: 1300px;
+            padding: 20px;
+            margin: 30px auto 0;
+        }
+
+        .hero {
+            background: #f8f9fa;
+            padding: 50px 0;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: #6c757d;
+            margin-top: 30px;
+        }
+
         .guideline-container {
             background-color: #f9f9f9;
             padding: 20px;
@@ -18,45 +41,82 @@
             width: 60%;
             margin: 50px auto;
         }
+
         .guideline-container h2 {
             font-size: 1.5rem;
             margin-bottom: 1rem;
             color: #333;
         }
+
         .guideline-container ul {
             margin-left: 20px;
         }
+
         .guideline-container li {
             margin-bottom: 10px;
         }
+
+        .note-container {
+            margin-top: 50px;
+        }
+
         .guideline-container .note {
             font-style: italic;
             color: #555;
+            text-align: center;
+            margin-top: 5px;
+            font-size: larger;
         }
+
+        .title-container {
+            margin: 20px auto;
+            width: 60%;
+        }
+
         .editor-container {
-            height: 600px;
+            height: 800px;
             width: 60%;
             margin: 0 auto;
         }
-        #editor {
-            height: 500px;
-        }
+
         .submit-button-container {
             text-align: center;
             margin-bottom: 50px;
         }
+
         .submit-button {
-            background-color: #007bff; /* 파란색 배경 */
-            color: #ffffff; /* 흰색 글씨 */
+            background-color: #1A374D;
+            color: #ffffff;
             border: none;
             border-radius: 5px;
             padding: 10px 20px;
             font-size: 1rem;
             cursor: pointer;
             transition: background-color 0.3s, transform 0.2s;
+            font-weight: bold;
         }
+
         .submit-button:hover {
-            background-color: #0056b3;
+            background-color: #2A4D6E;
+            transform: scale(1.05);
+        }
+
+        .title-container {
+            margin: 20px auto;
+            width: 60%;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .form-control {
+            height: 60px;
+            border: none;
+            border-bottom: 1px solid #ccc;
+            padding: 10px;
+            font-size: 1.25rem;
+            width: calc(100% - 100px);
         }
     </style>
 </head>
@@ -67,7 +127,11 @@
             <div class="row align-items-center">
                 <div class="col-lg-6 mx-auto text-center">
                     <div class="intro-wrap">
-                        <h1 class="mb-0">짠포스트 새 글 작성</h1>
+                        <h1 class="mb-0">술 포스트</h1>
+                        <p class="text-white">
+                            술 포스트는 술에 대한 모든 것을 다룹니다.<br>
+                            술의 역사, 문화, 맛, 그리고 다양한 이야기를 만나보세요.
+                        </p>
                     </div>
                 </div>
             </div>
@@ -81,8 +145,8 @@
         <ul>
             <li><strong>게시글 노출 여부</strong>
                 <ul>
-                    <li>에디터 컨택 없이 작성된 게시글은 커뮤니티 피드나 홈에서는 공개되지 않을 수 있습니다.</li>
-                    <li>에디터의 제안으로 작성된 글이나 내부에서 선정된 글만 피드나 홈을 통해 노출됩니다.</li>
+                    <li>작성된 게시글은 커뮤니티 피드나 홈에서는 공개되지 않을 수 있습니다.</li>
+                    <li>관리자의 제안으로 작성된 글이나 내부에서 선정된 글만 피드나 홈을 통해 노출됩니다.</li>
                 </ul>
             </li>
             <li><strong>게시글 주제 및 내용</strong>
@@ -108,40 +172,43 @@
                 </ul>
             </li>
         </ul>
-        <p class="note">전통주를 사랑하는 전문가 여러분의 소중한 기여를 기대합니다. 감사합니다!</p>
-        <p class="note">전문가분들의 소중한 게시글이 더욱 많은 사람들에게 전달될 수 있도록 에디터와 협력하여 최선을 다하겠습니다. 게시글 작성에 궁금한 점이 있으시면 언제든지 문의해 주세요.</p>
+        <div class="note-container">
+            <p class="note">전통주를 사랑하는 전문가 여러분의 소중한 기여를 기대합니다.</p>
+            <p class="note">여러분들의 소중한 게시글이 더욱 많은 사람들에게 전달될 수 있도록 최선을 다하겠습니다.</p>
+        </div>
+    </div>
+
+    <div class="title-container">
+        <div class="input-group">
+            <label for="postTitle"></label>
+            <input class="form-control" id="postTitle" placeholder="제목을 입력해주세요." type="text">
+        </div>
     </div>
 
     <div class="editor-container">
-        <div id="editor"></div>
+        <div id="summernote"></div>
     </div>
 
     <div class="submit-button-container">
         <button class="submit-button">게시글 등록</button>
     </div>
+
     <script>
-        var toolbarOptions = [
-            ['bold', 'italic', 'underline', 'strike'],
-            [{ 'header': 1 }, { 'header': 2 }],
-            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-
-            [{ 'color': [] }, { 'background': [] }],
-            ['image', 'link'],
-
-        ];
-
-        function quilljsediterInit(){
-            var option = {
-                modules: {
-                    toolbar: toolbarOptions
-                },
-                theme: 'snow'
-            };
-
-            quill = new Quill('#editor', option);
-        }
-
-        quilljsediterInit();
+        $('#summernote').summernote({
+            placeholder: '내용을 입력해주세요.',
+            tabsize: 2,
+            height: 700,
+            disableResizeEditor: true,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'underline', 'clear']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                ['insert', ['link', 'picture', 'video']],
+                ['view', ['fullscreen', 'codeview', 'help']]
+            ]
+        });
     </script>
 </div>
 

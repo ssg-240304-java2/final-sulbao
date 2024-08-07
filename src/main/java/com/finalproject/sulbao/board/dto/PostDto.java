@@ -17,16 +17,17 @@ public class PostDto {
     private Long id;
     private String title;
     private String content;
-    private String writerName;
     private List<PostImageDto> postImageDtoList;
     private Long like;
     private Long hit;
+    private MemberDto memberDto;
 
     public static PostDto toPostDto(Post post) {
         return PostDto.builder()
                 .id(post.getId())
                 .title(post.getTitle())
-                .writerName(post.getMember().getName())
+                .content(post.getContent())
+                .memberDto(MemberDto.toMemberDto(post.getMember()))
                 .postImageDtoList(post.getPostImages().stream().map(PostImageDto::toPostImageDto).toList())
                 .like((long) post.getLikes().size())
                 .hit(post.getHit())

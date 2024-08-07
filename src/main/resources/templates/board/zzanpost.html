@@ -3,11 +3,32 @@
       layout:decorate="~{common/layouts/userDefault}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-    <title>Tour Free Bootstrap Template for Travel Agency by Untree.co</title>
+    <title>술포스트</title>
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
     <style>
+        .container {
+            max-width: 1300px;
+            padding: 20px;
+            margin: 30px auto 0;
+        }
+
+        .hero {
+            background: #f8f9fa;
+            padding: 50px 0;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: #6c757d;
+            margin-top: 30px;
+        }
+
         .post-container {
             width: 60%;
             margin: 30px auto 0;
@@ -24,7 +45,7 @@
             align-items: center;
             margin-bottom: 20px;
             border-bottom: 1px solid #ddd;
-            padding-bottom: 10px;
+            padding-bottom: 20px;
         }
 
         .post-meta img {
@@ -37,6 +58,7 @@
         .post-meta .username {
             flex-grow: 1;
             font-weight: bold;
+            font-size: 1.05rem;
         }
 
         .post-meta .edit-buttons {
@@ -45,16 +67,20 @@
         }
 
         .post-meta .edit-buttons button {
-            padding: 5px 10px;
+            background-color: #1A374D;
+            color: #ffffff;
             border: none;
-            background-color: #007bff;
-            color: white;
             border-radius: 5px;
+            padding: 7px 12px;
+            font-size: 0.9rem;
             cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            font-weight: bold;
         }
 
         .post-meta .edit-buttons button:hover {
-            background-color: #0056b3;
+            background-color: #2A4D6E;
+            transform: scale(1.05);
         }
 
         .post-content {
@@ -208,54 +234,32 @@
             <div class="row align-items-center">
                 <div class="col-lg-6 mx-auto text-center">
                     <div class="intro-wrap">
-                        <h1 class="mb-0">짠포스트</h1>
+                        <h1 class="mb-0">술 포스트</h1>
+                        <p class="text-white">
+                            술 포스트는 술에 대한 모든 것을 다룹니다.<br>
+                            술의 역사, 문화, 맛, 그리고 다양한 이야기를 만나보세요.
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!--  게시글 들어갈 위치  -->
     <div class="post-container">
-        <!-- 게시글 제목 -->
-        <div class="post-title">Hello, World!</div>
+        <div class="post-title" th:text="${postDto.title}"></div>
 
-        <!-- 게시글 작성자 및 버튼 -->
         <div class="post-meta">
-            <img alt="작성자 프로필 사진" src="https://prodigits.co.uk/thumbs/wallpapers/p2ls/drawings/45/9883658412625752.jpg">
-            <div class="username">Homer</div>
-            <div class="edit-buttons">
+            <img alt="작성자 프로필 사진" th:src="@{|${postDto.memberDto.profileImg}|}">
+            <div class="username" th:text="${postDto.memberDto.getName()}"></div>
+            <div class="edit-buttons" th:if="${memberDto.id == postDto.memberDto.id}">
                 <button>수정</button>
-                <button>삭제</button>
+                <button onclick="deletePost()">삭제</button>
             </div>
         </div>
 
         <!-- 게시글 내용 -->
         <div class="post-content">
-            <div id="editor-content">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda dolores incidunt iusto nostrum
-                officiis recusandae veritatis. Deleniti maxime minima molestiae nesciunt nostrum optio, quis?
-                Consequuntur et numquam officia placeat quas.
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda dolores incidunt iusto nostrum
-                officiis recusandae veritatis. Deleniti maxime minima molestiae nesciunt nostrum optio, quis?
-                Consequuntur et numquam officia placeat quas.
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda dolores incidunt iusto nostrum
-                officiis recusandae veritatis. Deleniti maxime minima molestiae nesciunt nostrum optio, quis?
-                Consequuntur et numquam officia placeat quas.
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda dolores incidunt iusto nostrum
-                officiis recusandae veritatis. Deleniti maxime minima molestiae nesciunt nostrum optio, quis?
-                Consequuntur et numquam officia placeat quas.
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda dolores incidunt iusto nostrum
-                officiis recusandae veritatis. Deleniti maxime minima molestiae nesciunt nostrum optio, quis?
-                Consequuntur et numquam officia placeat quas.
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda dolores incidunt iusto nostrum
-                officiis recusandae veritatis. Deleniti maxime minima molestiae nesciunt nostrum optio, quis?
-                Consequuntur et numquam officia placeat quas.
-                <br/>
-                <br/>
-                <img alt=""
-                     src="https://www.adinews.co.kr/news/photo/202310/62599_114182_4739.jpg"
-                     style="width: 50%; margin-left: 300px;">
+            <div id="editor-content" th:utext="${postDto.content}">
             </div>
 
             <!-- 추천 버튼 및 추천수 표시 -->
@@ -267,9 +271,8 @@
             </div>
         </div>
 
-        <!-- 댓글 영역 -->
         <div class="comments-section">
-            <div class="comments-count">댓글 <span>1</span></div>
+            <div class="comments-count">댓글 <span th:text="${commentDtoList.size()}"></span></div>
 
             <!-- 댓글 입력 영역 -->
             <div class="comment-input">
@@ -279,53 +282,21 @@
                 <button>입력</button>
             </div>
 
-            <!-- 댓글 내용 -->
-            <div class="comment">
-                <img alt="댓글 작성자 프로필 사진"
-                     src="https://prodigits.co.uk/thumbs/wallpapers/p2ls/drawings/45/9883658412625752.jpg">
+            <div class="comment" th:each="commentDto : ${commentDtoList}">
+                <img alt="댓글 작성자 프로필 사진" th:src="@{${commentDto.memberDto.profileImg}}">
                 <div class="comment-content">
-                    <div class="username">Bart</div>
-                    <div>Hi, There!</div>
-                    <div class="timestamp">몇 시간 전</div>
+                    <div class="username" th:text="${commentDto.memberDto.name}"></div>
+                    <div th:text="${commentDto.content}"></div>
+                    <div class="timestamp" th:text="${commentDto.createdAt}"></div>
                 </div>
-                <div class="edit-buttons">
+                <div class="edit-buttons" th:if="${memberDto.id == commentDto.memberDto.id}">
                     <button>수정</button>
-                    <button>삭제</button>
-                </div>
-            </div>
-
-            <div class="comment">
-                <img alt="댓글 작성자 프로필 사진"
-                     src="https://prodigits.co.uk/thumbs/wallpapers/p2ls/drawings/45/9883658412625752.jpg">
-                <div class="comment-content">
-                    <div class="username">Bart</div>
-                    <div>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab adipisci amet aperiam assumenda
-                        consequatur corporis est expedita facilis fugit ipsam nisi, placeat quidem quos repellendus
-                        rerum saepe sapiente soluta suscipit?
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab adipisci amet aperiam assumenda
-                        consequatur corporis est expedita facilis fugit ipsam nisi, placeat quidem quos repellendus
-                        rerum saepe sapiente soluta suscipit?
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab adipisci amet aperiam assumenda
-                        consequatur corporis est expedita facilis fugit ipsam nisi, placeat quidem quos repellendus
-                        rerum saepe sapiente soluta suscipit?
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab adipisci amet aperiam assumenda
-                        consequatur corporis est expedita facilis fugit ipsam nisi, placeat quidem quos repellendus
-                        rerum saepe sapiente soluta suscipit?
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab adipisci amet aperiam assumenda
-                        consequatur corporis est expedita facilis fugit ipsam nisi, placeat quidem quos repellendus
-                        rerum saepe sapiente soluta suscipit?
-                    </div>
-                    <div class="timestamp">몇 시간 전</div>
-                </div>
-                <div class="edit-buttons">
-                    <button>수정</button>
-                    <button>삭제</button>
+                    <button onclick="deleteComment(this)" th:data-id="${commentDto.id}">삭제</button>
                 </div>
             </div>
         </div>
     </div>
-    <script>
+    <script th:inline="javascript">
         document.addEventListener('DOMContentLoaded', function () {
             const recommendButton = document.querySelector('.recommend-button');
             const recommendImg = document.querySelector('.recommend-button img');
@@ -344,6 +315,42 @@
                 }
             });
         });
+
+        function deletePost() {
+            if (confirm('정말로 이 게시글을 삭제하시겠습니까?')) {
+                $.ajax({
+                    url: `/zzanposts/${[[${postDto.id}]]}`,
+                    type: 'DELETE',
+                    contentType: 'application/json',
+                    success: function (response) {
+                        alert('게시글이 삭제되었습니다.');
+                        location.href = '/zzanposts';
+                    },
+                    error: function (xhr, status, error) {
+                        alert('삭제 중 오류가 발생했습니다.');
+                    }
+                });
+            }
+        }
+
+        function deleteComment(button) {
+            const commentId = button.getAttribute('data-id');
+
+            if (confirm('정말로 이 댓글을 삭제하시겠습니까?')) {
+                $.ajax({
+                    url: `/comments/${commentId}`,
+                    type: 'DELETE',
+                    contentType: 'application/json',
+                    success: function (response) {
+                        alert('게시글이 삭제되었습니다.');
+                        location.reload();
+                    },
+                    error: function (xhr, status, error) {
+                        alert('삭제 중 오류가 발생했습니다.');
+                    }
+                });
+            }
+        }
     </script>
 </div>
 </body>

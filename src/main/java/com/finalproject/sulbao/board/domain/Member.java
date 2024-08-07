@@ -6,13 +6,15 @@ import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
-import static jakarta.persistence.GenerationType.*;
+import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class Member {
 
     @Id
@@ -28,6 +30,8 @@ public class Member {
     private String email;
 
     private String ranks;
+
+    private String profileImg;
 
     public Member(String username, String password, String name, String email, String ranks) {
         this.username = username;

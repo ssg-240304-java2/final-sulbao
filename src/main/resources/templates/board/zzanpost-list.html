@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Tour Free Bootstrap Template for Travel Agency by Untree.co</title>
+    <title>술포스트</title>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
     <style>
@@ -112,29 +112,29 @@
     <div class="container">
         <div class="post-count">전체 13,070</div>
         <div class="post-grid" id="postGrid">
-            <div class="post-item" th:each="post : ${posts}">
-                <a th:href="@{|zzanposts/${post.id}|}">
-                    <img alt="Post Thumbnail" th:src="@{|${post.postImageDtoList.get(0).fileName}|}">
-                    <div class="title" th:text="${post.getTitle()}"></div>
+            <div class="post-item" th:each="postDto : ${postDtoList}">
+                <a th:href="@{|zzanposts/${postDto.id}|}">
+                    <img alt="Post Thumbnail" th:src="@{|${postDto.postImageDtoList.get(0).fileName}|}">
+                    <div class="title" th:text="${postDto.getTitle()}"></div>
                 </a>
-                <div class="author" th:text="${post.writerName}"></div>
-                <div class="post-meta" th:text="|추천 수 ${post.like}&nbsp;&nbsp;조회 ${post.hit}|"></div>
+                <div class="author" th:text="${postDto.memberDto.name}"></div>
+                <div class="post-meta" th:utext="'추천 수 ' + ${postDto.like} + '&nbsp;&nbsp; 조회 ' + ${postDto.hit}"></div>
             </div>
         </div>
     </div>
 
     <script>
         $(document).ready(function () {
-            let page = 1; // Initialize page to 1 as the first page is already loaded
+            let page = 1;
             const postGrid = $('#postGrid');
-            const totalPosts = 13070; // Example total post count
+            const totalPosts = 13070;
 
             $(window).on('scroll', _.debounce(function () {
                 if ($(window).scrollTop() + $(window).height() >= $(document).height() - 100) {
                     loadMorePosts(page);
                     page++;
                 }
-            }, 200)); // Adjust the debounce delay as needed
+            }, 200));
 
             function loadMorePosts(page) {
                 $.ajax({
@@ -143,17 +143,17 @@
                     data: {
                         page: page
                     },
-                    success: function (posts) {
-                        if (posts.length > 0) {
-                            posts.forEach(function (post) {
+                    success: function (postDtoList) {
+                        if (postDtoList.length > 0) {
+                            postDtoList.forEach(function (postDto) {
                                 const postHtml = `
                             <div class="post-item">
-                                <a href="/zzanposts/${post.id}">
-                                    <img alt="Post Thumbnail" src="${post.postImageDtoList[0].fileName}">
-                                    <div class="title">${post.title}</div>
+                                <a href="/zzanposts/${postDto.id}">
+                                    <img alt="Post Thumbnail" src="${postDto.postImageDtoList[0].fileName}">
+                                    <div class="title">${postDto.title}</div>
                                 </a>
-                                <div class="author">${post.writerName}</div>
-                                <div class="post-meta">추천 수 ${post.like}&nbsp;&nbsp;조회 ${post.hit}</div>
+                                <div class="author">${postDto.memberDto.name}</div>
+                                <div class="post-meta">추천 수 ${postDto.like}&nbsp;&nbsp;조회 ${postDto.hit}</div>
                             </div>`;
                                 postGrid.append(postHtml);
                             });

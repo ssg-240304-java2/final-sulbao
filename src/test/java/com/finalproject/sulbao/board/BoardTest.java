@@ -33,40 +33,30 @@ class BoardTest {
     @Test
     void load() {
         // Create Member
-        /*Member john = new Member("john", "john", "john", "john@email.com", "user");
+        Member john = new Member("john", "john", "john", "john@email.com", "user");
         Member jane = new Member("jane", "jane", "jane", "jane@email.com", "expert");
         memberRepository.save(john);
-        memberRepository.save(jane);*/
+        memberRepository.save(jane);
 
         // Find Member
-        Member john = memberRepository.findById(1L).orElseThrow();
-        Member jane = memberRepository.findById(2L).orElseThrow();
+        /*Member john = memberRepository.findById(1L).orElseThrow();
+        Member jane = memberRepository.findById(2L).orElseThrow();*/
 
 
         // Create Board
-        /*BoardCategory zzanFeed = new BoardCategory("짠피드");
-        BoardCategory zzanQuestion = new BoardCategory("술술무");
+        BoardCategory zzanFeed = new BoardCategory("짠피드");
         BoardCategory zzanPost = new BoardCategory("술포스트");
         boardCategoryRepository.save(zzanFeed);
-        boardCategoryRepository.save(zzanQuestion);
-        boardCategoryRepository.save(zzanPost);*/
+        boardCategoryRepository.save(zzanPost);
 
         // Find Board
-        BoardCategory zzanFeed = boardCategoryRepository.findById(1L).orElseThrow();
-        BoardCategory zzanPost = boardCategoryRepository.findById(3L).orElseThrow();
-
-        postRepository.deleteAll();
-
-        // Create PostImage
-        /*PostImage fooImage = PostImage.createPostImage("foo");
-        PostImage barImage = PostImage.createPostImage("bar");*/
+        /*BoardCategory zzanFeed = boardCategoryRepository.findById(1L).orElseThrow();
+        BoardCategory zzanPost = boardCategoryRepository.findById(3L).orElseThrow();*/
 
         // Create Post
-        postRepository.deleteAll();
-        for (int i = 0; i < 2000; i++) {
-            postRepository.save(Post.createPost(john, zzanFeed, "Hello, World!", "Have a nice day!", List.of(PostImage.createPostImage("https://img6.yna.co.kr/etc/inner/KR/2019/11/05/AKR20191105064200060_01_i_P4.jpg"))));
+        for (int i = 0; i < 50; i++) {
+            postRepository.save(Post.createPost(john, zzanFeed, "Hello, World!", null, List.of(PostImage.createPostImage("https://img.hankyung.com/photo/202112/AKR20211206035900003_01_i_P4.jpg"), PostImage.createPostImage("https://img.maisonkorea.com/2021/09/msk_6144488955a81.jpg"))));
         }
-
     }
 
 }
