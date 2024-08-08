@@ -46,10 +46,16 @@
             </div>
 
             <div class="recommendation-section">
-                <button class="recommend-button">
-                    <img alt="thumbs up" class="thumbs-up" src="https://i.ibb.co/kQbYDQ0/thumbs-up.png">
-                </button>
-                <span class="recommend-count">10</span>
+                <div class="recommend-container">
+                    <button class="recommend-button">
+                        <img alt="thumbs up" class="thumbs-up" src="https://i.ibb.co/kQbYDQ0/thumbs-up.png"
+                             th:if="${!isLiked}">
+                        <img alt="thumbs up" class="thumbs-up" src="https://i.ibb.co/j6jhNYX/thumbs-up-color.png"
+                             th:if="${isLiked}">
+
+                    </button>
+                    <span class="recommend-count" th:text="${postDto.like}"></span>
+                </div>
             </div>
         </div>
 
@@ -84,19 +90,16 @@
         document.addEventListener('DOMContentLoaded', function () {
             const recommendButton = document.querySelector('.recommend-button');
             const recommendImg = document.querySelector('.recommend-button img');
-            const recommendCount = document.querySelector('.recommend-count');
-
             const defaultImageUrl = 'https://i.ibb.co/kQbYDQ0/thumbs-up.png';
             const activeImageUrl = 'https://i.ibb.co/j6jhNYX/thumbs-up-color.png';
+            let flag = [[${isLiked}]];
 
             recommendButton.addEventListener('click', function () {
-                if (recommendImg.src === defaultImageUrl) {
-                    recommendImg.src = activeImageUrl;
-                    recommendCount.textContent = parseInt(recommendCount.textContent) + 1;
-                } else {
-                    recommendImg.src = defaultImageUrl;
-                    recommendCount.textContent = parseInt(recommendCount.textContent) - 1;
-                }
+                updateLike();
+                setTimeout(() => {
+                    recommendImg.src = (flag ? defaultImageUrl : activeImageUrl);
+                    flag = !flag;
+                }, 300);
             });
         });
 
@@ -147,14 +150,81 @@
                     postId: [[${postDto.id}]]
                 },
                 success: function (response) {
-                    alert('댓글이 등록되었습니다.');
                     location.reload();
                 },
                 error: function (xhr, status, error) {
-                    alert('등록 중 오류가 발생했습니다.');
                 }
             });
         }
+
+        function updateLike() {
+            let userDto = [[${userDto}]];
+            let postDto = [[${postDto}]];
+
+            if (userDto.id === postDto.userDto.id) {
+                alert('자신이 작성한 게시글은 추천할 수 없습니다.');
+                return;
+            }
+
+            $.ajax({
+                url: '/likes',
+                type: 'GET',
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                data: {
+                    postId: postDto.id,
+                    userId: userDto.id
+                },
+                success: function (isLiked) {
+                    const recommendCount = $('.recommend-count');
+                    if (isLiked) {
+                        removeLike(postDto, userDto);
+                        recommendCount.text(parseInt(recommendCount.text()) - 1);
+                    } else {
+                        saveLike(postDto, userDto);
+                        recommendCount.text(parseInt(recommendCount.text()) + 1);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        function removeLike(postDto, userDto) {
+            $.ajax({
+                url: '/likes',
+                method: 'DELETE',
+                data: {
+                    postId: postDto.id,
+                    userId: userDto.id
+                },
+                success: function (response) {
+
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        function saveLike(postDto, userDto) {
+            $.ajax({
+                url: '/likes',
+                method: 'POST',
+                data: {
+                    postId: postDto.id,
+                    userId: userDto.id
+                },
+                success: function (response) {
+
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        }
+
+
     </script>
 </div>
 </body>

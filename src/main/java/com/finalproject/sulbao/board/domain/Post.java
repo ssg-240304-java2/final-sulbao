@@ -23,7 +23,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 public class Post extends BaseEntity {
 
     @OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
-    private final List<Like> like = new ArrayList<>();
+    private final List<Like> likes = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
     private final List<PostImage> postImages = new ArrayList<>();

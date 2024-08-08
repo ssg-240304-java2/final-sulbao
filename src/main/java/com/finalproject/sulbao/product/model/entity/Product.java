@@ -31,8 +31,8 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private ProductCategory productCategory;
 
-    @Column(name = "product_content")
-    private String productContent;
+    @Column(name = "product_description")
+    private String productDescription;
 
     @Column(name = "product_summary")
     private String productSummary;
@@ -40,14 +40,11 @@ public class Product {
     @Column(name = "product_price")
     private int productPrice;
 
-    @Column(name = "product_brand")
-    private String productBrand;
-
     @Column(name = "product_stock")
-    private String productStock;
+    private int productStock;
 
     @Column(name = "product_hashtag")
-    private String productHashtag;
+    private String productHashTag;
 
     @Column(name = "sell_yn")
     private String sellYn;
@@ -74,5 +71,6 @@ public class Product {
     @OneToOne
     @JoinColumn(name = "user_no")
     private Login sellerInfo;
+
 }
 

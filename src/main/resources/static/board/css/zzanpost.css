@@ -68,11 +68,6 @@
     font-weight: bold;
 }
 
-.post-meta .edit-buttons button:hover {
-    background-color: #2A4D6E;
-    transform: scale(1.05);
-}
-
 .post-content {
     margin-bottom: 20px;
 }
@@ -83,6 +78,12 @@
     justify-content: center;
     margin-top: 50px;
     margin-bottom: 50px;
+}
+
+.recommend-container {
+    width: 120px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .recommend-button {
@@ -104,18 +105,25 @@
     transition: filter 0.3s ease;
 }
 
+.recommend-button img:hover {
+    transform: scale(1.1);
+}
+
 .recommend-button img.active {
-    filter: sepia(1) saturate(5) hue-rotate(180deg);
+    filter: sepia(1) saturate(500%) hue-rotate(180deg) brightness(1.2);
+    transition: transform 0.2s ease, filter 1s ease;
 }
 
 .recommend-count {
     font-size: 2.5rem;
     font-weight: bold;
     margin-left: 10px;
+    margin-top: 30px;
 }
 
 .comments-section {
     margin-top: 30px;
+    text-align: justify;
 }
 
 .comments-count {

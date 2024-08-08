@@ -1,13 +1,7 @@
 package com.finalproject.sulbao.board;
 
-import com.finalproject.sulbao.board.domain.BoardCategory;
-import com.finalproject.sulbao.board.domain.Comment;
-import com.finalproject.sulbao.board.domain.Post;
-import com.finalproject.sulbao.board.domain.PostImage;
-import com.finalproject.sulbao.board.repository.BoardCategoryRepository;
-import com.finalproject.sulbao.board.repository.CommentRepository;
-import com.finalproject.sulbao.board.repository.PostImageRepository;
-import com.finalproject.sulbao.board.repository.PostRepository;
+import com.finalproject.sulbao.board.domain.*;
+import com.finalproject.sulbao.board.repository.*;
 import com.finalproject.sulbao.login.model.entity.Login;
 import com.finalproject.sulbao.login.model.entity.MemberInfo;
 import com.finalproject.sulbao.login.model.entity.RoleType;
@@ -39,6 +33,14 @@ class BoardTest {
     private CommentRepository commentRepository;
     @Autowired
     private MemberInfoRepository memberInfoRepository;
+    @Autowired
+    private LikeRepository likeRepository;
+
+    @Test
+    void likeTest() {
+        Like like = likeRepository.findByPostIdAndUserId(1L, 2L).orElseThrow();
+        System.out.println("like.getId() = " + like.getId());
+    }
 
     @Test
     void load() {

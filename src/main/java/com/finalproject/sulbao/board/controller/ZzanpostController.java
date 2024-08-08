@@ -58,13 +58,16 @@ public class ZzanpostController {
     @GetMapping("/{id}")
     public String zzanpost(@PathVariable Long id, Model model, HttpServletRequest request) {
 //         임시로 로그인한 회원 세션에 저장
-        request.getSession().setAttribute("userDto", UserDto.toUserDto(loginRepository.findById(1L).orElseThrow()));
+        UserDto userDto = UserDto.toUserDto(loginRepository.findById(1L).orElseThrow());
+        request.getSession().setAttribute("userDto", userDto);
 
         postService.updateHit(id);
         Post post = postRepository.findById(id).orElseThrow();
+        boolean isLiked = likeRepository.findByPostIdAndUserId(post.getId(), userDto.getId()).isPresent();
         model.addAttribute("userDto", request.getSession().getAttribute("userDto"));
         model.addAttribute("postDto", PostDto.toPostDto(post));
         model.addAttribute("commentDtoList", post.getComments().stream().map(CommentDto::toCommentDto).toList());
+        model.addAttribute("isLiked", isLiked);
         return "/board/zzanpost";
     }
 

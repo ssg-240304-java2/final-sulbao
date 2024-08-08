@@ -2,6 +2,7 @@ package com.finalproject.sulbao.board.domain;
 
 import com.finalproject.sulbao.login.model.entity.Login;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -25,5 +26,24 @@ public class Like {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
+
+    @Builder
+    public Like(Login login, Post post) {
+        this.login = login;
+        this.post = post;
+    }
+
+    public static Like createLike(Login login, Post post) {
+        Like like = Like.builder()
+                .login(login)
+                .build();
+        like.setPost(post);
+        return like;
+    }
+
+    private void setPost(Post post) {
+        this.post = post;
+        post.getLikes().add(this);
+    }
 
 }

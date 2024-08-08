@@ -29,7 +29,7 @@ public class PostDto {
                 .content(post.getContent())
                 .userDto(UserDto.toUserDto(post.getLogin()))
                 .postImageDtoList(post.getPostImages().stream().map(PostImageDto::toPostImageDto).toList())
-                .like((long) post.getLike().size())
+                .like((long) post.getLikes().size())
                 .hit(post.getHit())
                 .build();
     }
