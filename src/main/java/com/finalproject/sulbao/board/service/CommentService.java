@@ -17,4 +17,9 @@ public class CommentService {
         commentRepository.save(comment);
     }
 
+    public void updateComment(Long id, String content) {
+        Comment comment = commentRepository.findById(id).orElseThrow();
+        comment.setContent(content);
+    }
+
 }

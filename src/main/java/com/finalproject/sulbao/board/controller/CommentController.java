@@ -42,4 +42,12 @@ public class CommentController {
         return ResponseEntity.ok("삭제되었습니다.");
     }
 
+    @PostMapping("/update")
+    public String updateComment(Long commentDtoId, String content, Long postDtoId) {
+        System.out.println("id = " + commentDtoId);
+        System.out.println("content = " + content);
+        commentService.updateComment(commentDtoId, content);
+        return "redirect:/zzanposts/" + postDtoId;
+    }
+
 }
