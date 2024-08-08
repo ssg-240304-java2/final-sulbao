@@ -13,9 +13,9 @@ public class LoginController {
 
     @GetMapping("/signup")
     public void signUpPage(){}
-
-
-
+    @GetMapping("/verifyagePage")
+    public void verifyagePage() {
+    }
 }
 
 
