@@ -1,5 +1,6 @@
 package com.finalproject.sulbao.board.domain;
 
+import com.finalproject.sulbao.common.entity.BaseEntity;
 import com.finalproject.sulbao.login.model.entity.Login;
 import jakarta.persistence.*;
 import lombok.Builder;

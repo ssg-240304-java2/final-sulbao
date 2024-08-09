@@ -1,53 +1,39 @@
 package com.finalproject.sulbao.board.controller;
 
-import com.finalproject.sulbao.board.domain.Comment;
-import com.finalproject.sulbao.board.domain.Post;
-import com.finalproject.sulbao.board.repository.CommentRepository;
-import com.finalproject.sulbao.board.repository.PostRepository;
 import com.finalproject.sulbao.board.service.CommentService;
-import com.finalproject.sulbao.login.model.entity.Login;
-import com.finalproject.sulbao.login.model.repository.LoginRepository;
-import com.finalproject.sulbao.login.model.repository.MemberInfoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @RequestMapping("/comments")
 @RequiredArgsConstructor
 @Controller
 public class CommentController {
 
-    private final CommentRepository commentRepository;
-    private final LoginRepository loginRepository;
-    private final PostRepository postRepository;
     private final CommentService commentService;
-    private final MemberInfoRepository memberInfoRepository;
 
     @PostMapping
     @ResponseBody
-    public ResponseEntity<String> saveComment(Long userId, Long postId, String content) {
-        Login login = loginRepository.findById(userId).orElseThrow();
-        Post post = postRepository.findById(postId).orElseThrow();
-
-        Comment comment = Comment.createComment(content, login, post);
-        commentService.save(comment);
-        return ResponseEntity.ok("등록되었습니다.");
+    public ResponseEntity<Void> saveComment(Long userId, Long postId, String content) {
+        commentService.save(userId, postId, content);
+        return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping
     @ResponseBody
-    public ResponseEntity<String> deleteComment(@PathVariable Long id) {
-        commentRepository.deleteById(id);
-        return ResponseEntity.ok("삭제되었습니다.");
+    public ResponseEntity<Void> deleteComment(Long commentId) {
+        commentService.deleteById(commentId);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/update")
-    public String updateComment(Long commentDtoId, String content, Long postDtoId) {
-        System.out.println("id = " + commentDtoId);
-        System.out.println("content = " + content);
-        commentService.updateComment(commentDtoId, content);
-        return "redirect:/zzanposts/" + postDtoId;
+    public String updateComment(Long commentId, String content, Long postId) {
+        commentService.updateComment(commentId, content);
+        return "redirect:/zzanposts/" + postId;
     }
 
 }

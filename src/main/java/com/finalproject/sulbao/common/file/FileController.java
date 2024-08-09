@@ -1,31 +1,30 @@
-/*
 package com.finalproject.sulbao.common.file;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 @Slf4j
 public class FileController {
 
+    private final FileService fileService;
     @Value("${file.upload-dir}")
     private String uploadDir;
-
-    private final FileService fileService;
 
     public FileController(FileService fileService) {
         this.fileService = fileService;
     }
 
     @GetMapping("/upload")
-    public String getUpload(){
+    public String getUpload() {
         return "testEditor";
     }
 
@@ -37,14 +36,12 @@ public class FileController {
         // 1. 파일업로드 처리
 
         if (!file.isEmpty()) {
-            FileDto fileDto = fileService.uploadFiles(file,uploadDir);
+            FileDto fileDto = fileService.uploadFiles(file, uploadDir);
             // 2. 업로드한 파일명/저장된 파일명 정보를 DB 등록
             return fileDto.getUploadFileName();
-        }else{
+        } else {
             return "error";
         }
-
     }
 
 }
-*/

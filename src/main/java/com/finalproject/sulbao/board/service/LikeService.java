@@ -29,4 +29,7 @@ public class LikeService {
         likeRepository.save(Like.createLike(login, post));
     }
 
+    public boolean isPostLikedByUser(Long postId, Long userId) {
+        return likeRepository.findByPostIdAndUserId(postId, userId).isPresent();
+    }
 }

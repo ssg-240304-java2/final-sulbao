@@ -1,11 +1,9 @@
-/*
 package com.finalproject.sulbao.common.file;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -32,7 +30,7 @@ public class FileService {
 
     public String getUuidFileName(String fileName) {
         String ext = fileName.substring(fileName.indexOf(".") + 1);
-        return UUID.randomUUID().toString() + "." + ext;
+        return UUID.randomUUID() + "." + ext;
     }
 
     //NOTICE: filePath의 맨 앞에 /는 안붙여도됨. ex) history/images
@@ -42,27 +40,27 @@ public class FileService {
 
 //        for (MultipartFile multipartFile : multipartFiles) {
 
-            String originalFileName = multipartFile.getOriginalFilename();
-            String uploadFileName = getUuidFileName(originalFileName);
-            String uploadFileUrl = "";
+        String originalFileName = multipartFile.getOriginalFilename();
+        String uploadFileName = getUuidFileName(originalFileName);
+        String uploadFileUrl = "";
 
-            ObjectMetadata objectMetadata = new ObjectMetadata();
-            objectMetadata.setContentLength(multipartFile.getSize());
-            objectMetadata.setContentType(multipartFile.getContentType());
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentLength(multipartFile.getSize());
+        objectMetadata.setContentType(multipartFile.getContentType());
 
-            try (InputStream inputStream = multipartFile.getInputStream()) {
+        try (InputStream inputStream = multipartFile.getInputStream()) {
 
-                // S3에 폴더 및 파일 업로드
-                amazonS3Client.putObject(
-                        new PutObjectRequest(bucketName, uploadFileName, inputStream, objectMetadata)
-                                .withCannedAcl(CannedAccessControlList.PublicRead));
+            // S3에 폴더 및 파일 업로드
+            amazonS3Client.putObject(
+                    new PutObjectRequest(bucketName, uploadFileName, inputStream, objectMetadata)
+                            .withCannedAcl(CannedAccessControlList.PublicRead));
 
-                // S3에 업로드한 폴더 및 파일 URL
-                uploadFileUrl = "https://kr.object.ncloudstorage.com/"+ bucketName + "/" + uploadFileName;
-                log.info(uploadFileUrl);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            // S3에 업로드한 폴더 및 파일 URL
+            uploadFileUrl = "https://kr.object.ncloudstorage.com/" + bucketName + "/" + uploadFileName;
+            log.info(uploadFileUrl);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 //            s3files.add(
 //                    FileDto.builder()
@@ -74,12 +72,11 @@ public class FileService {
 //        }
 
         return FileDto.builder()
-                            .originalFileName(originalFileName)
-                            .uploadFileName(uploadFileName)
-                            .uploadFilePath(filePath)
-                            .uploadFileUrl(uploadFileUrl)
-                            .build();
+                .originalFileName(originalFileName)
+                .uploadFileName(uploadFileName)
+                .uploadFilePath(filePath)
+                .uploadFileUrl(uploadFileUrl)
+                .build();
     }
-    
+
 }
-*/

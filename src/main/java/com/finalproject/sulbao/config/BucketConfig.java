@@ -1,4 +1,3 @@
-/*
 package com.finalproject.sulbao.config;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
@@ -35,4 +34,3 @@ public class BucketConfig {
     }
 
 }
-*/

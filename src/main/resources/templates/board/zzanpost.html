@@ -4,9 +4,6 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <title>술포스트</title>
-    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
     <link href="/board/css/zzanpost.css" rel="stylesheet">
 </head>
 <body>
@@ -28,39 +25,39 @@
     </div>
 
     <div class="post-container">
-        <div class="post-title" th:text="${postDto.title}"></div>
+        <div class="post-title" th:text="${post.title}"></div>
 
         <div class="post-meta">
-            <!--            <img alt="작성자 프로필 사진" th:src="@{|${postDto.userDto.profileImageFileName}|}">-->
+            <!--            <img alt="작성자 프로필 사진" th:src="@{|${post.user.profileImageFileName}|}">-->
             <img alt="작성자 프로필 사진"
                  src="https://cdn.icon-icons.com/icons2/2468/PNG/512/user_user_profile_user_icon_user_thump_icon_149321.png">
-            <div class="username" th:text="${postDto.userDto.getProfileName()}"></div>
-            <div class="edit-buttons" th:if="${userDto.id == postDto.userDto.id}">
+            <div class="username" th:text="${post.userDto.getProfileName()}"></div>
+            <div class="edit-buttons" th:if="${user.id == post.userDto.id}">
                 <button>수정</button>
                 <button onclick="deletePost()">삭제</button>
             </div>
         </div>
 
         <div class="post-content">
-            <div id="editor-content" th:utext="${postDto.content}">
+            <div id="editor-content" th:utext="${post.content}">
             </div>
 
             <div class="recommendation-section">
                 <div class="recommend-container">
                     <button class="recommend-button">
                         <img alt="thumbs up" class="thumbs-up" src="https://i.ibb.co/kQbYDQ0/thumbs-up.png"
-                             th:if="${!isLiked}">
+                             th:if="${!isPostLikedByUser}">
                         <img alt="thumbs up" class="thumbs-up" src="https://i.ibb.co/j6jhNYX/thumbs-up-color.png"
-                             th:if="${isLiked}">
+                             th:if="${isPostLikedByUser}">
 
                     </button>
-                    <span class="recommend-count" th:text="${postDto.like}"></span>
+                    <span class="recommend-count" th:text="${post.like}"></span>
                 </div>
             </div>
         </div>
 
         <div class="comments-section">
-            <div class="comments-count">댓글 <span th:text="${commentDtoList.size()}"></span></div>
+            <div class="comments-count">댓글 <span th:text="${comments.size()}"></span></div>
 
             <div class="comment-input">
                 <img alt="default profile"
@@ -69,30 +66,30 @@
                 <button onclick="saveComment()" type="submit">입력</button>
             </div>
 
-            <div class="comment-container" th:each="commentDto : ${commentDtoList}">
+            <div class="comment-container" th:each="comment : ${comments}">
                 <div class="comment">
-                    <!--                <img alt="comment writer's profile image" th:src="@{${commentDto.userDto.profileImageFileName}}">-->
+                    <!--                <img alt="comment writer's profile image" th:src="@{${comment.user.profileImageFileName}}">-->
                     <img alt="comment writer's profile image"
                          src="https://cdn.icon-icons.com/icons2/2468/PNG/512/user_user_profile_user_icon_user_thump_icon_149317.png">
                     <div class="comment-content">
-                        <div class="username" th:text="${commentDto.userDto.profileName}"></div>
-                        <div class="commentDto-content" th:text="${commentDto.content}"></div>
-                        <div class="timestamp" th:text="${commentDto.createdAt}"></div>
+                        <div class="username" th:text="${comment.userDto.profileName}"></div>
+                        <div class="comment-text" th:text="${comment.content}"></div>
+                        <div class="timestamp" th:text="${comment.createdAt}"></div>
                     </div>
 
-                    <div class="edit-buttons" th:if="${userDto.id == commentDto.userDto.id}">
-                        <button onclick="displayEditCommentInput(this)" th:data-id="${commentDto.id}">수정</button>
-                        <button onclick="deleteComment(this)" th:data-id="${commentDto.id}">삭제</button>
+                    <div class="edit-buttons" th:if="${user.id == comment.userDto.id}">
+                        <button onclick="displayEditCommentInput(this)" th:data-id="${comment.id}">수정</button>
+                        <button onclick="deleteComment(this)" th:data-id="${comment.id}">삭제</button>
                     </div>
                 </div>
 
                 <form action="/comments/update" class="comment-edit-form" method="post" style="display: none">
                     <div class="comment-input">
-                        <img alt="default profile"
-                             src="http://eenl.skku.edu/data/file/sub3_3/1_copy1_27_1938934806_sO5V0cdX_9024501a0743b144154990f827e4912cad1daca1.png">
-                        <input class="commentContent" name="content" th:value="${commentDto.content}" type="text">
-                        <input name="commentDtoId" style="display: none" th:value="${commentDto.id}" type="text">
-                        <input name="postDtoId" style="display:none" th:value="${postDto.id}" type="text">
+                        <img alt="comment writer's profile image"
+                             src="https://cdn.icon-icons.com/icons2/2468/PNG/512/user_user_profile_user_icon_user_thump_icon_149317.png">
+                        <input class="commentContent" name="content" th:value="${comment.content}" type="text">
+                        <input name="commentId" style="display: none" th:value="${comment.id}" type="text">
+                        <input name="postId" style="display:none" th:value="${post.id}" type="text">
                         <button type="submit">입력</button>
                     </div>
                 </form>
@@ -114,18 +111,18 @@
             const recommendImg = document.querySelector('.recommend-button img');
             const defaultImageUrl = 'https://i.ibb.co/kQbYDQ0/thumbs-up.png';
             const activeImageUrl = 'https://i.ibb.co/j6jhNYX/thumbs-up-color.png';
-            let flag = [[${isLiked}]];
+            let flag = [[${isPostLikedByUser}]];
 
             recommendButton.addEventListener('click', function () {
-                let userDto = [[${userDto}]];
-                let postDto = [[${postDto}]];
+                let user = [[${user}]];
+                let post = [[${post}]];
 
-                if (userDto.id === postDto.userDto.id) {
+                if (user.id === post.userDto.id) {
                     alert('자신이 작성한 게시글은 추천할 수 없습니다.');
                     return;
                 }
 
-                updateLike(userDto, postDto);
+                updateLike(user, post);
 
                 setTimeout(() => {
                     recommendImg.src = (flag ? defaultImageUrl : activeImageUrl);
@@ -137,15 +134,14 @@
         function deletePost() {
             if (confirm('정말로 이 게시글을 삭제하시겠습니까?')) {
                 $.ajax({
-                    url: `/zzanposts/${[[${postDto.id}]]}`,
+                    url: `/zzanposts/${[[${post.id}]]}`,
                     type: 'DELETE',
                     contentType: 'application/json',
                     success: function (response) {
-                        alert('게시글이 삭제되었습니다.');
                         location.href = '/zzanposts';
                     },
                     error: function (xhr, status, error) {
-                        alert('삭제 중 오류가 발생했습니다.');
+                        console.log(error)
                     }
                 });
             }
@@ -156,15 +152,16 @@
 
             if (confirm('정말로 이 댓글을 삭제하시겠습니까?')) {
                 $.ajax({
-                    url: `/comments/${commentId}`,
+                    url: '/comments',
                     type: 'DELETE',
-                    contentType: 'application/json',
+                    data: {
+                        'commentId': commentId
+                    },
                     success: function (response) {
-                        alert('댓글이 삭제되었습니다.');
                         location.reload();
                     },
                     error: function (xhr, status, error) {
-                        alert('삭제 중 오류가 발생했습니다.');
+                        console.log(error);
                     }
                 });
             }
@@ -177,33 +174,34 @@
                 contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
                 data: {
                     content: $('#commentContent').val(),
-                    userId: [[${userDto.id}]],
-                    postId: [[${postDto.id}]]
+                    userId: [[${user.id}]],
+                    postId: [[${post.id}]]
                 },
                 success: function (response) {
                     location.reload();
                 },
                 error: function (xhr, status, error) {
+                    console.log(error)
                 }
             });
         }
 
-        function updateLike(userDto, postDto) {
+        function updateLike(user, post) {
             $.ajax({
                 url: '/likes',
                 type: 'GET',
                 contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
                 data: {
-                    postId: postDto.id,
-                    userId: userDto.id
+                    postId: post.id,
+                    userId: user.id
                 },
                 success: function (isLiked) {
                     const recommendCount = $('.recommend-count');
                     if (isLiked) {
-                        removeLike(postDto, userDto);
+                        removeLike(post, user);
                         recommendCount.text(parseInt(recommendCount.text()) - 1);
                     } else {
-                        saveLike(postDto, userDto);
+                        saveLike(post, user);
                         recommendCount.text(parseInt(recommendCount.text()) + 1);
                     }
                 },
@@ -213,13 +211,13 @@
             });
         }
 
-        function removeLike(postDto, userDto) {
+        function removeLike(post, user) {
             $.ajax({
                 url: '/likes',
                 method: 'DELETE',
                 data: {
-                    postId: postDto.id,
-                    userId: userDto.id
+                    postId: post.id,
+                    userId: user.id
                 },
                 success: function (response) {
 
@@ -230,13 +228,13 @@
             });
         }
 
-        function saveLike(postDto, userDto) {
+        function saveLike(post, user) {
             $.ajax({
                 url: '/likes',
                 method: 'POST',
                 data: {
-                    postId: postDto.id,
-                    userId: userDto.id
+                    postId: post.id,
+                    userId: user.id
                 },
                 success: function (response) {
 
@@ -246,7 +244,6 @@
                 }
             });
         }
-
     </script>
 </div>
 </body>

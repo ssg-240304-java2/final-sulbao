@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>술포스트</title>
-    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
     <style>
         .container {
@@ -52,12 +51,12 @@
             max-width: 400px;
             max-height: 300px;
             object-fit: cover;
-            border-radius: 10px;
             margin-bottom: 10px;
             transition: transform 0.3s ease;
         }
 
         .post-item img:hover {
+            border-radius: 10px;
             transform: scale(1.03);
         }
 
@@ -94,6 +93,10 @@
                 width: 100%;
             }
         }
+
+        .thumbnail {
+            border-radius: 10px;
+        }
     </style>
 </head>
 <body>
@@ -115,17 +118,16 @@
     </div>
 
     <div class="container">
-        <div class="post-count">전체 13,070</div>
+        <div class="post-count" th:text="|전체 ${count}|"></div>
         <div class="post-grid" id="postGrid">
-            <div class="post-item" th:each="postDto : ${postDtoList}">
-                <a th:href="@{|zzanposts/${postDto.id}|}">
-                    <!--                    <img alt="Post Thumbnail" th:src="@{|${postDto.postImageDtoList.get(0).fileName}|}">-->
-                    <img alt="Post Thumbnail"
-                         src="https://img.hankyung.com/photo/202112/AKR20211206035900003_01_i_P4.jpg">
-                    <div class="title" th:text="${postDto.title}"></div>
+            <div class="post-item" th:each="post : ${posts}">
+                <a th:href="@{|zzanposts/${post.id}|}">
+                    <img alt="Post Thumbnail" class="thumbnail"
+                         th:src="@{|https://kr.object.ncloudstorage.com/sulbao-file/${post.postImageDtoList.get(0).fileName}|}">
+                    <div class="title" th:text="${post.title}"></div>
                 </a>
-                <div class="author" th:text="${postDto.userDto.profileName}"></div>
-                <div class="post-meta" th:utext="'추천 수 ' + ${postDto.like} + '&nbsp;&nbsp; 조회 ' + ${postDto.hit}"></div>
+                <div class="author" th:text="${post.userDto.profileName}"></div>
+                <div class="post-meta" th:utext="'추천 수 ' + ${post.like} + '&nbsp;&nbsp; 조회 ' + ${post.hit}"></div>
             </div>
         </div>
     </div>
@@ -134,7 +136,6 @@
         $(document).ready(function () {
             let page = 1;
             const postGrid = $('#postGrid');
-            const totalPosts = 13070;
 
             $(window).on('scroll', _.debounce(function () {
                 if ($(window).scrollTop() + $(window).height() >= $(document).height() - 100) {
@@ -150,18 +151,18 @@
                     data: {
                         page: page
                     },
-                    success: function (postDtoList) {
-                        if (postDtoList.length > 0) {
-                            postDtoList.forEach(function (postDto) {
+                    success: function (posts) {
+                        if (posts.length > 0) {
+                            posts.forEach(function (post) {
                                 const postHtml = `
                             <div class="post-item">
-                                <a href="/zzanposts/${postDto.id}">
-<!--                                    <img alt="Post Thumbnail" src="${postDto.postImageDtoList[0].fileName}">-->
-                                    <img alt="Post Thumbnail" src="https://img.hankyung.com/photo/202112/AKR20211206035900003_01_i_P4.jpg">
-                                    <div class="title">${postDto.title}</div>
+                                <a href="/zzanposts/${post.id}">
+                                    <img class="thumbnail" alt="Post Thumbnail" src="https://kr.object.ncloudstorage.com/sulbao-file/${post.postImageDtoList[0].fileName}">
+<!--                                    <img alt="Post Thumbnail" src="https://img.hankyung.com/photo/202112/AKR20211206035900003_01_i_P4.jpg">-->
+                                    <div class="title">${post.title}</div>
                                 </a>
-                                <div class="author">${postDto.userDto.profileName}</div>
-                                <div class="post-meta">추천 수 ${postDto.like}&nbsp;&nbsp;조회 ${postDto.hit}</div>
+                                <div class="author">${post.userDto.profileName}</div>
+                                <div class="post-meta">추천 수 ${post.like}&nbsp;&nbsp;조회 ${post.hit}</div>
                             </div>`;
                                 postGrid.append(postHtml);
                             });
