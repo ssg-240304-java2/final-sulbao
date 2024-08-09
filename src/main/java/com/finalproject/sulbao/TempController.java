@@ -20,13 +20,4 @@ public class TempController {
 
     @GetMapping("/services")
     public void services() {}
-
-    @GetMapping("/cart")
-    public void cart() {}
-
-    @GetMapping("/order")
-    public void order() {}
-
-    @GetMapping("/presentOrder")
-    public void presentOrder() {}
 }

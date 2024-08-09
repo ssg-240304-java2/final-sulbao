@@ -160,23 +160,23 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr class="alert" role="alert">
+                        <tr class="alert" role="alert" th:each="cart:${carts}">
                             <td>
-                                <div class="img" style="background-image: url(https://shopping-phinf.pstatic.net//main_8216453//82164530421.1.jpg);"></div>
-                            </td>
+                                <div class="img" th:style="'background-image:url(' + 'https://kr.object.ncloudstorage.com/sulbao-file/product/' + ${cart.products.productImages[0].saveName} + ');'"></div>                            </td>
                             <td>
                                 <div class="product-info">
-                                    <span class="company-name">조은술세종</span>
-                                    <span class="product-name">조은술세종 우도 땅콩 막걸리 6도 750ml 제주도 우도막걸리</span>
+                                    <span class="company-name" th:text="${cart.products.sellerInfo.name}"></span>
+                                    <!--  cart.products.sellerInfo.sellerInfo.businessName  -->
+                                    <span class="product-name" th:text="${cart.products.getProductName()}"></span>
                                 </div>
                             </td>
                             <td class="product-price">
-                                <span class="alchol-price">3150</span>
+                                <span class="alchol-price" th:text="${cart.products.productPrice}"></span>
                             </td>
                             <td class="quantity">
-                                <span class="quantity-number">2</span>
+                                <span class="quantity-number" th:text="${cart.amount}"></span>
                             </td>
-                            <td class="total-price">$89.98</td>
+                            <td class="total-price" th:text="${cart.totalPrice}" th:data-number="${cart.cartCode}"></td>
                         </tr>
                         <!-- 추가 항목은 이와 유사한 구조로 작성 -->
                         </tbody>
@@ -223,6 +223,7 @@
                         <p class="total-price">
                             Total payment amount
                         </p>
+                        <br>
                         <div class="cart-buttons">
                             <a href="order" class="btn btn-primary py-3 px-4">Payment</a>
                         </div>

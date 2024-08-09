@@ -5,30 +5,6 @@
 <head>
     <title>Liquor Store - Free Bootstrap 4 Template by Colorlib</title>
     <script>
-        function toggleSelectAll(source) {
-            const checkboxes = document.querySelectorAll('.checkbox-wrap input[type="checkbox"]');
-            checkboxes.forEach(checkbox => checkbox.checked = source.checked);
-        }
-
-        function deleteProduct(button) {
-            const row = button.closest('tr');
-            row.remove();
-        }
-
-        function updateQuantity(button, increment) {
-            const quantityElement = button.parentNode.querySelector('.quantity-number');
-            let currentQuantity = parseInt(quantityElement.textContent);
-
-            if (increment) {
-                if (currentQuantity < 99) {
-                    quantityElement.textContent = currentQuantity + 1;
-                }
-            } else {
-                if (currentQuantity > 1) {
-                    quantityElement.textContent = currentQuantity - 1;
-                }
-            }
-        }
     </script>
     <style>
         .table-wrap {
