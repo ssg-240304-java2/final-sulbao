@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>로그인 - 술기로운한잔</title>
     <link rel="stylesheet" href="/user/css/login-style.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
 <div class="container">
@@ -23,26 +24,22 @@
         </button>
 
         <div class="additional-links">
+            <p>전통술을 판매하는 사업자이신가요? <a href="/signupSeller">판매자 신청하기</a></p>
             <p>이미 술기로운한잔 계정이 있으신가요? <a href="/login">로그인하기</a></p>
+            <p><a href="/index">메인으로</a></p>
         </div>
     </div>
+
+
 </div>
 
 <script>
     function openBbatonAuth() {
         // 메인 페이지 리디렉트
-        location.href = "https://bauth.bbaton.com/oauth/authorize?client_id={CLIENT_ID}&redirect_uri={REDIRECT_URI}&response_type=code&scope=read_profile";
-        // 팝업
-        window.open("https://bauth.bbaton.com/oauth/authorize?client_id={CLIENT_ID}&redirect_uri={REDIRECT_URI}&response_type=code&scope=read_profile", "bbaton", "width=400, height=500");
-    }
-
-    window.onload = function() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const message = urlParams.get('message');
-        if (message) {
-            alert(message);
+        // location.href = "https://bauth.bbaton.com/oauth/authorize?client_id=JDJhJDA0JHpwblZnQmNOSjVJVHZjQ2pFSTZ3Q3VEN1g5dWRCbDZwM1FQb1VJ&redirect_uri=https://hansool.shop&response_type=code&scope=read_profile";
+        location.href = "https://bauth.bbaton.com/oauth/authorize?client_id=JDJhJDA0JGkyLmt0MEFDNWoxZkRCWUcvVjJ6RS5zdWdwY1AyZnUxbGZscy4w&redirect_uri=http://localhost:8080/signupAccess/&response_type=code&scope=read_profile";
         }
-    }
+
 </script>
 <!--<footer>-->
 <!--    <p>©  bucketplace, Co., Ltd.. All Rights Reserved</p>-->

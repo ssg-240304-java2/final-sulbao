@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>회원가입 - 술기로운한잔</title>
+  <link rel="stylesheet" href="/user/css/login-style.css">
+  <style>
+    .verification-message {
+      font-size: 10px;
+      color: green;
+      display: none;
+      margin-top: 5px;
+    }
+    .error-message {
+      font-size: 10px;
+      color: red;
+      display: none;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <header>
+      <h1>술기로운한잔</h1>
+    </header>
+
+    <div class="tab-menu">
+      <button class="tab active" onclick="openForm(event, 'general')">일반회원</button>
+      <button class="tab" onclick="openForm(event, 'business')">판매자회원</button>
+    </div>
+
+    <form id="general" class="form-content active" action="submit_form.php" method="POST" onsubmit="return validateForm()">
+      <div class="form-group">
+        <label for="name">이름</label>
+        <input type="text" id="name" name="name" placeholder="이름 입력" required>
+      </div>
+
+      <div class="form-group">
+        <label for="birth">생년월일/성별</label>
+        <div class="form-group inline">
+          <input type="text" id="birth" name="birth" placeholder="생년월일 6자리" required>
+          <div class="gender-input-wrapper">
+            <input type="text" id="gender" name="gender" class="gender-input" required>
+            <div class="gender-dots">
+              <div class="gender-dot"></div>
+              <div class="gender-dot"></div>
+              <div class="gender-dot"></div>
+              <div class="gender-dot"></div>
+              <div class="gender-dot"></div>
+              <div class="gender-dot"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="phone">휴대폰번호</label>
+        <input type="text" id="phone" name="phone" placeholder="-없이 숫자만 입력" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">이메일</label>
+        <div class="verification-wrapper">
+          <input type="email" id="email" name="email" placeholder="이메일 주소를 입력해 주세요." required>
+          <button type="button" onclick="sendVerification()">인증번호 요청</button>
+        </div>
+        <div id="verification-message" class="verification-message">인증번호가 전송되었습니다</div>
+        <div class="verification-input-wrapper" id="verification-section">
+          <input type="text" id="verification-code" name="verification-code" placeholder="인증번호 입력" required>
+          <button type="button">인증번호 확인</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="id">아이디</label>
+        <input type="text" id="id" name="id" placeholder="영어 소문자 및 숫자로만, 4~16자리" required>
+        <div id="id-error-message" class="error-message">영어 소문자 및 숫자로만, 4~16자리의 아이디를 입력해주세요</div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">비밀번호</label>
+        <input type="password" id="password" name="password" placeholder="영어, 숫자, 특수문자 조합 8~16자리" required>
+      </div>
+
+      <div class="form-group">
+        <label for="confirm-password">비밀번호 확인</label>
+        <input type="password" id="confirm-password" name="confirm_password" placeholder="비밀번호 확인" required>
+      </div>
+
+      <div class="form-group">
+        <br>
+        <label class="font-weight-bold">약관동의</label>
+        <div class="agree-content-text">
+          <hr class="custom-hr">
+          <label for="agree">
+            <input class="sub-content" type="checkbox" id="agree" name="agree" required>
+            [필수] 술기로운한잔 이용 약관에 동의합니다.</label>
+        </div>
+      </div>
+
+      <button id="submit" type="submit" class="submit-button">가입하기</button>
+    </form>
+
+    <form id="business" class="form-content" action="submit_form.php" method="POST">
+      <!-- Add business member form fields here -->
+      <div class="form-group">
+        <label for="business-name">사업자명</label>
+        <input type="text" id="business-name" name="business-name" placeholder="사업자명 입력" required>
+      </div>
+
+      <div class="form-group">
+        <label for="business-number">사업자등록번호</label>
+        <div class="verification-wrapper">
+          <input type="text" id="business-number" name="business-number" placeholder="-없이 숫자만 입력" required>
+          <button type="button" onclick="">사업자번호 조회</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="business-phone">휴대폰번호</label>
+        <input type="text" id="business-phone" name="business-phone" placeholder="-없이 숫자만 입력" required>
+      </div>
+
+      <div class="form-group">
+        <label for="business-email">이메일</label>
+        <div class="verification-wrapper">
+          <input type="email" id="business-email" name="business-email" placeholder="이메일 주소를 입력해 주세요." required>
+          <button type="button" onclick="sendVerification()">인증번호 요청</button>
+        </div>
+        <div id="business-verification-message" class="verification-message">인증번호가 전송되었습니다</div>
+        <div class="verification-input-wrapper" id="business-verification-section">
+          <input type="text" id="business-verification-code" name="business-verification-code" placeholder="인증번호 입력" required>
+          <button type="button">인증번호 확인</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="business-id">아이디</label>
+        <input type="text" id="business-id" name="id" placeholder="영어 소문자 및 숫자로만, 4~16자리" required>
+      </div>
+
+      <div class="form-group">
+        <label for="business-password">비밀번호</label>
+        <input type="password" id="business-password" name="business_password" placeholder="영어, 숫자, 특수문자 조합 8~16자리" required>
+      </div>
+
+      <div class="form-group">
+        <label for="business-confirm-password">비밀번호 확인</label>
+        <input type="password" id="business-confirm-password" name="business_confirm_password" placeholder="비밀번호 확인" required>
+      </div>
+
+      <div class="form-group">
+        <br>
+        <label class="font-weight-bold">약관동의</label>
+        <div class="agree-content-text">
+          <hr class="custom-hr">
+          <label for="business-agree">
+            <input class="sub-content" type="checkbox" id="business-agree" name="agree" required>
+            [필수] 술기로운한잔 이용 약관에 동의합니다.</label>
+        </div>
+      </div>
+
+      <button id="business-submit" type="submit" class="submit-button">가입하기</button>
+    </form>
+
+    <div class="additional-links">
+      <p>이미 술기로운한잔 계정이 있으신가요? <a href="/login">로그인하기</a></p>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openForm(evt, formName) {
+    var i, formContent, tablinks;
+    formContent = document.getElementsByClassName("form-content");
+    for (i = 0; i < formContent.length; i++) {
+      formContent[i].style.display = "none";
+      formContent[i].reset(); // 폼 초기화
+    }
+    tablinks = document.getElementsByClassName("tab");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(formName).style.display = "block";
+    evt.currentTarget.className += " active";
+
+    // Verification messages 초기화
+    document.getElementById('verification-message').style.display = 'none';
+    document.getElementById('business-verification-message').style.display = 'none';
+    document.getElementById('id-error-message').style.display = 'none';
+  }
+
+  document.getElementById("general").style.display = "block";
+
+  function sendVerification() {
+    var emailVerificationMessage = document.getElementById('verification-message');
+    emailVerificationMessage.style.display = 'block';
+
+    var businessEmailVerificationMessage = document.getElementById('business-verification-message');
+    businessEmailVerificationMessage.style.display = 'block';
+  }
+
+  // Function to allow only numeric input and limit to specific digits
+  function checkNumericInput(evt) {
+    var input = evt.target.value;
+    var numericInput = input.replace(/[^0-9]/g, '');
+    if (input !== numericInput) {
+      alert("숫자만 입력할 수 있습니다");
+      evt.target.value = numericInput;
+    }
+    if (evt.target.id === 'birth' && numericInput.length > 6) {
+      // 알림창을 없애고 gender 필드로 값 이동
+      document.getElementById('gender').value = numericInput.charAt(6);
+      evt.target.value = numericInput.slice(0, 6);
+    }
+
+    if (evt.target.id === 'gender' && numericInput.length > 1) {
+      alert("성별은 1자리 숫자여야 합니다");
+      evt.target.value = numericInput.slice(0, 1);
+    }
+
+    if ((evt.target.id === 'phone') && numericInput.length > 12) {
+      alert("올바른 휴대폰 번호를 입력해주세요");
+      evt.target.value = numericInput.slice(0, 12);
+    }
+  }
+
+  function isNumberKey(evt) {
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      alert("숫자만 입력 가능합니다");
+      evt.target.value = '';
+      return false;
+    }
+    return true;
+  }
+
+  // Adding event listeners for birth and gender inputs
+  document.getElementById('birth').addEventListener('keypress', isNumberKey);
+  document.getElementById('birth').addEventListener('keyup', checkNumericInput);
+  document.getElementById('gender').addEventListener('keypress', isNumberKey);
+  document.getElementById('gender').addEventListener('keyup', checkNumericInput);
+  document.getElementById('phone').addEventListener('keypress', isNumberKey);
+  document.getElementById('phone').addEventListener('keyup', checkNumericInput);
+
+  // Form validation
+  function validateForm() {
+    var birth = document.getElementById('birth').value;
+    var gender = document.getElementById('gender').value;
+    var phone = document.getElementById('phone').value;
+    var id = document.getElementById('id').value;
+    var birthRegex = /^[0-9]{6}$/;
+    var genderRegex = /^[0-9]{1}$/;
+    var phoneRegex = /^[0-9]{10,12}$/; // 휴대폰 번호 10~12자리 검증
+    var idRegex = /^[a-z0-9]{4,16}$/; // 아이디 영어 소문자 및 숫자, 4~16자리 검증
+
+    if (!birthRegex.test(birth)) {
+      alert("생년월일은 6자리 숫자여야 합니다.");
+      return false;
+    }
+    if (!genderRegex.test(gender)) {
+      alert("성별은 1자리 숫자여야 합니다.");
+      return false;
+    }
+    if (!phoneRegex.test(phone)) {
+      alert("올바른 휴대폰 번호를 입력해주세요.");
+      return false;
+    }
+    if (!idRegex.test(id)) {
+      var idErrorMessage = document.getElementById('id-error-message');
+      idErrorMessage.style.display = 'block';
+      document.getElementById('id').value = '';
+      return false;
+    }
+
+    // Add more validation as needed for other fields
+
+    return true;
+  }
+</script>
+</body>
+</html>

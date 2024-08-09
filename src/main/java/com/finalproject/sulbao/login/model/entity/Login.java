@@ -4,13 +4,13 @@ import com.finalproject.sulbao.common.entity.BaseEntity;
 import com.finalproject.sulbao.login.model.vo.EmailVerify;
 import com.finalproject.sulbao.login.model.vo.SellerInfo;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "tbl_login")
@@ -45,16 +45,14 @@ public class Login extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private RoleType userRole;
 
-    @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
     private String birth;
 
-    @Column(nullable = false)
+    private String gender;
+
     private String phone;
 
-    @Column(nullable = false)
     private String email;
 
     /* 객체 탐색을 위해 추가 */
@@ -76,4 +74,11 @@ public class Login extends BaseEntity {
     })
     private EmailVerify emailVerify;
 
+    @Builder
+    public Login(String userId, String userPw, RoleType userRole, String gender) {
+        this.userId = userId;
+        this.userPw = userPw;
+        this.userRole = userRole;
+        this.gender = gender;
+    }
 }
