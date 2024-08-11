@@ -6,14 +6,21 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @Slf4j
 public class LoginViewController {
 
+
     @GetMapping("/login")
-    public void loginPage() {
+    public String login(@RequestParam(value = "error", required = false) String error,
+                        @RequestParam(value = "loginError", required = false) String loginError,
+                        Model model) {
+        if (error != null) {
+            model.addAttribute("loginError", loginError);
+        }
+        return "auth/login";
     }
 
     @GetMapping("/signup")
@@ -28,14 +35,16 @@ public class LoginViewController {
             model.addAttribute("id", id);
             model.addAttribute("gender", gender);
 
-            return "signup";
+            return "auth/signup";
         } else {
             session.invalidate();
-            return "verifyagePage";
+            return "auth/verifyagePage";
         }
     }
 
     @GetMapping("/verifyagePage")
-    public void verifyagePage() {
+    public String verifyagePage() {
+        return "auth/verifyagePage";
     }
+
 }

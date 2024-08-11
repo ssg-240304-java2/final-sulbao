@@ -1,10 +1,11 @@
 package com.finalproject.sulbao.login.controller;
 
-import com.finalproject.sulbao.login.model.dto.NewMemberDTO;
+import com.finalproject.sulbao.login.model.dto.SignupMemberDto;
 import com.finalproject.sulbao.login.model.service.LoginService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
@@ -18,10 +19,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 
@@ -32,9 +32,9 @@ public class LoginController {
 
     private final LoginService loginService;
 
-    /* 성인인증 API *///////////////////////////////////에러페이지 처리 필요
+    /* 성인인증 API */
     private JSONObject jsonBody;
-    @GetMapping(value = "/signupAccess/*")
+    @GetMapping(value = "/signupAccess/**")
     public String redirect(HttpServletRequest request, @RequestParam String code, Model model) throws ParseException {
         System.out.println("code ======================= " + request.getParameter("code"));
         RestTemplate restTemplate = new RestTemplate();
@@ -82,21 +82,74 @@ public class LoginController {
                     session.setAttribute("gender", gender);
                     session.setMaxInactiveInterval(1800); // Session이 30분동안 유지
 
-
-
-                    return "signup";
+                    return "auth/signup";
                 } else {
                     //인증 실패 처리
-                    return "index";
+                    model.addAttribute("error-message", "술기로운 한잔은 19세 이상 성인만 가입 가능합니다.");
+                    return "/";
                 }
             } else {
-                return "error";
+                model.addAttribute("error-message", "성인인증에 실패하였습니다.");
+                return "/";
             }
         } else {
             //토큰 호출 실패
-            return "error";
+            model.addAttribute("error-message", "성인인증에 실패하였습니다.");
+            return "/";
         }
     }
+
+    /* 회원가입 유효성 검사 - MEMBER */
+    @PostMapping("/regist/member")
+    public String registNewMember(@Valid @ModelAttribute("member") SignupMemberDto member, BindingResult bindingResult, HttpServletRequest httpServletRequest, Model model) {
+        try{
+            HttpSession session = httpServletRequest.getSession(true);
+            model.addAttribute("id", session.getAttribute("id"));
+            model.addAttribute("gender", session.getAttribute("gender"));
+            model.addAttribute("verifyage", session.getAttribute("verifyage"));
+
+            // 기본 항목 유효성 검사 API
+            if(bindingResult.hasErrors()){
+                model.addAttribute("memberDto", member);
+
+                for(FieldError error : bindingResult.getFieldErrors()) {
+                    model.addAttribute("valid_" + error.getField(), error.getDefaultMessage());
+                    log.info("error field ========================> " + error.getField() );
+                    log.info("error message ========================> " + error.getDefaultMessage() );
+                }
+                return "auth/signup";
+            }
+
+            // 비밀번호 검증
+            if(!member.getUserPw().equals(member.getConfirmPw())){
+                System.out.println("memberPw = " + member.getUserPw());
+                System.out.println("memberConfirmPw = " + member.getConfirmPw());
+                model.addAttribute("valid_confirmPw", "비밀번호가 일치하지 않습니다.");
+                log.info("error message ========================> confirmPw" );
+
+                return "auth/signup";
+            }
+
+            // 아이디 중복 검사
+            boolean exists = loginService.isUserIdExists(member.getUserId());
+            if(exists) {
+                model.addAttribute("valid_userId", "이미 존재하는 아이디 입니다.");
+                log.info("error message ========================> confirmId" );
+
+                return "auth/signup";
+            }
+
+            // 회원가입 성공
+            loginService.registNewMember(member);
+            log.info("<<<<<<<<<<<<회원가입 성공==========================>>>>>>>>>>>>>>>>>>>");
+            return "redirect:/login";
+
+        } catch (RuntimeException e){
+            System.out.println("registMember 실패===============");
+            return "auth/signup";
+        }
+    }
+
 
     /* 로그아웃 */
     @GetMapping("/logout")
@@ -106,10 +159,4 @@ public class LoginController {
         return "redirect:/";
     }
 
-    /* 일반멤버 회원가입 */
-    @PostMapping("/regist/member")
-    public String registNewMember(@ModelAttribute NewMemberDTO sign) {
-        loginService.registNewMember(sign);
-        return "/login";
-    }
 }

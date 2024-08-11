@@ -21,7 +21,7 @@ public class LoginDetails implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
         Collection<GrantedAuthority> collectors = new ArrayList<>();
-        collectors.add(()->{return "ROLE_"+login.getUserRole();}); //add에 들어올 파라미터는 GrantedAuthority밖에 없으니
+        collectors.add(()->{return "ROLE_"+login.getUserRole();});
 
         return collectors;
     }

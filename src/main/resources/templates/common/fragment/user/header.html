@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
     <title>About Us</title>
@@ -28,13 +31,24 @@
                     <li><a href="#">쇼핑</a></li>
                     <li><a href="#">이벤트</a></li>
 
-                    <li style="padding-left: 160px;">
+                    <li sec:authorize="isAnonymous()" style="padding-left: 160px;">
                         <ul class="site-menu-account">
-                            <li><a href="#">장바구니</a></li>
+                            <li><a href="#">검색</a></li>
                             <li><a href="/login">로그인</a></li>
                             <li><a href="/verifyagePage">회원가입</a></li>
                         </ul>
                     </li>
+
+                    <li sec:authorize="isAuthenticated()" style="padding-left: 160px;">
+                        <ul class="site-menu-account">
+                            <li th:text="|${#authentication.getName()} 님 환영합니다 |"></li>
+                            <li><a href="#">검색</a></li>
+                            <li><a href="#">장바구니</a></li>
+                            <li><a href="/mypage">마이페이지</a></li>
+                            <li><a href="/logout">로그아웃</a></li>
+                        </ul>
+                    </li>
+
                     <li class="has-children">
                         <a href="#">글쓰기</a>
                         <ul class="dropdown">
