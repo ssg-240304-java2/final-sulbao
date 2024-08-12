@@ -2,6 +2,7 @@ package com.finalproject.sulbao.board.controller;
 
 import com.finalproject.sulbao.board.dto.CommentDto;
 import com.finalproject.sulbao.board.dto.PostDto;
+import com.finalproject.sulbao.board.dto.PostImageDto;
 import com.finalproject.sulbao.board.dto.UserDto;
 import com.finalproject.sulbao.board.service.LikeService;
 import com.finalproject.sulbao.board.service.PostService;
@@ -48,7 +49,7 @@ public class ZzanpostController {
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("currentPage", page);
         model.addAttribute("count", count);
-        return "/board/zzanpost-list";
+        return "/board/zzanpost/list";
     }
 
     @GetMapping("/more")
@@ -61,22 +62,55 @@ public class ZzanpostController {
     @GetMapping("/new")
     public String newZzanpost(Model model, HttpServletRequest request) {
         login(request); // 회원정보 세션처리 완료되면 삭제 예정
+
         UserDto user = (UserDto) request.getSession().getAttribute("user");
         if (!EnumSet.of(PRO_MEMBER, ADMIN).contains(user.getRoleType())) {
             return "redirect:/";
         }
+
         model.addAttribute("user", user);
-        return "/board/new-zzanpost";
+        return "/board/zzanpost/new";
+    }
+
+    @GetMapping("/edit/{postId}")
+    public String editZzanpost(Model model, @PathVariable Long postId, HttpServletRequest request) {
+        login(request);
+
+        UserDto user = (UserDto) request.getSession().getAttribute("user");
+        PostDto post = postService.findById(postId);
+        PostImageDto thumbnail = post.getPostImageDtoList().get(0);
+
+        if (!post.getUserDto().getId().equals(user.getId()) && user.getRoleType() != ADMIN) {
+            return "redirect:/zzanposts/" + postId;
+        }
+
+        model.addAttribute("user", user);
+        model.addAttribute("post", post);
+        model.addAttribute("thumbnail", thumbnail);
+        return "/board/zzanpost/edit";
     }
 
     @PostMapping("/new")
-    public ResponseEntity<Void> saveZzanpost(String title, String content, MultipartFile multipartFile, HttpServletRequest request) {
+    public ResponseEntity<Long> saveZzanpost(String title, String content, MultipartFile multipartFile, HttpServletRequest request) {
         login(request);
 
         Long userId = ((UserDto) request.getSession().getAttribute("user")).getId();
         String thumbnailFileName = fileService.uploadFiles(multipartFile, uploadDir).getUploadFileName();
-        postService.save(userId, title, content, ZZANPOST_CATEGORY_ID, thumbnailFileName);
-        return ResponseEntity.ok().build();
+        PostDto post = postService.save(userId, title, content, ZZANPOST_CATEGORY_ID, thumbnailFileName);
+        Long postId = post.getId();
+        return ResponseEntity.ok(postId);
+    }
+
+    @PutMapping("/edit")
+    public ResponseEntity<Long> updateZzanpost(Long postId, String title, String content, MultipartFile multipartFile, HttpServletRequest request) {
+        login(request);
+
+        String thumbnailFileName = null;
+        if (multipartFile != null) {
+            thumbnailFileName = fileService.uploadFiles(multipartFile, uploadDir).getUploadFileName();
+        }
+        postService.update(postId, title, content, thumbnailFileName);
+        return ResponseEntity.ok(postId);
     }
 
     @GetMapping("/{id}")
@@ -87,13 +121,15 @@ public class ZzanpostController {
         UserDto user = (UserDto) request.getSession().getAttribute("user");
         PostDto post = postService.findById(id);
         boolean isPostLikedByUser = likeService.isPostLikedByUser(post.getId(), user.getId());
+        boolean isAdmin = (user.getRoleType() == ADMIN);
         List<CommentDto> comments = post.getCommentDtoList();
 
         model.addAttribute("user", user);
         model.addAttribute("post", post);
         model.addAttribute("comments", comments);
         model.addAttribute("isPostLikedByUser", isPostLikedByUser);
-        return "/board/zzanpost";
+        model.addAttribute("isAdmin", isAdmin);
+        return "/board/zzanpost/detail";
     }
 
     @DeleteMapping("/{id}")

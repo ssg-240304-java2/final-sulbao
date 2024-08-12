@@ -221,7 +221,7 @@
     <div class="title-container">
         <div class="input-group">
             <label for="postTitle"></label>
-            <input class="form-control" id="postTitle" placeholder="제목을 입력해주세요." type="text">
+            <input class="form-control" id="postTitle" placeholder="제목을 입력해주세요." th:value="${post.title}" type="text">
         </div>
     </div>
 
@@ -234,6 +234,22 @@
     </div>
 
     <script th:inline="javascript">
+        var thumbnailFileName = [[${thumbnail}]].fileName;
+
+        $('#coverPreview').css({
+            'background-image': `url(https://kr.object.ncloudstorage.com/sulbao-file/${thumbnailFileName})`,
+            'background-size': 'cover',
+            'background-position': 'center',
+            'color': 'transparent'
+        });
+
+        $(document).ready(function () {
+            $('#summernote').summernote({
+                height: 650
+            });
+            $('#summernote').summernote('code', [[${post.content}]]);
+        });
+
         $('#uploadButton').click(function () {
             $('#thumbnail').click();
         });
@@ -256,23 +272,24 @@
 
         $('.submit-button').click(() => {
             let formData = new FormData();
-            formData.append('userId', [[${user.id}]]);
+            formData.append('postId', [[${post.id}]]);
             formData.append('title', $('#postTitle').val());
             formData.append('content', $('#summernote').summernote('code'));
 
             let fileInput = $('#thumbnail')[0].files[0];
+
             if (fileInput) {
                 formData.append('multipartFile', fileInput);
             }
 
             $.ajax({
-                url: '/zzanposts/new',
-                type: 'POST',
+                url: '/zzanposts/edit',
+                type: 'PUT',
                 data: formData,
                 processData: false,
                 contentType: false,
-                success: (data) => {
-                    location.href = '/zzanposts';
+                success: (postId) => {
+                    location.href = `/zzanposts/${postId}`;
                 },
                 error: (error) => {
                     console.log(error);

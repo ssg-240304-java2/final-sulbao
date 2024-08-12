@@ -34,12 +34,14 @@ public class PostService {
         postRepository.deleteById(id);
     }
 
-    public void save(Long userId, String title, String content, Long boardCategoryId, String thumbnailFileName) {
+    public PostDto save(Long userId, String title, String content, Long boardCategoryId, String thumbnailFileName) {
         Login login = loginRepository.findById(userId).orElseThrow();
         BoardCategory boardCategory = boardCategoryRepository.findById(boardCategoryId).orElseThrow();
         PostImage postImage = PostImage.createPostImage(thumbnailFileName);
         Post post = Post.createPost(login, boardCategory, title, content, postImage);
-        postRepository.save(post);
+        Post savedPost = postRepository.save(post);
+        PostDto postDto = PostDto.toPostDto(savedPost);
+        return postDto;
     }
 
     public Page<PostDto> getPostPage(int page) {
@@ -63,5 +65,10 @@ public class PostService {
         Post post = postRepository.findById(id).orElseThrow();
         PostDto postDto = PostDto.toPostDto(post);
         return postDto;
+    }
+
+    public void update(Long postId, String title, String content, String thumbnailFileName) {
+        Post post = postRepository.findById(postId).orElseThrow();
+        post.update(title, content, thumbnailFileName);
     }
 }

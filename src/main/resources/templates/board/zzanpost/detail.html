@@ -32,8 +32,8 @@
             <img alt="작성자 프로필 사진"
                  src="https://cdn.icon-icons.com/icons2/2468/PNG/512/user_user_profile_user_icon_user_thump_icon_149321.png">
             <div class="username" th:text="${post.userDto.getProfileName()}"></div>
-            <div class="edit-buttons" th:if="${user.id == post.userDto.id}">
-                <button>수정</button>
+            <div class="edit-buttons" th:if="${user.id == post.userDto.id or isAdmin}">
+                <button onclick="editPost()">수정</button>
                 <button onclick="deletePost()">삭제</button>
             </div>
         </div>
@@ -77,7 +77,7 @@
                         <div class="timestamp" th:text="${comment.createdAt}"></div>
                     </div>
 
-                    <div class="edit-buttons" th:if="${user.id == comment.userDto.id}">
+                    <div class="edit-buttons" th:if="${user.id == comment.userDto.id or isAdmin}">
                         <button onclick="displayEditCommentInput(this)" th:data-id="${comment.id}">수정</button>
                         <button onclick="deleteComment(this)" th:data-id="${comment.id}">삭제</button>
                     </div>
@@ -145,6 +145,11 @@
                     }
                 });
             }
+        }
+
+        function editPost() {
+            const postId = [[${post.id}]];
+            location.href = '/zzanposts/edit/' + postId;
         }
 
         function deleteComment(button) {

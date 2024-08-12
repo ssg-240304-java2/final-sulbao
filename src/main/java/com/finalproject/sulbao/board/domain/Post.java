@@ -65,11 +65,23 @@ public class Post extends BaseEntity {
 
     public void setPostImage(PostImage postImage) {
         postImage.setPost(this);
-        postImages.add(postImage);
+        if (postImages.isEmpty()) {
+            postImages.add(postImage);
+        } else {
+            postImages.set(0, postImage);
+        }
     }
 
     public void updateHit() {
         hit++;
     }
 
+    public void update(String title, String content, String thumbnailFileName) {
+        this.title = title;
+        this.content = content;
+        if (thumbnailFileName != null) {
+            PostImage postImage = PostImage.createPostImage(thumbnailFileName);
+            setPostImage(postImage);
+        }
+    }
 }
