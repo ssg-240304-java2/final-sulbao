@@ -1,5 +1,6 @@
 package com.finalproject.sulbao.cart.domain;
 
+import com.finalproject.sulbao.login.model.entity.Login;
 import com.finalproject.sulbao.product.model.entity.Product;
 import jakarta.persistence.*;
 import lombok.*;
@@ -20,7 +21,7 @@ public class Carts {
     private Long cartCode;
 
     @Column(name = "user_id")
-    private String userId;
+    private Long userId;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_no")
@@ -34,4 +35,21 @@ public class Carts {
     @Column(nullable = false)
     @ColumnDefault("false")
     private boolean isOrder;
+
+    public void increaseAmount() {
+        if(this.amount < 99){
+            this.amount += 1;
+            updateTotalPrice();
+        }
+    }
+    public void decreaseAmount() {
+        if(this.amount > 1) {
+            this.amount -= 1;
+            updateTotalPrice();
+        }
+    }
+
+    public void updateTotalPrice() {
+        this.totalPrice = this.amount * this.products.getProductPrice();
+    }
 }
