@@ -263,6 +263,9 @@
             let fileInput = $('#thumbnail')[0].files[0];
             if (fileInput) {
                 formData.append('multipartFile', fileInput);
+            } else {
+                alert('커버사진을 등록해주시기 바랍니다.');
+                return;
             }
 
             $.ajax({
