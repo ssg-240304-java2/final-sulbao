@@ -51,11 +51,11 @@
 </head>
 <body class="navbar-fixed sidebar-fixed" id="body">
 <div class="wrapper">
-    <aside id="left-sidebar" class="left-sidebar sidebar-dark" th:include="~{common/fragment/admin/aside::asideFragment}"></aside>
+    <aside id="left-sidebar" class="left-sidebar sidebar-dark" th:insert="~{common/fragment/admin/aside::asideFragment}"></aside>
     <div class="page-wrapper">
-        <header class="main-header" id="header" th:include="~{common/fragment/admin/header::headerFragment}"></header>
+        <header class="main-header" id="header" th:insert="~{common/fragment/admin/header::headerFragment}"></header>
         <div layout:fragment="content" class="content-wrapper"></div>
-        <footer class="footer mt-auto" th:include="~{common/fragment/admin/footer::footerFragment}"></footer>
+        <footer class="footer mt-auto" th:insert="~{common/fragment/admin/footer::footerFragment}"></footer>
     </div>
 </div>
 <script>

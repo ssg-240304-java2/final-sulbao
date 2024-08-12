@@ -13,5 +13,6 @@ public class ProductImage {
 
     private String originName;
     private String saveName;
+    private String saveImgUrl;
 
 }

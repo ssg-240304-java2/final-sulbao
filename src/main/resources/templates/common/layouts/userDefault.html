@@ -25,16 +25,55 @@
     <link rel="stylesheet" href="/user/css/daterangepicker.css">
     <link rel="stylesheet" href="/user/css/aos.css">
     <link rel="stylesheet" href="/user/css/style.css">
-    <script src="/user/js/jquery-3.4.1.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+
 </head>
 <body>
 
-    <header th:include="~{common/fragment/user/header::headerFragment}"></header>
+    <header th:insert="~{common/fragment/user/header::headerFragment}"></header>
     <div layout:fragment="content"></div>
-    <footer th:include="~{common/fragment/user/footer::footerFragment}"></footer>
+    <footer th:insert="~{common/fragment/user/footer::footerFragment}"></footer>
 
+    <script>
+        $(document).ready(function() {
+            $('#summernote').summernote({
+                lang: 'ko-KR',
+                height: 150,
+                callbacks: {
+                    onImageUpload : function(files, editor, welEditable) {
+                        // 다중 이미지 처리를 위해 for문을 사용했습니다.
+                        for (var i = 0; i < files.length; i++) {
+                            imageUploader(files[i], this);
+                        }
+                    }
+                }
+            });
+        });
 
+        function imageUploader(file, el) {
+            var formData = new FormData();
+            formData.append('file', file);
+            formData.append('','');
+
+            $.ajax({
+                data : formData,
+                type : "POST",
+                url : '/image-upload',
+                contentType : false,
+                processData : false,
+                enctype : 'multipart/form-data',
+                success : function(data) {
+                    $(el).summernote('insertImage', "https://kr.object.ncloudstorage.com/sulbao-file/"+data, function($image) {
+                        $image.css('width', "50%");
+                    });
+                    // 값이 잘 넘어오는지 콘솔 확인 해보셔도됩니다.
+                    console.log(data);
+                }
+            });
+        }
+    </script>
     <script src="/user/js/popper.min.js"></script>
     <script src="/user/js/bootstrap.min.js"></script>
     <script src="/user/js/owl.carousel.min.js"></script>
