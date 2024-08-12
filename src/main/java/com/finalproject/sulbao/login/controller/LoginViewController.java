@@ -47,4 +47,8 @@ public class LoginViewController {
         return "auth/verifyagePage";
     }
 
+    @GetMapping("/signup-seller")
+    public String signupSeller() {
+        return "auth/signup-seller";
+    }
 }

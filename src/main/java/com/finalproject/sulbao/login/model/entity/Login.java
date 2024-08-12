@@ -74,11 +74,22 @@ public class Login extends BaseEntity {
     })
     private EmailVerify emailVerify;
 
+//    @Builder
+//    public Login(String userId, String userPw, RoleType userRole, String gender) {
+//        this.userId = userId;
+//        this.userPw = userPw;
+//        this.userRole = userRole;
+//        this.gender = gender;
+//    }
+
     @Builder
-    public Login(String userId, String userPw, RoleType userRole, String gender) {
+    public Login(String userId, String userPw, RoleType userRole, String gender, String phone, String email, SellerInfo sellerInfo) {
         this.userId = userId;
         this.userPw = userPw;
         this.userRole = userRole;
         this.gender = gender;
+        this.phone = phone;
+        this.email = email;
+        this.sellerInfo = sellerInfo;
     }
 }

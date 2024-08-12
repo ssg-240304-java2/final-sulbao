@@ -19,5 +19,4 @@ public class SignupMemberDto {
     private String userPw;
     private String confirmPw;
     private String gender;
-
 }

@@ -1,6 +1,7 @@
 package com.finalproject.sulbao.login.controller;
 
 import com.finalproject.sulbao.login.model.dto.SignupMemberDto;
+import com.finalproject.sulbao.login.model.dto.SignupSellerDto;
 import com.finalproject.sulbao.login.model.service.LoginService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -149,6 +150,50 @@ public class LoginController {
             return "auth/signup";
         }
     }
+
+
+    /* 회원가입 유효성 검사 - SELLER */
+    @PostMapping("/regist/seller")
+    public String registNewSeller(@Valid @ModelAttribute SignupSellerDto seller, BindingResult bindingResult, Model model) {
+        if(bindingResult.hasErrors()){
+            seller.setBusinessPw(null);
+            seller.setConfirmPw(null);
+
+            // 에러 메시지와 함께 나머지 필드 값을 모델에 추가
+            model.addAttribute("sellerDto", seller);
+
+            for(FieldError error : bindingResult.getFieldErrors()) {
+                model.addAttribute("valid_" + error.getField(), error.getDefaultMessage());
+                log.info("error field ========================> " + error.getField());
+                log.info("error message ========================> " + error.getDefaultMessage());
+            }
+            return "auth/signup-seller";
+        }
+
+        // 아이디 중복 검사
+        boolean exists = loginService.isUserIdExists(seller.getBusinessId());
+        if(exists) {
+            model.addAttribute("valid_businessId", "이미 존재하는 아이디 입니다.");
+            log.info("error message ========================> confirmId");
+
+            return "auth/signup-seller";
+        }
+
+        // 비밀번호 검증
+        if(!seller.getBusinessPw().equals(seller.getConfirmPw())){
+            model.addAttribute("valid_confirmPw", "비밀번호가 일치하지 않습니다.");
+            log.info("error message ========================> confirmPw");
+
+            return "auth/signup-seller";
+        }
+
+        // 회원가입 성공
+        loginService.registNewSeller(seller);
+        log.info("<<<<<<<<<<<<회원가입 성공==========================>>>>>>>>>>>>>>>>>>>");
+        return "redirect:/login";
+    }
+
+
 
 
     /* 로그아웃 */
