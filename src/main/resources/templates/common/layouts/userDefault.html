@@ -55,7 +55,7 @@
     $(document).ready(function () {
         $('#summernote').summernote({
             lang: 'ko-KR',
-            height: 150,
+            height: 650,
             callbacks: {
                 onImageUpload: function (files, editor, welEditable) {
                     // 다중 이미지 처리를 위해 for문을 사용했습니다.
@@ -63,7 +63,8 @@
                         imageUploader(files[i], this);
                     }
                 }
-            }
+            },
+            disableResizeEditor: true
         });
     });
 

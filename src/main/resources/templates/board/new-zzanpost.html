@@ -54,12 +54,46 @@
             margin-top: 50px;
         }
 
+        #thumbnail {
+            display: none;
+        }
+
         .guideline-container .note {
             font-style: italic;
             color: #555;
             text-align: center;
             margin-top: 5px;
             font-size: larger;
+        }
+
+        .cover-upload-container {
+            background-color: #f0f0f0;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+            border-radius: 5px;
+            width: 60%;
+            margin: 0 auto;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .upload-button-container {
+            text-align: center;
+            margin-top: 10px;
+
+        }
+
+        .upload-button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
         }
 
         .title-container {
@@ -172,7 +206,17 @@
         </div>
     </div>
 
-    <input id="thumbnail" name="thumbnail" type="file">
+    <input accept="image/*" id="thumbnail" name="thumbnail" type="file">
+
+    <div class="cover-upload-container" id="coverPreview">
+        커버 사진을 업로드해주세요.
+        <div class="upload-button-container">
+            <button class="upload-button" id="uploadButton">
+                커버사진 추가하기
+            </button>
+        </div>
+    </div>
+
 
     <div class="title-container">
         <div class="input-group">
@@ -190,6 +234,26 @@
     </div>
 
     <script th:inline="javascript">
+        $('#uploadButton').click(function () {
+            $('#thumbnail').click();
+        });
+
+        $('#thumbnail').change(function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#coverPreview').css({
+                        'background-image': `url(${e.target.result})`,
+                        'background-size': 'cover',
+                        'background-position': 'center',
+                        'color': 'transparent'
+                    });
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
         $('.submit-button').click(() => {
             let formData = new FormData();
             formData.append('userId', [[${user.id}]]);
