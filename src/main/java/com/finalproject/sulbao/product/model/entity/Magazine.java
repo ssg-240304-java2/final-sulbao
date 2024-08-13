@@ -1,9 +1,10 @@
 package com.finalproject.sulbao.product.model.entity;
 
-import com.finalproject.sulbao.common.entity.BaseEntity;
 import com.finalproject.sulbao.product.model.vo.MagazineImage;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Magazine  extends BaseEntity {
+public class Magazine {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,6 +46,14 @@ public class Magazine  extends BaseEntity {
 
     @Column(name = "magazine_template")
     private int magazineTemplate;
+
+    @Column(name = "create_at")
+    @CreationTimestamp
+    private LocalDateTime createAt;
+
+    @Column(name = "update_date")
+    @UpdateTimestamp
+    private LocalDateTime updateDate;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(

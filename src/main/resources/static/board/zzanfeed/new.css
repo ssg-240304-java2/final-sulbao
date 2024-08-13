@@ -1,0 +1,201 @@
+.hero {
+    background: #f8f9fa;
+    padding: 50px 0;
+}
+
+.hero h1 {
+    font-size: 2.5rem;
+}
+
+.hero p {
+    font-size: 1.25rem;
+    color: #6c757d;
+    margin-top: 30px;
+}
+
+#thumbnail {
+    display: none;
+}
+
+.cover-upload-container {
+    background-color: #f0f0f0;
+    color: #333;
+    text-align: center;
+    padding: 20px;
+    border-radius: 5px;
+    width: 60%;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 30px auto 0;
+}
+
+.title-container {
+    margin: 20px auto;
+    width: 60%;
+}
+
+.input-group {
+    position: relative;
+}
+
+.form-control {
+    height: 60px;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    padding: 10px;
+    font-size: 1.25rem;
+    width: calc(100% - 100px);
+}
+
+.tagify {
+    width: 100%;
+    max-width: 700px;
+}
+
+.tags-look .tagify__dropdown__item {
+    display: inline-block;
+    border-radius: 3px;
+    padding: .3em .5em;
+    border: 1px solid #CCC;
+    background: #F3F3F3;
+    margin: .2em;
+    font-size: .85em;
+    color: black;
+    transition: 0s;
+}
+
+.tags-look .tagify__dropdown__item--active {
+    color: black;
+}
+
+.tags-look .tagify__dropdown__item:hover {
+    background: lightyellow;
+    border-color: gold;
+}
+
+.hashtag-container {
+    margin: 20px auto;
+    width: 60%;
+    display: flex;
+    justify-content: center;
+}
+
+.some_class_name {
+    width: 100%;
+    max-width: 700px;
+    box-sizing: border-box;
+}
+
+.editor-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin: 20px auto;
+    width: 60%;
+}
+
+.square-box,
+.editor-container {
+    width: 50%; /* 두 요소가 1:1 비율을 유지하도록 설정 */
+    padding: 10px; /* 필요에 따라 추가 여백을 설정 */
+}
+
+.square-box {
+    aspect-ratio: 1 / 1; /* 정사각형 비율 유지 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0; /* 배경 색상 조정 */
+    height: 100%; /* 부모 요소의 높이에 맞게 조정 */
+    padding: 20px; /* 내부 여백 설정 */
+    box-sizing: border-box;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.upload-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.camera-icon {
+    font-size: 3rem;
+}
+
+.upload-button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: white;
+    background-color: #1A374D;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.upload-button:hover {
+    background-color: #0056b3;
+}
+
+.editor-container {
+    display: flex;
+    align-items: flex-start; /* 에디터를 상단에 맞추기 */
+}
+
+.add-wrapper {
+    display: flex;
+    justify-content: center;
+    margin: 20px auto;
+}
+
+.add-box {
+    aspect-ratio: 1 / 1;
+    background-color: #d3d3d3; /* 회색 배경 색상 */
+    color: black; /* 검은색 글씨 */
+    font-size: 1.2rem; /* 버튼의 글씨 크기 조정 */
+    width: 40px; /* 버튼의 너비 조정 */
+    height: 40px; /* 버튼의 높이 조정 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-radius: 5px; /* 버튼의 모서리 둥글게 */
+    margin-top: 5%;
+}
+
+.add-box:hover {
+    background-color: #c0c0c0; /* 호버 시 색상 변화 */
+}
+
+.add-content {
+    font-size: 1.2rem; /* 글씨 크기 조정 */
+}
+
+.submit-wrapper {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.submit-button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: white;
+    background-color: #1A374D;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin: 5%;
+}
+
+.submit-button:hover {
+    background-color: #0056b3;
+}
