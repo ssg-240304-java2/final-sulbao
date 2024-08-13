@@ -26,9 +26,8 @@ public class CartService {
         this.modelMapper = modelMapper;
     }
 
-    public List<CartDTO> findCartByUserId(Long userId) {
+    public List<CartDTO> findCartByUserId(String userId) {
         List<Carts> carts = cartRepository.findByUserId(userId, Sort.by("cartCode"));
-        carts.forEach(System.out::println);
         return carts.stream()
                 .map(cart -> modelMapper.map(cart, CartDTO.class))
                 .collect(Collectors.toList());
@@ -53,5 +52,17 @@ public class CartService {
             throw new RuntimeException("Cart not found");
         }
 
+    }
+
+    public List<CartDTO> findCartByCartCodeIn(List<Long> cartCodes) {
+        List<Carts> orders = cartRepository.findByCartCodeIn(cartCodes, Sort.by("cartCode"));
+        return orders.stream()
+                        .map(cart -> modelMapper.map(cart, CartDTO.class))
+                        .collect(Collectors.toList());
+    }
+
+    public int sumCartByCartCodeIn(List<Long> cartCodes) {
+        int sumPurchasePrice = cartRepository.findTotalPurchasePriceByCartCodeIn(cartCodes);
+        return sumPurchasePrice;
     }
 }

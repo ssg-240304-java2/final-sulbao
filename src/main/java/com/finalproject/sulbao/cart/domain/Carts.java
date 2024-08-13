@@ -21,7 +21,7 @@ public class Carts {
     private Long cartCode;
 
     @Column(name = "user_id")
-    private Long userId;
+    private String userId;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_no")

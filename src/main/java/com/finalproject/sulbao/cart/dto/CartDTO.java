@@ -10,7 +10,7 @@ import lombok.*;
 @ToString
 public class CartDTO {
     private Long cartCode;
-    private Long userId;
+    private String userId;
     private Product products;
     private int amount;
     private int totalPrice;

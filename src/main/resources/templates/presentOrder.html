@@ -5,30 +5,21 @@
 <head>
     <title>Liquor Store - Free Bootstrap 4 Template by Colorlib</title>
     <script>
-        function toggleSelectAll(source) {
-            const checkboxes = document.querySelectorAll('.checkbox-wrap input[type="checkbox"]');
-            checkboxes.forEach(checkbox => checkbox.checked = source.checked);
-        }
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelector('.btn-primary').addEventListener('click', function(event) {
+                const emailId = document.getElementById('emailId').value.trim();
+                const mailAddr2 = document.getElementById('mailAddr2').value.trim();
 
-        function deleteProduct(button) {
-            const row = button.closest('tr');
-            row.remove();
-        }
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        function updateQuantity(button, increment) {
-            const quantityElement = button.parentNode.querySelector('.quantity-number');
-            let currentQuantity = parseInt(quantityElement.textContent);
-
-            if (increment) {
-                if (currentQuantity < 99) {
-                    quantityElement.textContent = currentQuantity + 1;
+                const totalEmail = emailId + `@` + mailAddr2;
+                if(!emailId || !mailAddr2 || !emailRegex(totalEmail)) {
+                    alert("올바른 이메일 형식을 입력하세요.");
+                    event.preventDefault();
+                    return false;
                 }
-            } else {
-                if (currentQuantity > 1) {
-                    quantityElement.textContent = currentQuantity - 1;
-                }
-            }
-        }
+            });
+        });
     </script>
     <style>
         .table-wrap {
@@ -165,8 +156,7 @@
                                 <div class="img" th:style="'background-image:url(' + 'https://kr.object.ncloudstorage.com/sulbao-file/product/' + ${cart.products.productImages[0].saveName} + ');'"></div>                            </td>
                             <td>
                                 <div class="product-info">
-                                    <span class="company-name" th:text="${cart.products.sellerInfo.name}"></span>
-                                    <!--  cart.products.sellerInfo.sellerInfo.businessName  -->
+                                    <span class="company-name" th:text="${cart.products.sellerInfo.sellerInfo.businessName}"></span>
                                     <span class="product-name" th:text="${cart.products.getProductName()}"></span>
                                 </div>
                             </td>
@@ -176,7 +166,7 @@
                             <td class="quantity">
                                 <span class="quantity-number" th:text="${cart.amount}"></span>
                             </td>
-                            <td class="total-price" th:text="${cart.totalPrice}" th:data-number="${cart.cartCode}"></td>
+                            <td class="total-price" th:text="${cart.totalPrice}" th:data-number="${cart.cartCode}" style="text-align: center"></td>
                         </tr>
                         <!-- 추가 항목은 이와 유사한 구조로 작성 -->
                         </tbody>
@@ -203,7 +193,6 @@
                     <span class="company-name">Enter the email address of the gift recipient</span>
                     <br>
                     <br>
-                    <br>
                     <input type="text" id="emailId" placeholder="이메일 입력">
                     <span>@</span>
                     <input id="mailAddr2" placeholder="이메일을 선택하세요.">
@@ -220,19 +209,20 @@
                     <div class="cart-total mb-3">
                         <h3>Total Price</h3>
                         <hr>
-                        <p class="total-price">
-                            Total payment amount
+                        <p class="d-flex total-price" style="justify-content: space-between;">
+                            <span>Total Purchase Price</span>
+                            <span class="total-purchase-price" style="text-align: right" th:text="${totalPurchasePrice}"></span>
                         </p>
-                        <br>
+                    </div>
+                    <br>
                         <div class="cart-buttons">
                             <a href="order" class="btn btn-primary py-3 px-4">Payment</a>
                         </div>
-                    </div>
+                    <br>
                 </div>
             </div>
         </div>
     </section>
 </div>
-
 </body>
 </html>
