@@ -3,9 +3,11 @@ package com.finalproject.sulbao.cart.controller;
 import com.finalproject.sulbao.cart.domain.Carts;
 import com.finalproject.sulbao.cart.dto.CartDTO;
 import com.finalproject.sulbao.cart.service.CartService;
+import com.finalproject.sulbao.login.model.dto.LoginDetails;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -31,9 +33,9 @@ public class CartController {
      * @return
      */
     @GetMapping("/cart")
-    public String viewCart(Model model){
-        // 현재 로그인 값 없어 임시 테스트용 데이터
-        String userId = "lajaha99";
+    public String viewCart(Model model,Authentication authentication){
+        LoginDetails login = (LoginDetails) authentication.getPrincipal();
+        String userId = login.getUsername();
         List<CartDTO> cartList = cartService.findCartByUserId(userId);
         model.addAttribute("carts", cartList);
         return "cart";

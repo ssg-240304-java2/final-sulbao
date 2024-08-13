@@ -37,6 +37,8 @@ public class LoginDetails implements UserDetails {
         return login.getUserId();
     }
 
+    public Long getUserNo() {return login.getUserNo();};
+
     @Override
     public boolean isEnabled() {
         return true;
