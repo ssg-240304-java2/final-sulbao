@@ -39,7 +39,7 @@ public class ZzanpostController {
     private String uploadDir;
 
     @GetMapping
-    public String zzanpostList(Model model, @RequestParam(defaultValue = "0") int page) {
+    public String list(Model model, @RequestParam(defaultValue = "0") int page) {
         Page<PostDto> postPage = postService.getPostPage(page);
         List<PostDto> posts = postPage.getContent();
         int totalPages = postPage.getTotalPages();
@@ -60,7 +60,7 @@ public class ZzanpostController {
     }
 
     @GetMapping("/new")
-    public String newZzanpost(Model model, HttpServletRequest request) {
+    public String newPost(Model model, HttpServletRequest request) {
         login(request); // 회원정보 세션처리 완료되면 삭제 예정
 
         UserDto user = (UserDto) request.getSession().getAttribute("user");
@@ -73,7 +73,7 @@ public class ZzanpostController {
     }
 
     @GetMapping("/edit/{postId}")
-    public String editZzanpost(Model model, @PathVariable Long postId, HttpServletRequest request) {
+    public String editPost(Model model, @PathVariable Long postId, HttpServletRequest request) {
         login(request);
 
         UserDto user = (UserDto) request.getSession().getAttribute("user");
@@ -91,7 +91,7 @@ public class ZzanpostController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<Long> saveZzanpost(String title, String content, MultipartFile multipartFile, HttpServletRequest request) {
+    public ResponseEntity<Long> savePost(String title, String content, MultipartFile multipartFile, HttpServletRequest request) {
         login(request);
 
         Long userId = ((UserDto) request.getSession().getAttribute("user")).getId();
@@ -102,7 +102,7 @@ public class ZzanpostController {
     }
 
     @PutMapping("/edit")
-    public ResponseEntity<Long> updateZzanpost(Long postId, String title, String content, MultipartFile multipartFile, HttpServletRequest request) {
+    public ResponseEntity<Long> updatePost(Long postId, String title, String content, MultipartFile multipartFile, HttpServletRequest request) {
         login(request);
 
         String thumbnailFileName = null;
@@ -114,7 +114,7 @@ public class ZzanpostController {
     }
 
     @GetMapping("/{id}")
-    public String zzanpost(@PathVariable Long id, Model model, HttpServletRequest request) {
+    public String detail(@PathVariable Long id, Model model, HttpServletRequest request) {
         login(request); // 회원정보 세션처리 완료되면 삭제 예정
 
         postService.updateHit(id);

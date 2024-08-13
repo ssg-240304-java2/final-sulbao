@@ -40,7 +40,7 @@ class EntityTest {
 
     @Test
     void load() {
-        insertUser();
+       /* insertUser();
         insertBoardCategory();
 
         Login john = loginRepository.findById(1L).orElseThrow();
@@ -55,7 +55,11 @@ class EntityTest {
         Post post = postRepository.findById(1L).orElseThrow();
 
         insertComment(john, post);
-        insertComment(jane, post);
+        insertComment(jane, post);*/
+
+        Post post = postRepository.findById(210L).orElseThrow();
+        post.getTags().add("test1");
+        post.getTags().add("test2");
     }
 
     private void insertComment(Login john, Post post) {

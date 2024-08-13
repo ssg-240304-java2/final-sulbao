@@ -29,6 +29,10 @@ public class Post extends BaseEntity {
     private final List<PostImage> postImages = new ArrayList<>();
     @OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
     private final List<Comment> comments = new ArrayList<>();
+    @ElementCollection
+    @CollectionTable(name = "tbl_post_tag", joinColumns = @JoinColumn(name = "post_id"))
+    @Column(name = "tag")
+    private final List<String> tags = new ArrayList<>();
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
