@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Embeddable
 @Data
 @NoArgsConstructor
@@ -15,5 +13,5 @@ public class MagazineImage {
 
     private String originName;
     private String saveName;
-    private LocalDateTime createDate;
+    private String saveImgUrl;
 }

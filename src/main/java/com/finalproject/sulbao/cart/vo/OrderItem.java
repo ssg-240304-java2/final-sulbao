@@ -1,5 +1,6 @@
 package com.finalproject.sulbao.cart.vo;
 
+import com.finalproject.sulbao.common.entity.BaseEntity;
 import jakarta.persistence.Embeddable;
 import lombok.*;
 
@@ -8,7 +9,7 @@ import lombok.*;
 @Setter(AccessLevel.PRIVATE)
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderItem {
+public class OrderItem extends BaseEntity {
 //        private Long code;
         // 상품번호
         private Long productNo;

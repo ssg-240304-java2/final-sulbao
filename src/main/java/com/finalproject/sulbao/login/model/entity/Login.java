@@ -1,5 +1,6 @@
 package com.finalproject.sulbao.login.model.entity;
 
+import com.finalproject.sulbao.common.entity.BaseEntity;
 import com.finalproject.sulbao.login.model.vo.EmailVerify;
 import com.finalproject.sulbao.login.model.vo.SellerInfo;
 import jakarta.persistence.*;
@@ -27,7 +28,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Data
 @Setter
-public class Login {
+public class Login extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,10 +44,6 @@ public class Login {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private RoleType userRole;
-
-    @Column(nullable = false)
-    @CreationTimestamp
-    private LocalDateTime registDate;
 
     @Column(nullable = false)
     private String name;

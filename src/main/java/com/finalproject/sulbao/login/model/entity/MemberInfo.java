@@ -2,10 +2,7 @@ package com.finalproject.sulbao.login.model.entity;
 
 import com.finalproject.sulbao.login.model.vo.ProMemberInfo;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -42,12 +39,14 @@ public class MemberInfo {
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "businessNumber", column = @Column(name = "business_number", table = "tbl_pro_member_info")),
-            @AttributeOverride(name = "businessLink", column = @Column(name = "business_link", table = "tbl_pro_member_info")),
-            @AttributeOverride(name = "proStatus", column = @Column(name = "pro_status", table = "tbl_pro_member_info")),
-            @AttributeOverride(name = "proRegistDate", column = @Column(name = "pro_regist_date", table = "tbl_pro_member_info"))
+            @AttributeOverride(name="businessNumber", column = @Column(name="business_number", table = "tbl_pro_member_info")),
+            @AttributeOverride(name="businessLink", column = @Column(name="business_link", table = "tbl_pro_member_info")),
+            @AttributeOverride(name="proStatus", column = @Column(name="pro_status", table = "tbl_pro_member_info")),
+            @AttributeOverride(name="proRegistDate", column = @Column(name="pro_regist_date", table = "tbl_pro_member_info"))
     })
     private ProMemberInfo proMemberInfo;
+
+
 
 
 }

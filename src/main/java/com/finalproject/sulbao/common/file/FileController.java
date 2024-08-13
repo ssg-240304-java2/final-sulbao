@@ -15,16 +15,17 @@ import java.io.IOException;
 @Slf4j
 public class FileController {
 
-    private final FileService fileService;
     @Value("${file.upload-dir}")
     private String uploadDir;
+
+    private final FileService fileService;
 
     public FileController(FileService fileService) {
         this.fileService = fileService;
     }
 
     @GetMapping("/upload")
-    public String getUpload() {
+    public String getUpload(){
         return "testEditor";
     }
 
@@ -36,12 +37,13 @@ public class FileController {
         // 1. 파일업로드 처리
 
         if (!file.isEmpty()) {
-            FileDto fileDto = fileService.uploadFiles(file, uploadDir);
+            FileDto fileDto = fileService.uploadFiles(file,uploadDir);
             // 2. 업로드한 파일명/저장된 파일명 정보를 DB 등록
             return fileDto.getUploadFileName();
-        } else {
+        }else{
             return "error";
         }
+
     }
 
 }

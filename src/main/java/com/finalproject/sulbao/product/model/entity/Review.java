@@ -1,11 +1,9 @@
 package com.finalproject.sulbao.product.model.entity;
 
+import com.finalproject.sulbao.common.entity.BaseEntity;
 import com.finalproject.sulbao.login.model.entity.Login;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tbl_review")
@@ -14,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Review {
+public class Review extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,12 +26,8 @@ public class Review {
     @JoinColumn(name = "product_no")
     private Product product;
 
-    @Column(name = "create_at")
-    @CreationTimestamp
-    private LocalDateTime createAt;
-
     //등록한 유저정보
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_no")
     private Login user;
 

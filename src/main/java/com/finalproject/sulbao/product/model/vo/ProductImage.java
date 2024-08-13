@@ -1,9 +1,9 @@
 package com.finalproject.sulbao.product.model.vo;
 
 import jakarta.persistence.Embeddable;
-import lombok.*;
-
-import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Embeddable
 @Data
@@ -13,5 +13,6 @@ public class ProductImage {
 
     private String originName;
     private String saveName;
-    private LocalDateTime createDate;
+    private String saveImgUrl;
+
 }

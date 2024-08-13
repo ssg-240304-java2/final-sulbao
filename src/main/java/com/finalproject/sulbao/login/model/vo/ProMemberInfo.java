@@ -1,9 +1,7 @@
 package com.finalproject.sulbao.login.model.vo;
-import com.finalproject.sulbao.login.model.entity.StatusType;
+import com.finalproject.sulbao.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.time.LocalDateTime;
 
 
 @Embeddable
@@ -11,11 +9,9 @@ import java.time.LocalDateTime;
 @Setter(AccessLevel.PRIVATE)
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProMemberInfo {
+public class ProMemberInfo extends BaseEntity {
 
     private String businessNumber;
     private String businessLink;
-//    @Enumerated(EnumType.STRING)
-    private StatusType proStatus;
-    private LocalDateTime proRegistDate;
+    private String proStatus;
 }

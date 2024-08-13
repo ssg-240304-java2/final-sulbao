@@ -1,6 +1,7 @@
 package com.finalproject.sulbao.cart.domain;
 
 import com.finalproject.sulbao.cart.vo.OrderItem;
+import com.finalproject.sulbao.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,7 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Order {
+public class Order extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "orderCode")
