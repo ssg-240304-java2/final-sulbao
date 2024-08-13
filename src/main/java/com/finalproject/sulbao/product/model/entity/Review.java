@@ -4,9 +4,6 @@ import com.finalproject.sulbao.common.entity.BaseEntity;
 import com.finalproject.sulbao.login.model.entity.Login;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tbl_review")
