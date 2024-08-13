@@ -1,16 +1,9 @@
 package com.finalproject.sulbao.login.model.entity;
 
 import com.finalproject.sulbao.common.entity.BaseEntity;
-import com.finalproject.sulbao.login.model.vo.EmailVerify;
 import com.finalproject.sulbao.login.model.vo.SellerInfo;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-
-import java.time.LocalDateTime;
+import lombok.*;
 
 @Entity
 @Table(name = "tbl_login")
@@ -45,16 +38,14 @@ public class Login extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private RoleType userRole;
 
-    @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
     private String birth;
 
-    @Column(nullable = false)
+    private String gender;
+
     private String phone;
 
-    @Column(nullable = false)
     private String email;
 
     /* 객체 탐색을 위해 추가 */
@@ -69,11 +60,22 @@ public class Login extends BaseEntity {
     })
     private SellerInfo sellerInfo;
 
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "verifyCode", column = @Column(name = "verify_code", table = "tbl_verify_code")),
-            @AttributeOverride(name = "isVerified", column = @Column(name = "is_verified", table = "tbl_verify_code"))
-    })
-    private EmailVerify emailVerify;
+//    @Builder
+//    public Login(String userId, String userPw, RoleType userRole, String gender) {
+//        this.userId = userId;
+//        this.userPw = userPw;
+//        this.userRole = userRole;
+//        this.gender = gender;
+//    }
 
+    @Builder
+    public Login(String userId, String userPw, RoleType userRole, String gender, String phone, String email, SellerInfo sellerInfo) {
+        this.userId = userId;
+        this.userPw = userPw;
+        this.userRole = userRole;
+        this.gender = gender;
+        this.phone = phone;
+        this.email = email;
+        this.sellerInfo = sellerInfo;
+    }
 }

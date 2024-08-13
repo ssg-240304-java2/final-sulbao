@@ -3,7 +3,9 @@ package com.finalproject.sulbao.login.model.entity;
 import com.finalproject.sulbao.login.model.vo.ProMemberInfo;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.sql.Date;
 import java.time.LocalDateTime;
 
 @Entity
@@ -46,7 +48,12 @@ public class MemberInfo {
     })
     private ProMemberInfo proMemberInfo;
 
+    @Builder
+    public MemberInfo(Login user, String profileName, LocalDateTime verifyageDate) {
+        this.user = user;
+        this.profileName = profileName;
+        this.profileImg = "default-profile.png";
+        this.verifyageDate = LocalDateTime.now();
 
-
-
+    }
 }

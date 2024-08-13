@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인 - 술기로운한잔</title>
+    <link rel="stylesheet" href="/user/css/login-style.css">
+</head>
+<style>
+    .error-message {
+        font-size: 10px;
+        color: red;
+        margin-top: 5px;
+    }
+</style>
+<body>
+<div class="container">
+    <div class="card">
+        <header>
+            <h1>술기로운한잔</h1>
+        </header>
+
+        <div class="tab-menu">
+            <button class="tab active" onclick="openForm(event, 'general')">일반회원</button>
+            <button class="tab" onclick="openForm(event, 'business')">판매자회원</button>
+        </div>
+
+        <form id="general" class="form-content active" th:action="@{/auth/login}" method="POST">
+            <div class="form-group">
+                <input type="id" id="id" name="userId" placeholder="아이디" required>
+            </div>
+            <div class="form-group">
+                <input type="password" id="userPw" name="userPw" placeholder="비밀번호" required>
+            </div>
+            <!-- 로그인 실패 메시지 표시 -->
+            <div>
+                <p th:if="${loginError != null}" th:text="${loginError}" class="error-message"></p>
+            </div>
+
+            <button type="submit" class="submit-button">로그인</button>
+            <div class="additional-links">
+                <p>술기로운 한잔이 처음이신가요? <a href="/verifyagePage">회원가입 하기</a></p>
+            </div>
+        </form>
+
+        <form id="business" class="form-content" th:action="@{/auth/testSeller}" method="POST">
+            <div class="form-group">
+                <input type="id" id="business-id" name="userid" placeholder="판매자 아이디" required>
+            </div>
+            <div class="form-group">
+                <input type="password" id="business-password" name="userPw" placeholder="판매자 비밀번호" required>
+            </div>
+<!--            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />-->
+
+
+            <button type="submit" class="submit-button">로그인</button>
+            <div class="additional-links">
+                <p>술기로운 한잔이 처음이신가요? <a href="/signup">입접신청 하기</a></p>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function openForm(evt, formName) {
+        var i, formContent, tablinks;
+        formContent = document.getElementsByClassName("form-content");
+        for (i = 0; i < formContent.length; i++) {
+            formContent[i].style.display = "none";
+            formContent[i].classList.remove("active");
+        }
+        tablinks = document.getElementsByClassName("tab");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].classList.remove("active");
+        }
+        document.getElementById(formName).style.display = "block";
+        document.getElementById(formName).classList.add("active");
+        evt.currentTarget.classList.add("active");
+    }
+
+    // Set default open form
+    document.getElementById("general").style.display = "block";
+</script>
+<!--<footer>-->
+<!--    <p>©  bucketplace, Co., Ltd.. All Rights Reserved</p>-->
+<!--</footer>-->
+</body>
+</html>
