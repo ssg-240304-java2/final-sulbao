@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{common/layouts/adminDefault}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="content-wrapper">
+            <div class="content">
+
+                <div class="card card-default">
+                    <div class="card-header">
+                        <h2>상품목록</h2>
+                        <div class="float-right">
+                            <button class="btn btn-primary btn-pill" onclick="location.href='/product/detail'">상품등록</button>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="mr-3 mb-4">
+                            <form action="/product/search" method="get">
+                                <table class="table table-bordered">
+                                <tr>
+                                    <th>상품명</th>
+                                    <td colspan="3">
+                                        <div class="form-row">
+                                            <input class="form-control col-8" name="searchInput">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        상품카테고리
+                                    </th>
+                                    <td colspan="3">
+                                            <div class="custom-control custom-checkbox d-inline-block mr-3">
+                                                <input type="checkbox" class="custom-control-input" id="searchAll" name="productCategory" value="" checked>
+                                                <label class="custom-control-label" for="searchAll">전체</label>
+                                            </div>
+
+                                            <div class="custom-control custom-checkbox d-inline-block mr-3">
+                                                <input type="checkbox" class="custom-control-input" id="customCheck1" name="productCategory" value="탁주">
+                                                <label class="custom-control-label" for="customCheck1">탁주</label>
+                                            </div>
+
+                                            <div class="custom-control custom-checkbox d-inline-block mr-3">
+                                                <input type="checkbox" class="custom-control-input" id="customCheck2" name="productCategory" value="과실주">
+                                                <label class="custom-control-label" for="customCheck2">과실주</label>
+                                            </div>
+                                            <div class="custom-control custom-checkbox d-inline-block mr-3">
+                                                <input type="checkbox" class="custom-control-input" id="customCheck3" name="productCategory" value="약주">
+                                                <label class="custom-control-label" for="customCheck3">약주</label>
+                                            </div>
+
+                                            <div class="custom-control custom-checkbox d-inline-block mr-3">
+                                                <input type="checkbox" class="custom-control-input" id="customCheck4" name="productCategory" value="전통소주">
+                                                <label class="custom-control-label" for="customCheck4">전통소주</label>
+                                            </div>
+
+                                        <div class="custom-control custom-checkbox d-inline-block mr-3">
+                                            <input type="checkbox" class="custom-control-input" id="customCheck5" name="productCategory" value="기타">
+                                            <label class="custom-control-label" for="customCheck5">기타</label>
+                                        </div>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>진열상태</th>
+                                    <td rowspan="3">
+                                        <div class="custom-control custom-radio d-inline-block mr-3">
+                                            <input type="radio" id="displayAll" name="displayYn" value="" class="custom-control-input" checked>
+                                            <label class="custom-control-label" for="displayY">진열함</label>
+                                        </div>
+                                        <div class="custom-control custom-radio d-inline-block mr-3">
+                                            <input type="radio" id="displayY" name="displayYn" value="Y" class="custom-control-input">
+                                            <label class="custom-control-label" for="displayY">진열함</label>
+                                        </div>
+                                        <div class="custom-control custom-radio d-inline-block mr-3">
+                                            <input type="radio" id="displayN" name="displayYn" value="N" class="custom-control-input" >
+                                            <label class="custom-control-label" for="displayN">진열안함</label>
+                                        </div>
+                                    </td>
+                                    <th>판매상태</th>
+                                    <td>
+                                        <div class="custom-control custom-radio d-inline-block mr-3">
+                                            <input type="radio" id="sellAll" name="sellYn" value="" class="custom-control-input" checked>
+                                            <label class="custom-control-label" for="sellY">전체</label>
+                                        </div>
+                                        <div class="custom-control custom-radio d-inline-block mr-3">
+                                            <input type="radio" id="sellY" name="sellYn" value="Y" class="custom-control-input">
+                                            <label class="custom-control-label" for="sellY">판매함</label>
+                                        </div>
+                                        <div class="custom-control custom-radio d-inline-block mr-3">
+                                            <input type="radio" id="sellN" name="sellYn" value="N" class="custom-control-input">
+                                            <label class="custom-control-label" for="sellN">판매안함</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                                <div class="row mt-5 mb-5">
+                                    <div class="col text-center">
+                                        <button type="submit" class="btn btn-sm btn-primary">조회</button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary">초기화</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="mr-3 mb-4">
+                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="changeStatusYn('display','Y')">진열함</button>
+                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="changeStatusYn('display','N')">진열안함</button>
+                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="changeStatusYn('seller','Y')">판매함</button>
+                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="changeStatusYn('seller','N')">판매안함</button>
+                            <button type="button" class="btn btn-sm btn-danger" onclick="deleteProduct()">삭제</button>
+                        </div>
+
+                        <table id="productsTable" class="table table-product" style="width:100%">
+                            <thead>
+                            <tr>
+                                <th><input type="checkbox" id="cbx_chkAll"></th>
+                                <th>상품이미지</th>
+                                <th>상품카테고리</th>
+                                <th>상품 명</th>
+                                <th>상품 가격</th>
+                                <th>재고 수</th>
+                                <th>진열상태</th>
+                                <th>판매상태</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="product : ${productList}">
+                                <td><input type="checkbox" name="chk" th:value="${product.productNo}"></td>
+                                <td class="py-1">
+                                    <img style="max-height: 100px; max-width: 100px;" th:src="|https://kr.object.ncloudstorage.com/sulbao-file/product/@{${product.productImages[0].saveName}}|" alt="Product Image">
+                                </td>
+                                <td th:text="${product.productCategory}">Coach Swagger</td>
+                                <td><a th:href="@{'/product/update/'+${product.productNo}}">[[${product.productName}]]</a></td>
+                                <td th:text="${product.productPrice}">27</td>
+                                <td th:text="${product.productStock}">1</td>
+                                <td th:text="${product.displayYn == 'Y'}?'진열함':'진열안함'">2</td>
+                                <td th:text="${product.sellYn == 'Y'}? '판매중':'판매안함'">2</td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <script>
+            //상품 체크박스
+            $(document).ready(function() {
+                // 상품리스트
+                $("#cbx_chkAll").click(function() {
+                    if($("#cbx_chkAll").is(":checked")) $("input[name=chk]").prop("checked", true);
+                    else $("input[name=chk]").prop("checked", false);
+                });
+
+                $("input[name=chk]").click(function() {
+                    var total = $("input[name=chk]").length;
+                    var checked = $("input[name=chk]:checked").length;
+
+                    if(total != checked) $("#cbx_chkAll").prop("checked", false);
+                    else $("#cbx_chkAll").prop("checked", true);
+                });
+
+            });
+
+            //상품 삭제
+            function deleteProduct(){
+                let check_arr=[];
+                $("input[name=chk]:checked").each(function(){
+                    let chk = $(this).val();
+                    check_arr.push(chk);
+                });
+
+                $.ajax({
+                    url: "/product/delete",
+                    data: {
+                        "productNoList": check_arr
+                    },
+                    type: "delete",
+                    success: function(data){
+                        if(data === 'success'){
+                            alert("선택하신 상품이 삭제되었습니다.");
+                            location.reload();
+                        }else{
+                            alert("상품삭제에 실패했습니다.");
+                        }
+                    },error: function (error){
+                        alert("상품삭제에 실패했습니다.");
+                    }
+                });
+            }
+
+            // 진열,판매 상태 변경
+            function changeStatusYn(type,status){
+
+                let check_arr=[];
+                $("input[name=chk]:checked").each(function(){
+                    let chk = $(this).val();
+                    check_arr.push(chk);
+                });
+
+                $.ajax({
+                    url: "/product/status",
+                    data: {
+                        "productNoList": check_arr,
+                        "type": type,
+                        "status": status
+                    },
+                    type: "put",
+                    success: function(data){
+                        if(data === 'success'){
+                            alert("선택하신 상품의 상태가 변경되었습니다.");
+                            location.reload();
+                        }else{
+                            alert("상태변경에 실패했습니다.");
+                        }
+                    },error: function (error){
+                        alert("상태변경에 실패했습니다.");
+                    }
+                });
+            }
+        </script>
+    </div>
+
+</body>
+</html>

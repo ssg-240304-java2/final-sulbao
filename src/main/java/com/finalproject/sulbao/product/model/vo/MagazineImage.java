@@ -15,5 +15,5 @@ public class MagazineImage {
 
     private String originName;
     private String saveName;
-
+    private String saveImgUrl;
 }
