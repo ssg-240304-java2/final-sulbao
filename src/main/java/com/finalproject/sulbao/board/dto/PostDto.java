@@ -21,6 +21,7 @@ public class PostDto {
     private Long like;
     private Long hit;
     private UserDto userDto;
+    private List<CommentDto> commentDtoList;
 
     public static PostDto toPostDto(Post post) {
         return PostDto.builder()
@@ -29,8 +30,9 @@ public class PostDto {
                 .content(post.getContent())
                 .userDto(UserDto.toUserDto(post.getLogin()))
                 .postImageDtoList(post.getPostImages().stream().map(PostImageDto::toPostImageDto).toList())
-                .like((long) post.getLike().size())
+                .like((long) post.getLikes().size())
                 .hit(post.getHit())
+                .commentDtoList(post.getComments().stream().map(CommentDto::toCommentDto).toList())
                 .build();
     }
 

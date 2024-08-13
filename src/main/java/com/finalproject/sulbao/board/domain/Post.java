@@ -24,31 +24,27 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 public class Post extends BaseEntity {
 
     @OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
-    private final List<Like> like = new ArrayList<>();
-
+    private final List<Like> likes = new ArrayList<>();
     @OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
     private final List<PostImage> postImages = new ArrayList<>();
-
     @OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
     private final List<Comment> comments = new ArrayList<>();
-
+    @ElementCollection
+    @CollectionTable(name = "tbl_post_tag", joinColumns = @JoinColumn(name = "post_id"))
+    @Column(name = "tag")
+    private final List<String> tags = new ArrayList<>();
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
-
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id")
     private Login login;
-
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "board_category_id")
     private BoardCategory boardCategory;
-
     private String title;
-
     @Column(columnDefinition = "longtext")
     private String content;
-
     @ColumnDefault("0")
     private Long hit;
 
@@ -60,28 +56,36 @@ public class Post extends BaseEntity {
         this.content = content;
     }
 
-    public static Post createPost(
-            Login login, BoardCategory boardCategory, String title,
-            String content, List<PostImage> postImages) {
+    public static Post createPost(Login login, BoardCategory boardCategory, String title, String content, PostImage postImage) {
         Post post = Post.builder()
                 .login(login)
                 .boardCategory(boardCategory)
                 .title(title)
                 .content(content)
                 .build();
-        if (postImages != null) {
-            postImages.forEach(post::setPostImage);
-        }
+        post.setPostImage(postImage);
         return post;
     }
 
     public void setPostImage(PostImage postImage) {
         postImage.setPost(this);
-        postImages.add(postImage);
+        if (postImages.isEmpty()) {
+            postImages.add(postImage);
+        } else {
+            postImages.set(0, postImage);
+        }
     }
 
     public void updateHit() {
         hit++;
     }
 
+    public void update(String title, String content, String thumbnailFileName) {
+        this.title = title;
+        this.content = content;
+        if (thumbnailFileName != null) {
+            PostImage postImage = PostImage.createPostImage(thumbnailFileName);
+            setPostImage(postImage);
+        }
+    }
 }
