@@ -4,69 +4,73 @@
 		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 		layout:decorate="~{common/layouts/userDefault}">
 <head>
-
-	<title>Tour Free Bootstrap Template for Travel Agency by Untree.co</title>
+	<title>전통술 최저가 비교 커뮤니티! 술기로운 한 잔</title>
+	<link rel="stylesheet" href="/user/css/main-style.css">
 </head>
 
 <body>
-
 <div layout:fragment="content">
 	<div class="hero">
 		<div class="container">
 			<div class="row align-items-center">
-				<div class="col-lg-7">
-					<div class="intro-wrap">
-						<h1 class="mb-5"><span class="d-block">Let's Enjoy Your</span> Trip In <span class="typed-words"></span></h1>
-
-						<div class="row">
-							<div class="col-12">
-								<form class="form">
-									<div class="row mb-2">
-										<div class="col-sm-12 col-md-6 mb-3 mb-lg-0 col-lg-4">
-											<select name="" id="" class="form-control custom-select">
-												<option value="">Destination</option>
-												<option value="">Peru</option>
-												<option value="">Japan</option>
-												<option value="">Thailand</option>
-												<option value="">Brazil</option>
-												<option value="">United States</option>
-												<option value="">Israel</option>
-												<option value="">China</option>
-												<option value="">Russia</option>
-											</select>
-										</div>
-										<div class="col-sm-12 col-md-6 mb-3 mb-lg-0 col-lg-5">
-											<input type="text" class="form-control" name="daterange">
-										</div>
-										<div class="col-sm-12 col-md-6 mb-3 mb-lg-0 col-lg-3">
-											<input type="text" class="form-control" placeholder="# of People">
-										</div>
-
-									</div>    
-									<div class="row align-items-center">
-										<div class="col-sm-12 col-md-6 mb-3 mb-lg-0 col-lg-4">
-											<input type="submit" class="btn btn-primary btn-block" value="Search">
-										</div>
-										<div class="col-lg-8">
-											<label class="control control--checkbox mt-3">
-												<span class="caption">Save this search</span>
-												<input type="checkbox" checked="checked" />
-												<div class="control__indicator"></div>
-											</label>
-										</div>
-									</div>
-								</form>
-							</div>
+				<div class="col-lg-9">
+					<div class="owl-single owl-carousel dots-absolute">
+						<div class="item">
+							<a class="media-thumb" href="#" data-fancybox="gallery">
+								<div class="media-text">
+									<h3>상품이나 이벤트를 홍보해보아요1</h3>
+									<span class="location">Italy</span>
+								</div>
+								<img src="/user/images/slider-1.jpg" alt="Image" class="img-fluid">
+							</a>
+						</div>
+						<div class="item">
+							<a class="media-thumb" href="#" data-fancybox="gallery">
+								<div class="media-text">
+									<h3>상품이나 이벤트를 홍보해보아요2</h3>
+									<span class="location">Greece</span>
+								</div>
+								<img src="/user/images/slider-1.jpg" alt="Image" class="img-fluid">
+							</a>
 						</div>
 					</div>
 				</div>
-				<div class="col-lg-5">
-					<div class="slides">
-						<img src="user/images/hero-slider-1.jpg" alt="Image" class="img-fluid active">
-						<img src="user/images/hero-slider-2.jpg" alt="Image" class="img-fluid">
-						<img src="user/images/hero-slider-3.jpg" alt="Image" class="img-fluid">
-						<img src="user/images/hero-slider-4.jpg" alt="Image" class="img-fluid">
-						<img src="user/images/hero-slider-5.jpg" alt="Image" class="img-fluid">
+				<div class="col-lg-3">
+					<div class="owl-single owl-carousel dots-absolute">
+						<div class="item">
+							<a class="media-thumb" href="#" data-fancybox="gallery">
+								<div class="media-text">
+									<h3>이달의 매거진1</h3>
+									<span class="location">Italy</span>
+								</div>
+								<img src="/user/images/hero-slider-01.jpg" alt="Image" class="img-fluid">
+							</a>
+						</div>
+						<div class="item">
+							<a class="media-thumb" href="#" data-fancybox="gallery">
+								<div class="media-text">
+									<h3>이달의 매거진2</h3>
+									<span class="location">Greece</span>
+								</div>
+								<img src="/user/images/hero-slider-02.jpg" alt="Image" class="img-fluid">
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="py-5">
+			<div class="container">
+				<div class="row text-center">
+					<div class="col-md-12">
+						<h2 class="mb-2 text-white" style="font-size: 16px">지금 인기있는 #키워드</h2>
+						<p class="mb-4 text-white text-white-opacity" style="font-size: 12px">사람들이 최근 많이 찾아 본 검색어를 알려드릴게요.</p>
+						<p class="d-flex justify-content-center">
+							<a href="#" class="btn btn-outline-white text-white btn-md font-weight-bold">Get in touchGet in touch</a>
+							<a href="#" class="btn btn-outline-white text-white btn-md font-weight-bold">Get in touch</a>
+							<a href="#" class="btn btn-outline-white text-white btn-md font-weight-bold">Get in touchGet</a>
+						</p>
 					</div>
 				</div>
 			</div>
@@ -83,7 +87,7 @@
 			</div>
 			<div class="row align-items-stretch">
 				<div class="col-lg-4 order-lg-1">
-					<div class="h-100"><div class="frame h-100"><div class="feature-img-bg h-100" style="background-image: url('user/images/hero-slider-1.jpg');"></div></div></div>
+					<div class="h-100"><div class="frame h-100"><div class="feature-img-bg h-100" style="background-image: url('/user/images/hero-slider-1.jpg');"></div></div></div>
 				</div>
 
 				<div class="col-6 col-sm-6 col-lg-4 feature-1-wrap d-md-flex flex-md-column order-lg-1" >
@@ -178,64 +182,64 @@
 			<div class="owl-carousel owl-3-slider">
 
 				<div class="item">
-					<a class="media-thumb" href="images/hero-slider-1.jpg" data-fancybox="gallery">
+					<a class="media-thumb" href="/user/images/hero-slider-1.jpg" data-fancybox="gallery">
 						<div class="media-text">
 							<h3>Pragser Wildsee</h3>
 							<span class="location">Italy</span>
 						</div>
-						<img src="user/images/hero-slider-1.jpg" alt="Image" class="img-fluid">
-					</a> 
+						<img src="/user/images/hero-slider-1.jpg" alt="Image" class="img-fluid">
+					</a>
 				</div>
 
 				<div class="item">
-					<a class="media-thumb" href="images/hero-slider-2.jpg" data-fancybox="gallery">
+					<a class="media-thumb" href="/user/images/hero-slider-2.jpg" data-fancybox="gallery">
 						<div class="media-text">
 							<h3>Oia</h3>
 							<span class="location">Greece</span>
 						</div>
-						<img src="user/images/hero-slider-2.jpg" alt="Image" class="img-fluid">
-					</a> 
+						<img src="/user/images/hero-slider-2.jpg" alt="Image" class="img-fluid">
+					</a>
 				</div>
 
 				<div class="item">
-					<a class="media-thumb" href="images/hero-slider-3.jpg" data-fancybox="gallery">
+					<a class="media-thumb" href="/user/images/hero-slider-3.jpg" data-fancybox="gallery">
 						<div class="media-text">
 							<h3>Perhentian Islands</h3>
 							<span class="location">Malaysia</span>
 						</div>
-						<img src="user/images/hero-slider-3.jpg" alt="Image" class="img-fluid">
-					</a> 
+						<img src="/user/images/hero-slider-3.jpg" alt="Image" class="img-fluid">
+					</a>
 				</div>
 
 
 				<div class="item">
-					<a class="media-thumb" href="images/hero-slider-4.jpg" data-fancybox="gallery">
+					<a class="media-thumb" href="/user/images/hero-slider-4.jpg" data-fancybox="gallery">
 						<div class="media-text">
 							<h3>Rialto Bridge</h3>
 							<span class="location">Italy</span>
 						</div>
-						<img src="user/images/hero-slider-4.jpg" alt="Image" class="img-fluid">
-					</a> 
+						<img src="/user/images/hero-slider-4.jpg" alt="Image" class="img-fluid">
+					</a>
 				</div>
 
 				<div class="item">
-					<a class="media-thumb" href="user/images/hero-slider-5.jpg" data-fancybox="gallery">
+					<a class="media-thumb" href="/user/images/hero-slider-5.jpg" data-fancybox="gallery">
 						<div class="media-text">
 							<h3>San Francisco, United States</h3>
 							<span class="location">United States</span>
 						</div>
-						<img src="user/images/hero-slider-5.jpg" alt="Image" class="img-fluid">
-					</a> 
+						<img src="/user/images/hero-slider-5.jpg" alt="Image" class="img-fluid">
+					</a>
 				</div>
 
 				<div class="item">
-					<a class="media-thumb" href="user/images/hero-slider-1.jpg" data-fancybox="gallery">
+					<a class="media-thumb" href="/user/images/hero-slider-1.jpg" data-fancybox="gallery">
 						<div class="media-text">
 							<h3>Lake Thun</h3>
 							<span class="location">Switzerland</span>
 						</div>
-						<img src="user/images/hero-slider-2.jpg" alt="Image" class="img-fluid">
-					</a> 
+						<img src="/user/images/hero-slider-2.jpg" alt="Image" class="img-fluid">
+					</a>
 				</div>
 
 			</div>
@@ -252,7 +256,7 @@
 					<div class="owl-single owl-carousel no-nav">
 						<div class="testimonial mx-auto">
 							<figure class="img-wrap">
-								<img src="user/images/person_2.jpg" alt="Image" class="img-fluid">
+								<img src="/user/images/person_2.jpg" alt="Image" class="img-fluid">
 							</figure>
 							<h3 class="name">Adam Aderson</h3>
 							<blockquote>
@@ -262,7 +266,7 @@
 
 						<div class="testimonial mx-auto">
 							<figure class="img-wrap">
-								<img src="user/images/person_3.jpg" alt="Image" class="img-fluid">
+								<img src="/user/images/person_3.jpg" alt="Image" class="img-fluid">
 							</figure>
 							<h3 class="name">Lukas Devlin</h3>
 							<blockquote>
@@ -272,7 +276,7 @@
 
 						<div class="testimonial mx-auto">
 							<figure class="img-wrap">
-								<img src="user/images/person_4.jpg" alt="Image" class="img-fluid">
+								<img src="/user/images/person_4.jpg" alt="Image" class="img-fluid">
 							</figure>
 							<h3 class="name">Kayla Bryant</h3>
 							<blockquote>
@@ -298,7 +302,7 @@
 			<div class="row">
 				<div class="col-6 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
 					<div class="media-1">
-						<a href="#" class="d-block mb-3"><img src="user/images/hero-slider-1.jpg" alt="Image" class="img-fluid"></a>
+						<a href="#" class="d-block mb-3"><img src="/user/images/hero-slider-1.jpg" alt="Image" class="img-fluid"></a>
 						<span class="d-flex align-items-center loc mb-2">
 							<span class="icon-room mr-3"></span>
 							<span>Italy</span>
@@ -310,14 +314,14 @@
 									<span>$520.00</span>
 								</div>
 							</div>
-							
+
 						</div>
-						
+
 					</div>
 				</div>
 				<div class="col-6 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
 					<div class="media-1">
-						<a href="#" class="d-block mb-3"><img src="user/images/hero-slider-2.jpg" alt="Image" class="img-fluid"></a>
+						<a href="#" class="d-block mb-3"><img src="/user/images/hero-slider-2.jpg" alt="Image" class="img-fluid"></a>
 						<span class="d-flex align-items-center loc mb-2">
 							<span class="icon-room mr-3"></span>
 							<span>United States</span>
@@ -329,14 +333,14 @@
 									<span>$520.00</span>
 								</div>
 							</div>
-							
+
 						</div>
-						
+
 					</div>
 				</div>
 				<div class="col-6 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
 					<div class="media-1">
-						<a href="#" class="d-block mb-3"><img src="user/images/hero-slider-3.jpg" alt="Image" class="img-fluid"></a>
+						<a href="#" class="d-block mb-3"><img src="/user/images/hero-slider-3.jpg" alt="Image" class="img-fluid"></a>
 						<span class="d-flex align-items-center loc mb-2">
 							<span class="icon-room mr-3"></span>
 							<span>Malaysia</span>
@@ -348,14 +352,14 @@
 									<span>$750.00</span>
 								</div>
 							</div>
-							
+
 						</div>
-						
+
 					</div>
 				</div>
 				<div class="col-6 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
 					<div class="media-1">
-						<a href="#" class="d-block mb-3"><img src="user/images/hero-slider-4.jpg" alt="Image" class="img-fluid"></a>
+						<a href="#" class="d-block mb-3"><img src="/user/images/hero-slider-4.jpg" alt="Image" class="img-fluid"></a>
 
 						<span class="d-flex align-items-center loc mb-2">
 							<span class="icon-room mr-3"></span>
@@ -369,9 +373,9 @@
 									<span>$520.00</span>
 								</div>
 							</div>
-							
+
 						</div>
-						
+
 					</div>
 				</div>
 			</div>
@@ -381,13 +385,13 @@
 	<div class="untree_co-section">
 		<div class="container">
 			<div class="row justify-content-between align-items-center">
-				
+
 				<div class="col-lg-6">
 					<figure class="img-play-video">
 						<a id="play-video" class="video-play-button" href="https://www.youtube.com/watch?v=mwtbEGNABWU" data-fancybox>
 							<span></span>
 						</a>
-						<img src="user/images/hero-slider-2.jpg" alt="Image" class="img-fluid rounded-20">
+						<img src="/user/images/hero-slider-2.jpg" alt="Image" class="img-fluid rounded-20">
 					</figure>
 				</div>
 
@@ -412,7 +416,7 @@
 
 					<p><a href="#" class="btn btn-primary">Get Started</a></p>
 
-					
+
 				</div>
 			</div>
 		</div>
@@ -433,7 +437,7 @@
 	<script>
 		$(function() {
 			var slides = $('.slides'),
-			images = slides.find('img');
+					images = slides.find('img');
 
 			images.each(function(i) {
 				$(this).attr('data-id', i + 1);
@@ -456,6 +460,12 @@
 
 			});
 		})
+
+
+		// const params = useParams().code;
+		// console.log(params);
+
+
 	</script>
 
 </div>

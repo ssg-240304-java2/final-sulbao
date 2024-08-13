@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인 - 술기로운한잔</title>
+    <link rel="stylesheet" href="/user/css/login-style.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <header>
+            <h1>회원가입 - 성인인증</h1>
+        </header>
+
+        <p>주류를 구매하시려면, 연령확인이 필요합니다.</p>
+        <p>19세 미만은 청소년 보호법에 따라 주류 판매 금지규정이 적용 되어 주류 주문이 불가합니다.</p>
+
+        <p>비바톤으로 빠르게 성인인증하기</p>
+
+        <button type="button" onclick="openBbatonAuth()">
+            <img src="/user/images/BBaton_Button.png" alt="bbaton">
+        </button>
+
+        <div class="additional-links">
+            <p>전통술을 판매하는 사업자이신가요? <a href="/signup-seller">판매자 신청하기</a></p>
+            <p>이미 술기로운한잔 계정이 있으신가요? <a href="/login">로그인하기</a></p>
+            <p><a href="/index">메인으로</a></p>
+        </div>
+    </div>
+
+
+</div>
+
+<script>
+    function openBbatonAuth() {
+        // 메인 페이지 리디렉트
+        // location.href = "https://bauth.bbaton.com/oauth/authorize?client_id=JDJhJDA0JHpwblZnQmNOSjVJVHZjQ2pFSTZ3Q3VEN1g5dWRCbDZwM1FQb1VJ&redirect_uri=https://hansool.shop&response_type=code&scope=read_profile";
+        location.href = "https://bauth.bbaton.com/oauth/authorize?client_id=JDJhJDA0JGkyLmt0MEFDNWoxZkRCWUcvVjJ6RS5zdWdwY1AyZnUxbGZscy4w&redirect_uri=http://localhost:8080/signupAccess/&response_type=code&scope=read_profile";
+        }
+
+</script>
+<!--<footer>-->
+<!--    <p>©  bucketplace, Co., Ltd.. All Rights Reserved</p>-->
+<!--</footer>-->
+</body>
+</html>
