@@ -118,36 +118,60 @@
                     console.error("Error:", error);
                 });
         }
-        function validateSelection() {
+
+        function submitCartNos(event) {
+            const checkboxes = document.querySelectorAll('.product-checkbox:checked');
+
+            if (checkboxes.length === 0) {
+                alert("상품을 선택해 주세요");
+                event.preventDefault(); // 폼 제출 방지
+                return false;
+            }
+            const form = document.getElementById('presentForm');
+
+            // 기존 숨겨진 input 요소 제거 (다시 클릭했을 때 중복 방지)
+            form.querySelectorAll('input[name="cartCodes"]').forEach(input => input.remove());
+
+            checkboxes.forEach(checkbox => {
+                const cartCode = checkbox.closest('tr').querySelector('.total-price').getAttribute('data-number');
+                if (cartCode) {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'cartCodes';
+                    input.value = cartCode;
+                    form.appendChild(input);
+                } else {
+                    console.error('cartCode not found');
+                }
+            });
+            console.log('Form data:', new FormData(form));
+            return true;
+        }
+
+        function submitCartNos1(event) {
             const checkboxes = document.querySelectorAll('.product-checkbox:checked');
             if (checkboxes.length === 0) {
                 alert("상품을 선택해 주세요");
+                event.preventDefault(); // 폼 제출 방지
                 return false;
             }
-            return true;
-        }
-        function submitCartNos(event, formId) {
-            const form = document.getElementById(formId);
-            const checkboxes = document.querySelectorAll('.product-checkbox:checked');
-            if (checkboxes.length === 0) {
-                    alert("상품을 선택해 주세요");
-                    event.preventDefault();
-                    return false;
-                }
-            // 기존 숨겨진 input 요소들 제거
-            form.querySelectorAll('input[name="cartNos"]').forEach(input => input.remove());
-
+            const form = document.getElementById('orderForm');
+            // 기존 숨겨진 input 요소 제거 (다시 클릭했을 때 중복 방지)
+            form.querySelectorAll('input[name="cartCodes"]').forEach(input => input.remove());
             checkboxes.forEach(checkbox => {
-                const cartNo = checkbox.closest('tr').querySelector('.total-price').getAttribute('th:data-number');
-                if (cartNo) {
+                const cartCode = checkbox.closest('tr').querySelector('.total-price').getAttribute('data-number');
+                console.log('Found cartCode: ' + cartCode);
+                if (cartCode) {
                     const input = document.createElement('input');
                     input.type = 'hidden';
-                    input.name = 'cartNos';
-                    input.value = cartNo;
+                    input.name = 'cartCodes';
+                    input.value = cartCode;
                     form.appendChild(input);
+                } else {
+                    console.error('cartCode not found');
                 }
             });
-
+            console.log('Form data:', new FormData(form));
             return true;
         }
     </script>
@@ -323,8 +347,7 @@
                                 </td>
                                 <td>
                                     <div class="product-info">
-                                        <span class="company-name" th:text="${cart.products.sellerInfo.name}"></span>
-                                        <!--  cart.products.sellerInfo.sellerInfo.businessName  -->
+                                        <span class="company-name" th:text="${cart.products.sellerInfo.sellerInfo.businessName}"></span>
                                         <span class="product-name" th:text="${cart.products.getProductName()}"></span>
                                     </div>
                                 </td>
@@ -363,11 +386,11 @@
                         </p>
                     </div>
                     <div class="cart-buttons">
-                        <form id="cartForm" action="/orders/cart/order_form" method="post" onsubmit="return submitCartNos(event, 'cartForm');">
-                            <button type="submit" class="btn btn-primary py-3 px-4">구매 하기</button>
+                        <form id="orderForm" action="/orders/cart/order_form" method="post" onsubmit="return submitCartNos1(event);">
+                            <button type="submit" class="btn btn-primary py-3 px-4">Checkout</button>
                         </form>
-                        <form id="presentForm" action="/orders/cart/present_form" method="post" onsubmit="return submitCartNos(event, 'presentForm');">
-                            <button type="submit" class="btn btn-primary py-3 px-4">선물 구매 하기</button>
+                        <form id="presentForm" action="/orders/cart/present_form" method="post" onsubmit="return submitCartNos(event);">
+                            <button type="submit" class="btn btn-primary py-3 px-4">Checkout a Present</button>
                         </form>
                     </div>
                 </div>

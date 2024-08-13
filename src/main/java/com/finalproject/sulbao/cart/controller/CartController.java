@@ -5,8 +5,7 @@ import com.finalproject.sulbao.cart.dto.CartDTO;
 import com.finalproject.sulbao.cart.service.CartService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -27,30 +26,26 @@ public class CartController {
     }
 
     /***
-     * 카트 출력 메소드
+     * 장바구니 로딩 및 카트 출력 메소드
      * @param model
      * @return
      */
     @GetMapping("/cart")
     public String viewCart(Model model){
-        Long userId = 1L;
-
+        // 현재 로그인 값 없어 임시 테스트용 데이터
+        String userId = "lajaha99";
         List<CartDTO> cartList = cartService.findCartByUserId(userId);
-        System.out.println("lalalallalalal"+ cartService.findCartByUserId(userId));
-        System.out.println(cartList);
-        log.info("cartList =깐트롤라 {}", cartList);
         model.addAttribute("carts", cartList);
         return "cart";
     }
 
     /***
-     * 카트 내용물 삭제 메소드
+     * 장바구니 항목 삭제 메소드
      * @param cartCode
      * @return
      */
     @DeleteMapping("/cart/delete/{cartCode}")
     public ResponseEntity<String> deleteCart(@PathVariable Long cartCode){
-        log.info("dldlldldldldl {}", cartCode);
         try{
             cartService.deleteByCartCode(cartCode);
             return ResponseEntity.ok("Product deleted successfully");
@@ -59,6 +54,12 @@ public class CartController {
         }
     }
 
+    /***
+     * 장바구니 상품 수량 변경 메소드
+     * @param cartCode
+     * @param increment
+     * @return
+     */
     @PutMapping("/cart/updateQuantity/{cartCode}/{increment}")
     public ResponseEntity<Carts> updateQuantity(@PathVariable Long cartCode, @PathVariable boolean increment){
         try {
@@ -69,21 +70,41 @@ public class CartController {
         }
     }
 
+
+    /***
+     * 일반 주문 페이지로 이동 메소드
+     * @param cartCodes
+     * @return
+     */
     @PostMapping("/cart/order_form")
-    public String orderForm(@RequestParam(value = "cartNos", required = false) List<Long> cartNos) {
-        if (cartNos == null || cartNos.isEmpty()) {
+    public String orderForm(@RequestParam("cartCodes") List<Long> cartCodes, Model model) {
+        if (cartCodes == null || cartCodes.isEmpty()) {
             throw new IllegalArgumentException("No products selected.");
         }
-        // cartNos 리스트를 사용하여 로직 처리
-        return "orderConfirmation";
+        System.out.println(cartCodes);
+        List<CartDTO> checkOutList = cartService.findCartByCartCodeIn(cartCodes);
+        int totalPurchasePrice = cartService.sumCartByCartCodeIn(cartCodes);
+        model.addAttribute("carts", checkOutList);
+        model.addAttribute("totalPurchasePrice", totalPurchasePrice);
+        return "order";
     }
 
+
+    /***
+     * 선물하기 주문 페이지로 이동 메소드
+     * @param cartCodes
+     * @param model
+     * @return
+     */
     @PostMapping("/cart/present_form")
-    public String presentForm(@RequestParam(value = "cartNos", required = false) List<Long> cartNos) {
-        if (cartNos == null || cartNos.isEmpty()) {
+    public String presentForm(@RequestParam("cartCodes") List<Long> cartCodes, Model model) {
+        if (cartCodes == null || cartCodes.isEmpty()) {
             throw new IllegalArgumentException("No products selected.");
         }
-        // cartNos 리스트를 사용하여 로직 처리
-        return "presentConfirmation";
+        List<CartDTO> checkOutList = cartService.findCartByCartCodeIn(cartCodes);
+        int totalPurchasePrice = cartService.sumCartByCartCodeIn(cartCodes);
+        model.addAttribute("carts", checkOutList);
+        model.addAttribute("totalPurchasePrice", totalPurchasePrice);
+        return "presentOrder"; // View 또는 redirect 경로
     }
 }
