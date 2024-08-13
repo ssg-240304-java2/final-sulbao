@@ -31,11 +31,7 @@ public class LoginDetailsService implements UserDetailsService {
 
         Login login = loginRepository.findByUserId(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 사용자 입니다."));
-        System.out.println("권한========================" + login.getUserId());
-        System.out.println("권한========================" + login.getUserRole());
         return new LoginDetails(login);
-//        return new LoginDetails(loginRepository.findByUserId(userId)
-//                .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 사용자 입니다.")));
 
     }
 }
