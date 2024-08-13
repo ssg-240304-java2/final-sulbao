@@ -1,16 +1,9 @@
 package com.finalproject.sulbao.login.model.entity;
 
 import com.finalproject.sulbao.common.entity.BaseEntity;
-import com.finalproject.sulbao.login.model.vo.EmailVerify;
 import com.finalproject.sulbao.login.model.vo.SellerInfo;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.List;
 
 @Entity
 @Table(name = "tbl_login")
@@ -66,13 +59,6 @@ public class Login extends BaseEntity {
             @AttributeOverride(name = "sellerStatus", column = @Column(name = "seller_status", table = "tbl_seller_info"))
     })
     private SellerInfo sellerInfo;
-
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "verifyCode", column = @Column(name = "verify_code", table = "tbl_verify_code")),
-            @AttributeOverride(name = "isVerified", column = @Column(name = "is_verified", table = "tbl_verify_code"))
-    })
-    private EmailVerify emailVerify;
 
 //    @Builder
 //    public Login(String userId, String userPw, RoleType userRole, String gender) {

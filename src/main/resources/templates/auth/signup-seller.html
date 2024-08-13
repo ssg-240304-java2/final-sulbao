@@ -66,18 +66,18 @@
         <label for="business-email">이메일</label>
         <div class="verification-wrapper">
           <input type="email" id="business-email" name="businessEmail" placeholder="이메일 주소를 입력해 주세요." required>
-          <button id="verification-email" type="button" onclick="sendVerification()">인증번호 요청</button>
+          <button id="verification-email" type="button">인증번호 요청</button>
         </div>
         <div id="business-email-verification" class="verification-message">
           <p id="business-email-verification-false" class="error-message-default"></p>  <!-- 인증번호 타이머 필요.. -->
         </div>
-        <div class="verification-input-wrapper" id="business-verification-section">
-          <input type="text" id="business-verification-email-code" name="businessEmailCode" placeholder="인증코드 입력" required>
-          <button type="button">인증코드 확인</button>
-        </div>
-        <div id="business-email-verification-code" class="verification-message">
-          <p id="business-verification-code-true" class="verification-message" th:text="${valid_ConfirmEmail}"></p>
-        </div>
+            <div class="verification-input-wrapper" id="business-verification-section">
+              <input type="text" id="business-verification-email-code" name="businessEmailCode" placeholder="인증코드 입력" required>
+              <button id="verification-email-send-btn" type="button" >인증코드 확인</button>
+            </div>
+            <div id="business-email-verification-code" class="verification-message">
+              <p id="business-verification-code-true" class="verification-message" th:text="${valid_ConfirmEmail}"></p>
+            </div>
       </div>
 
       <div class="form-group">
@@ -121,8 +121,10 @@
   </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
-  document.getElementById('verification-number').addEventListener('click', function() {
+  document.getElementById('verification-number').addEventListener('click', function () {
     var businessNumberInput = document.getElementById('business-number');
     var businessNumber = businessNumberInput.value;
 
@@ -139,25 +141,30 @@
     }
   });
 
-
-
-  document.getElementById('verification-email').addEventListener('click', function() {
+  document.getElementById('verification-email').addEventListener('click', function () {
     var businessEmailInput = document.getElementById('business-email');
     var businessEmail = businessEmailInput.value;
-    var confirmMessage = document.getElementById('business-email-verification-true');
-    var errorMessage = document.getElementById('business-email-verification-false');
 
     // 이메일 주소 유효성 확인
     var isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(businessEmail);
 
     if (!isValidEmail) {
-      // 유효하지 않으면 에러 메시지를 표시하고 버튼 동작 중지
       alert("유효한 이메일주소를 입력해주세요.");
     } else {
-      // 유효한 경우의 버튼 동작을 여기에 추가합니다.
-      alert("이메일로 인증코드를 전송했습니다.");
-
-      // 실제 동작 코드를 여기에 추가하세요.
+      $.ajax({
+        url: '/email',
+        type: 'POST',
+        data: {businessEmail: businessEmail},
+        success: function (response) {
+          // 서버 응답이 성공적일 때의 동작을 여기에 추가합니다.
+          alert("이메일로 인증코드를 전송했습니다.");
+          // 추가로 인증 코드를 입력하는 필드와 타이머 등을 표시할 수 있습니다.
+        },
+        error: function (error) {
+          // 서버 응답이 실패했을 때의 동작을 여기에 추가합니다.
+          alert("인증코드 전송에 실패했습니다. 다시 시도해주세요.");
+        }
+      });
     }
   });
 </script>

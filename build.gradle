@@ -48,8 +48,10 @@ dependencies {
 
     // 성인인증 api 처리를 위한 의존
     implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
-    // 타임리프에서 스프링시큐리티 적용
-    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+    // 메일인증을 위한 의존
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    testImplementation 'io.projectreactor:reactor-test'
 
 
 }

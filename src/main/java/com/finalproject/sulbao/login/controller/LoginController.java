@@ -1,8 +1,11 @@
 package com.finalproject.sulbao.login.controller;
 
+import com.finalproject.sulbao.login.model.dto.LoginDetails;
 import com.finalproject.sulbao.login.model.dto.SignupMemberDto;
 import com.finalproject.sulbao.login.model.dto.SignupSellerDto;
+import com.finalproject.sulbao.login.model.entity.Login;
 import com.finalproject.sulbao.login.model.service.LoginService;
+import com.finalproject.sulbao.login.model.vo.LoginVO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -14,6 +17,9 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.http.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
@@ -24,6 +30,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.Collection;
+import java.util.List;
 
 
 @RequiredArgsConstructor
@@ -193,6 +202,9 @@ public class LoginController {
         return "redirect:/login";
     }
 
+    @GetMapping("/auth/testSeller")
+    public void mainPageSeller() {
+    }
 
 
 

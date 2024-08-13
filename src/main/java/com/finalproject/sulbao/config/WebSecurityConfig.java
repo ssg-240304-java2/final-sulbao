@@ -1,6 +1,7 @@
 package com.finalproject.sulbao.config;
 
 import com.finalproject.sulbao.login.controller.UserAuthenticationFailureHandler;
+import com.finalproject.sulbao.login.controller.UserAuthenticationSuccessHandler;
 import com.finalproject.sulbao.login.model.service.LoginDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -27,6 +28,7 @@ public class WebSecurityConfig {
 
     private final LoginDetailsService loginService;
     private final UserAuthenticationFailureHandler failureHandler;
+    private final UserAuthenticationSuccessHandler successHandler;
 
     // 스프링 시큐리티 기능 비활성화
     @Bean
@@ -59,19 +61,21 @@ public class WebSecurityConfig {
             formLoginConfigurer
                     .loginPage("/login")
                     .defaultSuccessUrl("/")
-                    .loginProcessingUrl("/auth/member")
-                    .defaultSuccessUrl("/")
+                    .loginProcessingUrl("/auth/login")
                     .failureHandler(failureHandler)
+                    .successHandler(successHandler)
                     .usernameParameter("userId")
                     .passwordParameter("userPw")
                     .permitAll();
+
         }));
 
         // 로그아웃 설정
         http.logout(logoutConfigurer -> {
             logoutConfigurer
                     .logoutUrl("/auth/logout")
-                    .logoutSuccessUrl("/");
+                    .logoutSuccessUrl("/")
+                    .invalidateHttpSession(true);
         });
 
         http.csrf(AbstractHttpConfigurer::disable);

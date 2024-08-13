@@ -24,6 +24,7 @@ public class LoginDetails implements UserDetails {
         collectors.add(()->{return "ROLE_"+login.getUserRole();});
 
         return collectors;
+
     }
 
     @Override
