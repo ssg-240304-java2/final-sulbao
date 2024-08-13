@@ -21,7 +21,7 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class EmailService {
 
-    private final JavaMailSender javaMailSender;  // 의존성 주입을 통해 필요한 객체를 가져옴
+    private final JavaMailSender javaMailSender;
     private final SpringTemplateEngine templateEngine;
     private final EmailRepository emailRepository;
 
