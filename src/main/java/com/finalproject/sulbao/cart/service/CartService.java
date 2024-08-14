@@ -2,6 +2,7 @@ package com.finalproject.sulbao.cart.service;
 
 import com.finalproject.sulbao.cart.domain.Carts;
 import com.finalproject.sulbao.cart.dto.CartDTO;
+import com.finalproject.sulbao.cart.dto.OrderDTO;
 import com.finalproject.sulbao.cart.repository.CartRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -64,5 +65,10 @@ public class CartService {
     public int sumCartByCartCodeIn(List<Long> cartCodes) {
         int sumPurchasePrice = cartRepository.findTotalPurchasePriceByCartCodeIn(cartCodes);
         return sumPurchasePrice;
+    }
+
+    public CartDTO findCartByCartCode(Long aLong) {
+        Carts orders = cartRepository.findByCartCodes(aLong);
+        return orders == null ? null : modelMapper.map(orders, CartDTO.class);
     }
 }

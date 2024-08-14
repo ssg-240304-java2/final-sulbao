@@ -4,6 +4,7 @@ import com.finalproject.sulbao.cart.domain.Carts;
 import com.finalproject.sulbao.cart.dto.CartDTO;
 import com.finalproject.sulbao.cart.service.CartService;
 import com.finalproject.sulbao.login.model.dto.LoginDetails;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -34,6 +35,9 @@ public class CartController {
      */
     @GetMapping("/cart")
     public String viewCart(Model model,Authentication authentication){
+        if(authentication.getPrincipal() == null){
+            return "redirect:/login";
+        }
         LoginDetails login = (LoginDetails) authentication.getPrincipal();
         String userId = login.getUsername();
         List<CartDTO> cartList = cartService.findCartByUserId(userId);
@@ -79,10 +83,11 @@ public class CartController {
      * @return
      */
     @PostMapping("/cart/order_form")
-    public String orderForm(@RequestParam("cartCodes") List<Long> cartCodes, Model model) {
+    public String orderForm(@RequestParam("cartCodes") List<Long> cartCodes, Model model, HttpSession session) {
         if (cartCodes == null || cartCodes.isEmpty()) {
             throw new IllegalArgumentException("No products selected.");
         }
+        session.setAttribute("cartCodes", cartCodes);
         System.out.println(cartCodes);
         List<CartDTO> checkOutList = cartService.findCartByCartCodeIn(cartCodes);
         int totalPurchasePrice = cartService.sumCartByCartCodeIn(cartCodes);

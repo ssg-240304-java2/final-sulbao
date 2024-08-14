@@ -20,4 +20,7 @@ public class TempController {
 
     @GetMapping("/services")
     public void services() {}
+
+    @GetMapping("/ordercomplete")
+    public void ordercomplete() {}
 }
