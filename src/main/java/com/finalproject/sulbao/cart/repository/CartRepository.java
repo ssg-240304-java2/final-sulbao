@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface CartRepository extends JpaRepository<Carts, Integer> {
 
-    List<Carts> findByUserId(String userId, Sort cartCode);
+    List<Carts> findByUserIdAndIsOrder(String userId,boolean isOrder, Sort cartCode);
     Long deleteByCartCode(Long cartCode);
 
     Optional<Carts> findByCartCode(Long cartCode);

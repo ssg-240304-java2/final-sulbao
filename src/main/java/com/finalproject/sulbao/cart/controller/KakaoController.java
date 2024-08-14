@@ -140,7 +140,7 @@ public class KakaoController {
             System.out.println(orderPk);
 
             // 그리고 장바구니 넘버를 조회해서 true로 수정
-
+            cartService.updateIsOrder(cartDTO.getCartCode());
 
             // 카트테이블 조건 수정
         }

@@ -52,4 +52,9 @@ public class Carts {
     public void updateTotalPrice() {
         this.totalPrice = this.amount * this.products.getProductPrice();
     }
+
+    public void markAsOrdered() {
+        this.isOrder = true;
+    }
 }
+
