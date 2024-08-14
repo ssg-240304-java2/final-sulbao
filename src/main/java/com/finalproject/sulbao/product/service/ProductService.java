@@ -2,6 +2,8 @@ package com.finalproject.sulbao.product.service;
 
 import com.finalproject.sulbao.common.file.FileDto;
 import com.finalproject.sulbao.common.file.FileService;
+import com.finalproject.sulbao.login.model.entity.Login;
+import com.finalproject.sulbao.login.model.repository.LoginRepository;
 import com.finalproject.sulbao.product.model.dto.ProductDTO;
 import com.finalproject.sulbao.product.model.entity.Product;
 import com.finalproject.sulbao.product.model.vo.ProductImage;
@@ -25,10 +27,12 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final FileService fileService;
+    private final LoginRepository loginRepository;
 
-    public ProductService(ProductRepository productRepository, FileService fileService) {
+    public ProductService(ProductRepository productRepository, FileService fileService, LoginRepository loginRepository) {
         this.productRepository = productRepository;
         this.fileService = fileService;
+        this.loginRepository = loginRepository;
     }
 
 
@@ -38,12 +42,15 @@ public class ProductService {
 
         //상품이미지 업로드
         FileDto fileDto = fileService.uploadFile(productDTO.getImage(),uploadDir,"sulbao-file/product");
-        log.info("uploadFileUrl === {}", fileDto.getUploadFileUrl());
+
 
         //상품이미지 리스트 생성
-        //TODO: 썸네일 작성완료되면 썸네일도 같이 등록하도록 수정필요
         List<ProductImage> productImageList = List.of(new ProductImage(fileDto.getOriginalFileName(),fileDto.getUploadFileName(),fileDto.getUploadFileUrl()));
         productDTO.setProductImages(productImageList);
+
+        //판매자정보
+        Optional<Login> loginInfo = loginRepository.findById(productDTO.getUserNo());
+        productDTO.setSellerInfo(loginInfo.get());
 
         // product 엔티티 생성
         Product product = productDTO.toEntity();
@@ -67,7 +74,6 @@ public class ProductService {
     public ProductDTO findByProductNo(Long productNo) {
 
         Product productEntity = productRepository.findByProductNo(productNo);
-        log.info("productEntity === {}", productEntity);
         return new ProductDTO().toDTO(productEntity);
 
     }
@@ -76,23 +82,18 @@ public class ProductService {
     @Transactional
     public void updateProduct(ProductDTO productDTO) {
 
-        log.info("productEntity update === {}", productDTO);
-        log.info("service 입장");
         if(productDTO.getImage() != null){
             FileDto fileDto = fileService.uploadFile(productDTO.getImage(),uploadDir,"sulbao-file/product");
             ProductImage productImage = new ProductImage();
             productImage.setOriginName(fileDto.getOriginalFileName());
             productImage.setSaveName(fileDto.getUploadFileName());
             productImage.setSaveImgUrl(fileDto.getUploadFileUrl());
-
             productDTO.setProductImages(List.of(productImage));
         }
 
         Product productEntity = productRepository.findByProductNo(productDTO.getProductNo());
         productEntity.update(productDTO);
 
-
-        log.info("productDTO === {}", productDTO);
     }
 
     //상품삭제
@@ -101,7 +102,6 @@ public class ProductService {
         String[] productNoArray = productNoList.split(",");
 
         for (String productNo : productNoArray) {
-            log.info("productNo === {}", productNo);
             productRepository.deleteById(Integer.valueOf(productNo));
         }
 
@@ -119,8 +119,6 @@ public class ProductService {
 
             if(productInfo.isPresent()){
                 if(type.equals("display")){
-                    log.info("display === {}", productDTO.getDisplayYn());
-                    log.info(productInfo.get().toString());
                     productInfo.get().updateDisplay(productDTO);
                 }else{
                     productInfo.get().updateSellYn(productDTO);
@@ -137,27 +135,23 @@ public class ProductService {
         if(productDTO.getProductCategory() != null){
             //카테고리 전체선택아닐때
 
-            if(productDTO.getDisplayYn() != null){
+            if(productDTO.getDisplayYn() != null && !productDTO.getDisplayYn().isBlank()){
                 //진열여부 전체 선택아닐때
-                if(productDTO.getSellYn() != null){
+                if(productDTO.getSellYn() != null && !productDTO.getSellYn().isBlank()){
                     //판매여부가 전체 선택이 아닐때
-                    //findBySearchProductCategoryAndDisplayAndSell
                     productList = productRepository.findBySearchProductCategoryAndDisplayAndSell(productDTO);
                 }else {
                     //판매여부가 전체 선택일때
-                    //findBySearchProductCategoryAndDisplayAndAllSell
                     productList = productRepository.findBySearchProductCategoryAndDisplayAndAllSell(productDTO);
                 }
 
             }else{
                 //진열여부 전체 선택일때
-                if(productDTO.getSellYn() != null){
+                if(productDTO.getSellYn() != null && !productDTO.getSellYn().isBlank()){
                     //판매여부가 전체 선택이 아닐때
-                    //findBySearchProductCategoryAndAllDisplayAndSell
                     productList = productRepository.findBySearchProductCategoryAndAllDisplayAndSell(productDTO);
                 }else {
                     //판매여부가 전체 선택일때
-                    //findBySearchProductCategoryAndAllDisplayAndAllSell
                     productList = productRepository.findBySearchProductCategoryAndAllDisplayAndAllSell(productDTO);
 
                 }
@@ -165,35 +159,29 @@ public class ProductService {
 
         }else{
             //카테고리 전체선택
-            if(productDTO.getDisplayYn() != null){
+            if(productDTO.getDisplayYn() != null&& !productDTO.getDisplayYn().isBlank()){
                 //진열여부 전체 선택아닐때
 
-                if(productDTO.getSellYn() != null){
+                if(productDTO.getSellYn() != null && !productDTO.getSellYn().isBlank()){
                     //판매여부가 전체 선택이 아닐때
-                    //findBySearchProductAllCategoryAndDisplayAndSell
                     productList= productRepository.findBySearchProductAllCategoryAndDisplayAndSell(productDTO);
                 }else {
                     //판매여부가 전체 선택일때
-                    //findBySearchProductAllCategoryAndDisplayAndAllSell
                     productList= productRepository.findBySearchProductAllCategoryAndDisplayAndAllSell(productDTO);
                 }
             }else{
                 //진열여부 전체 선택일때
 
-                if(productDTO.getSellYn() != null){
+                if(productDTO.getSellYn() != null && !productDTO.getSellYn().isBlank()){
                     //판매여부가 전체 선택이 아닐때
-                    //findBySearchProductAllCategoryAndAllDisplayAndSell
                     productList = productRepository.findBySearchProductAllCategoryAndAllDisplayAndSell(productDTO);
                 }else {
                     //판매여부가 전체 선택일때
-                    //findBySearchProductAllCategoryAndAllDisplayAllSell
                     productList = productRepository.findBySearchProductAllCategoryAndAllDisplayAllSell(productDTO);
                 }
             }
         }
 
-
-        log.info("productList === {}", productList);
         return productList.stream()
                 .map(product -> new ProductDTO().toDTO(product))
                 .collect(Collectors.toList());

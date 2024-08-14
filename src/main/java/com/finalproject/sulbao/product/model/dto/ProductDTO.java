@@ -1,5 +1,6 @@
 package com.finalproject.sulbao.product.model.dto;
 
+import com.finalproject.sulbao.login.model.entity.Login;
 import com.finalproject.sulbao.product.model.entity.Product;
 import com.finalproject.sulbao.product.model.entity.ProductCategory;
 import com.finalproject.sulbao.product.model.vo.ProductImage;
@@ -33,6 +34,7 @@ public class ProductDTO {
     private String searchInput;
     private Long userNo;
     private String searchchk;
+    private Login sellerInfo;
 
 
     public Product toEntity() {
@@ -46,6 +48,7 @@ public class ProductDTO {
                 .productStock(productStock)
                 .productHashTag(productHashTag)
                 .sellYn(sellYn)
+                .sellerInfo(sellerInfo)
                 .displayYn(displayYn)
                 .productImages(productImages)
                 .build();
@@ -62,6 +65,7 @@ public class ProductDTO {
                 .productStock(product.getProductStock())
                 .productHashTag(product.getProductHashTag())
                 .sellYn(product.getSellYn())
+                .sellerInfo(product.getSellerInfo())
                 .displayYn(product.getDisplayYn())
                 .productImages(product.getProductImages())
                 .build();

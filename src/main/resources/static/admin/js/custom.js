@@ -362,8 +362,8 @@ $(document).ready(function () {
       info: false,
       lengthChange: false,
       lengthMenu: [
-        [5, 10, 15, -1],
-        [5, 10, 15, "All"],
+        [10, 10, 30, -1],
+        [10, 20, 30, "All"],
       ],
       scrollX: true,
       order: [[2, "asc"]],

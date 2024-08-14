@@ -3,6 +3,7 @@ package com.finalproject.sulbao.product.controller;
 import com.finalproject.sulbao.product.model.dto.ProductDTO;
 import com.finalproject.sulbao.product.model.entity.ProductCategory;
 import com.finalproject.sulbao.product.service.ProductService;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,10 +24,14 @@ public class ProductController {
 
     //목록화면
     @GetMapping("/list")
-    public String productList(Model model) {
+    public String productList(Model model, HttpSession session) {
+
+        if(session == null){
+            return "redirect:/login";
+        }
 
         ProductDTO productDTO = new ProductDTO();
-        productDTO.setUserNo(2L);
+        productDTO.setUserNo((Long) session.getAttribute("userNo"));
         List<ProductDTO> productList = productService.findByUserNo(productDTO);
 
         model.addAttribute("product", productDTO);
@@ -36,9 +41,9 @@ public class ProductController {
 
     //조회
     @GetMapping("/search")
-    public String productSearch(Model model, @ModelAttribute ProductDTO productDTO) {
+    public String productSearch(Model model, @ModelAttribute ProductDTO productDTO, HttpSession session) {
 
-        productDTO.setUserNo(2L);
+        productDTO.setUserNo((Long) session.getAttribute("userNo"));
         List<ProductDTO> productList = productService.findBySearchInfo(productDTO);
 
         model.addAttribute("product", productDTO);
@@ -66,9 +71,9 @@ public class ProductController {
 
     //상품등록
     @PostMapping("/regist")
-    public String saveProduct(@ModelAttribute ProductDTO productDTO) {
-        // 넘겨오는 값 확인
-        log.info("saveProduct : {}", productDTO);
+    public String saveProduct(@ModelAttribute ProductDTO productDTO, HttpSession session) {
+
+        productDTO.setUserNo((Long) session.getAttribute("userNo"));
         // 저장
         productService.saveProduct(productDTO);
         return "redirect:/product/list";
@@ -76,8 +81,9 @@ public class ProductController {
 
     //상품수정
     @PostMapping("/update")
-    public String updateProduct(@ModelAttribute ProductDTO productDTO) {
+    public String updateProduct(@ModelAttribute ProductDTO productDTO, HttpSession session) {
 
+        productDTO.setUserNo((Long) session.getAttribute("userNo"));
         productService.updateProduct(productDTO);
 
         return "redirect:/product/list";
