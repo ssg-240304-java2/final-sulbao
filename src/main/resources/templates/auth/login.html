@@ -58,8 +58,23 @@
                 <p>술기로운 한잔이 처음이신가요? <a href="/signup">입접신청 하기</a></p>
             </div>
         </form>
+        <div class="footer" style="text-align: center !important;">
+            <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td class="content-block">
+                        <span class="apple-link">술기로운 한잔. 서울특별시 강남구 삼성로 534 6F, 스파로스 백엔드 개발 2회차 3강의실</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="content-block powered-by">
+                        Powered by <a href="http://hansool.shop">Team Sulbao</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
 </div>
+<div th:if="${session.message}" class="alert alert-danger" th:text="${session.message}"></div>
 
 <script>
     function openForm(evt, formName) {

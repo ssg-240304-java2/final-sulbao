@@ -9,7 +9,6 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class EmailVerify {
 
     @Id
@@ -19,4 +18,11 @@ public class EmailVerify {
     private String email;
     private String code;
     private boolean isVerified;
+
+
+    @Builder
+    public EmailVerify(String email, String code) {
+        this.email = email;
+        this.code = code;
+    }
 }

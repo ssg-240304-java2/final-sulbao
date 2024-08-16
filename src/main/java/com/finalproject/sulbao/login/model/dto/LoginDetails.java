@@ -2,6 +2,7 @@ package com.finalproject.sulbao.login.model.dto;
 
 
 import com.finalproject.sulbao.login.model.entity.Login;
+import com.finalproject.sulbao.login.model.entity.RoleType;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -43,4 +44,17 @@ public class LoginDetails implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    @Override
+    public boolean isAccountNonLocked() {
+
+        if(login.getUserRole() == RoleType.SELLER
+            && login.getSellerInfo().getSellerStatus().equals("WAIT")){
+
+            return false;
+        }
+        return UserDetails.super.isAccountNonLocked();
+    }
+
+
 }

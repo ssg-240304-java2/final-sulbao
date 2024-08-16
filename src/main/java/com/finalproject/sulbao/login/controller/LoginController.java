@@ -30,6 +30,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Collection;
 import java.util.List;
@@ -111,7 +112,8 @@ public class LoginController {
 
     /* 회원가입 유효성 검사 - MEMBER */
     @PostMapping("/regist/member")
-    public String registNewMember(@Valid @ModelAttribute("member") SignupMemberDto member, BindingResult bindingResult, HttpServletRequest httpServletRequest, Model model) {
+    public String registNewMember(@Valid @ModelAttribute("member") SignupMemberDto member, BindingResult bindingResult,
+                                  HttpServletRequest httpServletRequest, Model model, RedirectAttributes redirectAttributes) {
         try{
             HttpSession session = httpServletRequest.getSession(true);
             model.addAttribute("id", session.getAttribute("id"));
@@ -151,7 +153,8 @@ public class LoginController {
 
             // 회원가입 성공
             loginService.registNewMember(member);
-            log.info("<<<<<<<<<<<<회원가입 성공==========================>>>>>>>>>>>>>>>>>>>");
+            redirectAttributes.addFlashAttribute("message", "성공적으로 회원가입 되었습니다.");
+
             return "redirect:/login";
 
         } catch (RuntimeException e){
@@ -163,7 +166,9 @@ public class LoginController {
 
     /* 회원가입 유효성 검사 - SELLER */
     @PostMapping("/regist/seller")
-    public String registNewSeller(@Valid @ModelAttribute SignupSellerDto seller, BindingResult bindingResult, Model model) {
+    public String registNewSeller(@Valid @ModelAttribute SignupSellerDto seller, BindingResult bindingResult, Model model,
+                                  RedirectAttributes redirectAttributes) {
+
         if(bindingResult.hasErrors()){
             seller.setBusinessPw(null);
             seller.setConfirmPw(null);
@@ -198,7 +203,8 @@ public class LoginController {
 
         // 회원가입 성공
         loginService.registNewSeller(seller);
-        log.info("<<<<<<<<<<<<회원가입 성공==========================>>>>>>>>>>>>>>>>>>>");
+        redirectAttributes.addFlashAttribute("message", "성공적으로 입점신청되었습니다. 승인 후 이메일로 전송됩니다.");
+
         return "redirect:/login";
     }
 

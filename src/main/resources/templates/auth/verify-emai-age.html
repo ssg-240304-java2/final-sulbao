@@ -84,7 +84,7 @@
         .footer span,
         .footer a {
             color: #9a9ea6;
-            font-size: 9px;
+            font-size: 16px;
             text-align: center;
         }
 
@@ -102,7 +102,7 @@
         }
 
         .btn > tbody > tr > td {
-            padding-bottom: 10px;
+            padding-bottom: 16px;
         }
 
         .btn table {
@@ -124,8 +124,30 @@
             border-color: #0867ec;
             color: #ffffff;
         }
+
+        #code {
+            color: #ffffff;
+            background-color: #0867ec;
+            padding: 10px 10px 10px 10px;
+            display: inline-block;
+            border-radius: 4px;
+            margin-bottom: 18px;
+        }
+
+        .preheader {
+            color: transparent;
+            display: none;
+            height: 0;
+            max-height: 0;
+            max-width: 0;
+            opacity: 0;
+            overflow: hidden;
+            mso-hide: all;
+            visibility: hidden;
+            width: 0;
+        }
+
         .powered-by a {
-            margin-top: 6px;
             text-decoration: none;
         }
 
@@ -145,46 +167,37 @@
             text-decoration: underline;
         }
 
-        .bbaton-button {
-            all:unset;
-            margin-bottom: 10px;
-            text-align: center; !important;"
-        }
-
-        .bbaton-button:hover {
-            color: #1A374D;
-            border-color: #1A374D;
-        }
-
     </style>
 </head>
 <body>
 <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="body">
     <tr>
+        <td>&nbsp;</td>
         <td class="container">
             <div class="content">
-                <div class="main">
+
                 <!-- START CENTERED WHITE CONTAINER -->
-                <header style="text-align: center; margin-top: 20px">
-                    <h2>연령 인증</h2>
+                <header style="text-align: center">
+                    <h2>회원가입 - 성인인증</h2>
                 </header>
-                <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="main">
 
                     <!-- START MAIN CONTENT AREA -->
                     <tr>
                         <td class="wrapper">
-                            <p>"술기로운 한 잔" 가입을 위해 연령확인이 필요합니다.</p>
+                            <p>술기로운 한 잔 가입을 위해서 연령확인이 필요합니다.</p>
                             <p style="font-size: small">19세 미만은 청소년 보호법에 따라 주류 판매 금지규정이 적용 되어 주류 주문이 불가합니다.</p>
                             <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                                 <tbody>
                                 <tr>
-                                    <td>
-                                        <table>
+                                    <td align="left">
+                                        <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                                             <tbody>
                                             <tr>
-                                                <button class="bbaton-button" id="bbaton-button" type="button" onclick="openBbatonAuth()">
+                                                <button style="margin-bottom: 30px" id="bbaton-button" type="button" onclick="openBbatonAuth()">
                                                     <img src="/user/images/BBaton_Button.png" alt="bbaton">
                                                 </button>
+
                                             </tr>
                                             </tbody>
                                         </table>
@@ -202,24 +215,25 @@
 
                     <!-- END MAIN CONTENT AREA -->
                 </table>
-        </div>
 
                 <!-- START FOOTER -->
                 <div class="footer">
                     <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                         <tr>
                             <td class="content-block">
-                                <span class="apple-link">술기로운 한잔. 서울특별시 강남구 삼성로 534 6F, 스파로스 백엔드 개발 2회차 3강의실</span>
+                                <span class="apple-link">Company Inc, 7-11 Commercial Ct, Belfast BT1 2NB</span>
                             </td>
                         </tr>
                         <tr>
                             <td class="content-block powered-by">
-                                Powered by <a href="http://hansool.shop">Team Sulbao</a>
+                                Powered by <a href="http://hansool.shop">hansool.shop</a>
                             </td>
                         </tr>
                     </table>
                 </div>
-            </div>
+        </div>
+        </td>
+        <td>&nbsp;</td>
     </tr>
 </table>
 <script>

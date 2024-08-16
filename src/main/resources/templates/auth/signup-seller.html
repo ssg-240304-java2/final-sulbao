@@ -24,6 +24,7 @@
       margin-top: 5px;
       display: none;
     }
+
   </style>
 </head>
 <body>
@@ -68,16 +69,15 @@
           <input type="email" id="business-email" name="businessEmail" placeholder="이메일 주소를 입력해 주세요." required>
           <button id="verification-email" type="button">인증번호 요청</button>
         </div>
-        <div id="business-email-verification" class="verification-message">
-          <p id="business-email-verification-false" class="error-message-default"></p>  <!-- 인증번호 타이머 필요.. -->
+        <div class="verification-wrapper" id="business-verification-section" style="display: none">
+          <input type="text" id="business-verification-email-code" name="businessEmailCode" placeholder="인증코드 입력" required>
+          <button id="verification-email-code" type="button">인증번호 확인</button>
         </div>
-            <div class="verification-input-wrapper" id="business-verification-section">
-              <input type="text" id="business-verification-email-code" name="businessEmailCode" placeholder="인증코드 입력" required>
-              <button id="verification-email-send-btn" type="button" >인증코드 확인</button>
-            </div>
-            <div id="business-email-verification-code" class="verification-message">
-              <p id="business-verification-code-true" class="verification-message" th:text="${valid_ConfirmEmail}"></p>
-            </div>
+        <div>
+          <input type="text" style="display: none"  id="confirm-email-result" th:if="${valid_confirmEmail != null}" th:text="${valid_confirmEmail}" required>
+          <p id="email-code-false" class="error-message" style="display: none">이메일 인증코드가 일치하지 않습니다.</p>
+          <p id="email-code-true" class="verification-message">이메일 인증 완료되었습니다.</p>
+        </div>
       </div>
 
       <div class="form-group">
@@ -118,6 +118,21 @@
     <div class="additional-links">
       <p>이미 술기로운한잔 계정이 있으신가요? <a href="/login">로그인하기</a></p>
     </div>
+
+    <div class="footer" style="text-align: center !important;">
+      <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+          <td class="content-block">
+            <span class="apple-link">술기로운 한잔. 서울특별시 강남구 삼성로 534 6F, 스파로스 백엔드 개발 2회차 3강의실</span>
+          </td>
+        </tr>
+        <tr>
+          <td class="content-block powered-by">
+            Powered by <a href="http://hansool.shop">Team Sulbao</a>
+          </td>
+        </tr>
+      </table>
+    </div>
   </div>
 </div>
 
@@ -128,24 +143,22 @@
     var businessNumberInput = document.getElementById('business-number');
     var businessNumber = businessNumberInput.value;
 
-    // 사업자등록번호가 10자리 숫자인지 확인
     var isValid = /^\d{10}$/.test(businessNumber);
 
     if (!isValid) {
-      // 유효하지 않으면 에러 메시지를 표시하고 버튼 동작 중지
       alert("유효한 사업자등록번호를 입력해주세요.");
     } else {
       // 유효한 경우의 버튼 동작을 여기에 추가합니다.
       alert("가입 가능한 사업자등록번호입니다.");
-      // 실제 동작 코드를 여기에 추가하세요.
     }
   });
 
+  /* 이메일 인증코드 전송 */
   document.getElementById('verification-email').addEventListener('click', function () {
     var businessEmailInput = document.getElementById('business-email');
     var businessEmail = businessEmailInput.value;
 
-    // 이메일 주소 유효성 확인
+
     var isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(businessEmail);
 
     if (!isValidEmail) {
@@ -156,16 +169,77 @@
         type: 'POST',
         data: {businessEmail: businessEmail},
         success: function (response) {
-          // 서버 응답이 성공적일 때의 동작을 여기에 추가합니다.
           alert("이메일로 인증코드를 전송했습니다.");
+          document.getElementById('business-verification-section').style.display = "block";
+
           // 추가로 인증 코드를 입력하는 필드와 타이머 등을 표시할 수 있습니다.
         },
         error: function (error) {
-          // 서버 응답이 실패했을 때의 동작을 여기에 추가합니다.
           alert("인증코드 전송에 실패했습니다. 다시 시도해주세요.");
         }
       });
     }
+  });
+
+
+  /* 이메일 인증 코드 확인 */
+  document.getElementById('verification-email-code').addEventListener('click', function () {
+    var confirmCode = document.getElementById('business-verification-email-code').value;
+    var businessEmail = document.getElementById('business-email').value;
+
+    var emailVerify = {confirmCode:confirmCode, businessEmail:businessEmail}
+
+    if (confirmCode != null) {
+      $.ajax({
+        url: '/email/code',
+        type: 'POST',
+        contentType : 'application/json',
+        data: JSON.stringify(emailVerify),
+        success: function (response) {
+          // 서버 응답이 성공적일 때의 동작을 여기에 추가합니다.
+          if(response){
+            document.getElementById('email-code-false').style.display="none";
+            document.getElementById('email-code-true').style.display="block";
+            $("#verification-email").attr("disabled",true);
+            alert("이메일이 인증되었습니다.");
+          } else {
+            document.getElementById('email-code-false').style.display="block";
+            document.getElementById('email-code-true').style.display="none";
+            // alert("이메일 인증에 실패했습니다.");
+          }
+
+          // 추가로 인증 코드를 입력하는 필드와 타이머 등을 표시할 수 있습니다.
+        },
+        error: function (error) {
+          document.getElementById('email-code-false').style.display="block";
+          document.getElementById('email-code-true').style.display="none";
+          // 서버 응답이 실패했을 때의 동작을 여기에 추가합니다.
+          alert("이메일 인증에 실패했습니다.");
+        }
+      });
+    }
+  });
+
+    $(document).ready(function() {
+    $('#myForm').on('submit', function (event) {
+      event.preventDefault(); // 폼의 기본 제출 동작 방지
+
+      $.ajax({
+        url: '/submitForm',
+        type: 'POST',
+        data: $(this).serialize(),
+        success: function (response) {
+          // 서버에서 "message" 속성을 가져옴
+          var message = $(response).find('#message').text();
+          if (message) {
+            alert(message); // 메시지가 있으면 알림 띄우기
+          }
+        },
+        error: function () {
+          alert("An error occurred. Please try again.");
+        }
+      });
+    });
   });
 </script>
 </body>

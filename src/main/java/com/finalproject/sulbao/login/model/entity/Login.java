@@ -11,10 +11,6 @@ import lombok.*;
         @SecondaryTable(
                 name = "tbl_seller_info",
                 pkJoinColumns = @PrimaryKeyJoinColumn(name = "seller_no", referencedColumnName = "user_no")
-        ),
-        @SecondaryTable(
-                name = "tbl_verify_code",
-                pkJoinColumns = @PrimaryKeyJoinColumn(name = "user_no", referencedColumnName = "user_no")
         )
 })
 @NoArgsConstructor
@@ -60,13 +56,6 @@ public class Login extends BaseEntity {
     })
     private SellerInfo sellerInfo;
 
-//    @Builder
-//    public Login(String userId, String userPw, RoleType userRole, String gender) {
-//        this.userId = userId;
-//        this.userPw = userPw;
-//        this.userRole = userRole;
-//        this.gender = gender;
-//    }
 
     @Builder
     public Login(String userId, String userPw, RoleType userRole, String gender, String phone, String email, SellerInfo sellerInfo) {

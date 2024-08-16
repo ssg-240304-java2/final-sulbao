@@ -2,7 +2,6 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
 <head>
     <meta charset="UTF-8">
     <title>About Us</title>
@@ -21,40 +20,47 @@
     <nav class="site-nav">
         <div class="container">
             <div class="site-navigation">
-                <a href="index" class="logo m-0">술기로운 한 잔 <span class="text-primary"></span></a>
+                <a href="index">
+                    <img src="sulbao-white.png" style="width: 140px; height: 20px"/>
+                </a>
+
 
                 <ul class="js-clone-nav d-none d-lg-inline-block text-left site-menu">
                     <li class="active"><a href="#">#짠피드</a></li>
                     <li><a href="#">매거진</a></li>
                     <li><a href="#">술포스트</a></li>
-                    <li><a href="#">술술무</a></li>
                     <li><a href="#">쇼핑</a></li>
                     <li><a href="#">이벤트</a></li>
 
-                    <li sec:authorize="isAnonymous()" style="padding-left: 160px;">
+                    <li class="float-right" sec:authorize="isAnonymous()">
                         <ul class="site-menu-account">
-                            <li><a href="#">검색</a></li>
+<!--                            <li><a href="#">검색</a></li>-->
                             <li><a href="/login">로그인</a></li>
                             <li><a href="/verifyagePage">회원가입</a></li>
+                            <li class="has-children">
+                                <a href="#" style="font-size: 16px; margin-left: 10px">글쓰기</a>
+                                <ul class="dropdown">
+                                    <li><a href="#">새피드 작성하기</a></li>
+                                    <li><a href="#">포스트 작성하기</a></li>
+                                </ul>
+                            </li>
                         </ul>
                     </li>
 
-                    <li sec:authorize="isAuthenticated()" style="padding-left: 160px;">
+                    <li class="float-right" style="margin-top: 8px" sec:authorize="isAuthenticated()">
                         <ul class="site-menu-account">
-                            <li th:text="|${#authentication.getName()} 님 환영합니다 |"></li>
-                            <li><a href="#">검색</a></li>
+                            <li th:text="|${#authentication.getName()} 님 환영합니다. |"></li>
+<!--                            <li><a href="#">검색</a></li>-->
                             <li><a href="/orders/cart">장바구니</a></li>
-                            <li><a href="/mypage">마이페이지</a></li>
+<!--                            <li><a href="/mypage">마이페이지</a></li>-->
                             <li><a href="/logout">로그아웃</a></li>
-                        </ul>
-                    </li>
-
-                    <li class="has-children">
-                        <a href="#">글쓰기</a>
-                        <ul class="dropdown">
-                            <li><a href="#">새피드 작성하기</a></li>
-                            <li><a href="#">포스트 작성하기</a></li>
-                            <li><a href="#">질문 작성하기</a></li>
+                            <li class="has-children">
+                                <a href="#">글쓰기</a>
+                                <ul class="dropdown">
+                                    <li><a href="#">새피드 작성하기</a></li>
+                                    <li><a href="#">포스트 작성하기</a></li>
+                                </ul>
+                            </li>
                         </ul>
                     </li>
                 </ul>
@@ -63,7 +69,6 @@
                     <span></span>
                 </a>
             </div>
-            <hr class="custom-hr">
         </div>
     </nav>
 </header>
