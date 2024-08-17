@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    default: secret-local
   application:
     name: sulbao
     

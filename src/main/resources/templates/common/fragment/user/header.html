@@ -17,11 +17,11 @@
         <div class="site-mobile-menu-body"></div>
     </div>
 
-    <nav class="site-nav">
+    <nav class="site-nav" style="background-color: #6998AB;">
         <div class="container">
             <div class="site-navigation">
-                <a href="index">
-                    <img src="sulbao-white.png" style="width: 140px; height: 20px"/>
+                <a href="/">
+                    <img src="/user/images/sulbao-white.png" style="width: 140px; height: 20px"/>
                 </a>
 
 
@@ -52,7 +52,7 @@
                             <li th:text="|${#authentication.getName()} 님 환영합니다. |"></li>
                             <!--                            <li><a href="#">검색</a></li>-->
                             <li><a href="/orders/cart">장바구니</a></li>
-                            <!--                            <li><a href="/mypage">마이페이지</a></li>-->
+                            <li><a href="/mypage/myprofile">마이페이지</a></li>
                             <li><a href="/logout">로그아웃</a></li>
                             <li class="has-children">
                                 <a href="#">글쓰기</a>
