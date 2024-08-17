@@ -56,10 +56,6 @@ public class EmailController {
         String email = emailDto.getBusinessEmail();
         String code =  emailDto.getConfirmCode();
 
-        log.info("여기있어 email ======================== {}", email);
-        log.info("여기있어 code ======================== {}", code);
-
-
         EmailVerify emailVerify = new EmailVerify();
         emailVerify.setEmail(email);
         emailVerify.setCode(code);

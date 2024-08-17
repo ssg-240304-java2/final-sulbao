@@ -6,6 +6,7 @@ import com.finalproject.sulbao.login.model.dto.SignupSellerDto;
 import com.finalproject.sulbao.login.model.entity.Login;
 import com.finalproject.sulbao.login.model.service.LoginService;
 import com.finalproject.sulbao.login.model.vo.LoginVO;
+import com.finalproject.sulbao.login.model.vo.SellerInfo;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -126,8 +127,6 @@ public class LoginController {
 
                 for(FieldError error : bindingResult.getFieldErrors()) {
                     model.addAttribute("valid_" + error.getField(), error.getDefaultMessage());
-                    log.info("error field ========================> " + error.getField() );
-                    log.info("error message ========================> " + error.getDefaultMessage() );
                 }
                 return "auth/signup";
             }
@@ -137,7 +136,6 @@ public class LoginController {
                 System.out.println("memberPw = " + member.getUserPw());
                 System.out.println("memberConfirmPw = " + member.getConfirmPw());
                 model.addAttribute("valid_confirmPw", "비밀번호가 일치하지 않습니다.");
-                log.info("error message ========================> confirmPw" );
 
                 return "auth/signup";
             }
@@ -146,7 +144,6 @@ public class LoginController {
             boolean exists = loginService.isUserIdExists(member.getUserId());
             if(exists) {
                 model.addAttribute("valid_userId", "이미 존재하는 아이디 입니다.");
-                log.info("error message ========================> confirmId" );
 
                 return "auth/signup";
             }
@@ -158,15 +155,30 @@ public class LoginController {
             return "redirect:/login";
 
         } catch (RuntimeException e){
-            System.out.println("registMember 실패===============");
             return "auth/signup";
         }
     }
 
 
+    /* 사업자등록번호 중복 검사 */
+    @PostMapping("/seller/number")
+    @ResponseBody
+    public String existNum (@RequestParam String businessNumber, Model model){
+
+        log.info("Controller 에서 받은 businessNum :=================================== {}", businessNumber);
+
+        SellerInfo findSeller = loginService.findSellerByNum(businessNumber);
+        if(findSeller != null){
+            model.addAttribute("valid_businessNumber_error", "유효하지 않은 사업자등록번호입니다.");
+            return "exist";
+        }
+        return "null";
+    }
+
+
     /* 회원가입 유효성 검사 - SELLER */
     @PostMapping("/regist/seller")
-    public String registNewSeller(@Valid @ModelAttribute SignupSellerDto seller, BindingResult bindingResult, Model model,
+    public String registNewSeller(@Valid @ModelAttribute("sellerForm") SignupSellerDto seller, BindingResult bindingResult, Model model,
                                   RedirectAttributes redirectAttributes) {
 
         if(bindingResult.hasErrors()){
@@ -174,13 +186,19 @@ public class LoginController {
             seller.setConfirmPw(null);
 
             // 에러 메시지와 함께 나머지 필드 값을 모델에 추가
-            model.addAttribute("sellerDto", seller);
+            model.addAttribute("sellerForm", seller);
 
             for(FieldError error : bindingResult.getFieldErrors()) {
                 model.addAttribute("valid_" + error.getField(), error.getDefaultMessage());
-                log.info("error field ========================> " + error.getField());
-                log.info("error message ========================> " + error.getDefaultMessage());
             }
+            return "auth/signup-seller";
+        }
+
+        // 사업장명 중복 검사
+        boolean existsName = loginService.isbusinessNameExists(seller.getBusinessName());
+        if(existsName) {
+            model.addAttribute("valid_businessName", "이미 존재하는 사업장명 입니다.");
+
             return "auth/signup-seller";
         }
 
@@ -188,7 +206,6 @@ public class LoginController {
         boolean exists = loginService.isUserIdExists(seller.getBusinessId());
         if(exists) {
             model.addAttribute("valid_businessId", "이미 존재하는 아이디 입니다.");
-            log.info("error message ========================> confirmId");
 
             return "auth/signup-seller";
         }
@@ -196,7 +213,6 @@ public class LoginController {
         // 비밀번호 검증
         if(!seller.getBusinessPw().equals(seller.getConfirmPw())){
             model.addAttribute("valid_confirmPw", "비밀번호가 일치하지 않습니다.");
-            log.info("error message ========================> confirmPw");
 
             return "auth/signup-seller";
         }
@@ -207,11 +223,6 @@ public class LoginController {
 
         return "redirect:/login";
     }
-
-    @GetMapping("/auth/testSeller")
-    public void mainPageSeller() {
-    }
-
 
 
     /* 로그아웃 */

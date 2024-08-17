@@ -1,10 +1,19 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>로그인 - 술기로운한잔</title>
     <link rel="stylesheet" href="/user/css/login-style.css">
+    <script>
+        window.onload = function() {
+            if('[[${message}]]'.length > 1)
+            {
+                alert('[[${message}]]');
+            }
+        };
+    </script>
 </head>
 <style>
     .error-message {
@@ -50,12 +59,11 @@
             <div class="form-group">
                 <input type="password" id="business-password" name="userPw" placeholder="판매자 비밀번호" required>
             </div>
-<!--            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />-->
 
 
             <button type="submit" class="submit-button">로그인</button>
             <div class="additional-links">
-                <p>술기로운 한잔이 처음이신가요? <a href="/signup">입접신청 하기</a></p>
+                <p>술기로운 한잔이 처음이신가요? <a href="/signup-seller">입접신청 하기</a></p>
             </div>
         </form>
         <div class="footer" style="text-align: center !important;">
@@ -74,7 +82,6 @@
         </div>
     </div>
 </div>
-<div th:if="${session.message}" class="alert alert-danger" th:text="${session.message}"></div>
 
 <script>
     function openForm(evt, formName) {
@@ -96,8 +103,5 @@
     // Set default open form
     document.getElementById("general").style.display = "block";
 </script>
-<!--<footer>-->
-<!--    <p>©  bucketplace, Co., Ltd.. All Rights Reserved</p>-->
-<!--</footer>-->
 </body>
 </html>

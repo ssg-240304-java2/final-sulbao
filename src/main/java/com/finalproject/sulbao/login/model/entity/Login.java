@@ -44,8 +44,7 @@ public class Login extends BaseEntity {
 
     private String email;
 
-    /* 객체 탐색을 위해 추가 */
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private MemberInfo memberInfo;
 
     @Embedded

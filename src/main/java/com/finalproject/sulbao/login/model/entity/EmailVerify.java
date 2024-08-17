@@ -25,4 +25,8 @@ public class EmailVerify {
         this.email = email;
         this.code = code;
     }
+
+    public void confirmedCode() {
+        this.isVerified = true;
+    }
 }

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
+import java.awt.*;
 import java.util.Map;
 import java.util.Random;
 
@@ -102,17 +103,24 @@ public class EmailService {
     @Transactional
     public Boolean confirmEmailByCode(EmailVerify emailVerify) {
         String email = emailVerify.getEmail();
-        log.info("여기있어 email ======================== {}", email);
         String code = emailVerify.getCode();
-        log.info("여기있어 code ======================== {}", code);
-        boolean isVerified = false;
+
+//        EmailVerify emailVerify2 = emailRepository.findByEmail(email);
+//        String originCode = emailVerify2.getCode();
 
         String originCode = emailRepository.findCodeByEmail(email);
-        log.info("여기있어 originCode ======================== {}", originCode);
 
-        if(originCode.equals(code)){
-            isVerified = true;
-            emailRepository.updateVerifyTrue(email);
+        boolean isVerified = false;
+        isVerified = originCode.equals(code);
+        log.info("오리지널===========================> {}", originCode);
+        log.info("인풋 ===========================> {}", code);
+        log.info("결과 됐어 -========================>>>>>>>>>>>>>> {}", isVerified);
+
+        if(isVerified){
+
+            EmailVerify emailVerify2 = emailRepository.findByEmail(email);
+
+            emailVerify2.confirmedCode();
             return isVerified;
         }
 
