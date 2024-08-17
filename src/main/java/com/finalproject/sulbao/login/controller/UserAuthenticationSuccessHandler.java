@@ -36,11 +36,6 @@ public class UserAuthenticationSuccessHandler implements AuthenticationSuccessHa
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
-        System.out.println("id =>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + userNo);
-        System.out.println("id =>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + userId);
-        System.out.println("role =>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + role);
-
-
         HttpSession session = request.getSession();
         session.setAttribute("userNo", userNo);
         session.setAttribute("userId", userId);

@@ -7,25 +7,27 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.AddressException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
+import java.awt.*;
 import java.util.Map;
 import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class EmailService {
 
     private final JavaMailSender javaMailSender;
     private final SpringTemplateEngine templateEngine;
     private final EmailRepository emailRepository;
-
-    private static final String senderEmail= "이메일 입";
 
     // 인증번호 및 임시 비밀번호 생성 메서드
     public String createCode() {
@@ -57,9 +59,8 @@ public class EmailService {
         try {
             InternetAddress emailAddr = new InternetAddress(emailMessage.getTo());
             emailAddr.validate();
-            System.out.println(emailMessage.getTo() + "========================================= true");
         } catch (AddressException ex) {
-            System.out.println(emailMessage.getTo() + "========================================= false");
+            System.out.println(emailMessage.getTo() + "=========================================이메일 서버 false");
         }
         String code = createCode();
 
@@ -78,23 +79,51 @@ public class EmailService {
             throw new RuntimeException(e);
         }
     }
-//
-//    public void saveEmailConfirm(Map<String, String> emailMap) {
-//        String email = emailMap.get("id");
-//        String code = emailMap.get("code");
-//
-//        EmailVerify existingEmailVerify = emailRepository.findByEmail(email);
-//
-//        if (existingEmailVerify != null) {
-//            // Update the existing code
-//            existingEmailVerify.setCode(code);
-//            emailRepository.save(existingEmailVerify);
-//        } else {
-//            // Insert new entry
-//            EmailVerify newEmailVerify = new EmailVerify();
-//            newEmailVerify.setEmail(email);
-//            newEmailVerify.setCode(code);
-//            emailRepository.save(newEmailVerify);
-//        }
-//    }
+
+    @Transactional
+    public void saveEmailConfirm(Map<String, String> emailMap) {
+        String email = emailMap.get("id");
+        String code = emailMap.get("code");
+
+        EmailVerify existingEmailVerify = emailRepository.findByEmail(email);
+
+        if (existingEmailVerify != null) {
+            // Update the existing code
+            existingEmailVerify.setCode(code);
+            emailRepository.save(existingEmailVerify);
+        } else {
+            // Insert new entry
+            EmailVerify newEmailVerify = new EmailVerify();
+            newEmailVerify.setEmail(email);
+            newEmailVerify.setCode(code);
+            emailRepository.save(newEmailVerify);
+        }
+    }
+
+    @Transactional
+    public Boolean confirmEmailByCode(EmailVerify emailVerify) {
+        String email = emailVerify.getEmail();
+        String code = emailVerify.getCode();
+
+//        EmailVerify emailVerify2 = emailRepository.findByEmail(email);
+//        String originCode = emailVerify2.getCode();
+
+        String originCode = emailRepository.findCodeByEmail(email);
+
+        boolean isVerified = false;
+        isVerified = originCode.equals(code);
+        log.info("오리지널===========================> {}", originCode);
+        log.info("인풋 ===========================> {}", code);
+        log.info("결과 됐어 -========================>>>>>>>>>>>>>> {}", isVerified);
+
+        if(isVerified){
+
+            EmailVerify emailVerify2 = emailRepository.findByEmail(email);
+
+            emailVerify2.confirmedCode();
+            return isVerified;
+        }
+
+        return isVerified;
+    }
 }

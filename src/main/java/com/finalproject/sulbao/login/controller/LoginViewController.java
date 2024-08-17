@@ -1,5 +1,6 @@
 package com.finalproject.sulbao.login.controller;
 
+import com.finalproject.sulbao.login.model.dto.SignupSellerDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
@@ -48,7 +49,12 @@ public class LoginViewController {
     }
 
     @GetMapping("/signup-seller")
-    public String signupSeller() {
+    public String signupSeller(Model model) {
+
+        if (!model.containsAttribute("sellerForm")) {
+            model.addAttribute("sellerForm", new SignupSellerDto());
+        }
+
         return "auth/signup-seller";
     }
 }
