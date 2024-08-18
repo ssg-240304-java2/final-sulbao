@@ -67,6 +67,8 @@ jobs:
         password: ${{ secrets.NCP_PASSWORD }}
         key: ${{ secrets.NCP_KEY }}
         port: ${{ secrets.NCP_PORT }}
+        accessKey: ${{secrets.NCP_ACCESSKEY}}
+        secretKey: ${{secrets.NCP_SECRETKEY}}
         script: |
           sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
           sudo docker stop $(sudo docker ps -a -q)
