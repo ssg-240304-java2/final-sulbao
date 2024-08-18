@@ -25,70 +25,21 @@
 
   <div class="untree_co-section">
     <div class="container">
-      <div class="card mb-4">
+      <div class="card mb-2" th:each="review : ${reviewList}">
         <div class="card-body">
-          <h5 class="card-title">리뷰 작성한 상품명</h5>
-          <hr>
-          <p>2024.03.12(리뷰등록일)</p>
           <div class="row">
-            <img class="m-3" src="/user/images/default-profile.png" style="width: 10%;">
-            <img class="m-3" src="/user/images/default-profile.png" style="width: 10%;">
-            <img class="m-3" src="/user/images/default-profile.png" style="width: 10%;">
-
+            <img class="ml-2" th:src="${review.productDTO.productImages[0].saveImgUrl}" style="width: 10%;">
+            <div class="col align-content-center">
+              <p class="card-text" th:text="${review.sellerInfo.sellerInfo.businessName}">상품옵션(수량)</p>
+              <h5 class="card-title" th:text="${review.productDTO.productName}">리뷰 작성한 상품명</h5>
+            </div>
           </div>
-          <p class="card-text pb-3">
-            리뷰내용
-          </p>
+          <hr>
+          <p th:text="${review.user.userId} + '  |  ' + ${#temporals.format(review.createDate, 'yyyy-MM-dd')}">2024.03.12(리뷰등록일)</p>
+          <p class="card-text" th:utext="${review.reviewContent}"></p>
         </div>
       </div>
-      <div class="card mb-4">
-        <div class="card-body">
-          <h5 class="card-title">리뷰 작성한 상품명</h5>
-          <hr>
-          <p>2024.03.12(리뷰등록일)</p>
-          <div class="row">
-            <img class="m-3" src="/user/images/default-profile.png" style="width: 10%;">
-            <img class="m-3" src="/user/images/default-profile.png" style="width: 10%;">
-            <img class="m-3" src="/user/images/default-profile.png" style="width: 10%;">
 
-          </div>
-          <p class="card-text pb-3">
-            리뷰내용
-          </p>
-        </div>
-      </div>
-      <div class="card mb-4">
-        <div class="card-body">
-          <h5 class="card-title">리뷰 작성한 상품명</h5>
-          <hr>
-          <p>2024.03.12(리뷰등록일)</p>
-          <div class="row">
-            <img class="m-3" src="/user/images/default-profile.png" style="width: 10%;">
-            <img class="m-3" src="/user/images/default-profile.png" style="width: 10%;">
-            <img class="m-3" src="/user/images/default-profile.png" style="width: 10%;">
-
-          </div>
-          <p class="card-text pb-3">
-            리뷰내용
-          </p>
-        </div>
-      </div>
-      <div class="card mb-4">
-        <div class="card-body">
-          <h5 class="card-title">리뷰 작성한 상품명</h5>
-          <hr>
-          <p>2024.03.12(리뷰등록일)</p>
-          <div class="row">
-            <img class="m-3" src="/user/images/default-profile.png" style="width: 10%;">
-            <img class="m-3" src="/user/images/default-profile.png" style="width: 10%;">
-            <img class="m-3" src="/user/images/default-profile.png" style="width: 10%;">
-
-          </div>
-          <p class="card-text pb-3">
-            리뷰내용
-          </p>
-        </div>
-      </div>
     </div>
   </div>
 

@@ -23,44 +23,19 @@
     </div>
     <div class="untree_co-section">
       <div class="container">
-        <div class="row border">
-          <img class="m-3" src="/user/images/default-profile.png" style="width: 10%;">
+        <div class="row border mb-4">
+          <img class="m-3" th:src="${product.productImages[0].saveImgUrl}" style="width: 10%;" alt="상품 이미지">
           <div class="m-3">
-            <h5 class="card-title mt-3"> 상품명</h5>
-            <p class="card-text">상품옵션(수량)</p>
+            <h5 class="card-title mt-3" th:text="${product.productName}"> 상품명</h5>
+<!--            <p class="card-text">상품옵션(수량)</p>-->
           </div>
         </div>
-
-        <form action="#">
-          <div style="margin-top: 5%;">
-            <h4 class="font-noto">사진</h4>
-            <div class="container mt-4">
-              <img src="/user/images/default-profile.png" style="width: 10%;">
-              <img src="/user/images/default-profile.png" style="width: 10%;">
-              <img src="/user/images/default-profile.png" style="width: 10%;">
-            </div>
+          <div th:utext="${review.reviewContent}"></div>
+          <div class="mt-4 d-flex justify-content-center">
+            <button type="button" class="btn btn-lg btn-secondary" onclick="location.href='/review/orderList'">목록</button>
           </div>
-          <div class="mt-4">
-            <h4 class="font-noto">리뷰</h4>
-            <div class="form-group">
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt
-                ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut
-                aliquip
-              </p>
-            </div>
-          </div>
-
-          <div class="d-flex justify-content-center">
-            <button type="button" class="btn btn-lg btn-secondary" onclick="location.href='/review/list'">목록으로</button>
-          </div>
-
-        </form>
       </div>
     </div>
-
   </div>
-
 </body>
-
 </html>

@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @Slf4j
 @RequestMapping("/review")
@@ -21,18 +23,17 @@ public class ReviewController {
         this.reviewService = reviewService;
     }
 
+    // 주문 목록 화면 이동
     @GetMapping("/orderList")
     public void orderList(Model model){}
 
 
+    // 리뷰 등록 페이지 이동
     @GetMapping("/regist/{orderNo}/{productNo}")
     public String regist(@PathVariable String orderNo, @PathVariable String productNo, Model model){
 
-        log.info("Controller orderNo = {}, productNo = {}", orderNo, productNo);
-
         //상품정보 취득
-        ProductDTO product = reviewService.getProductInfo(productNo);
-        log.info("검색 product = {}", product);
+        ProductDTO product = reviewService.getProductInfo(Long.parseLong(productNo));
 
         //주문정보 취득
         OrderItemDTO orderItem = reviewService.getOrderInfo(orderNo,productNo);
@@ -49,25 +50,43 @@ public class ReviewController {
         return "review/regist";
     }
 
+    // 리뷰 등록
     @PostMapping("/regist")
     public String regist(@ModelAttribute ReviewDTO reviewDTO, HttpSession session){
-        log.info("Controller review = {}", reviewDTO);
+
+        if(session.getAttribute("userNo") == null){
+            return "redirect:/login";
+        }
 
         //로그인한 사용자 ID
         reviewDTO.setUserNo((Long) session.getAttribute("userNo"));
         reviewService.saveReview(reviewDTO);
 
-
         return "redirect:/review/orderList";
     }
 
-    @GetMapping("/detail")
-    public String detail(){
+    // 상세조회(리뷰목록에서)
+    @GetMapping("/detail/{reviewId}")
+    public String detail(@PathVariable Long reviewId, Model model){
+        ReviewDTO reviewDTO = reviewService.findById(reviewId);
+        ProductDTO productDTO = reviewService.getProductInfo(reviewDTO.getProductNo());
+
+        model.addAttribute("product", productDTO);
+        model.addAttribute("review", reviewDTO);
         return "review/detail";
     }
 
+    // 등록한 리뷰 목록
     @GetMapping("/list")
-    public String list(){
+    public String list(HttpSession session, Model model){
+
+        if(session.getAttribute("userNo") == null){
+            return "redirect:/login";
+        }
+
+        List<ReviewDTO> reviewList = reviewService.findByUserNo((Long) session.getAttribute("userNo"));
+        model.addAttribute("reviewList", reviewList);
+
         return "review/list";
     }
 }

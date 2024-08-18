@@ -17,6 +17,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -37,8 +38,8 @@ public class ReviewService {
     }
 
     // 주문한 상품정보 취득
-    public ProductDTO getProductInfo(String productNo) {
-        return new ProductDTO().toDTO(productRepository.findByProductNo(Long.parseLong(productNo)));
+    public ProductDTO getProductInfo(Long productNo) {
+        return new ProductDTO().toDTO(productRepository.findByProductNo(productNo));
     }
 
     public OrderItemDTO getOrderInfo(String orderNo, String productNo) {
@@ -79,5 +80,27 @@ public class ReviewService {
         Order order = orderRepository.findById(reviewDTO.getOrderNo()).get();
         order.setReviewed(true);
 
+    }
+
+    public ReviewDTO findById(Long reviewId) {
+
+        Review review = reviewRepository.findById(reviewId).get();
+        return ReviewDTO.builder().reviewContent(review.getReviewContent()).productNo(review.getProduct().getProductNo()).build();
+
+    }
+
+    public List<ReviewDTO> findByUserNo(Long userNo) {
+
+        List<Review> reviewList = reviewRepository.findByUser_userNo(userNo);
+
+        return reviewList.stream()
+                .map(review -> ReviewDTO.builder()
+                        .reviewContent(review.getReviewContent())
+                        .productDTO(new ProductDTO().toDTO(review.getProduct()))
+                        .user(review.getUser())
+                        .SellerInfo(review.getProduct().getSellerInfo())
+                        .createDate(review.getCreatedAt())
+                        .build())
+                .collect(Collectors.toList());
     }
 }
