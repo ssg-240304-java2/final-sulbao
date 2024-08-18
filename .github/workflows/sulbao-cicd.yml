@@ -38,7 +38,7 @@ jobs:
         spring.datasource.url: ${{ secrets.DB_HOST }} 
         spring.datasource.username: ${{ secrets.DB_USERNAME }} 
         spring.datasource.password: ${{ secrets.DB_PASSWORD }}
-        spirng.s3.accessKey: ${{ secrets.NCP_ACCESSKEY }}
+        spring.s3.accessKey: ${{ secrets.NCP_ACCESSKEY }}
         spring.s3.secretKey: ${{ secrets.NCP_SECRETKEY }}
     # Gradle 실행 권한 부여
     - name: Grant permission for gradlew
