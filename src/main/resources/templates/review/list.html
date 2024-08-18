@@ -32,11 +32,14 @@
             <div class="col align-content-center">
               <p class="card-text" th:text="${review.sellerInfo.sellerInfo.businessName}">상품옵션(수량)</p>
               <h5 class="card-title" th:text="${review.productDTO.productName}">리뷰 작성한 상품명</h5>
+
             </div>
-          </div>
-          <hr>
-          <p th:text="${review.user.userId} + '  |  ' + ${#temporals.format(review.createDate, 'yyyy-MM-dd')}">2024.03.12(리뷰등록일)</p>
-          <p class="card-text" th:utext="${review.reviewContent}"></p>
+            <button class="btn btn-primary m-auto" th:onclick="'location.href=\'' + @{/review/detail/}+${review.reviewId} + '\''">상세보기</button>
+
+<!--          </div>-->
+
+<!--          <p th:text="${review.user.userId} + '  |  ' + ${#temporals.format(review.createDate, 'yyyy-MM-dd')}">2024.03.12(리뷰등록일)</p>-->
+<!--          <p class="card-text" th:utext="${review.reviewContent}"></p>-->
         </div>
       </div>
 

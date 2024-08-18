@@ -69,11 +69,18 @@ public class ReviewController {
     @GetMapping("/detail/{reviewId}")
     public String detail(@PathVariable Long reviewId, Model model){
         ReviewDTO reviewDTO = reviewService.findById(reviewId);
-        ProductDTO productDTO = reviewService.getProductInfo(reviewDTO.getProductNo());
 
-        model.addAttribute("product", productDTO);
         model.addAttribute("review", reviewDTO);
         return "review/detail";
+    }
+
+    // 상품 리뷰 수정(상세페이지에서)
+    @GetMapping("/update/{reviewId}")
+    public String updateReview(@PathVariable Long reviewId,Model model){
+        ReviewDTO reviewDTO = reviewService.findById(reviewId);
+
+        model.addAttribute("review", reviewDTO);
+        return "review/update";
     }
 
     // 등록한 리뷰 목록
@@ -88,5 +95,19 @@ public class ReviewController {
         model.addAttribute("reviewList", reviewList);
 
         return "review/list";
+    }
+
+    // 등록한 리뷰 수정
+    @PostMapping("/update")
+    public String update(@ModelAttribute ReviewDTO reviewDTO, HttpSession session){
+
+        if(session.getAttribute("userNo") == null){
+            return "redirect:/login";
+        }
+
+        reviewService.updateReview(reviewDTO);
+
+        return "redirect:/review/list";
+
     }
 }

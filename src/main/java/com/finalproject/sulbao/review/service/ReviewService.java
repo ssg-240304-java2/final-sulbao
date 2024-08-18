@@ -85,7 +85,14 @@ public class ReviewService {
     public ReviewDTO findById(Long reviewId) {
 
         Review review = reviewRepository.findById(reviewId).get();
-        return ReviewDTO.builder().reviewContent(review.getReviewContent()).productNo(review.getProduct().getProductNo()).build();
+        return ReviewDTO.builder()
+                .reviewId(review.getReviewId())
+                .reviewContent(review.getReviewContent())
+                .productDTO(new ProductDTO().toDTO(review.getProduct()))
+                .user(review.getUser())
+                .SellerInfo(review.getProduct().getSellerInfo())
+                .createDate(review.getCreatedAt())
+                .build();
 
     }
 
@@ -95,6 +102,7 @@ public class ReviewService {
 
         return reviewList.stream()
                 .map(review -> ReviewDTO.builder()
+                        .reviewId(review.getReviewId())
                         .reviewContent(review.getReviewContent())
                         .productDTO(new ProductDTO().toDTO(review.getProduct()))
                         .user(review.getUser())
@@ -102,5 +110,13 @@ public class ReviewService {
                         .createDate(review.getCreatedAt())
                         .build())
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void updateReview(ReviewDTO reviewDTO) {
+
+        Review review = reviewRepository.findById(reviewDTO.getReviewId()).get();
+        review.updateContent(reviewDTO.getReviewContent());
+
     }
 }

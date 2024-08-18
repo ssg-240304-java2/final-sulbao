@@ -30,13 +30,30 @@
             <h5 class="card-title" th:text="${review.productDTO.productName}"> 상품명</h5>
           </div>
         </div>
-          <div th:utext="${review.reviewContent}"></div>
+        <form action="/review/update" method="post" onsubmit="return checkReview();">
+          <input type="hidden" name="reviewId" th:value="${review.reviewId}">
+          <div id="summernote" th:utext="${review.reviewContent}"></div>
+          <input type="hidden" id="reviewContent" name="reviewContent" th:value="${review.reviewContent}"/>
           <div class="mt-4 d-flex justify-content-center">
-            <button type="button" class="btn btn-lg btn-primary" th:onclick="'location.href=\'' + @{/review/update/}+${review.reviewId} + '\''">수정하기</button>
+            <button type="submit" class="btn btn-lg btn-primary">수정하기</button>
             <button type="button" class="btn btn-lg btn-secondary" onclick="location.href='/review/list'">목록</button>
           </div>
+        </form>
       </div>
     </div>
+    <script>
+      function checkReview(){
+        //리뷰내용
+        const reviewContent = $('#summernote').summernote('code');
+        if(reviewContent === '<p><br></p>'){
+          alert('리뷰내용을 입력해주세요.');
+          return false;
+        }else{
+          $('#reviewContent').val(reviewContent);
+        }
+        return true;
+      }
+    </script>
   </div>
 </body>
 </html>

@@ -7,7 +7,7 @@ import lombok.*;
 
 @Entity
 @Table(name = "tbl_review")
-@Data
+@Getter
 @Setter(AccessLevel.PRIVATE)
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,4 +31,7 @@ public class Review extends BaseEntity {
     @JoinColumn(name = "user_no")
     private Login user;
 
+    public void updateContent(String reviewContent) {
+        this.reviewContent = reviewContent;
+    }
 }
