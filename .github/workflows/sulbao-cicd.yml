@@ -38,6 +38,8 @@ jobs:
         spring.datasource.url: ${{ secrets.DB_HOST }} 
         spring.datasource.username: ${{ secrets.DB_USERNAME }} 
         spring.datasource.password: ${{ secrets.DB_PASSWORD }}
+        spirng.s3.accessKey: ${{secrets.NCP_ACCESSKEY}}
+        spring.s3.secretKey: ${{secrets.NCP_SECRETKEY}}
     # Gradle 실행 권한 부여
     - name: Grant permission for gradlew
       run: chmod +x ./gradlew
@@ -67,8 +69,6 @@ jobs:
         password: ${{ secrets.NCP_PASSWORD }}
         key: ${{ secrets.NCP_KEY }}
         port: ${{ secrets.NCP_PORT }}
-        accessKey: ${{secrets.NCP_ACCESSKEY}}
-        secretKey: ${{secrets.NCP_SECRETKEY}}
         script: |
           sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
           sudo docker stop $(sudo docker ps -a -q)
