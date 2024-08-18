@@ -1,6 +1,6 @@
 package com.finalproject.sulbao.login.model.service;
 
-import com.amazonaws.services.dynamodbv2.xspec.S;
+import com.finalproject.sulbao.login.model.dto.MemberProfileDto;
 import com.finalproject.sulbao.login.model.dto.SignupMemberDto;
 import com.finalproject.sulbao.login.model.dto.SignupSellerDto;
 import com.finalproject.sulbao.login.model.entity.Login;
@@ -11,6 +11,7 @@ import com.finalproject.sulbao.login.model.repository.MemberInfoRepository;
 import com.finalproject.sulbao.login.model.vo.SellerInfo;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -77,5 +78,22 @@ public class LoginService {
             return true;
         }
         return false;
+    }
+
+    public MemberProfileDto findMemberByUserId(String userId) {
+
+        Login login = loginRepository.findByUserId(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 사용자 입니다."));
+        MemberInfo memberInfo = memberRepository.findById(login.getUserNo())
+                .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 멤버 입니다."));
+
+        String email = login.getEmail();
+        String phone = login.getPhone();
+        String profileImag = memberInfo.getProfileImg();
+        String profileName = memberInfo.getProfileName();
+        String profileText = memberInfo.getProfileText();
+
+        MemberProfileDto member = new MemberProfileDto(email,phone,profileImag, profileName, profileText);
+        return member;
     }
 }

@@ -94,7 +94,7 @@
         }
 
         .profile-row {
-            margin-bottom: 15px;
+            margin-bottom: 25px;
             font-size: 13px;
             color: #565656;
             align-items: center;
@@ -103,9 +103,9 @@
 
         .profile-container .profile-row label {
             display: block;
-            margin-bottom: 2px;
+            margin-bottom: 6px;
             color: #9d9d9d;
-            font-size: 12px;
+            font-size: 10px;
         }
 
         .profile-container .profile-row input {
@@ -164,31 +164,29 @@
                 <nav class="sidebar">
                     <ul>
                         <li class="menu-text">나의 쇼핑정보</li>
-                        <li><a href="#">최근 본 상품</a></li>
-                        <li><a href="#">주문내역조회</a></li>
+                            <li><a href="#">최근 본 상품</a></li>
+                            <li><a href="#">주문내역조회</a></li>
                         <li class="menu-text">나의 활동</li>
-                        <li class="active"><a href="/mypage/myprofile">나의 정보</a></li>
-                        <li><a href="#">나의 게시글</a></li>
-                        <li><a href="#">나의 리뷰</a></li>
+                            <li class="active"><a href="/mypage/myprofile">나의 정보</a></li>
+                            <li><a href="#">나의 게시글</a></li>
+                            <li><a href="#">나의 리뷰</a></li>
                         <li class="menu-text">고객센터</li>
-                        <li><a href="#">문의게시판</a></li>
-                        <li><a href="#">전문가신청</a></li>
+                            <li><a href="#">문의게시판</a></li>
+                            <li><a href="#">전문가신청</a></li>
                     </ul>
                 </nav>
                 <div class="content">
                     <!-- 여기서 선택한 메뉴에 따라 내용이 바뀜 -->
                     <div class="profile-container">
                         <div class="profile-header">
-                            <img src="/user/images/default-profile.png" alt="Profile Image" class="profile-image"/>
+                            <img th:src="@{/user/images/{profileImg}(profileImg=${profileImg})}"  alt="Profile Image" class="profile-image"/>
                         </div>
 
                         <div class="profile-info">
-                        <h2>프로필 정보</h2>
                             <div class="profile-row">
                             <label for="profile-name">프로필 이름</label>
                                 <div class="input-wrapper">
-                                    <input type="text" id="profile-name" name="profileName" th:text="${profileName}" placeholder="프로필 이름이 나타나야해요.">
-                                    <button id="profile-name-btn" type="button" onclick="">변경</button>
+                                    <input type="text" id="profile-name" name="profileName" th:value="${profileName}" placeholder="프로필 이름이 나타나야해요.">
                                 </div>
                                 <hr style="margin-top: 7px">
                             </div>
@@ -196,20 +194,18 @@
                             <div class="profile-row">
                                 <label for="profile-text">소개</label>
                                 <div class="input-wrapper">
-                                    <input type="text" id="profile-text" name="profileText" th:text="${profileText}" placeholder="나를 소개하세요.">
-                                    <button id="profile-text-btn" type="button" onclick="">변경</button>
+                                    <input type="text" id="profile-text" name="profileText" th:value="${profileText}" placeholder="나를 소개하세요.">
                                 </div>
-                                <hr>
+                                <hr style="margin-top: 7px">
                             </div>
                         </div>
 
                         <div class="profile-info">
-                            <h2>내 계정</h2>
                             <div class="profile-row">
                                 <label for="email">이메일 주소</label>
                                 <div class="input-wrapper">
-                                    <input type="text" id="email" name="email" th:text="${email}" placeholder="이메일을 작성해주세요.">
-                                    <button id="email-btn" type="button" onclick="">변경</button>
+                                    <input type="text" id="email" name="email" th:value="${email}" placeholder="이메일을 작성해주세요.">
+                                    <button id="email-btn" type="button" onclick="">인증하기</button>
                                 </div>
                                 <hr style="margin-top: 7px">
                             </div>
@@ -218,19 +214,35 @@
                                 <label for="password">비밀번호</label>
                                 <div class="input-wrapper">
                                     <input type="password" id="password" name="password" placeholder="●●●●●●●●">
-                                    <button id="password-btn" type="button" onclick="">변경</button>
+                                    <button id="password-btn" type="button" onclick="">변경하기</button>
                                 </div>
                                 <hr style="margin-top: 7px">
                             </div>
                         </div>
 
                         <div class="profile-info">
-                            <h2>개인 정보</h2>
+                            <div class="profile-row">
+                                <label for="birth">생년월일</label>
+                                <div class="input-wrapper">
+                                    <input type="date" id="birth" name="birth" th:value="${birth}" placeholder="생년월일을 입력해주세요.">
+                                </div>
+                                <hr style="margin-top: 7px">
+                            </div>
+
                             <div class="profile-row">
                                 <label for="phone">휴대폰 번호</label>
                                 <div class="input-wrapper">
-                                    <input type="text" id="phone" name="email" th:text="${phone}" placeholder="휴대폰 번호를 입력해주세요.">
-                                    <button id="phone-btn" type="button" onclick="">변경</button>
+                                    <input type="text" id="phone" name="email" th:value="${phone}" placeholder="휴대폰 번호를 입력해주세요.">
+                                </div>
+                                <hr style="margin-top: 7px">
+                            </div>
+
+                            <div class="profile-row">
+                                <label>성별</label>
+                                <div class="input-wrapper">
+                                    <input type="radio" id="M" name="gender" th:value="${gender}"/> 남성
+                                    <input type="radio" id="F" name="gender" th:value="${gender}"/> 여성
+                                    <input type="radio" id="none" name="gender" th:value="${gender}"/> 선택하지 않음
                                 </div>
                                 <hr style="margin-top: 7px">
                             </div>

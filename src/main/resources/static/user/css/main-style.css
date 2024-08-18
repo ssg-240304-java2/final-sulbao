@@ -168,14 +168,14 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4 {
 }
 
 .site-nav {
-    position: absolute;
+    position: fixed;
     top: 0;
     z-index: 9;
     width: 100%; }
 
 .site-nav {
-    padding-top: 20px;
-    padding-bottom: 20px; }
+    padding-top: 10px;
+    padding-bottom: 10px; }
 .site-nav h1 {
     margin: 0;
     padding: 0;
@@ -212,21 +212,19 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4 {
 
 .site-navigation .site-menu-account {
     display: flex;
-    /*justify-content: flex-end;*/
 }
 
 
 .site-navigation .site-menu {
     flex-grow: 1;
     display: flex;
-    /*justify-content: flex-end;*/
 }
 
 
 .site-nav .site-navigation .site-menu-account > li {
     display: inline-block;
     color: rgba(255, 255, 255, 0.7);
-    margin-top: 6px;;
+    margin-top: 4px;;
 }
 .site-nav .site-navigation .site-menu-account > li > a {
     font-size: 12px;
@@ -252,14 +250,13 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4 {
     position: relative;
 }
 .site-nav .site-navigation .site-menu .has-children > a {
-    position: relative;
     border-radius: 6px;
     padding: 8px 40px 8px 20px;
-    /*margin-top: 20px;*/
+    margin-top: -4px;
+    margin-left: 4px;
     background: #1A374D;
-    /*width: 10px;*/
-
 }
+
 .site-nav .site-navigation .site-menu .has-children > a:before {
     position: absolute;
     content: "\e313";
@@ -1447,4 +1444,11 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4 {
     content: "\f095"; }
 .site-footer ul.quick-info li.address:before {
     content: "\e8b4"; }
+
+.profile-image {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
 

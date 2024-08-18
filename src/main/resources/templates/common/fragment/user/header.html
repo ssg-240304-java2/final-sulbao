@@ -8,6 +8,7 @@
 </head>
 <body>
 <header th:fragment="headerFragment" id="header">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <div class="site-mobile-menu site-navbar-target">
         <div class="site-mobile-menu-header">
             <div class="site-mobile-menu-close">
@@ -23,8 +24,6 @@
                 <a href="/">
                     <img src="/user/images/sulbao-white.png" style="width: 140px; height: 20px"/>
                 </a>
-
-
                 <ul class="js-clone-nav d-none d-lg-inline-block text-left site-menu">
                     <li class="active"><a href="#">#짠피드</a></li>
                     <li><a href="#">매거진</a></li>
@@ -32,9 +31,10 @@
                     <li><a href="#">쇼핑</a></li>
                     <li><a href="#">이벤트</a></li>
 
+                    <input type="text" name="search" id="search" placeholder="요즘 핫한 막걸리?">
+
                     <li class="float-right" sec:authorize="isAnonymous()">
                         <ul class="site-menu-account">
-                            <!--                            <li><a href="#">검색</a></li>-->
                             <li><a href="/login">로그인</a></li>
                             <li><a href="/verifyagePage">회원가입</a></li>
                             <li class="has-children">
@@ -49,10 +49,12 @@
 
                     <li class="float-right" style="margin-top: 8px" sec:authorize="isAuthenticated()">
                         <ul class="site-menu-account">
-                            <li th:text="|${#authentication.getName()} 님 환영합니다. |"></li>
-                            <!--                            <li><a href="#">검색</a></li>-->
-                            <li><a href="/orders/cart">장바구니</a></li>
-                            <li><a href="/mypage/myprofile">마이페이지</a></li>
+                            <li>
+                            <a href="/orders/cart">
+                                <span class="material-icons">shopping_cart</span>
+                            </a>
+                            </li>
+                            <li><a href="/mypage/myprofile" th:text="|${#authentication.getName()} 님|"></a></li>
                             <li><a href="/logout">로그아웃</a></li>
                             <li class="has-children">
                                 <a href="#">글쓰기</a>
