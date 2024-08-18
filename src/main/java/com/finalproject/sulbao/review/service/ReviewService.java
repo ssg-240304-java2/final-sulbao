@@ -119,4 +119,8 @@ public class ReviewService {
         review.updateContent(reviewDTO.getReviewContent());
 
     }
+
+    public void deleteReview(Long reviewId) {
+        reviewRepository.deleteById(reviewId);
+    }
 }

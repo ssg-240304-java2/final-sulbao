@@ -110,4 +110,12 @@ public class ReviewController {
         return "redirect:/review/list";
 
     }
+
+    //리뷰 삭제
+    @DeleteMapping("/delete/{reviewId}")
+    @ResponseBody
+    public String delete(@PathVariable Long reviewId){
+        reviewService.deleteReview(reviewId);
+        return "success";
+    }
 }

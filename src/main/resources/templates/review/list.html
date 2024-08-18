@@ -32,14 +32,12 @@
             <div class="col align-content-center">
               <p class="card-text" th:text="${review.sellerInfo.sellerInfo.businessName}">상품옵션(수량)</p>
               <h5 class="card-title" th:text="${review.productDTO.productName}">리뷰 작성한 상품명</h5>
-
             </div>
-            <button class="btn btn-primary m-auto" th:onclick="'location.href=\'' + @{/review/detail/}+${review.reviewId} + '\''">상세보기</button>
+            <div class="m-auto">
+              <button class="btn btn-outline-primary" th:onclick="'location.href=\'' + @{/review/detail/}+${review.reviewId} + '\''">상세보기</button>
+              <button class="btn btn-outline-danger" th:onclick="deleteReview([[${review.reviewId}]])">삭제하기</button>
+            </div>
 
-<!--          </div>-->
-
-<!--          <p th:text="${review.user.userId} + '  |  ' + ${#temporals.format(review.createDate, 'yyyy-MM-dd')}">2024.03.12(리뷰등록일)</p>-->
-<!--          <p class="card-text" th:utext="${review.reviewContent}"></p>-->
         </div>
       </div>
 
@@ -47,7 +45,31 @@
   </div>
 
   </div>
+  <script>
+    function deleteReview(reviewId){
+      if(confirm("선택하신 리뷰를 삭제하시겠습니까?")){
+        $.ajax({
+          url: "/review/delete/"+reviewId,
+          data: {
+            "reviewId": reviewId
+          },
+          type: "delete",
+          success: function(data){
+            if(data === 'success'){
+              alert("선택하신 리뷰가 삭제되었습니다.");
+              location.reload();
+            }else{
+              alert("선택하신 리뷰삭제중 문제가발생했습니다.\n다시 시도해주세요");
+            }
+          },error: function (error){
+            alert("선택하신 리뷰삭제중 문제가발생했습니다.\n다시 시도해주세요");
+          }
+        });
+      }
 
+    }
+  </script>
+</div>
 </body>
 
 </html>
