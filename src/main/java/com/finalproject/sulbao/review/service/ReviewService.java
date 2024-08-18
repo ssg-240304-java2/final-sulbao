@@ -43,7 +43,7 @@ public class ReviewService {
 
     public OrderItemDTO getOrderInfo(String orderNo, String productNo) {
 
-        Order order = orderRepository.findById(Integer.valueOf(orderNo)).get();
+        Order order = orderRepository.findById(Long.valueOf(orderNo)).get();
         List<OrderItemDTO> orderItems = order.getOrderItems().stream()
                 .map(orderItem1 -> modelMapper.map(orderItem1,OrderItemDTO.class))
                 .toList();
@@ -76,7 +76,7 @@ public class ReviewService {
         reviewRepository.save(review);
 
         // order 리뷰여부 변경
-        Order order = orderRepository.findByOrderCode(reviewDTO.getOrderNo());
+        Order order = orderRepository.findById(reviewDTO.getOrderNo()).get();
         order.setReviewed(true);
 
     }
