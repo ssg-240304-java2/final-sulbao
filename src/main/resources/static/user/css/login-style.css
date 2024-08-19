@@ -203,7 +203,7 @@ header h1 {
 }
 
 .verification-input-wrapper {
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: space-between;
     margin-top: 10px;
@@ -229,10 +229,23 @@ header h1 {
     border-color: #1A374D;
 }
 
-footer {
-    width: 100%;
+
+.footer {
+    clear: both;
+    padding-top: 24px;
     text-align: center;
-    padding: 10px 0;
-    font-size: 10px;
-    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.footer td,
+.footer p,
+.footer span,
+.footer a {
+    color: #9a9ea6;
+    font-size: 9px;
+    text-align: center;
 }

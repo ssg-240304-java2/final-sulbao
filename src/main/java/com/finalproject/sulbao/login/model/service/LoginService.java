@@ -62,4 +62,20 @@ public class LoginService {
         loginRepository.save(login);
 
     }
+
+    public SellerInfo findSellerByNum(String num) {
+
+        SellerInfo findSeller = loginRepository.findSellerByNum(num);
+        System.out.println("ffffffffffinde sellerInfo = " + findSeller);
+
+        return findSeller;
+    }
+
+    public boolean isbusinessNameExists(String name) {
+        SellerInfo findSeller =  loginRepository.findByBusinessName(name);
+        if(findSeller != null) {
+            return true;
+        }
+        return false;
+    }
 }

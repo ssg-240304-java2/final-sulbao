@@ -304,6 +304,8 @@
                         </thead>
                         <tbody>
                         <tr class="alert" role="alert" th:each="cart:${carts}">
+                            <div id="user-id" th:data-user-id="${cart.userId}"></div>
+                            <div id="order-code" th:data-user-code="${cart.cartCode}"></div>
                             <td>
                                 <div class="img" th:style="'background-image:url(' + 'https://kr.object.ncloudstorage.com/sulbao-file/product/' + ${cart.products.productImages[0].saveName} + ');'"></div>
                             </td>
@@ -388,11 +390,35 @@
             </div>
         </div>
     </section>
+
     <script>
         function kakaoPay(){
+            let userId = document.getElementById('user-id').getAttribute('data-user-id');
+
+            let cartCodes = Array.from(document.querySelectorAll('[id^="order-code"]'))
+                        .map(element => element.getAttribute('data-user-code'));
+
+            let quantities = document.querySelectorAll('.quantity-number');
+            let totalQuantity = 0;
+            quantities.forEach(function(quantity) {
+                totalQuantity += parseInt(quantity.textContent.trim());
+            });
+            let orderName = document.getElementById("order_name").value.trim();
+            let orderPhone = document.getElementById("order_phone").value.trim();
+            let postcode = document.getElementById("sample6_postcode").value.trim();
+            let address = document.getElementById("sample6_address").value.trim();
+            let detailAddress = document.getElementById("sample6_detailAddress").value.trim();
             let kakaopayData = {
                 name: '술기로운한잔',
-                totalPrice: document.getElementsByClassName("total-purchase-price")[0].textContent.trim()
+                totalPrice: document.getElementsByClassName("total-purchase-price")[0].textContent.trim(),
+                userId: userId,
+                orderCode: cartCodes,
+                quantity: totalQuantity,
+                orderName: orderName,             // 수신인
+                orderPhone: orderPhone,           // 수신번호
+                postcode: postcode,               // 우편번호
+                address: address,                 // 주소
+                detailAddress: detailAddress      // 상세주소
             }
 
             $.ajax({

@@ -2,6 +2,7 @@ package com.finalproject.sulbao.cart.service;
 
 import com.finalproject.sulbao.cart.domain.Carts;
 import com.finalproject.sulbao.cart.dto.CartDTO;
+import com.finalproject.sulbao.cart.dto.OrderDTO;
 import com.finalproject.sulbao.cart.repository.CartRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -27,7 +28,7 @@ public class CartService {
     }
 
     public List<CartDTO> findCartByUserId(String userId) {
-        List<Carts> carts = cartRepository.findByUserId(userId, Sort.by("cartCode"));
+        List<Carts> carts = cartRepository.findByUserIdAndIsOrder(userId,false, Sort.by("cartCode"));
         return carts.stream()
                 .map(cart -> modelMapper.map(cart, CartDTO.class))
                 .collect(Collectors.toList());
@@ -64,5 +65,21 @@ public class CartService {
     public int sumCartByCartCodeIn(List<Long> cartCodes) {
         int sumPurchasePrice = cartRepository.findTotalPurchasePriceByCartCodeIn(cartCodes);
         return sumPurchasePrice;
+    }
+
+    public CartDTO findCartByCartCode(Long aLong) {
+        Carts orders = cartRepository.findByCartCodes(aLong);
+        return orders == null ? null : modelMapper.map(orders, CartDTO.class);
+    }
+
+    public void updateIsOrder(Long cartCode) {
+        Optional<Carts> optionalCart = cartRepository.findByCartCode(cartCode);
+        if (optionalCart.isPresent()) {
+            Carts carts = optionalCart.get();
+            carts.markAsOrdered();  // isOrder 필드를 true로 설정
+            cartRepository.save(carts);
+        } else {
+            throw new RuntimeException("Cart not found");
+        }
     }
 }
