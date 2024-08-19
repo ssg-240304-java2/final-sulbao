@@ -65,6 +65,15 @@
                                     <td><input type="text" class="form-control" name="productName" id="productName" th:value="${product.productName }"></td>
                                 </tr>
                                 <tr>
+                                    <th>가격 비교 매칭</th>
+                                    <td>
+                                        <select class="form-control" name="productComparison" id="productComparison">
+                                            <option value="">가격을 비교할 상품을 선택 해주세요.</option>
+                                            <option th:each="comparison : ${productComparisonList}" th:value="${comparison.comparisonNo}" th:text="${comparison.comparisonName}" th:selected="${comparison.comparisonNo == product.productComparison.comparisonNo}"></option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
                                     <th>상품 간략설명</th>
                                     <td><textarea class="form-control" rows="3" name="productSummary" th:text="${product.productSummary}"></textarea></td>
                                 </tr>

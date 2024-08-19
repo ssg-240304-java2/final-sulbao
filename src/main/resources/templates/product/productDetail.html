@@ -25,11 +25,11 @@
                                     <th>진열상태</th>
                                     <td>
                                         <div class="custom-control custom-radio d-inline-block mr-3">
-                                            <input type="radio" id="displayY" name="displayYn" value="Y" class="custom-control-input" th:checked="${product.displayYn == 'Y'}">
+                                            <input type="radio" id="displayY" name="displayYn" value="Y" class="custom-control-input" >
                                             <label class="custom-control-label" for="displayY">진열함</label>
                                         </div>
                                         <div class="custom-control custom-radio d-inline-block mr-3">
-                                            <input type="radio" id="displayN" name="displayYn" value="N" class="custom-control-input" th:checked="${product.displayYn == 'N'}">
+                                            <input type="radio" id="displayN" name="displayYn" value="N" class="custom-control-input" checked>
                                             <label class="custom-control-label" for="displayN">진열안함</label>
                                         </div>
                                     </td>
@@ -38,11 +38,11 @@
                                     <th>판매상태</th>
                                     <td>
                                         <div class="custom-control custom-radio d-inline-block mr-3">
-                                            <input type="radio" id="sellY" name="sellYn" value="Y" class="custom-control-input" th:checked="${product.sellYn == 'Y'}">
+                                            <input type="radio" id="sellY" name="sellYn" value="Y" class="custom-control-input">
                                             <label class="custom-control-label" for="sellY">판매함</label>
                                         </div>
                                         <div class="custom-control custom-radio d-inline-block mr-3">
-                                            <input type="radio" id="sellN" name="sellYn" value="N" class="custom-control-input" th:checked="${product.sellYn == 'N'}">
+                                            <input type="radio" id="sellN" name="sellYn" value="N" class="custom-control-input" checked>
                                             <label class="custom-control-label" for="sellN">판매안함</label>
                                         </div>
                                     </td>
@@ -52,7 +52,7 @@
                                     <td>
                                         <select class="form-control" name="productCategory" id="productCategory">
                                             <option value="">카테고리를 선택해주세요</option>
-                                            <option th:each="category : ${productCategory}" th:text="${category.getValue()}" th:value="${category}" th:selected="${product.productCategory == category}"></option>
+                                            <option th:each="category : ${productCategory}" th:text="${category.getValue()}" th:value="${category}"></option>
                                         </select>
                                     </td>
                                 </tr>
@@ -62,6 +62,15 @@
                                 <tr>
                                     <th>상품명</th>
                                     <td><input type="text" class="form-control" name="productName" id="productName" th:value="${product.productName }"></td>
+                                </tr>
+                                <tr>
+                                    <th>가격 비교 매칭</th>
+                                    <td>
+                                        <select class="form-control" name="productComparison" id="productComparison">
+                                            <option value="">가격을 비교할 상품을 선택 해주세요.</option>
+                                            <option th:each="comparison : ${productComparisonList}" th:value="${comparison.comparisonNo}" th:text="${comparison.comparisonName}"></option>
+                                        </select>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>상품 간략설명</th>
@@ -145,6 +154,7 @@
 
                 //상품가격
                 const productPrice = $('#productPrice').val();
+                if(productPrice ===''){
                 if(productPrice ===''){
                     alert('상품가격을 입력해주세요.');
                     return false;

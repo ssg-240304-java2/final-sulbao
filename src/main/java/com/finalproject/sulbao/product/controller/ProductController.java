@@ -1,5 +1,6 @@
 package com.finalproject.sulbao.product.controller;
 
+import com.finalproject.sulbao.product.model.dto.ProductComparisonDTO;
 import com.finalproject.sulbao.product.model.dto.ProductDTO;
 import com.finalproject.sulbao.product.model.entity.ProductCategory;
 import com.finalproject.sulbao.product.service.ProductService;
@@ -58,9 +59,14 @@ public class ProductController {
     //등록화면으로 이동
     @GetMapping("/detail")
     public String productRegist(Model model, HttpSession session) {
+
         if(session.getAttribute("userNo") == null){
             return "redirect:/login";
         }
+
+        List<ProductComparisonDTO> productComparisonList = productService.findByComparison();
+
+        model.addAttribute("productComparisonList", productComparisonList);
         model.addAttribute("product", new ProductDTO());
         model.addAttribute("productCategory", ProductCategory.values());
         return "product/productDetail";
@@ -73,6 +79,10 @@ public class ProductController {
         if(session.getAttribute("userNo") == null){
             return "redirect:/login";
         }
+
+        List<ProductComparisonDTO> productComparisonList = productService.findByComparison();
+        model.addAttribute("productComparisonList", productComparisonList);
+
         ProductDTO productDTO =  productService.findByProductNo(productNo);
         model.addAttribute("product", productDTO);
         model.addAttribute("productCategory", ProductCategory.values());
@@ -83,6 +93,7 @@ public class ProductController {
     @PostMapping("/regist")
     public String saveProduct(@ModelAttribute ProductDTO productDTO, HttpSession session) {
 
+        log.info("productController saveProduct : {}", productDTO);
         if(session.getAttribute("userNo") == null){
             return "redirect:/login";
         }
