@@ -2,6 +2,7 @@ package com.finalproject.sulbao.review.service;
 
 import com.finalproject.sulbao.cart.domain.Order;
 import com.finalproject.sulbao.cart.dto.OrderItemDTO;
+import com.finalproject.sulbao.cart.repository.OrderRepository;
 import com.finalproject.sulbao.login.model.entity.Login;
 import com.finalproject.sulbao.login.model.repository.LoginRepository;
 import com.finalproject.sulbao.product.model.dto.ProductDTO;
@@ -9,7 +10,6 @@ import com.finalproject.sulbao.product.model.entity.Product;
 import com.finalproject.sulbao.product.model.entity.Review;
 import com.finalproject.sulbao.product.repository.ProductRepository;
 import com.finalproject.sulbao.review.model.dto.ReviewDTO;
-import com.finalproject.sulbao.review.repository.OrderRepository;
 import com.finalproject.sulbao.review.repository.ReviewRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
