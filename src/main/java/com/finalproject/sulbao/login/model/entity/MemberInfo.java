@@ -3,7 +3,9 @@ package com.finalproject.sulbao.login.model.entity;
 import com.finalproject.sulbao.login.model.vo.ProMemberInfo;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.sql.Date;
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,8 +18,8 @@ import java.time.LocalDateTime;
 })
 @NoArgsConstructor
 @AllArgsConstructor
-@Setter
 @Getter
+@Setter
 public class MemberInfo {
 
     @Id

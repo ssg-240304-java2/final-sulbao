@@ -13,11 +13,12 @@
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
                 const totalEmail = emailId + `@` + mailAddr2;
-                if(!emailId || !mailAddr2 || !emailRegex(totalEmail)) {
+                if(!emailId || !mailAddr2 || !emailRegex.test(totalEmail)) {
                     alert("올바른 이메일 형식을 입력하세요.");
                     event.preventDefault();
                     return false;
                 }
+                kakaoPay();
             });
         });
     </script>
@@ -152,6 +153,8 @@
                         </thead>
                         <tbody>
                         <tr class="alert" role="alert" th:each="cart:${carts}">
+                            <div id="user-id" th:data-user-id="${cart.userId}"></div>
+                            <div id="order-code" th:data-user-code="${cart.cartCode}"></div>
                             <td>
                                 <div class="img" th:style="'background-image:url(' + 'https://kr.object.ncloudstorage.com/sulbao-file/product/' + ${cart.products.productImages[0].saveName} + ');'"></div>                            </td>
                             <td>
@@ -216,13 +219,46 @@
                     </div>
                     <br>
                         <div class="cart-buttons">
-                            <a href="order" class="btn btn-primary py-3 px-4">Payment</a>
+                            <a class="btn btn-primary py-3 px-4">Payment</a>
                         </div>
                     <br>
                 </div>
             </div>
         </div>
     </section>
+    <script>
+        function kakaoPay(){
+            const emailId = document.getElementById('emailId').value.trim();
+            const mailAddr2 = document.getElementById('mailAddr2').value.trim();
+            const totalEmail = emailId + `@` + mailAddr2;
+
+            let userId = document.getElementById('user-id').getAttribute('data-user-id');
+            let cartCodes = Array.from(document.querySelectorAll('[id^="order-code"]'))
+                .map(element => element.getAttribute('data-user-code'));
+            let quantities = document.querySelectorAll('.quantity-number');
+            let totalQuantity = 0;
+            quantities.forEach(function(quantity) {
+                totalQuantity += parseInt(quantity.textContent.trim());
+            });
+            let kakaopayData = {
+                name: '술기로운한잔',
+                totalPrice: document.getElementsByClassName("total-purchase-price")[0].textContent.trim(),
+                userId: userId,
+                orderCode: cartCodes,
+                quantity: totalQuantity,
+                email: totalEmail
+            }
+            $.ajax({
+                type: 'POST',
+                url: '/payments/kakaopay',
+                data: JSON.stringify(kakaopayData),
+                contentType: 'application/json',
+                success: function(response) {
+                    location.href = response.next_redirect_pc_url;
+                }
+            });
+        }
+    </script>
 </div>
 </body>
 </html>
