@@ -28,6 +28,7 @@ public class OrderDTO {
     private String address2; // 주소2
     private String zipCode; // 우편번호
     private Set<OrderItemDTO> orderItems;
+    private String userId;
 
     public Order toEntity() {
         // OrderItemDTO 리스트를 OrderItem 엔티티 리스트로 변환
@@ -48,7 +49,8 @@ public class OrderDTO {
                 this.address1,
                 this.address2,
                 this.zipCode,
-                orderItemEntities
+                orderItemEntities,
+                this.userId
         );
 
     }
