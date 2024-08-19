@@ -98,16 +98,16 @@ public class LoginController {
                 } else {
                     //인증 실패 처리
                     model.addAttribute("error-message", "술기로운 한잔은 19세 이상 성인만 가입 가능합니다.");
-                    return "/";
+                    return "redirect:/";
                 }
             } else {
                 model.addAttribute("error-message", "성인인증에 실패하였습니다.");
-                return "/";
+                return "redirect:/";
             }
         } else {
             //토큰 호출 실패
             model.addAttribute("error-message", "성인인증에 실패하였습니다.");
-            return "/";
+            return "redirect:/";
         }
     }
 

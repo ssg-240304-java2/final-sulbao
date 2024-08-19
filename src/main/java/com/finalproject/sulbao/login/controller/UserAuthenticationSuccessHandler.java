@@ -43,7 +43,7 @@ public class UserAuthenticationSuccessHandler implements AuthenticationSuccessHa
         session.setMaxInactiveInterval(3600); // Session이 60분동안 유지
 
         if(role.equals("ROLE_MEMBER")) {
-            response.sendRedirect("/");
+            response.sendRedirect("redirect:/");
         } else if (role.equals("ROLE_SELLER")){
             response.sendRedirect("/auth/testSeller");  // 셀러 로그인 후 이동 페이지
         } else if (role.equals("ROLE_ADMIN")){
