@@ -57,6 +57,16 @@
                             <li><a href="/orders/cart">장바구니</a></li>
                             <!--                            <li><a href="/mypage">마이페이지</a></li>-->
                             <li><a href="/logout">로그아웃</a></li>
+                            <li class="has-children">
+                                <a href="#">글쓰기</a>
+                                <ul class="dropdown">
+                                    <li>
+                                        <a href="/zzanfeeds/new" sec:authorize="isAuthenticated()">새피드 작성하기</a>
+                                        <a href="/login" sec:authorize="isAnonymous()">새피드 작성하기</a>
+                                    </li>
+                                    <li sec:authorize="hasRole('ROLE_PRO_MEMBER')"><a href="/zzanposts/new">포스트 작성하기</a></li>
+                                </ul>
+                            </li>
                         </ul>
                     </li>
 
