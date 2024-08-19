@@ -48,4 +48,6 @@ public class Order extends BaseEntity {
             joinColumns = @JoinColumn(name = "orderCode", referencedColumnName = "orderCode")
     )
     private Set<OrderItem> orderItems;
+    @Column(name= "userId")
+    private String userId;
 }

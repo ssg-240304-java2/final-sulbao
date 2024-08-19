@@ -5,11 +5,13 @@ import com.finalproject.sulbao.board.domain.Comment;
 import com.finalproject.sulbao.board.domain.Post;
 import com.finalproject.sulbao.board.domain.PostImage;
 import com.finalproject.sulbao.board.repository.*;
+import com.finalproject.sulbao.login.model.entity.EmailVerify;
 import com.finalproject.sulbao.login.model.entity.Login;
 import com.finalproject.sulbao.login.model.entity.MemberInfo;
 import com.finalproject.sulbao.login.model.entity.RoleType;
 import com.finalproject.sulbao.login.model.repository.LoginRepository;
 import com.finalproject.sulbao.login.model.repository.MemberInfoRepository;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,6 +19,9 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+
+import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
+import static org.junit.Assert.*;
 
 @SpringBootTest
 @Transactional
@@ -37,6 +42,41 @@ class EntityTest {
     private MemberInfoRepository memberInfoRepository;
     @Autowired
     private LikeRepository likeRepository;
+
+
+    @Test
+    @DisplayName("tbl_email ddl test2")
+    void testEmailDDL1() {
+        // email만으로 객체를 빌드하는 테스트
+        String email = "test@example.com";
+
+        EmailVerify emailVerify = EmailVerify.builder()
+                .email(email)
+                .build();
+
+        assertNotNull(emailVerify);
+        assertEquals(email, emailVerify.getEmail());
+        assertNull(emailVerify.getCode());
+        assertFalse(emailVerify.isVerified());
+    }
+
+    @Test
+    @DisplayName("tbl_email ddl test1")
+    void testEmailDDL2() {
+        // email과 code로 객체를 빌드하는 테스트
+        String email = "test@example.com";
+        String code = "123456";
+
+        EmailVerify emailVerify = EmailVerify.builder()
+                .email(email)
+                .code(code)
+                .build();
+
+        assertNotNull(emailVerify);
+        assertEquals(email, emailVerify.getEmail());
+        assertEquals(code, emailVerify.getCode());
+        assertFalse(emailVerify.isVerified());
+    }
 
     @Test
     void load() {
