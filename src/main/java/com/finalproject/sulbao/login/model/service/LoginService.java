@@ -87,13 +87,23 @@ public class LoginService {
         MemberInfo memberInfo = memberRepository.findById(login.getUserNo())
                 .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 멤버 입니다."));
 
-        String email = login.getEmail();
-        String phone = login.getPhone();
         String profileImag = memberInfo.getProfileImg();
         String profileName = memberInfo.getProfileName();
         String profileText = memberInfo.getProfileText();
+        String email = login.getEmail();
+        String birth = login.getBirth();
+        String phone = login.getPhone();
+        String gender = login.getGender();
 
-        MemberProfileDto member = new MemberProfileDto(email,phone,profileImag, profileName, profileText);
+        MemberProfileDto member = new MemberProfileDto(profileImag, profileName, profileText, email, birth, phone, gender);
         return member;
+    }
+
+    public boolean isProfileNameDuplicate(String profileName, String userId) {
+
+        Long userNo = loginRepository.findByUserId(userId).orElseThrow().getUserNo();
+        System.out.println("userNo = " + userNo);
+
+        return memberRepository.existsByProfileNameAndUserNoNot(profileName, userNo);
     }
 }

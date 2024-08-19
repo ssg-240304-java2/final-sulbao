@@ -17,4 +17,5 @@ public interface LoginRepository extends JpaRepository<Login, Long> {
 
     @Query("SELECT s.sellerInfo FROM Login s WHERE s.sellerInfo.businessName = :name")
     SellerInfo findByBusinessName(String name);
+
 }

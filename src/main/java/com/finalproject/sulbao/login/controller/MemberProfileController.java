@@ -6,33 +6,28 @@ import com.finalproject.sulbao.login.model.service.LoginService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/mypage")
 @Slf4j
-public class MypageController {
+public class MemberProfileController {
 
     private final LoginService service;
-    private final LoginRepository repository;
 
-    public MypageController(LoginService service, LoginRepository repository) {
+    public MemberProfileController(LoginService service, LoginRepository repository) {
         this.service = service;
-        this.repository = repository;
     }
 
     @GetMapping("/myprofile")
     public String myProfilePage(HttpServletRequest request, HttpServletResponse response, Model model) {
-
-//        profileName
-//        profileText
-//        profileImg
-//        email
-//        phone -> 010-5xxx-x799
 
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 
@@ -41,6 +36,8 @@ public class MypageController {
         model.addAttribute("profileName", member.getProfileName());
         model.addAttribute("profileText", member.getProfileText());
         model.addAttribute("email", member.getEmail());
+        // birth date 변환 필요함
+        model.addAttribute("birth", member.getBirth());
 
         String phone = member.getPhone();
         if(phone != null) {
@@ -48,10 +45,33 @@ public class MypageController {
         }
 
         model.addAttribute("phone", phone);
-        model.addAttribute("email", member.getEmail());
+        model.addAttribute("gender", member.getGender());
+
+        return "mypage/myprofile";
+    }
+
+    // 실시간 닉네임 중복 체크
+    @PostMapping("/checkProfileName")
+    public ResponseEntity<Map<String, Boolean>> checkProfileName(@RequestBody Map<String, String> request) {
+
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        String profileName = request.get("profileName");
+        System.out.println("profileName ============================= " + profileName);
+        System.out.println("userID ============================= " + userId);
+
+        boolean isDuplicate = service.isProfileNameDuplicate(profileName, userId);
+
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("isDuplicate", isDuplicate);
+
+        return ResponseEntity.ok(response);
+    }
 
 
-
+    @PostMapping("/saveProfile")
+    public String saveProfile(@ModelAttribute MemberProfileDto member, Model model){
+        // 비동기처리해줘
+        //        response.("message", "성공적으로 저장되었습니다.");
         return "mypage/myprofile";
     }
 }

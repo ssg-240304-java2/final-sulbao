@@ -1,17 +1,20 @@
 package com.finalproject.sulbao.login.model.dto;
 
 
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
+@Data
 @Setter
-@ToString
 public class MemberProfileDto {
-    private String email;
-    private String phone;
     private String profileImg;
     private String profileName;
+
     private String profileText;
+    private String email;
+    private String birth;
+    private String phone;
+    private String gender;
 }
