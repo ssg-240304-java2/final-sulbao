@@ -28,6 +28,7 @@ public class Comment extends BaseEntity {
     @JoinColumn(name = "post_id")
     private Post post;
 
+    @Column(columnDefinition = "longtext")
     private String content;
 
     @Builder

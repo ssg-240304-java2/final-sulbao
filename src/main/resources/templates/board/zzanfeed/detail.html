@@ -3,8 +3,8 @@
       layout:decorate="~{common/layouts/userDefault}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-    <title>술포스트</title>
-    <link href="/board/zzanpost/detail.css" rel="stylesheet">
+    <title>#짠피드</title>
+    <link href="/board/zzanfeed/detail.css" rel="stylesheet">
 </head>
 <body>
 <div layout:fragment="content">
@@ -13,10 +13,10 @@
             <div class="row align-items-center">
                 <div class="col-lg-6 mx-auto text-center">
                     <div class="intro-wrap">
-                        <h1 class="mb-0">술 포스트</h1>
+                        <h1 class="mb-0">#짠피드</h1>
                         <p class="text-white">
-                            술 포스트는 술에 대한 모든 것을 다룹니다.<br>
-                            술의 역사, 문화, 맛, 그리고 다양한 이야기를 만나보세요.
+                            전통주와 함께한 특별한 순간을 짠피드에 업로드하세요.<br/>
+                            지금 당신의 전통주 이야기를 들려주세요.
                         </p>
                     </div>
                 </div>
@@ -38,7 +38,12 @@
         </div>
 
         <div class="post-content">
-            <div id="editor-content" th:utext="${post.content}">
+            <div id="contentContainer">
+                <div class="content" th:each="content : ${contents}">
+                    <img alt="image" class="content-image"
+                         th:src="@{|https://kr.object.ncloudstorage.com/sulbao-file/${content.image}|}">
+                    <div th:utext="${content.text}"></div>
+                </div>
             </div>
 
             <div class="recommendation-section">
@@ -54,6 +59,12 @@
             </div>
         </div>
 
+        <div id="tag-container">
+                <span th:each="tag : ${post.tags}">
+                    <a th:href="@{|/zzanfeeds?tag=${tag.substring(1)}|}" th:text="${tag}"></a>
+                </span>
+        </div>
+
         <div class="comments-section">
             <div class="comments-count">댓글 <span th:text="${comments.size()}"></span></div>
 
@@ -61,7 +72,7 @@
                 <img alt="default profile"
                      src="https://kr.object.ncloudstorage.com/sulbao-file/default-profile.png">
                 <label for="commentContent"></label>
-                <input id="commentContent" placeholder="댓글을 입력하세요" type="text" th:disabled="${user.id == 0}">
+                <input id="commentContent" th:placeholder='${user.id == 0 ? "로그인 후 작성 가능합니다." : "댓글을 입력하세요."}' type="text" th:disabled="${user.id == 0}">
                 <button onclick="saveComment()" type="submit">입력</button>
             </div>
 
@@ -147,7 +158,7 @@
                     type: 'DELETE',
                     contentType: 'application/json',
                     success: function (response) {
-                        location.href = '/zzanposts';
+                        location.href = '/zzanfeeds';
                     },
                     error: function (xhr, status, error) {
                         console.log(error)
@@ -158,7 +169,7 @@
 
         function editPost() {
             const postId = [[${post.id}]];
-            location.href = '/zzanposts/edit/' + postId;
+            location.href = '/zzanfeeds/edit/' + postId;
         }
 
         function deleteComment(button) {

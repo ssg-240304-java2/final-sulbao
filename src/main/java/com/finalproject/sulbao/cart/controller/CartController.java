@@ -4,10 +4,10 @@ import com.finalproject.sulbao.cart.domain.Carts;
 import com.finalproject.sulbao.cart.dto.CartDTO;
 import com.finalproject.sulbao.cart.service.CartService;
 import com.finalproject.sulbao.login.model.dto.LoginDetails;
-import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,10 +34,7 @@ public class CartController {
      * @return
      */
     @GetMapping("/cart")
-    public String viewCart(Model model,Authentication authentication, HttpSession session){
-        if(session.getAttribute("userNo") == null){
-            return "redirect:/login";
-        }
+    public String viewCart(Model model, Authentication authentication) {
         LoginDetails login = (LoginDetails) authentication.getPrincipal();
         String userId = login.getUsername();
         List<CartDTO> cartList = cartService.findCartByUserId(userId);
@@ -51,11 +48,11 @@ public class CartController {
      * @return
      */
     @DeleteMapping("/cart/delete/{cartCode}")
-    public ResponseEntity<String> deleteCart(@PathVariable Long cartCode){
-        try{
+    public ResponseEntity<String> deleteCart(@PathVariable Long cartCode) {
+        try {
             cartService.deleteByCartCode(cartCode);
             return ResponseEntity.ok("Product deleted successfully");
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting product");
         }
     }
@@ -67,7 +64,7 @@ public class CartController {
      * @return
      */
     @PutMapping("/cart/updateQuantity/{cartCode}/{increment}")
-    public ResponseEntity<Carts> updateQuantity(@PathVariable Long cartCode, @PathVariable boolean increment){
+    public ResponseEntity<Carts> updateQuantity(@PathVariable Long cartCode, @PathVariable boolean increment) {
         try {
             Carts updatedCart = cartService.updateQuantity(cartCode, increment);
             return ResponseEntity.ok(updatedCart);
@@ -83,15 +80,10 @@ public class CartController {
      * @return
      */
     @PostMapping("/cart/order_form")
-    public String orderForm(@RequestParam("cartCodes") List<Long> cartCodes, Model model, HttpSession session) {
-        if(session.getAttribute("userNo") == null){
-            return "redirect:/login";
-        }
-
+    public String orderForm(@RequestParam("cartCodes") List<Long> cartCodes, Model model) {
         if (cartCodes == null || cartCodes.isEmpty()) {
             throw new IllegalArgumentException("No products selected.");
         }
-        session.setAttribute("cartCodes", cartCodes);
         System.out.println(cartCodes);
         List<CartDTO> checkOutList = cartService.findCartByCartCodeIn(cartCodes);
         int totalPurchasePrice = cartService.sumCartByCartCodeIn(cartCodes);
@@ -108,10 +100,7 @@ public class CartController {
      * @return
      */
     @PostMapping("/cart/present_form")
-    public String presentForm(@RequestParam("cartCodes") List<Long> cartCodes, Model model, HttpSession session) {
-        if(session.getAttribute("userNo") == null){
-            return "redirect:/login";
-        }
+    public String presentForm(@RequestParam("cartCodes") List<Long> cartCodes, Model model) {
         if (cartCodes == null || cartCodes.isEmpty()) {
             throw new IllegalArgumentException("No products selected.");
         }

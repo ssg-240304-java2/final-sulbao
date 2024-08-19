@@ -72,6 +72,38 @@
     margin-bottom: 20px;
 }
 
+#contentContainer {
+    text-align: center;
+}
+
+.content-image {
+    width: 50%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    display: block;
+    margin: 80px auto 20px;
+}
+
+.content {
+    text-align: center;
+}
+
+#tag-container a {
+    color: #672caf;
+    text-decoration: none;
+    font-size: 15px;
+}
+
+#tag-container a:hover {
+    text-decoration: underline;
+}
+
+#tag-container {
+    margin-top: 20px;
+    margin-bottom: 30px;
+    font-size: 1.2rem;
+}
+
 .recommendation-section {
     display: flex;
     align-items: center;
@@ -141,6 +173,7 @@
     display: flex;
     align-items: center;
     margin-bottom: 40px;
+    /*border-top: 1px solid #ddd;*/
     padding-top: 10px;
 }
 

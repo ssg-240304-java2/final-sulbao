@@ -22,6 +22,8 @@ public class PostDto {
     private Long hit;
     private UserDto userDto;
     private List<CommentDto> commentDtoList;
+    private List<String> tags;
+    private String thumbnail;
 
     public static PostDto toPostDto(Post post) {
         return PostDto.builder()
@@ -33,6 +35,8 @@ public class PostDto {
                 .like((long) post.getLikes().size())
                 .hit(post.getHit())
                 .commentDtoList(post.getComments().stream().map(CommentDto::toCommentDto).toList())
+                .tags(post.getTags())
+                .thumbnail(post.getThumbnail())
                 .build();
     }
 

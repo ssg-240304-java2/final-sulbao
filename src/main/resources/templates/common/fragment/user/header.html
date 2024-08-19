@@ -26,9 +26,9 @@
 
 
                 <ul class="js-clone-nav d-none d-lg-inline-block text-left site-menu">
-                    <li class="active"><a href="#">#짠피드</a></li>
+                    <li class="active"><a href="/zzanfeeds">#짠피드</a></li>
                     <li><a href="#">매거진</a></li>
-                    <li><a href="#">술포스트</a></li>
+                    <li><a href="/zzanposts">술포스트</a></li>
                     <li><a href="#">쇼핑</a></li>
                     <li><a href="#">이벤트</a></li>
 
@@ -38,10 +38,13 @@
                             <li><a href="/login">로그인</a></li>
                             <li><a href="/verifyagePage">회원가입</a></li>
                             <li class="has-children">
-                                <a href="#" style="font-size: 16px; margin-left: 10px">글쓰기</a>
+                                <a href="#">글쓰기</a>
                                 <ul class="dropdown">
-                                    <li><a href="#">새피드 작성하기</a></li>
-                                    <li><a href="#">포스트 작성하기</a></li>
+                                    <li>
+                                        <a href="/zzanfeeds/new" sec:authorize="isAuthenticated()">새피드 작성하기</a>
+                                        <a href="/login" sec:authorize="isAnonymous()">새피드 작성하기</a>
+                                    </li>
+                                    <li sec:authorize="hasRole('ROLE_PRO_MEMBER')"><a href="/zzanposts/new">포스트 작성하기</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -54,15 +57,9 @@
                             <li><a href="/orders/cart">장바구니</a></li>
                             <!--                            <li><a href="/mypage">마이페이지</a></li>-->
                             <li><a href="/logout">로그아웃</a></li>
-                            <li class="has-children">
-                                <a href="#">글쓰기</a>
-                                <ul class="dropdown">
-                                    <li><a href="#">새피드 작성하기</a></li>
-                                    <li><a href="#">포스트 작성하기</a></li>
-                                </ul>
-                            </li>
                         </ul>
                     </li>
+
                 </ul>
 
                 <a href="#" class="burger ml-auto float-right site-menu-toggle js-menu-toggle d-inline-block d-lg-none light" data-toggle="collapse" data-target="#main-navbar">

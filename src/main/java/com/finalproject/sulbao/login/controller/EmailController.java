@@ -8,13 +8,11 @@ import com.finalproject.sulbao.login.model.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
@@ -42,7 +40,7 @@ public class EmailController {
         emailMap.put("code", code);
         emailMap.put("id", businessEmail);
 
-        emailService.saveEmailConfirm(emailMap);
+//        emailService.saveEmailConfirm(emailMap);
         model.addAttribute("valid_confirmEmail","이메일 인증이 완료되었습니다.");
 
         return ResponseEntity.ok(emailResponseDto);
@@ -59,11 +57,11 @@ public class EmailController {
         EmailVerify emailVerify = new EmailVerify();
         emailVerify.setEmail(email);
         emailVerify.setCode(code);
-        Boolean isConfirm = emailService.confirmEmailByCode(emailVerify);
+//        Boolean isConfirm = emailService.confirmEmailByCode(emailVerify);
 
-        if(!isConfirm){
-            return false;
-        }
+//        if(!isConfirm){
+//            return false;
+//        }
         model.addAttribute("valid_confirmEmail", "true");
         return true;
     }
