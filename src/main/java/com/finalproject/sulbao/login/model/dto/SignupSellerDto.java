@@ -11,8 +11,8 @@ import lombok.*;
 @AllArgsConstructor
 public class SignupSellerDto {
 
-    @NotBlank(message = "상호명은 한글로 입력가능합니다.")
-    @Pattern(regexp = "^[가-힣]+$", message = "상호명은 한글로 입력가능합니다.")
+    @NotBlank(message = "사업장명은 한글로 입력가능합니다.")
+    @Pattern(regexp = "^[가-힣]+$", message = "사업장명은 한글로 입력가능합니다.")
     private String businessName;
 
     @NotBlank

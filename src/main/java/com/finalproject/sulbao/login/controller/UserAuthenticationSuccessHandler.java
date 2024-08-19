@@ -36,11 +36,6 @@ public class UserAuthenticationSuccessHandler implements AuthenticationSuccessHa
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
-        System.out.println("id =>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + userNo);
-        System.out.println("id =>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + userId);
-        System.out.println("role =>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + role);
-
-
         HttpSession session = request.getSession();
         session.setAttribute("userNo", userNo);
         session.setAttribute("userId", userId);
@@ -48,7 +43,7 @@ public class UserAuthenticationSuccessHandler implements AuthenticationSuccessHa
         session.setMaxInactiveInterval(3600); // Session이 60분동안 유지
 
         if(role.equals("ROLE_MEMBER")) {
-            response.sendRedirect("/");
+            response.sendRedirect("redirect:/");
         } else if (role.equals("ROLE_SELLER")){
             response.sendRedirect("/auth/testSeller");  // 셀러 로그인 후 이동 페이지
         } else if (role.equals("ROLE_ADMIN")){
