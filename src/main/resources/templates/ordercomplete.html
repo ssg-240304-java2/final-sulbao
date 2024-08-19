@@ -5,126 +5,92 @@
 <head>
     <title>Liquor Store - Free Bootstrap 4 Template by Colorlib</title>
     <style>
-        .table-wrap {
-            width: 100%;
-        }
-        .checkbox-wrap {
-            display: inline-flex;
-            align-items: center;
-        }
-        .checkbox-wrap input {
-            margin-right: 5px;
-        }
-        .checkbox-wrap .checkmark {
-            display: inline-block;
-        }
-        .product-name {
-            font-size: 1.25rem;
-            font-weight: bold;
-            width: 330px;
-        }
-        .company-name {
-            font-size: 0.875rem;
-            color: #777;
-        }
-        .product-info {
+        /* 주문 완료 메시지 및 버튼 스타일 */
+        .order-complete-container {
             display: flex;
             flex-direction: column;
-            margin-left: -10px; /* 이미지와의 간격을 좁히기 위해 왼쪽 마진 추가 */
-        }
-        .product-price {
-            text-align: center;
-        }
-        .alchol-price {
-            font-size: 0.875rem;
-        }
-        .select-all-container {
-            margin-bottom: 20px;
-        }
-        .btn-close {
-            background: none;
-            border: none;
-            color: #dc3545;
-            font-size: 1.25rem;
-            cursor: pointer;
-        }
-        .btn-close:focus{
-            outline: none;
-        }
-        .btn-close:hover {
-            color: #c82333;
-        }
-        .quantity-controls {
-            display: flex;
             align-items: center;
-            justify-content: center; /* 중앙 정렬 */
-        }
-        .quantity-number {
-            width: 40px;
-            text-align: center;
-        }
-        .quantity-button {
-            background-color: white;
-            border: none;
-            color: black;
-            padding: 5px 10px;
-            cursor: pointer;
-            font-size: 1rem;
-            line-height: 1.5;
-            outline: white;
-        }
-        .quantity-button:focus{
-            outline: none;
-        }
-        .quantity-button:disabled {
-            background-color: #aaa;
-        }
-        .img {
-            width: 80px; /* 썸네일 너비 설정 */
-            height: 80px; /* 썸네일 높이 설정 */
-            background-size: cover;
-            background-position: center center;
-            margin-right: 5px; /* 상품명과의 간격 설정 */
-        }
-        table.table th, table.table td {
-            padding: 8px 10px; /* 패딩 조정으로 간격 설정 */
-            vertical-align: middle; /* 세로 가운데 정렬 */
-        }
-        table.table th {
-            text-align: center; /* 헤더 가로 중앙 정렬 */
-        }
-        /* Quantity와 Total 간 간격 줄이기 */
-        .quantity {
+            justify-content: center;
+            height: 100vh; /* 페이지 전체 높이 */
             text-align: center;
         }
 
-        .cart-wrap {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end; /* 오른쪽 정렬 */
+        .home-button {
+            padding: 15px 40px;
+            font-size: 1.5rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none; /* 링크 밑줄 제거 */
+            display: inline-block;
+            margin-top: 20px;
         }
-        .cart-total {
-            text-align: right; /* 표의 텍스트도 우측 정렬 */
-            margin-bottom: 20px; /* 버튼과의 간격 설정 */
-            width: 400px;
+
+        .home-button:hover {
+            background-color: #0056b3;
         }
-        .cart-buttons {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-        }
-        .cart-buttons .btn {
-            padding: 5px 20px; /* 버튼 크기에 맞게 패딩 조정 */
-        }
-        .total-price{
-            text-align: center;
-        }
-        .total-purchase-price{
-            text-align: right;
+
+        .home-button:focus {
+            outline: none;
         }
     </style>
 </head>
 <body>
-<h1>주문완료</h1>
+<div layout:fragment="content">
+    <div class="hero hero-inner">
+        <div class="container">
+            <div class="row">
+                <div class="table-wrap">
+                                <table class="table">
+                                    <thead class="thead-primary">
+                                    <tr>
+                                        <th style="width: 20%">&nbsp;</th>
+                                        <th style="width: 35%">Product</th>
+                                        <th style="width: 10%">Price</th>
+                                        <th style="width: 15%">Quantity</th>
+                                        <th style="width: 20%">Total</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr class="alert" role="alert" th:each="cart:${carts}">
+                                        <div id="user-id" th:data-user-id="${cart.userId}"></div>
+                                        <div id="order-code" th:data-user-code="${cart.cartCode}"></div>
+                                        <td>
+                                            <div class="img" th:style="'background-image:url(' + 'https://kr.object.ncloudstorage.com/sulbao-file/product/' + ${cart.products.productImages[0].saveName} + ');'"></div>
+                                        </td>
+                                        <td>
+                                            <div class="product-info">
+                                                <span class="company-name" th:text="${cart.products.sellerInfo.sellerInfo.businessName}"></span>
+                                                <span class="product-name" th:text="${cart.products.getProductName()}"></span>
+                                            </div>
+                                        </td>
+                                        <td class="product-price">
+                                            <span class="alchol-price" th:text="${cart.products.productPrice}"></span>
+                                        </td>
+                                        <td class="quantity">
+                                            <span class="quantity-number" th:text="${cart.amount}"></span>
+                                        </td>
+                                        <td class="total-price" th:text="${cart.totalPrice}" th:data-number="${cart.cartCode}" style="text-align: center"></td>
+                                    </tr>
+                                    <!-- 추가 항목은 이와 유사한 구조로 작성 -->
+                                    </tbody>
+                                </table>
+                            </div>
+            </div>
+            <div class="row align-items-center">
+                <div class="col-lg-6 mx-auto text-center">
+                    <div class="intro-wrap">
+                        <h1 class="mb-0">Thank you for your order</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="order-complete-container">
+        <a href="/" class="home-button">홈으로 가기</a>
+    </div>
+</div>
 </body>
 </html>

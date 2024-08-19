@@ -45,6 +45,7 @@ public class KakaoController {
     @PostMapping("/kakaopay")
     public @ResponseBody ReadyResponse payReady(HttpServletRequest request,@RequestBody Map<String, Object> params) {
         HttpSession session = request.getSession();
+
         String name = (String) params.get("name");
         int totalPrice = Integer.parseInt((String) params.get("totalPrice"));
         String userId = (String) params.get("userId");
@@ -60,11 +61,17 @@ public class KakaoController {
         String postcode = (String) params.get("postcode");
         String address = (String) params.get("address");
         String detailAddress = (String) params.get("detailAddress");
+
+
+        String email = (String) params.get("email");
         log.info("params {}", params);
         System.out.println(orderCodeList);
 
 
         session.setAttribute("orderCodeList", orderCodeList);
+
+        session.setAttribute("email", email);
+
 
         session.setAttribute("name", name);
         session.setAttribute("totalPrice", totalPrice);
@@ -94,17 +101,20 @@ public class KakaoController {
         HttpSession session = request.getSession();
         String userId = (String) session.getAttribute("userId");
         int orderCode = (int) session.getAttribute("orderCode");
+        String email = (String)session.getAttribute("email");
         ApproveResponse approveResponse = kakaoPayService.payApprove(tid, pgToken, userId, orderCode);
 
         String delivery = "결제완료";
         boolean isReviewed = false;
         boolean isPresent = false;
+        if(email != null){
+            isPresent = true;
+        }
         String names = (String) session.getAttribute("orderName");
         String phoneNumber = (String) session.getAttribute("orderPhone");
         String address1 = (String) session.getAttribute("address");
         String detailAddress = (String) session.getAttribute("detailAddress");
         String zipCode = (String) session.getAttribute("postcode");
-
 
         List<String> orderCodeList = (List<String>) session.getAttribute("orderCodeList");
         int len = orderCodeList.size();
@@ -122,6 +132,8 @@ public class KakaoController {
         orderDTO.setPresent(isPresent);
         orderDTO.setAddress2(detailAddress);
         orderDTO.setZipCode(zipCode);
+        orderDTO.setPresentEmail(email);
+        orderDTO.setUserId(userId);
 
         for(int i=0; i<len; i++) {
             OrderItemDTO orderItemDTO = new OrderItemDTO();
@@ -139,13 +151,8 @@ public class KakaoController {
             Long orderPk = orderService.saveOrder(orderDTO);
             System.out.println(orderPk);
 
-            // 그리고 장바구니 넘버를 조회해서 true로 수정
             cartService.updateIsOrder(cartDTO.getCartCode());
-
-            // 카트테이블 조건 수정
         }
-
-
 
         return "redirect:/ordercomplete";
     }

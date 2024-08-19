@@ -34,8 +34,8 @@ public class CartController {
      * @return
      */
     @GetMapping("/cart")
-    public String viewCart(Model model,Authentication authentication){
-        if(authentication.getPrincipal() == null){
+    public String viewCart(Model model,Authentication authentication, HttpSession session){
+        if(session.getAttribute("userNo") == null){
             return "redirect:/login";
         }
         LoginDetails login = (LoginDetails) authentication.getPrincipal();
@@ -84,6 +84,10 @@ public class CartController {
      */
     @PostMapping("/cart/order_form")
     public String orderForm(@RequestParam("cartCodes") List<Long> cartCodes, Model model, HttpSession session) {
+        if(session.getAttribute("userNo") == null){
+            return "redirect:/login";
+        }
+
         if (cartCodes == null || cartCodes.isEmpty()) {
             throw new IllegalArgumentException("No products selected.");
         }
@@ -104,7 +108,10 @@ public class CartController {
      * @return
      */
     @PostMapping("/cart/present_form")
-    public String presentForm(@RequestParam("cartCodes") List<Long> cartCodes, Model model) {
+    public String presentForm(@RequestParam("cartCodes") List<Long> cartCodes, Model model, HttpSession session) {
+        if(session.getAttribute("userNo") == null){
+            return "redirect:/login";
+        }
         if (cartCodes == null || cartCodes.isEmpty()) {
             throw new IllegalArgumentException("No products selected.");
         }
