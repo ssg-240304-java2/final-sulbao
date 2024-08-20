@@ -202,15 +202,6 @@
 
                             <div class="profile-info">
                                 <div class="profile-row">
-                                <label for="profile-name">이름</label>
-                                    <div class="input-wrapper">
-                                        <input type="text" id="profile-name" name="profileName" placeholder="이름을 입력해주세요.">
-                                    </div>
-                                        <p id="name-error-message" class="error-message"></p>
-                                    <hr style="margin-top: 7px">
-                                </div>
-
-                                <div class="profile-row">
                                     <label for="email">이메일 주소</label>
                                     <div class="input-wrapper">
                                         <input type="email" id="email" name="email" th:placeholder="${email}">
@@ -231,13 +222,9 @@
 
                             <div class="profile-info">
                                 <div class="profile-row">
-                                    <label for="link1">관련링크</label>
+                                    <label for="link">관련링크</label>
                                     <div class="input-wrapper">
-                                        <input type="text" id="link1" name="phone" placeholder="사업장 또는 SNS 관련 링크를 첨부해주세요.">
-                                    </div>
-                                    <hr style="margin-top: 7px">
-                                    <div class="input-wrapper">
-                                        <input type="text" id="link2" name="phone" placeholder="사업장 또는 SNS 관련 링크를 첨부해주세요.">
+                                        <input type="text" id="link" name="businessLink" placeholder="사업장 또는 SNS 관련 링크를 첨부해주세요.">
                                     </div>
                                     <hr style="margin-top: 7px">
                                 </div>
@@ -252,7 +239,7 @@
                                     </div>
                                     <hr style="margin-top: 7px">
                                 </div>
-                                <button type="submit" class="save-button">신청하기</button>
+                            <button type="submit" class="save-button">신청하기</button>
                             </div>
                         </div>
                     </form>
