@@ -3,150 +3,8 @@
       layout:decorate="~{common/layouts/userDefault}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-    <title>술포스트</title>
-    <style>
-        .container {
-            max-width: 1300px;
-            padding: 20px;
-            margin: 30px auto 0;
-        }
-
-        .hero {
-            background: #f8f9fa;
-            padding: 50px 0;
-        }
-
-        .hero h1 {
-            font-size: 2.5rem;
-        }
-
-        .hero p {
-            font-size: 1.25rem;
-            color: #6c757d;
-            margin-top: 30px;
-        }
-
-        .guideline-container {
-            background-color: #f9f9f9;
-            padding: 20px;
-            border-radius: 8px;
-            /*margin-top: 20px;*/
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            width: 60%;
-            margin: 50px auto;
-        }
-
-        .guideline-container h2 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: #333;
-        }
-
-        .guideline-container ul {
-            margin-left: 20px;
-        }
-
-        .guideline-container li {
-            margin-bottom: 10px;
-        }
-
-        .note-container {
-            margin-top: 50px;
-        }
-
-        #thumbnail {
-            display: none;
-        }
-
-        .guideline-container .note {
-            font-style: italic;
-            color: #555;
-            text-align: center;
-            margin-top: 5px;
-            font-size: larger;
-        }
-
-        .cover-upload-container {
-            background-color: #f0f0f0;
-            color: #333;
-            text-align: center;
-            padding: 20px;
-            border-radius: 5px;
-            width: 60%;
-            margin: 0 auto;
-            height: 400px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .upload-button-container {
-            text-align: center;
-            margin-top: 10px;
-
-        }
-
-        .upload-button {
-            background-color: #333;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            padding: 10px 20px;
-            cursor: pointer;
-        }
-
-        .title-container {
-            margin: 20px auto;
-            width: 60%;
-        }
-
-        .editor-container {
-            height: 800px;
-            width: 60%;
-            margin: 0 auto;
-        }
-
-        .submit-button-container {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        .submit-button {
-            background-color: #1A374D;
-            color: #ffffff;
-            border: none;
-            border-radius: 5px;
-            padding: 10px 20px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.2s;
-            font-weight: bold;
-        }
-
-        .submit-button:hover {
-            background-color: #2A4D6E;
-            transform: scale(1.05);
-        }
-
-        .title-container {
-            margin: 20px auto;
-            width: 60%;
-        }
-
-        .input-group {
-            position: relative;
-        }
-
-        .form-control {
-            height: 60px;
-            border: none;
-            border-bottom: 1px solid #ccc;
-            padding: 10px;
-            font-size: 1.25rem;
-            width: calc(100% - 100px);
-        }
-    </style>
+    <title>전통술 최저가 비교 커뮤니티! 술기로운 한 잔</title>
+    <link href="/board/zzanpost/edit.css" rel="stylesheet">
 </head>
 <body>
 <div layout:fragment="content">
@@ -207,7 +65,6 @@
     </div>
 
     <input accept="image/*" id="thumbnail" name="thumbnail" type="file">
-
     <div class="cover-upload-container" id="coverPreview">
         커버 사진을 업로드해주세요.
         <div class="upload-button-container">
@@ -216,7 +73,6 @@
             </button>
         </div>
     </div>
-
 
     <div class="title-container">
         <div class="input-group">
@@ -234,10 +90,10 @@
     </div>
 
     <script th:inline="javascript">
-        var thumbnailFileName = [[${thumbnail}]].fileName;
+        var thumbnail = [[${thumbnail}]];
 
         $('#coverPreview').css({
-            'background-image': `url(https://kr.object.ncloudstorage.com/sulbao-file/${thumbnailFileName})`,
+            'background-image': `url(https://kr.object.ncloudstorage.com/sulbao-file/${thumbnail})`,
             'background-size': 'cover',
             'background-position': 'center',
             'color': 'transparent'
@@ -245,7 +101,8 @@
 
         $(document).ready(function () {
             $('#summernote').summernote({
-                height: 650
+                height: 650,
+                disableResizeEditor: true
             });
             $('#summernote').summernote('code', [[${post.content}]]);
         });

@@ -7,6 +7,8 @@ import com.finalproject.sulbao.cart.service.KakaoPayService;
 import com.finalproject.sulbao.cart.service.OrderItemService;
 import com.finalproject.sulbao.cart.service.OrderService;
 import com.finalproject.sulbao.cart.session.SessionUtils;
+import com.finalproject.sulbao.login.model.dto.EmailMessage;
+import com.finalproject.sulbao.login.model.service.EmailService;
 import groovy.util.logging.Slf4j;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,14 +34,16 @@ public class KakaoController {
     private final OrderService orderService;
     private final OrderItemService orderItemService;
     private final CartService cartService;
+    private final EmailService emailService;
 
 
     @Autowired
-        public KakaoController(KakaoPayService kakaoPayService,OrderService orderService, OrderItemService orderItemService, CartService cartService) {
+        public KakaoController(KakaoPayService kakaoPayService,OrderService orderService, OrderItemService orderItemService, CartService cartService, EmailService emailService) {
         this.kakaoPayService = kakaoPayService;
         this.orderService = orderService;
         this.orderItemService = orderItemService;
         this.cartService = cartService;
+        this.emailService = emailService;
     }
 
     @PostMapping("/kakaopay")
@@ -103,20 +107,19 @@ public class KakaoController {
         int orderCode = (int) session.getAttribute("orderCode");
         String email = (String)session.getAttribute("email");
         ApproveResponse approveResponse = kakaoPayService.payApprove(tid, pgToken, userId, orderCode);
-
+        List<String> orderCodeList = (List<String>) session.getAttribute("orderCodeList");
         String delivery = "결제완료";
         boolean isReviewed = false;
         boolean isPresent = false;
-        if(email != null){
-            isPresent = true;
-        }
+
+
         String names = (String) session.getAttribute("orderName");
         String phoneNumber = (String) session.getAttribute("orderPhone");
         String address1 = (String) session.getAttribute("address");
         String detailAddress = (String) session.getAttribute("detailAddress");
         String zipCode = (String) session.getAttribute("postcode");
 
-        List<String> orderCodeList = (List<String>) session.getAttribute("orderCodeList");
+
         int len = orderCodeList.size();
         System.out.println("len = " + len);
         System.out.println("orderCodeList = " + orderCodeList);
@@ -129,6 +132,15 @@ public class KakaoController {
         orderDTO.setPhoneNumber(phoneNumber);
         orderDTO.setAddress1(address1);
         orderDTO.setReviewed(isReviewed);
+        if(email != null){
+            isPresent = true;
+            EmailMessage emailMessage = EmailMessage.builder()
+                    .to(email)
+                    .subject("[술기로운한잔] 선물하기 주소 입력")
+                    .build();
+            String code = emailService.presentSendMail(emailMessage, orderCodeList.get(0), "present-email");
+            orderDTO.setToken(code);
+        }
         orderDTO.setPresent(isPresent);
         orderDTO.setAddress2(detailAddress);
         orderDTO.setZipCode(zipCode);
@@ -139,6 +151,7 @@ public class KakaoController {
             OrderItemDTO orderItemDTO = new OrderItemDTO();
             CartDTO cartDTO = new CartDTO();
             cartDTO = cartService.findCartByCartCode(Long.valueOf(orderCodeList.get(i)));
+
             int amount = cartDTO.getAmount();
             int totalPrice = cartDTO.getTotalPrice();
             Long productNo = cartDTO.getProducts().getProductNo();
@@ -152,7 +165,9 @@ public class KakaoController {
             System.out.println(orderPk);
 
             cartService.updateIsOrder(cartDTO.getCartCode());
+            cartService.updateToken(cartDTO.getCartCode(),orderDTO.getToken());
         }
+
 
         return "redirect:/ordercomplete";
     }

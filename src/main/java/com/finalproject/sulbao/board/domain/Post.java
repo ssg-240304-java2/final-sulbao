@@ -23,48 +23,89 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @DynamicInsert
 public class Post extends BaseEntity {
 
-    @OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
-    private final List<Like> likes = new ArrayList<>();
-    @OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
-    private final List<PostImage> postImages = new ArrayList<>();
-    @OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
-    private final List<Comment> comments = new ArrayList<>();
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    private Long id;
+
+    private String title;
+
+    @Column(columnDefinition = "longtext")
+    private String content;
+
+    @ColumnDefault("0")
+    private Long hit;
+
+    private String thumbnail;
+
     @ElementCollection
     @CollectionTable(name = "tbl_post_tag", joinColumns = @JoinColumn(name = "post_id"))
     @Column(name = "tag")
     private final List<String> tags = new ArrayList<>();
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
-    private Long id;
+
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id")
     private Login login;
+
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "board_category_id")
     private BoardCategory boardCategory;
-    private String title;
-    @Column(columnDefinition = "longtext")
-    private String content;
-    @ColumnDefault("0")
-    private Long hit;
+
+    @OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
+    private final List<Like> likes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
+    private final List<PostImage> postImages = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
+    private final List<Comment> comments = new ArrayList<>();
 
     @Builder
-    public Post(Login login, BoardCategory boardCategory, String title, String content) {
+    public Post(Login login, BoardCategory boardCategory, String title, String content, String thumbnail) {
         this.login = login;
         this.boardCategory = boardCategory;
         this.title = title;
         this.content = content;
+        this.thumbnail = thumbnail;
     }
 
-    public static Post createPost(Login login, BoardCategory boardCategory, String title, String content, PostImage postImage) {
-        Post post = Post.builder()
+    public static Post createPost(Login login, BoardCategory boardCategory, String title, String content, String thumbnail) {
+        return Post.builder()
                 .login(login)
                 .boardCategory(boardCategory)
                 .title(title)
                 .content(content)
+                .thumbnail(thumbnail)
                 .build();
-        post.setPostImage(postImage);
+    }
+
+    public static Post createPost(Login login, BoardCategory boardCategory, String title, String content, String thumbnail, List<PostImage> postImages) {
+        Post post = createPost(login, boardCategory, title, content, thumbnail);
+        post.setPostImages(postImages);
         return post;
+    }
+
+    public static Post createPost(Login login, BoardCategory boardCategory, String title, String content, String thumbnail, List<PostImage> postImages, List<String> tags) {
+        Post post = createPost(login, boardCategory, title, content, thumbnail, postImages);
+        if (tags != null) {
+            post.setTags(tags);
+        }
+        return post;
+    }
+
+    private void setTags(List<String> tags) {
+        this.tags.addAll(tags);
+    }
+
+    private void updateTags(List<String> tags) {
+        this.tags.clear();
+        this.tags.addAll(tags);
+    }
+
+    private void setPostImages(List<PostImage> postImages) {
+        postImages.forEach(postImage -> {
+            postImage.setPost(this);
+            this.postImages.add(postImage);
+        });
     }
 
     public void setPostImage(PostImage postImage) {
@@ -88,4 +129,32 @@ public class Post extends BaseEntity {
             setPostImage(postImage);
         }
     }
+
+    public void update(String thumbnail, String title, String content, List<String> tags, List<PostImage> postImages) {
+        if (thumbnail != null) {
+            this.thumbnail = thumbnail;
+        }
+
+        this.title = title;
+        this.content = content;
+        updatePostImages(postImages);
+        updateTags(tags);
+    }
+
+    private void updatePostImages(List<PostImage> postImages) {
+        for (int i = 0; i < postImages.size(); i++) {
+            PostImage postImage = postImages.get(i);
+
+            if (i >= this.postImages.size()) {
+                this.postImages.add(postImage);
+                postImage.setPost(this);
+            }
+
+            if (postImage != null) {
+                this.postImages.get(i).setFileName(postImage.getFileName());
+                postImage.setPost(this);
+            }
+        }
+    }
+
 }

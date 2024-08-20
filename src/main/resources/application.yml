@@ -1,7 +1,9 @@
 spring:
   application:
     name: sulbao
-    
+
+  
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${{ secrets.DB_HOST }}

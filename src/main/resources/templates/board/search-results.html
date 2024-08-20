@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{common/layouts/userDefault}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/board/search.css">
+    <title>전통술 최저가 비교 커뮤니티! 술기로운 한 잔</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="hero hero-inner">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mx-auto text-center">
+                    <div class="intro-wrap">
+                        <h1 class="mb-0">Thu Aug 20 9:09 AM</h1>
+                        <p class="text-white">
+                            Hello, World!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="wip">
+
+    </div>
+
+    <div class="container">
+        <div class="no-content" th:if="${zzanposts.isEmpty() && zzanfeeds.isEmpty()}">
+            <img src="https://kr.object.ncloudstorage.com/sulbao-file/no-content.gif" alt="No Content" class="no-content-image" />
+            <p class="no-content-text">게시판 검색 내용이 없어요...</p>
+        </div>
+
+        <div class="zzanfeed-container" th:if="${!zzanfeeds.isEmpty()}">
+            <p class="guide-text main-guide">#짠피드 📸</p>
+            <div class="guide-section">
+                <p class="guide-text sub-guide">전통주와 함께한 특별한 순간을 짠피드에 업로드하세요.</p>
+                <a th:href="@{/zzanfeeds}" class="more-link">더보기</a>
+            </div>
+            <div class="zzanfeed-post-grid" id="zzanfeed-postGrid">
+                <div class="zzanfeed-post-item" th:each="post : ${zzanfeeds}">
+                    <div class="author-info">
+                        <img class="profile-picture"
+                             alt="Author Profile Picture"
+                             th:src="@{|https://kr.object.ncloudstorage.com/sulbao-file/${post.userDto.profileImageFileName}|}" />
+                        <div class="author-name" th:text="${post.userDto.profileName}"></div>
+                    </div>
+                    <a th:href="@{|zzanfeeds/${post.id}|}">
+                        <img alt="Post Thumbnail" class="thumbnail"
+                             th:src="@{|https://kr.object.ncloudstorage.com/sulbao-file/${post.thumbnail}|}">
+                        <div class="title" th:text="${post.title}"></div>
+                    </a>
+                    <div class="post-meta-icons">
+                    <span class="icon-text">
+                        <i class="fas fa-thumbs-up"></i>
+                        <span th:text="${post.like}"></span>
+                    </span>
+                        <span class="icon-text">
+                        <i class="fas fa-comment"></i>
+                        <span th:text="${post.commentDtoList.size()}"></span>
+                    </span>
+                        <span class="icon-text">
+                        <i class="fas fa-eye"></i>
+                        <span th:text="${post.hit}"></span>
+                    </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="zzanpost-container" th:if="${!zzanposts.isEmpty()}">
+            <p class="guide-text main-guide">술포스트 🍸</p>
+            <div class="guide-section">
+                <p class="guide-text sub-guide">술의 역사, 문화, 맛, 그리고 다양한 이야기를 만나보세요.</p>
+                <a th:href="@{/zzanposts}" class="more-link">더보기</a>
+            </div>
+            <div class="zzanpost-post-grid" id="zzanpost-postGrid">
+                <div class="zzanpost-post-item" th:each="post : ${zzanposts}">
+                    <a th:href="@{|zzanposts/${post.id}|}">
+                        <img alt="Post Thumbnail" class="thumbnail"
+                             th:src="@{|https://kr.object.ncloudstorage.com/sulbao-file/${post.thumbnail}|}">
+                        <div class="title" th:text="${post.title}"></div>
+                    </a>
+                    <div class="author" th:text="${post.userDto.profileName}"></div>
+                    <div class="post-meta" th:utext="'추천 수 ' + ${post.like} + '&nbsp;&nbsp; 조회 ' + ${post.hit}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

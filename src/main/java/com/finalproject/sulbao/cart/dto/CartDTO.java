@@ -15,5 +15,6 @@ public class CartDTO {
     private int amount;
     private int totalPrice;
     private boolean isOrder;
+    private String token;
 }
 

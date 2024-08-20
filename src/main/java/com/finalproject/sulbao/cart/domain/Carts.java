@@ -36,6 +36,9 @@ public class Carts {
     @ColumnDefault("false")
     private boolean isOrder;
 
+    @Column(name="token")
+    private String token;
+
     public void increaseAmount() {
         if(this.amount < 99){
             this.amount += 1;
@@ -55,6 +58,10 @@ public class Carts {
 
     public void markAsOrdered() {
         this.isOrder = true;
+    }
+
+    public void updateToken(String token) {
+        this.token = token;
     }
 }
 

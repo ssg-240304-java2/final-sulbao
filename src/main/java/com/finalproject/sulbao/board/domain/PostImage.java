@@ -40,4 +40,8 @@ public class PostImage {
         this.post = post;
     }
 
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
 }

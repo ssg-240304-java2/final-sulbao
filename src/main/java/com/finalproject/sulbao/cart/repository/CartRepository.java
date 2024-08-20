@@ -23,4 +23,6 @@ public interface CartRepository extends JpaRepository<Carts, Integer> {
 
     @Query(value = "SELECT * FROM tbl_cart c WHERE c.cart_code = :cartCode", nativeQuery = true)
     Carts findByCartCodes(@Param("cartCode") Long cartCode);
+
+    List<Carts> findByToken(String token);
 }

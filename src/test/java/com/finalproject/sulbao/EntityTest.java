@@ -80,8 +80,8 @@ class EntityTest {
 
     @Test
     void load() {
-       /* insertUser();
-        insertBoardCategory();
+//        insertUser();
+//        insertBoardCategory();
 
         Login john = loginRepository.findById(1L).orElseThrow();
         Login jane = loginRepository.findById(2L).orElseThrow();
@@ -89,17 +89,17 @@ class EntityTest {
         BoardCategory zzanFeed = boardCategoryRepository.findById(1L).orElseThrow();
         BoardCategory zzanPost = boardCategoryRepository.findById(2L).orElseThrow();
 
-        insertPost(john, zzanPost);
-        insertPost(jane, zzanPost);
-
-        Post post = postRepository.findById(1L).orElseThrow();
-
-        insertComment(john, post);
-        insertComment(jane, post);*/
-
-        Post post = postRepository.findById(210L).orElseThrow();
-        post.getTags().add("test1");
-        post.getTags().add("test2");
+//        insertPost(john, zzanPost);
+//        insertPost(jane, zzanPost);
+//
+//        Post post = postRepository.findById(1L).orElseThrow();
+//
+//        insertComment(john, post);
+//        insertComment(jane, post);
+//
+//        Post post = postRepository.findById(210L).orElseThrow();
+//        post.getTags().add("test1");
+//        post.getTags().add("test2");
     }
 
     private void insertComment(Login john, Post post) {
@@ -107,9 +107,9 @@ class EntityTest {
         commentRepository.save(comment);
     }
 
-    private void insertPost(Login john, BoardCategory zzanPost) {
+    private void insertPost(Login john, BoardCategory boardCategory) {
         for (int i = 0; i < 100; i++) {
-            PostImage postImage = PostImage.createPostImage("post_image");
+            PostImage thumbnailPostImage = PostImage.createPostImage("bc4644af-d903-442b-8147-6afae0088f4c.png");
             String content = """
                     <section>
                                 <h2 style="color: #6c757d; border-bottom: 2px solid #6c757d; padding-bottom: 10px;">전통주의 종류와 특징</h2>
@@ -152,7 +152,7 @@ class EntityTest {
                             </section>
                     """;
 
-            Post post = Post.createPost(john, zzanPost, "Hello, World!", content, postImage);
+            Post post = Post.createPost(john, boardCategory, "Hello, World!", content, thumbnailPostImage);
             postRepository.save(post);
         }
     }
@@ -169,41 +169,43 @@ class EntityTest {
         Login login;
 
         login = new Login();
-        login.setUserId("John");
+        login.setUserId("member");
         login.setUserPw("password");
         login.setUserRole(RoleType.MEMBER);
         login.setName("John");
-        login.setBirth("2000-01-01");
+        login.setBirth("1900-01-01");
         login.setPhone("010-0000-0000");
-        login.setEmail("john@gmail.com");
+        login.setEmail("john@foo.com");
+        login.setGender("M");
         loginRepository.save(login);
 
         memberInfo = new MemberInfo();
         memberInfo.setVerifyageDate(LocalDateTime.now());
         memberInfo.setUser(login);
-        login.setMemberInfo(memberInfo);
-        memberInfo.setProfileImg("profile_image");
+//        login.setMemberInfo(memberInfo);
+        memberInfo.setProfileImg("profile-image-file-name");
         memberInfo.setProfileName("John");
         memberInfo.setProfileText("Hello, World!");
         memberInfoRepository.save(memberInfo);
 
         login = new Login();
-        login.setUserId("Jane");
+        login.setUserId("promember");
         login.setUserPw("password");
-        login.setUserRole(RoleType.MEMBER);
+        login.setUserRole(RoleType.PRO_MEMBER);
         login.setName("Jane");
-        login.setBirth("2000-01-01");
+        login.setBirth("1900-01-01");
         login.setPhone("010-0000-0000");
-        login.setEmail("jane@gmail.com");
+        login.setEmail("jane@bar.com");
+        login.setGender("F");
         loginRepository.save(login);
 
         memberInfo = new MemberInfo();
         memberInfo.setVerifyageDate(LocalDateTime.now());
         memberInfo.setUser(login);
-        login.setMemberInfo(memberInfo);
-        memberInfo.setProfileImg("profile_image");
+//        login.setMemberInfo(memberInfo);
+        memberInfo.setProfileImg("profile-image-file-name");
         memberInfo.setProfileName("Jane");
-        memberInfo.setProfileText("Hello, World!");
+        memberInfo.setProfileText("Hi, There!");
         memberInfoRepository.save(memberInfo);
     }
 
