@@ -309,7 +309,7 @@
                                 <div sec:authorize="hasRole('ROLE_PRO_MEMBER')">
                                 <div class="profile-info">
                                     <div class="profile-row">
-                                        <label for="business-num">사업자번호</label>
+                                        <label for="business-num">전문가 사업자번호</label>
                                         <div class="input-wrapper">
                                             <input type="text" id="business-num" name="businessNumber" th:placeholde="${businessNumber}" disabled>
                                             <button id="business-num-btn" type="button" onclick="">변경신청</button>
@@ -320,18 +320,18 @@
 
                                 <div class="profile-info">
                                     <div class="profile-row">
-                                        <label for="link">관련링크</label>
+                                        <label for="link">전문가 관련링크</label>
                                         <div class="input-wrapper">
-                                            <input type="text" id="link" name="businessLink" placeholder="사업장 또는 SNS 관련 링크를 첨부해주세요." disabled>
+                                            <input type="text" id="link" name="businessLink" th:placeholder="businessLink" disabled>
                                             <button id="business-link-btn" type="button" onclick="">변경신청</button>
                                         </div>
                                         <hr style="margin-top: 7px">
                                     </div>
 
                                     <div class="profile-row">
-                                        <label>분야</label>
+                                        <label for="date">전문가 갱신일</label>
                                         <div class="input-wrapper">
-                                            <input type="checkbox" id="field4" name="gender" value="M"/> 신청일을 넣는게 좋겠어
+                                            <input type="date" id="date" name="date" th:value="${date}" disabled>
                                         </div>
                                         <hr style="margin-top: 7px">
                                     </div>

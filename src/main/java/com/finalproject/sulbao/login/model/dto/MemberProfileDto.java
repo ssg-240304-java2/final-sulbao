@@ -18,6 +18,9 @@ public class MemberProfileDto {
     private String birth;
     private String phone;
     private String gender;
+    private String businessNumber;
+    private String businessLink;
+    private String date;
 
     public MemberProfileDto(MemberImage profileImg, String profileName, String profileText, String email, String birth, String phone, String gender) {
         this.profileImg = profileImg;
