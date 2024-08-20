@@ -3,7 +3,7 @@
       layout:decorate="~{common/layouts/userDefault}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-    <title>#짠피드</title>
+    <title>전통술 최저가 비교 커뮤니티! 술기로운 한 잔</title>
     <link href="/board/zzanfeed/detail.css" rel="stylesheet">
 </head>
 <body>
@@ -70,7 +70,7 @@
 
             <div class="comment-input">
                 <img alt="default profile"
-                     src="https://kr.object.ncloudstorage.com/sulbao-file/default-profile.png">
+                     src="https://kr.object.ncloudstorage.com/sulbao-file/profile/default-profile.png">
                 <label for="commentContent"></label>
                 <input id="commentContent" th:placeholder='${user.id == 0 ? "로그인 후 작성 가능합니다." : "댓글을 입력하세요."}' type="text" th:disabled="${user.id == 0}">
                 <button onclick="saveComment()" type="submit">입력</button>
