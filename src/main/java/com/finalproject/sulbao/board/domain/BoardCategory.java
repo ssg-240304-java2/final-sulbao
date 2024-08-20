@@ -16,14 +16,14 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Table(name = "tbl_board_category")
 public class BoardCategory {
 
-    @OneToMany(mappedBy = "boardCategory", cascade = ALL, orphanRemoval = true)
-    private final List<Post> posts = new ArrayList<>();
-
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
     private String name;
+
+    @OneToMany(mappedBy = "boardCategory", cascade = ALL, orphanRemoval = true)
+    private final List<Post> posts = new ArrayList<>();
 
     public BoardCategory(String name) {
         this.name = name;

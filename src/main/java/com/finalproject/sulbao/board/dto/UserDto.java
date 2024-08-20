@@ -21,10 +21,18 @@ public class UserDto {
     public static UserDto toUserDto(Login login) {
         return UserDto.builder()
                 .id(login.getUserNo())
-                .profileImageFileName(login.getMemberInfo().getProfileName())
+                .profileImageFileName(login.getMemberInfo().getProfileImg())
                 .profileName(login.getMemberInfo().getProfileName())
                 .roleType(login.getUserRole())
                 .build();
     }
 
+    public static UserDto getAnonymous() {
+        return UserDto.builder()
+                .id(0L)
+                .profileImageFileName(null)
+                .profileName(null)
+                .roleType(RoleType.MEMBER)
+                .build();
+    }
 }
