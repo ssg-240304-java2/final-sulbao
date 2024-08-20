@@ -58,13 +58,13 @@
                         </ul>
                     </li>
                     <!-- 상품 -->
-                    <li class="has-sub"  th:classappend="${menu eq 'product'} ? 'active expand' : ''">
+                    <li class="has-sub" th:classappend="${menu eq 'product'} ? 'active expand' : ''">
                         <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#charts"
                            aria-expanded="false" aria-controls="charts">
                             <i class="mdi mdi-food-variant"></i>
                             <span class="nav-text">상품</span> <b class="caret"></b>
                         </a>
-                        <ul  class="collapse"  th:classappend="${menu eq 'product'} ? 'show' : ''" id="charts" data-parent="#sidebar-menu">
+                        <ul  class="collapse" th:classappend="${menu eq 'product'} ? 'show' : ''" id="charts" data-parent="#sidebar-menu">
                             <div class="sub-menu">
                                 <li th:class="${submenu eq 'list'} ? 'active' : ''">
                                     <a class="sidenav-item-link" href="/product/list">
@@ -130,36 +130,35 @@
                         </ul>
                     </li>
                     <!-- 게시물 -->
-                    <li class="has-sub" th:if="${session.role eq 'ROLE_ADMIN'}" >
+                    <li class="has-sub" th:if="${session.role eq 'ROLE_ADMIN'}" th:classappend="${menu eq 'board' or menu eq 'magazine'}  ? 'active expand' : ''">
                         <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#board"
                            aria-expanded="false" aria-controls="board">
                             <i class="mdi mdi-file-document-box"></i>
                             <span class="nav-text">게시물</span> <b class="caret"></b>
                         </a>
-                        <ul  class="collapse" id="board" data-parent="#sidebar-menu">
+                        <ul  class="collapse" th:classappend="${menu eq 'board' or menu eq 'magazine'} ? 'show' : ''" id="board" data-parent="#sidebar-menu">
                             <div class="sub-menu">
                                 <li>
                                     <a class="sidenav-item-link" href="#">
                                         <span class="nav-text">게시물 관리</span>
                                     </a>
                                 </li>
-                                <li class="has-sub" >
+                                <li class="has-sub" th:classappend="${menu eq 'magazine'}  ? 'active expand' : ''">
                                     <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#magazine"
                                        aria-expanded="false" aria-controls="magazine">
                                         <span class="nav-text">한 술 매거진</span> <b class="caret"></b>
                                     </a>
-                                    <ul  class="collapse" id="magazine">
+                                    <ul  class="collapse" th:classappend="${menu eq 'magazine'} ? 'show' : ''" id="magazine">
                                         <div class="sub-menu">
-                                            <li >
+                                            <li th:class="${submenu eq 'list'} ? 'active' : ''">
                                                 <a href="#">매거진 목록</a>
                                             </li>
-                                            <li >
+                                            <li th:class="${submenu eq 'detail'} ? 'active' : ''">
                                                 <a href="#">매거진 등록</a>
                                             </li>
                                         </div>
                                     </ul>
                                 </li>
-
                             </div>
                         </ul>
                     </li>
