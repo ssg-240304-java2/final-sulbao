@@ -14,41 +14,6 @@
                 alert('[[${message}]]');
             }
         };
-
-        $(document).ready(function() {
-
-            $("#name-error-message").hide();
-
-            $('#profile-name').on('input', function() {
-                var profileName = $(this).val();
-
-                // 공백이 포함된 경우 메시지 표시
-                if(/\s/.test(profileName)) {
-                    $("#name-error-message").text("이름에 공백이 들어갈 수 없습니다.").show();
-                    return;
-                }
-
-                // 중복 확인 요청을 보냅니다.
-                $.ajax({
-                    type: 'POST',
-                    url: '/mypage/checkProfileName',
-                    data: { profileName: profileName },
-                    success: function(response) {
-                        console.log(response)
-                        // response 값이 0보다 크다면 중복된 이름이 있음
-                        if(response > 0) {
-                            $("#name-error-message").text("이미 사용중인 프로필 이름 입니다.").show();
-                        } else {
-                            $("#name-error-message").hide();
-
-                        }
-                    },
-                    error: function() {
-                        console.log('중복 확인 중 오류가 발생했습니다. 나중에 다시 시도해주세요.');
-                    }
-                });
-            });
-        });
     </script>
     <style>
         body {
@@ -124,7 +89,6 @@
             width: 150px;
             height: 150px;
             border-radius: 50%;
-            border-color: #3b3a3a;
         }
 
         .profile-info {
@@ -159,7 +123,7 @@
             border: none;
         }
         .profile-row input:focus {
-            outline: none;
+            /*outline: none;*/
         }
 
         .input-wrapper {
@@ -223,56 +187,43 @@
                             <li><a href="#">최근 본 상품</a></li>
                             <li><a href="#">주문내역조회</a></li>
                         <li class="menu-text">나의 활동</li>
-                            <li class="active"><a href="/mypage/myprofile">나의 정보</a></li>
+                            <li><a href="/mypage/myprofile">나의 정보</a></li>
                             <li><a href="#">나의 게시글</a></li>
                             <li><a href="#">나의 리뷰</a></li>
                         <li class="menu-text">고객센터</li>
                             <li><a href="#">문의게시판</a></li>
-                            <li><a href="/mypage/proform">전문가신청</a></li>
+                            <li class="active"><a href="/mypage/proform">전문가신청</a></li>
                     </ul>
                 </nav>
             <!-- 여기서 선택한 메뉴에 따라 내용이 바뀜 -->
                 <div class="content">
                     <form id="profile" action="/mypage/updateProfile" method="POST" enctype="multipart/form-data">
                         <div class="profile-container">
-                            <div class="profile-header">
-                                <img th:src="${profileImg.saveImgUrl}" alt="Profile Image" class="profile-image"/>
-                                <input type="file" id="profile-img" name="image">
-                            </div>
 
                             <div class="profile-info">
                                 <div class="profile-row">
-                                <label for="profile-name">프로필 이름</label>
+                                <label for="profile-name">이름</label>
                                     <div class="input-wrapper">
-                                        <input type="text" id="profile-name" name="profileName" th:placeholder="${profileName}">
+                                        <input type="text" id="profile-name" name="profileName" placeholder="이름을 입력해주세요.">
                                     </div>
                                         <p id="name-error-message" class="error-message"></p>
                                     <hr style="margin-top: 7px">
                                 </div>
 
                                 <div class="profile-row">
-                                    <label for="profile-text">소개</label>
-                                    <div class="input-wrapper">
-                                        <input type="text" id="profile-text" name="profileText" th:placeholder="${profileText}">
-                                    </div>
-                                    <hr style="margin-top: 7px">
-                                </div>
-                            </div>
-
-                            <div class="profile-info">
-                                <div class="profile-row">
                                     <label for="email">이메일 주소</label>
                                     <div class="input-wrapper">
                                         <input type="email" id="email" name="email" th:placeholder="${email}">
+                                        <button id="email-btn" type="button" onclick="">인증하기</button>
                                     </div>
                                     <hr style="margin-top: 7px">
                                 </div>
 
                                 <div class="profile-row">
-                                    <label for="password">비밀번호</label>
+                                    <label for="business-num">사업자번호</label>
                                     <div class="input-wrapper">
-                                        <input type="password" id="password" placeholder="●●●●●●●●" disabled>
-                                        <button id="password-btn" type="button" onclick="">변경하기</button>
+                                        <input type="text" id="business-num">
+                                        <button id="business-num-btn" type="button" onclick="">인증하기</button>
                                     </div>
                                     <hr style="margin-top: 7px">
                                 </div>
@@ -280,32 +231,28 @@
 
                             <div class="profile-info">
                                 <div class="profile-row">
-                                    <label for="birth">생년월일</label>
+                                    <label for="link1">관련링크</label>
                                     <div class="input-wrapper">
-                                        <input type="date" id="birth" name="birth" th:value="${birth}">
+                                        <input type="text" id="link1" name="phone" placeholder="사업장 또는 SNS 관련 링크를 첨부해주세요.">
+                                    </div>
+                                    <hr style="margin-top: 7px">
+                                    <div class="input-wrapper">
+                                        <input type="text" id="link2" name="phone" placeholder="사업장 또는 SNS 관련 링크를 첨부해주세요.">
                                     </div>
                                     <hr style="margin-top: 7px">
                                 </div>
 
                                 <div class="profile-row">
-                                    <label for="phone">휴대폰 번호</label>
+                                    <label>분야</label>
                                     <div class="input-wrapper">
-                                        <input type="text" id="phone" name="phone" th:placeholder="${phone}">
+                                        <input type="checkbox" id="field1" name="gender" value="M"/> 주류 전문가
+                                        <input type="checkbox" id="field2" name="gender" value="M"/> 주류 사업자
+                                        <input type="checkbox" id="field3" name="gender" value="M"/> 문화/정보
+                                        <input type="checkbox" id="field4" name="gender" value="M"/> 기타
                                     </div>
                                     <hr style="margin-top: 7px">
                                 </div>
-
-                                <div class="profile-row">
-                                    <label>성별</label>
-                                    <div class="input-wrapper">
-                                        <input type="radio" id="gender-m" name="gender" value="M" th:checked="${gender.equals('M')}"/> 남성
-                                        <input type="radio" id="gender-f" name="gender" value="F" th:checked="${gender.equals('F')}"/> 여성
-                                        <input type="radio" id="gender-none" name="gender" value="None" th:checked="${gender.equals('None')}"/> 선택하지 않음
-                                    </div>
-                                    <hr style="margin-top: 7px">
-                                </div>
-                                    <a href="#" style="font-size: 10px;" >탈퇴하기 ></a>
-                                <button type="submit" class="save-button">저장</button>
+                                <button type="submit" class="save-button">신청하기</button>
                             </div>
                         </div>
                     </form>

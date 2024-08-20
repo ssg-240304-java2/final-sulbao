@@ -90,4 +90,9 @@ public class MemberProfileController {
 
         return "redirect:/mypage/myprofile";
     }
+
+    @GetMapping("/proform")
+    public String proFormPage() {
+        return "/mypage/pro-form";
+    }
 }
