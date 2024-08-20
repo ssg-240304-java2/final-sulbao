@@ -72,7 +72,6 @@ public class ReviewController {
     @GetMapping("/update/{reviewId}")
     public String updateReview(@PathVariable Long reviewId,Model model){
         ReviewDTO reviewDTO = reviewService.findById(reviewId);
-
         model.addAttribute("review", reviewDTO);
         return "review/update";
     }
@@ -109,6 +108,9 @@ public class ReviewController {
     @DeleteMapping("/delete/{reviewId}")
     @ResponseBody
     public String delete(@PathVariable Long reviewId){
+//        if(session.getAttribute("userNo") == null){
+//            return "redirect:/login";
+//        }
         reviewService.deleteReview(reviewId);
         return "success";
     }
