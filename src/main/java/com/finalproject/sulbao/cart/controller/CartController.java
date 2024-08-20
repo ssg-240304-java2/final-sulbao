@@ -35,6 +35,7 @@ public class CartController {
      */
     @GetMapping("/cart")
     public String viewCart(Model model, Authentication authentication) {
+
         LoginDetails login = (LoginDetails) authentication.getPrincipal();
         String userId = login.getUsername();
         List<CartDTO> cartList = cartService.findCartByUserId(userId);
