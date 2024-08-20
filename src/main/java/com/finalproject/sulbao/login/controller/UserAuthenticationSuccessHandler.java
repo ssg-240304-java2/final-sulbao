@@ -1,6 +1,7 @@
 package com.finalproject.sulbao.login.controller;
 
 import com.finalproject.sulbao.login.model.dto.LoginDetails;
+import com.finalproject.sulbao.login.model.repository.LoginRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,6 +24,12 @@ public class UserAuthenticationSuccessHandler implements AuthenticationSuccessHa
     @Setter
     private String defaultUrl;
 
+    private final LoginRepository repository;
+
+    public UserAuthenticationSuccessHandler(LoginRepository repository) {
+        this.repository = repository;
+    }
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         LoginDetails login = (LoginDetails) authentication.getPrincipal();
@@ -34,15 +41,13 @@ public class UserAuthenticationSuccessHandler implements AuthenticationSuccessHa
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
-//        System.out.println("id =>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + userNo);
-//        System.out.println("id =>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + userId);
-//        System.out.println("role =>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + role);
-
+        String profileUrl = repository.findProfileUrflByUserNo(userNo);
 
         HttpSession session = request.getSession();
         session.setAttribute("userNo", userNo);
         session.setAttribute("userId", userId);
         session.setAttribute("role", role);
+        session.setAttribute("profileUrl", profileUrl);
         session.setMaxInactiveInterval(3600); // Session이 60분동안 유지
 
 
@@ -54,6 +59,5 @@ public class UserAuthenticationSuccessHandler implements AuthenticationSuccessHa
         } else if (role.equals("ROLE_ADMIN")) {
             response.sendRedirect("/auth/testadmin");   // 어드민 로그인 후 이동 페이지
         }
-
     }
 }
