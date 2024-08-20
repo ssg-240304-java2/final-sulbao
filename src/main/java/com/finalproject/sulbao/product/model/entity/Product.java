@@ -7,8 +7,6 @@ import com.finalproject.sulbao.product.model.vo.ProductImage;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -59,6 +57,10 @@ public class Product extends BaseEntity {
     )
     @OrderColumn(name="idx")
     private List<ProductImage> productImages;
+
+    @ManyToOne
+    @JoinColumn(name="comparison_no")
+    private ProductComparison comparison;
 
     //판매자정보
     @ManyToOne
