@@ -35,6 +35,8 @@ public class ProductController {
         productDTO.setUserNo((Long) session.getAttribute("userNo"));
         List<ProductDTO> productList = productService.findByUserNo(productDTO);
 
+        model.addAttribute("menu","product");
+        model.addAttribute("submenu","list");
         model.addAttribute("product", productDTO);
         model.addAttribute("productList", productList);
         return "adm/product/productList";
@@ -50,7 +52,8 @@ public class ProductController {
 
         productDTO.setUserNo((Long) session.getAttribute("userNo"));
         List<ProductDTO> productList = productService.findBySearchInfo(productDTO);
-
+        model.addAttribute("menu","product");
+        model.addAttribute("submenu","list");
         model.addAttribute("product", productDTO);
         model.addAttribute("productList", productList);
         return "adm/product/productList";
@@ -65,7 +68,8 @@ public class ProductController {
         }
 
         List<ProductComparisonDTO> productComparisonList = productService.findByComparison();
-
+        model.addAttribute("menu","product");
+        model.addAttribute("submenu","regist");
         model.addAttribute("productComparisonList", productComparisonList);
         model.addAttribute("product", new ProductDTO());
         model.addAttribute("productCategory", ProductCategory.values());
