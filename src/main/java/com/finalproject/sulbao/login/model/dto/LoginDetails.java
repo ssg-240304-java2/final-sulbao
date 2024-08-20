@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
+
 
 public class LoginDetails implements UserDetails {
 
@@ -22,7 +22,9 @@ public class LoginDetails implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
         Collection<GrantedAuthority> collectors = new ArrayList<>();
-        collectors.add(()->{return "ROLE_"+login.getUserRole();});
+        collectors.add(() -> {
+            return "ROLE_" + login.getUserRole();
+        });
 
         return collectors;
 
@@ -38,7 +40,9 @@ public class LoginDetails implements UserDetails {
         return login.getUserId();
     }
 
-    public Long getUserNo() {return login.getUserNo();};
+    public Long getUserNo() {
+        return login.getUserNo();
+    }
 
     @Override
     public boolean isEnabled() {

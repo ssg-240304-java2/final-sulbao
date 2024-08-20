@@ -7,7 +7,7 @@
     <script src="https://unpkg.com/@yaireo/tagify"></script>
     <script src="https://unpkg.com/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
     <link href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css"/>
-    <link href="/board/zzanfeed/new.css" rel="stylesheet">
+    <link href="/board/zzanfeed/edit.css" rel="stylesheet">
 </head>
 <body>
 <div layout:fragment="content">
@@ -28,7 +28,8 @@
     </div>
 
     <input accept="image/*" id="thumbnail" name="thumbnail" type="file">
-    <div class="cover-upload-container" id="coverPreview">
+    <div class="cover-upload-container" id="coverPreview"
+         th:style="'background-image: url(' + ${'https://kr.object.ncloudstorage.com/sulbao-file/' + thumbnail} + '); background-size: cover; background-position: center; color: transparent;'">
         커버 사진을 업로드해주세요.
         <div class="upload-button-container">
             <button class="upload-button" id="uploadButton">
@@ -40,7 +41,7 @@
     <div class="title-container">
         <div class="input-group">
             <label for="postTitle"></label>
-            <input class="form-control" id="postTitle" placeholder="제목을 입력해주세요." type="text">
+            <input class="form-control" id="postTitle" placeholder="제목을 입력해주세요." th:value="${post.title}" type="text">
         </div>
     </div>
 
@@ -48,18 +49,25 @@
         <input class='some_class_name' name='tags' placeholder='해시태그를 추가해주세요.'>
     </div>
 
-    <div class="editor-wrapper">
-        <div class="square-box">
-            <input class="file-input" multiple style="display: none;" type="file"/>
-            <div class="upload-content">
-                <div class="camera-icon">📷</div>
-                <p>사진을 업로드하세요.</p>
-                <button class="upload-button" onclick="uploadImage(this)">PC에서 불러오기</button>
+    <div class="editor-wrapper-container">
+        <th:block th:each="content : ${contents}">
+            <div class="editor-wrapper">
+                <div class="square-box"
+                     th:style="'background-image: url(' + ${'https://kr.object.ncloudstorage.com/sulbao-file/' + content.image} + '); background-size: cover; background-position: center; color: transparent;'"
+                >
+                    <input class="file-input" multiple style="display: none;" type="file"/>
+                    <div class="upload-content">
+                        <div class="camera-icon" th:if="${content.image == null}">📷</div>
+                        <p th:if="${content.image == null}">사진을 업로드하세요.</p>
+                        <p>10장까지 올릴 수 있어요.</p>
+                        <button class="upload-button" onclick="uploadImage(this)">PC에서 불러오기</button>
+                    </div>
+                </div>
+                <div class="editor-container">
+                    <div class="summernote" th:text="${content.text}"></div>
+                </div>
             </div>
-        </div>
-        <div class="editor-container">
-            <div class="summernote"></div>
-        </div>
+        </th:block>
     </div>
 
     <div class="add-wrapper">
@@ -121,11 +129,24 @@
             }
         })
 
+        let initialTags = [[${tags}]];
+        tagify.addTags(initialTags);
+
         $(document).ready(function () {
             $('.summernote').summernote({
                 lang: 'ko-KR',
                 height: 180,
                 disableResizeEditor: true
+            });
+
+            const summernoteEditors = document.querySelectorAll('.summernote');
+            [[${contents}]].forEach((content, index) => {
+                $(summernoteEditors[index]).summernote({
+                    lang: 'ko-KR',
+                    height: 180,
+                    disableResizeEditor: true
+                });
+                $(summernoteEditors[index]).summernote('code', content.text);
             });
         });
 
@@ -137,6 +158,7 @@
                 <div class="upload-content">
                     <div class="camera-icon">📷</div>
                     <p>사진을 업로드하세요</p>
+                    <p>10장까지 올릴 수 있어요</p>
                     <button class="upload-button" onclick="uploadImage(this)">PC에서 불러오기</button>
                 </div>
             </div>
@@ -179,41 +201,26 @@
         function submitContent() {
             let formData = new FormData();
 
-            let title = document.getElementById('postTitle').value;
-            if (title === "") {
-                alert('제목을 입력하세요.');
-                return;
-            }
-            formData.append('title', title);
+            formData.append('title', document.getElementById('postTitle').value);
 
             let tags = tagify.value.map(tag => tag.value);
             tags.forEach(tag => formData.append('tags', tag));
 
             const thumbnailFile = document.getElementById('thumbnail').files[0];
-            if (thumbnailFile == null) {
-                alert('썸네일 이미지를 등록하세요.');
-                return;
+            if (thumbnailFile != null) {
+                formData.append('thumbnail', thumbnailFile);
             }
-            formData.append('thumbnail', thumbnailFile);
 
-            let isImageUploaded = true;
             const contentImages = document.querySelectorAll('.file-input');
             contentImages.forEach((input, index) => {
                 if (input.files.length === 0) {
-                    isImageUploaded = false;
-                    return;
-                }
-                if (input.files.length > 0) {
+                    formData.append('contentImages', new Blob());
+                } else {
                     for (let i = 0; i < input.files.length; i++) {
                         formData.append('contentImages', input.files[i]);
                     }
                 }
             });
-
-            if (!isImageUploaded) {
-                alert('이미지는 필수 등록 요소입니다.');
-                return;
-            }
 
             const contents = document.querySelectorAll('.summernote');
             contents.forEach((editor, index) => {
@@ -221,13 +228,13 @@
             });
 
             $.ajax({
-                url: '/zzanfeeds/new',
+                url: `/zzanfeeds/edit/[[${post.getId()}]]`,
                 method: 'POST',
                 data: formData,
                 processData: false,
                 contentType: false,
                 success: function (postId) {
-                    location.href = `/zzanfeeds/${postId}`;
+                    location.href = `/zzanfeeds/[[${post.getId()}]]`;
                 },
                 error: function (error) {
                     console.log(error);

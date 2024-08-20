@@ -1,6 +1,7 @@
 package com.finalproject.sulbao.review.service;
 
 import com.finalproject.sulbao.cart.domain.Order;
+import com.finalproject.sulbao.cart.dto.OrderDTO;
 import com.finalproject.sulbao.cart.dto.OrderItemDTO;
 import com.finalproject.sulbao.cart.repository.OrderRepository;
 import com.finalproject.sulbao.login.model.entity.Login;
@@ -17,6 +18,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,24 +40,15 @@ public class ReviewService {
     }
 
     // 주문한 상품정보 취득
-    public ProductDTO getProductInfo(Long productNo) {
-        return new ProductDTO().toDTO(productRepository.findByProductNo(productNo));
+    public ProductDTO getProductInfo(Set<OrderItemDTO> product) {
+        return new ProductDTO().toDTO(productRepository.findByProductNo(product.iterator().next().getProductNo()));
     }
 
-    public OrderItemDTO getOrderInfo(String orderNo, String productNo) {
+    public OrderDTO getOrderInfo(String orderNo) {
 
         Order order = orderRepository.findById(Long.valueOf(orderNo)).get();
-        List<OrderItemDTO> orderItems = order.getOrderItems().stream()
-                .map(orderItem1 -> modelMapper.map(orderItem1,OrderItemDTO.class))
-                .toList();
 
-        for (OrderItemDTO orderItemDTO : orderItems) {
-            if(orderItemDTO.getProductNo() == (Long.parseLong(productNo))){
-                return orderItemDTO;
-            }
-        }
-        // 주문한 상품정보에 productNo와 일치하는 값이 없을경우
-        return null;
+        return modelMapper.map(order, OrderDTO.class);
     }
 
     @Transactional
