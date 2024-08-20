@@ -27,6 +27,9 @@ public class ProductComparison extends BaseEntity {
     @Column(name = "comparison_description")
     private String comparisonDescription;
 
+    @Column(name = "comparison_category")
+    private String comparisonCategory;
+
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
             name="tbl_comparison_image", joinColumns = @JoinColumn(name="comparison_no")
