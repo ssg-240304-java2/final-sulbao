@@ -130,25 +130,22 @@ public class LoginService {
         return memberRepository.existsByProfileNameAndUserNoNot(profileName, userNo);
     }
 
-    // 프로필 - 수정
+    // 프로필 - 업데이트
     @Transactional
     public void updateMemberInfo(MemberProfileDto memberProfile, String userId) {
 
         Login login = loginRepository.findByUserId(userId).orElseThrow();
         MemberInfo memberInfo = memberRepository.findByUserId(userId);
 
+        // 개인정보 업데이트
         login.setBirth(memberProfile.getBirth());
         login.setEmail(memberProfile.getEmail());
         login.setPhone(memberProfile.getPhone());
         login.setGender(memberProfile.getGender());
 
-
-        log.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> {}", memberProfile.getImage().getOriginalFilename());
-
+        // 프로필 사진 업데이트
         if(!memberProfile.getImage().getOriginalFilename().isEmpty()){
-            log.info("service ================>>>>>>>>>>>>>>>> file upload ::::::::: {}", memberProfile.getImage());
             FileDto fileDto = fileService.uploadFile(memberProfile.getImage(),uploadDir,"sulbao-file/profile");
-            log.info("service ================>>>>>>>>>>>>>>>> file DTO ::::::::: {}", fileDto);
             MemberImage memberImage = new MemberImage();
             memberImage.setFileName(fileDto.getOriginalFileName());
             memberImage.setSaveName(fileDto.getUploadFileName());
@@ -156,18 +153,14 @@ public class LoginService {
             memberInfo.setMemberImage(memberImage);
         }
 
-        memberInfo.setProfileName(memberProfile.getProfileName());
-        memberInfo.setProfileText(memberProfile.getProfileText());
-    }
-
-    private boolean isImgExist(MemberImage profileImg) {
-
-        String img = profileImg.getSaveName();
-        String type = img.substring(img.length()-3);
-        boolean result = false;
-        if(type.equals(".png") || type.equals(".jpg")){
-            result = true;
+        // 프로필 이름 업데이트
+        if(!memberProfile.getProfileName().isEmpty()){
+            memberInfo.setProfileName(memberProfile.getProfileName());
         }
-        return result;
+        // 프로필 소개 업데이트
+        if(!memberProfile.getProfileText().isEmpty()){
+            memberInfo.setProfileText(memberProfile.getProfileText());
+        }
+
     }
 }

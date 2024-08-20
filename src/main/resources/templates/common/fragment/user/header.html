@@ -35,7 +35,7 @@
                     <li>
                         <form action="/search" method="GET">
                             <input type="text" name="search" id="search" class="search" placeholder="요즘 핫한 막걸리?" style="padding-left: 30px; width: 250px;">
-                            <button type="submit" style="border: none; background: none; cursor: pointer; margin-left: -54px; position: absolute;">
+                            <button type="submit" style="border: none; background: none; cursor: pointer; margin-left: -36px; position: absolute;">
                                 <span class="material-icons">search</span>
                             </button>
                         </form>
@@ -66,10 +66,9 @@
                                 <span style="width:18px; height:18px; border-radius: 50%; border: none; background: deepskyblue; margin-left: -7px; margin-top: -7px; position: absolute; text-align: center; color: white">3</span>
                             </a>
                             </li>
-<!--                            <li><a href="/mypage/myprofile" th:text="|${#authentication.getName()} 님|"></a></li>-->
                             <li><a href="/mypage/myprofile">
-                                <img th:src="${session.get('profileUrl')}" alt="profile" class="profile" onclick="href='/mypage/myprofile'">
-                                <img sec:authorize="hasRole('ROLE_PRO_MEMBER')" src="/user/images/icon-crown.png" alt="role" style="width:18px; height:18px; border-radius: 50%; border: none; background: #ffdf7e; margin-left: -7px; margin-top: -4px; position: absolute;">
+                                <img th:src="${session.get('profileUrl')}" id="profileImage" alt="profile" class="profile" onclick="href='/mypage/myprofile'">
+                                <img sec:authorize="hasRole('ROLE_PRO_MEMBER')" src="/user/images/icon-crown.png" alt="role" style="width:18px; height:18px; border-radius: 50%; border: none; background: #ffdf7e; margin-left: -7px; margin-top: -10px; position: absolute;">
                             </a></li>
                             <li><a href="/logout">로그아웃</a></li>
                             <li class="has-children">
@@ -84,9 +83,7 @@
                             </li>
                         </ul>
                     </li>
-
                 </ul>
-
                 <a href="#" class="burger ml-auto float-right site-menu-toggle js-menu-toggle d-inline-block d-lg-none light" data-toggle="collapse" data-target="#main-navbar">
                     <span></span>
                 </a>

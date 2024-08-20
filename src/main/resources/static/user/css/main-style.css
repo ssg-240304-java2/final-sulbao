@@ -207,7 +207,7 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4 {
 }
 
 .site-navigation > div > a {
-    text-align: center;
+    display: flex;
 }
 
 .site-navigation .site-menu {
@@ -250,7 +250,8 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4 {
     width: 35px;
     height: 35px;
     border-radius: 50%;
-    background-color: #FFFFFF !important;
+    background-color: #FFFFFF;
+    margin-top: -6px;
 }
 
 .site-nav .site-navigation .site-menu-account > li {
