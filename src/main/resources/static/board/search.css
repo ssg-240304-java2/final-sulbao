@@ -1,0 +1,234 @@
+.wip {
+    width: 100%;
+    height: 500px;
+    background-color: #313638;
+}
+
+.no-content {
+    text-align: center;
+    margin: 2em 0;
+    padding: 1em;
+}
+
+.no-content-image {
+    width: 40%;
+    height: auto;
+    margin-bottom: -3%;
+}
+
+.no-content-text {
+    font-size: 1.8em;
+    color: #262F40;
+    font-weight: bold;
+}
+
+.guide-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1em;
+}
+
+.guide-text {
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+.more-link {
+    color: #1A374D;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+.more-link:hover {
+    text-decoration: underline;
+}
+
+.main-guide {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.sub-guide {
+    font-size: 1.2em;
+    font-weight: normal;
+    margin-bottom: 2%;
+}
+
+.zzanfeed-container {
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+
+.zzanfeed-post-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.profile-picture {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.author-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.author-name {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.zzanfeed-post-item {
+    width: calc(25% - 20px);
+    box-sizing: border-box;
+    text-align: center;
+    margin-bottom: 5%;
+}
+
+.zzanfeed-post-item .thumbnail {
+    width: 100%;
+    height: 100%;
+    max-width: 400px;
+    max-height: 300px;
+    object-fit: cover;
+    margin-bottom: 10px;
+    transition: transform 0.3s ease;
+}
+
+.zzanfeed-post-item .thumbnail:hover {
+    border-radius: 10px;
+    transform: scale(1.03);
+}
+
+.zzanfeed-post-item h3 {
+    font-size: 1rem;
+    margin-top: 10px;
+}
+
+.title {
+    font-weight: bold;
+    font-size: 1.4rem;
+}
+
+.post-meta-icons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    padding: 0 20px;
+    margin-left: 10px;
+}
+
+.icon-text {
+    display: flex;
+    align-items: center;
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
+.icon-text i {
+    margin-right: 5px;
+    font-size: 1.3rem;
+}
+
+.post-meta-icons span {
+    margin-right: 20px;
+    font-size: 1.1rem;
+}
+
+.post-meta-icons i {
+    font-size: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .post-item {
+        width: calc(33.333% - 20px);
+    }
+}
+
+@media (max-width: 480px) {
+    .post-item {
+        width: 100%;
+    }
+}
+
+.thumbnail {
+    border-radius: 10px;
+}
+
+.zzanpost-container {
+    max-width: 1300px;
+    padding: 20px;
+    margin: 30px auto 5%;
+}
+
+.zzanpost-post-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.zzanpost-post-item {
+    width: calc(33.333% - 20px);
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.zzanpost-post-item a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.zzanpost-post-item img.thumbnail {
+    width: 100%;
+    height: auto;
+    max-width: 400px;
+    max-height: 300px;
+    object-fit: cover;
+    margin-bottom: 10px;
+    transition: transform 0.3s ease;
+}
+
+.zzanpost-post-item img.thumbnail:hover {
+    border-radius: 10px;
+    transform: scale(1.03);
+}
+
+.title {
+    font-weight: bold;
+    font-size: 1.4rem;
+    margin-top: 10px;
+}
+
+.author {
+    font-size: 1rem;
+    color: #333;
+    margin-top: 5px;
+}
+
+.post-meta {
+    font-size: 0.875rem;
+    color: #6c757d;
+    margin-top: 5px;
+}
+
+@media (max-width: 768px) {
+    .zzanpost-post-item {
+        width: calc(50% - 20px);
+    }
+}
+
+@media (max-width: 480px) {
+    .zzanpost-post-item {
+        width: 100%;
+    }
+}

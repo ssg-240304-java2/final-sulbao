@@ -25,4 +25,12 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("SELECT count(p) FROM Post p JOIN p.tags t WHERE p.boardCategory = :boardCategory AND t = :tag")
     Long countByBoardCategoryAndTag(@Param("boardCategory") BoardCategory boardCategory, @Param("tag") String tag);
 
+    @Query("SELECT p FROM Post p " +
+            "LEFT JOIN p.tags t " +
+            "WHERE p.boardCategory = :boardCategory " +
+            "AND (p.title LIKE %:keyword% " +
+            "OR p.content LIKE %:keyword% " +
+            "OR t LIKE %:keyword%)")
+    List<Post> findByBoardCategoryAndKeyword(BoardCategory boardCategory, String keyword);
+
 }
