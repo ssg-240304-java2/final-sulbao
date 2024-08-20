@@ -35,6 +35,7 @@ public class CartController {
      */
     @GetMapping("/cart")
     public String viewCart(Model model,Authentication authentication, HttpSession session){
+        //세션 존재여부 확인
         if(session.getAttribute("userNo") == null){
             return "redirect:/login";
         }
