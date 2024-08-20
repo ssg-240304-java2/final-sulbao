@@ -13,7 +13,8 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
-import java.util.Random;
+import java.util.*;
+
 
 @Service
 @RequiredArgsConstructor
@@ -52,7 +53,39 @@ public class EmailService {
         context.setVariable("code", code);
         return templateEngine.process(type, context);
     }
+    public String presentSendMail(EmailMessage emailMessage, String orderCodeList, String type) {
+        try {
+            InternetAddress emailAddr = new InternetAddress(emailMessage.getTo());
+            emailAddr.validate();
+        } catch (AddressException ex) {
+            System.out.println(emailMessage.getTo() + "=========================================이메일 서버 false");
+        }
 
+        String token = UUID.randomUUID().toString();
+
+
+
+        String link = "http://localhost:8080/validateOrder?token=" + token;
+
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+
+        try {
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
+            mimeMessageHelper.setTo(emailMessage.getTo()); // 메일 수신자
+            mimeMessageHelper.setSubject(emailMessage.getSubject()); // 메일 제목
+
+            String htmlContent = "<a id='code' href='" + link + "'>인증 링크를 클릭하세요</a>";
+
+            mimeMessageHelper.setText(htmlContent, true); // 메일 본문 내용, HTML 여부
+            javaMailSender.send(mimeMessage);
+
+            return token;
+
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
     // 메일 내용 적용
     public String sendMail(EmailMessage emailMessage, String type) {
 

@@ -50,4 +50,7 @@ public class Order extends BaseEntity {
     private Set<OrderItem> orderItems;
     @Column(name= "userId")
     private String userId;
+    @Column(name="token")
+    private String token;
+
 }
