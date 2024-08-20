@@ -167,4 +167,16 @@ public class PostService {
     public List<String> findTopTags() {
         return postRepository.findTopTags().stream().limit(15).toList();
     }
+
+    public List<PostDto> findByCategoryAndKeyword(String keyword, Long boardCategoryId) {
+        BoardCategory boardCategory = boardCategoryRepository.findById(boardCategoryId).orElseThrow();
+        if (boardCategoryId.equals(ZZANFEED_ID)) {
+            List<Post> posts = postRepository.findByBoardCategoryAndKeyword(boardCategory, keyword);
+            return posts.stream().limit(ZZANFEED_SEARCH_PAGE_SIZE).map(PostDto::toPostDto).toList();
+        } else {
+            List<Post> posts = postRepository.findByBoardCategoryAndKeyword(boardCategory, keyword);
+            return posts.stream().limit(ZZANPOST_SEARCH_PAGE_SIZE).map(PostDto::toPostDto).toList();
+        }
+    }
+
 }
