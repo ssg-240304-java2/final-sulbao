@@ -18,6 +18,7 @@ import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
