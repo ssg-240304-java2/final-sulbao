@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{common/layouts/userDefault}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title>#짠피드</title>
+    <link href="/board/zzanfeed/detail.css" rel="stylesheet">
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="hero hero-inner">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mx-auto text-center">
+                    <div class="intro-wrap">
+                        <h1 class="mb-0">#짠피드</h1>
+                        <p class="text-white">
+                            전통주와 함께한 특별한 순간을 짠피드에 업로드하세요.<br/>
+                            지금 당신의 전통주 이야기를 들려주세요.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-container">
+        <div class="post-title" th:text="${post.title}"></div>
+
+        <div class="post-meta">
+            <img alt="작성자 프로필 사진"
+                 th:src="@{|https://kr.object.ncloudstorage.com/sulbao-file/${post.userDto.profileImageFileName}|}">
+            <div class="username" th:text="${post.userDto.getProfileName()}"></div>
+            <div class="edit-buttons" th:if="${user.id == post.userDto.id or isAdmin}">
+                <button onclick="editPost()">수정</button>
+                <button onclick="deletePost()">삭제</button>
+            </div>
+        </div>
+
+        <div class="post-content">
+            <div id="contentContainer">
+                <div class="content" th:each="content : ${contents}">
+                    <img alt="image" class="content-image"
+                         th:src="@{|https://kr.object.ncloudstorage.com/sulbao-file/${content.image}|}">
+                    <div th:utext="${content.text}"></div>
+                </div>
+            </div>
+
+            <div class="recommendation-section">
+                <div class="recommend-container">
+                    <button class="recommend-button">
+                        <img alt="thumbs up" class="thumbs-up" src="/board/image/thumbs-up.png"
+                             th:if="${!isPostLikedByUser}">
+                        <img alt="thumbs up" class="thumbs-up" src="/board/image/thumbs-up-colored.png"
+                             th:if="${isPostLikedByUser}">
+                    </button>
+                    <span class="recommend-count" th:text="${post.like}"></span>
+                </div>
+            </div>
+        </div>
+
+        <div id="tag-container">
+                <span th:each="tag : ${post.tags}">
+                    <a th:href="@{|/zzanfeeds?tag=${tag.substring(1)}|}" th:text="${tag}"></a>
+                </span>
+        </div>
+
+        <div class="comments-section">
+            <div class="comments-count">댓글 <span th:text="${comments.size()}"></span></div>
+
+            <div class="comment-input">
+                <img alt="default profile"
+                     src="https://kr.object.ncloudstorage.com/sulbao-file/default-profile.png">
+                <label for="commentContent"></label>
+                <input id="commentContent" th:placeholder='${user.id == 0 ? "로그인 후 작성 가능합니다." : "댓글을 입력하세요."}' type="text" th:disabled="${user.id == 0}">
+                <button onclick="saveComment()" type="submit">입력</button>
+            </div>
+
+            <div class="comment-container" th:each="comment : ${comments}">
+                <div class="comment">
+                    <img alt="comment writer's profile image"
+                         th:src="@{|https://kr.object.ncloudstorage.com/sulbao-file/${comment.userDto.profileImageFileName}|}">
+                    <div class="comment-content">
+                        <div class="username" th:text="${comment.userDto.profileName}"></div>
+                        <div class="comment-text" th:text="${comment.content}"></div>
+                        <div class="timestamp" th:text="${comment.createdAt}"></div>
+                    </div>
+
+                    <div class="edit-buttons" th:if="${user.id == comment.userDto.id or isAdmin}">
+                        <button onclick="displayEditCommentInput(this)" th:data-id="${comment.id}">수정</button>
+                        <button onclick="deleteComment(this)" th:data-id="${comment.id}">삭제</button>
+                    </div>
+                </div>
+
+                <form action="/comments/update" class="comment-edit-form" method="post" style="display: none">
+                    <div class="comment-input">
+                        <img alt="comment writer's profile image"
+                             th:src="@{|https://kr.object.ncloudstorage.com/sulbao-file/${comment.userDto.profileImageFileName}|}">
+                        <label>
+                            <input class="commentContent" name="content" th:value="${comment.content}" type="text">
+                        </label>
+                        <label>
+                            <input name="commentId" style="display: none" th:value="${comment.id}" type="text">
+                        </label>
+                        <label>
+                            <input name="postId" style="display:none" th:value="${post.id}" type="text">
+                        </label>
+                        <button type="submit">입력</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        function displayEditCommentInput(button) {
+            const commentContainerDiv = $(button).closest('.comment-container');
+            const commentInputDiv = commentContainerDiv.find('.comment-edit-form');
+            const isHidden = (commentInputDiv.css('display') === 'none');
+            commentInputDiv.css('display', (isHidden ? 'block' : 'none'));
+            button.innerText = (isHidden ? '취소' : '수정');
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const recommendButton = document.querySelector('.recommend-button');
+            const recommendImg = document.querySelector('.recommend-button img');
+            const defaultImageUrl = '/board/image/thumbs-up.png';
+            const activeImageUrl = '/board/image/thumbs-up-colored.png';
+            let flag = [[${isPostLikedByUser}]];
+
+            recommendButton.addEventListener('click', function () {
+                let user = [[${user}]];
+                let post = [[${post}]];
+
+                if (user.id === 0) {
+                    alert('로그인 후 게시글을 추천할 수 있습니다.');
+                    return;
+                }
+
+                if (user.id === post.userDto.id) {
+                    alert('자신이 작성한 게시글은 추천할 수 없습니다.');
+                    return;
+                }
+
+                updateLike(user, post);
+
+                setTimeout(() => {
+                    recommendImg.src = (flag ? defaultImageUrl : activeImageUrl);
+                    flag = !flag;
+                }, 300);
+            });
+        });
+
+        function deletePost() {
+            if (confirm('정말로 이 게시글을 삭제하시겠습니까?')) {
+                $.ajax({
+                    url: `/zzanposts/${[[${post.id}]]}`,
+                    type: 'DELETE',
+                    contentType: 'application/json',
+                    success: function (response) {
+                        location.href = '/zzanfeeds';
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(error)
+                    }
+                });
+            }
+        }
+
+        function editPost() {
+            const postId = [[${post.id}]];
+            location.href = '/zzanfeeds/edit/' + postId;
+        }
+
+        function deleteComment(button) {
+            const commentId = button.getAttribute('data-id');
+
+            if (confirm('정말로 이 댓글을 삭제하시겠습니까?')) {
+                $.ajax({
+                    url: '/comments',
+                    type: 'DELETE',
+                    data: {
+                        'commentId': commentId
+                    },
+                    success: function (response) {
+                        location.reload();
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(error);
+                    }
+                });
+            }
+        }
+
+        function saveComment() {
+            let user = [[${user}]];
+            if (user.id === 0) {
+                alert('로그인 후 댓글 작성이 가능합니다.');
+                return;
+            }
+
+            $.ajax({
+                url: `/comments`,
+                type: 'POST',
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                data: {
+                    content: $('#commentContent').val(),
+                    userId: [[${user.id}]],
+                    postId: [[${post.id}]]
+                },
+                success: function (response) {
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.log(error)
+                }
+            });
+        }
+
+        function updateLike(user, post) {
+            $.ajax({
+                url: '/likes',
+                type: 'GET',
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                data: {
+                    postId: post.id,
+                    userId: user.id
+                },
+                success: function (isLiked) {
+                    const recommendCount = $('.recommend-count');
+                    if (isLiked) {
+                        removeLike(post, user);
+                        recommendCount.text(parseInt(recommendCount.text()) - 1);
+                    } else {
+                        saveLike(post, user);
+                        recommendCount.text(parseInt(recommendCount.text()) + 1);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        function removeLike(post, user) {
+            $.ajax({
+                url: '/likes',
+                method: 'DELETE',
+                data: {
+                    postId: post.id,
+                    userId: user.id
+                },
+                success: function (response) {
+
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        function saveLike(post, user) {
+            $.ajax({
+                url: '/likes',
+                method: 'POST',
+                data: {
+                    postId: post.id,
+                    userId: user.id
+                },
+                success: function (response) {
+
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        }
+    </script>
+</div>
+</body>
+</html>

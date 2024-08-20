@@ -6,98 +6,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>술포스트</title>
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
-    <style>
-        .container {
-            max-width: 1300px;
-            padding: 20px;
-            margin: 30px auto 0;
-        }
-
-        .hero {
-            background: #f8f9fa;
-            padding: 50px 0;
-        }
-
-        .hero h1 {
-            font-size: 2.5rem;
-        }
-
-        .hero p {
-            font-size: 1.25rem;
-            color: #6c757d;
-            margin-top: 30px;
-        }
-
-        .post-count {
-            font-size: 1.125rem;
-            margin-bottom: 20px;
-        }
-
-        .post-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .post-item {
-            width: calc(33.333% - 20px);
-            box-sizing: border-box;
-            text-align: center;
-        }
-
-        .post-item img {
-            width: 100%;
-            height: auto;
-            max-width: 400px;
-            max-height: 300px;
-            object-fit: cover;
-            margin-bottom: 10px;
-            transition: transform 0.3s ease;
-        }
-
-        .post-item img:hover {
-            border-radius: 10px;
-            transform: scale(1.03);
-        }
-
-        .post-item h3 {
-            font-size: 1rem;
-            margin-top: 10px;
-        }
-
-        .title {
-            font-weight: bold;
-            font-size: 1.4rem;
-        }
-
-        .author {
-            font-size: 1rem;
-            color: #333;
-            margin-top: 5px;
-        }
-
-        .post-meta {
-            font-size: 0.875rem;
-            color: #6c757d;
-            margin-top: 5px;
-        }
-
-        @media (max-width: 768px) {
-            .post-item {
-                width: calc(50% - 20px);
-            }
-        }
-
-        @media (max-width: 480px) {
-            .post-item {
-                width: 100%;
-            }
-        }
-
-        .thumbnail {
-            border-radius: 10px;
-        }
-    </style>
+    <link href="/board/zzanpost/list.css" rel="stylesheet">
 </head>
 <body>
 <div layout:fragment="content">
@@ -123,7 +32,7 @@
             <div class="post-item" th:each="post : ${posts}">
                 <a th:href="@{|zzanposts/${post.id}|}">
                     <img alt="Post Thumbnail" class="thumbnail"
-                         th:src="@{|https://kr.object.ncloudstorage.com/sulbao-file/${post.postImageDtoList.get(0).fileName}|}">
+                         th:src="@{|https://kr.object.ncloudstorage.com/sulbao-file/${post.thumbnail}|}">
                     <div class="title" th:text="${post.title}"></div>
                 </a>
                 <div class="author" th:text="${post.userDto.profileName}"></div>
@@ -157,8 +66,7 @@
                                 const postHtml = `
                             <div class="post-item">
                                 <a href="/zzanposts/${post.id}">
-                                    <img class="thumbnail" alt="Post Thumbnail" src="https://kr.object.ncloudstorage.com/sulbao-file/${post.postImageDtoList[0].fileName}">
-<!--                                    <img alt="Post Thumbnail" src="https://img.hankyung.com/photo/202112/AKR20211206035900003_01_i_P4.jpg">-->
+                                    <img class="thumbnail" alt="Post Thumbnail" src="https://kr.object.ncloudstorage.com/sulbao-file/${post.thumbnail}">
                                     <div class="title">${post.title}</div>
                                 </a>
                                 <div class="author">${post.userDto.profileName}</div>

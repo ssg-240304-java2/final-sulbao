@@ -28,9 +28,8 @@
         <div class="post-title" th:text="${post.title}"></div>
 
         <div class="post-meta">
-            <!--            <img alt="작성자 프로필 사진" th:src="@{|${post.user.profileImageFileName}|}">-->
             <img alt="작성자 프로필 사진"
-                 src="https://cdn.icon-icons.com/icons2/2468/PNG/512/user_user_profile_user_icon_user_thump_icon_149321.png">
+                 th:src="@{|https://kr.object.ncloudstorage.com/sulbao-file/${post.userDto.profileImageFileName}|}">
             <div class="username" th:text="${post.userDto.getProfileName()}"></div>
             <div class="edit-buttons" th:if="${user.id == post.userDto.id or isAdmin}">
                 <button onclick="editPost()">수정</button>
@@ -45,11 +44,10 @@
             <div class="recommendation-section">
                 <div class="recommend-container">
                     <button class="recommend-button">
-                        <img alt="thumbs up" class="thumbs-up" src="https://i.ibb.co/kQbYDQ0/thumbs-up.png"
+                        <img alt="thumbs up" class="thumbs-up" src="/board/image/thumbs-up.png"
                              th:if="${!isPostLikedByUser}">
-                        <img alt="thumbs up" class="thumbs-up" src="https://i.ibb.co/j6jhNYX/thumbs-up-color.png"
+                        <img alt="thumbs up" class="thumbs-up" src="/board/image/thumbs-up-colored.png"
                              th:if="${isPostLikedByUser}">
-
                     </button>
                     <span class="recommend-count" th:text="${post.like}"></span>
                 </div>
@@ -61,16 +59,16 @@
 
             <div class="comment-input">
                 <img alt="default profile"
-                     src="http://eenl.skku.edu/data/file/sub3_3/1_copy1_27_1938934806_sO5V0cdX_9024501a0743b144154990f827e4912cad1daca1.png">
-                <input id="commentContent" placeholder="댓글을 입력하세요" type="text">
+                     src="https://kr.object.ncloudstorage.com/sulbao-file/default-profile.png">
+                <label for="commentContent"></label>
+                <input id="commentContent" placeholder="댓글을 입력하세요" type="text" th:disabled="${user.id == 0}">
                 <button onclick="saveComment()" type="submit">입력</button>
             </div>
 
             <div class="comment-container" th:each="comment : ${comments}">
                 <div class="comment">
-                    <!--                <img alt="comment writer's profile image" th:src="@{${comment.user.profileImageFileName}}">-->
                     <img alt="comment writer's profile image"
-                         src="https://cdn.icon-icons.com/icons2/2468/PNG/512/user_user_profile_user_icon_user_thump_icon_149317.png">
+                         th:src="@{|https://kr.object.ncloudstorage.com/sulbao-file/${comment.userDto.profileImageFileName}|}">
                     <div class="comment-content">
                         <div class="username" th:text="${comment.userDto.profileName}"></div>
                         <div class="comment-text" th:text="${comment.content}"></div>
@@ -86,10 +84,16 @@
                 <form action="/comments/update" class="comment-edit-form" method="post" style="display: none">
                     <div class="comment-input">
                         <img alt="comment writer's profile image"
-                             src="https://cdn.icon-icons.com/icons2/2468/PNG/512/user_user_profile_user_icon_user_thump_icon_149317.png">
-                        <input class="commentContent" name="content" th:value="${comment.content}" type="text">
-                        <input name="commentId" style="display: none" th:value="${comment.id}" type="text">
-                        <input name="postId" style="display:none" th:value="${post.id}" type="text">
+                             th:src="@{|https://kr.object.ncloudstorage.com/sulbao-file/${comment.userDto.profileImageFileName}|}">
+                        <label>
+                            <input class="commentContent" name="content" th:value="${comment.content}" type="text">
+                        </label>
+                        <label>
+                            <input name="commentId" style="display: none" th:value="${comment.id}" type="text">
+                        </label>
+                        <label>
+                            <input name="postId" style="display:none" th:value="${post.id}" type="text">
+                        </label>
                         <button type="submit">입력</button>
                     </div>
                 </form>
@@ -109,13 +113,18 @@
         document.addEventListener('DOMContentLoaded', function () {
             const recommendButton = document.querySelector('.recommend-button');
             const recommendImg = document.querySelector('.recommend-button img');
-            const defaultImageUrl = 'https://i.ibb.co/kQbYDQ0/thumbs-up.png';
-            const activeImageUrl = 'https://i.ibb.co/j6jhNYX/thumbs-up-color.png';
+            const defaultImageUrl = '/board/image/thumbs-up.png';
+            const activeImageUrl = '/board/image/thumbs-up-colored.png';
             let flag = [[${isPostLikedByUser}]];
 
             recommendButton.addEventListener('click', function () {
                 let user = [[${user}]];
                 let post = [[${post}]];
+
+                if (user.id === 0) {
+                    alert('로그인 후 게시글을 추천할 수 있습니다.');
+                    return;
+                }
 
                 if (user.id === post.userDto.id) {
                     alert('자신이 작성한 게시글은 추천할 수 없습니다.');
@@ -173,6 +182,12 @@
         }
 
         function saveComment() {
+            let user = [[${user}]];
+            if (user.id === 0) {
+                alert('로그인 후 댓글 작성이 가능합니다.');
+                return;
+            }
+
             $.ajax({
                 url: `/comments`,
                 type: 'POST',

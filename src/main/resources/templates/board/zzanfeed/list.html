@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{common/layouts/userDefault}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>#짠피드</title>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="/board/zzanfeed/list.css" rel="stylesheet">
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="hero hero-inner">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mx-auto text-center">
+                    <div class="intro-wrap">
+                        <h1 class="mb-0">#짠피드</h1>
+                        <p class="text-white">
+                            전통주와 함께한 특별한 순간을 짠피드에 업로드하세요.<br/>
+                            지금 당신의 전통주 이야기를 들려주세요.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="tag-container">
+            <span class="tag" th:each="tag : ${tags}">
+                <a th:href="@{|/zzanfeeds?tag=${tag.substring(1)}|}" th:text="${tag}"></a>
+            </span>
+        </div>
+
+        <div class="post-count" th:text="|전체 ${count}|"></div>
+
+        <div class="post-grid" id="postGrid">
+            <div class="post-item" th:each="post : ${posts}">
+                <div class="author-info">
+                    <img class="profile-picture"
+                         alt="Author Profile Picture"
+                         th:src="@{|https://kr.object.ncloudstorage.com/sulbao-file/${post.userDto.profileImageFileName}|}" />
+                    <div class="author-name" th:text="${post.userDto.profileName}"></div>
+                </div>
+                <a th:href="@{|zzanfeeds/${post.id}|}">
+                    <img alt="Post Thumbnail" class="thumbnail"
+                         th:src="@{|https://kr.object.ncloudstorage.com/sulbao-file/${post.thumbnail}|}">
+                    <div class="title" th:text="${post.title}"></div>
+                </a>
+                <div class="post-meta-icons">
+                    <span class="icon-text">
+                        <i class="fas fa-thumbs-up"></i>
+                        <span th:text="${post.like}"></span>
+                    </span>
+                    <span class="icon-text">
+                        <i class="fas fa-comment"></i>
+                        <span th:text="${post.commentDtoList.size()}"></span>
+                    </span>
+                    <span class="icon-text">
+                        <i class="fas fa-eye"></i>
+                        <span th:text="${post.hit}"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            const currentTag = new URLSearchParams(window.location.search).get('tag');
+
+            if (currentTag) {
+                $('.tag').each(function () {
+                    const tagText = $(this).find('a').text().substring(1);
+                    if (tagText === currentTag) {
+                        $(this).addClass('active');
+                    }
+                });
+            }
+
+            let selectedTag = new URLSearchParams(window.location.search).get('tag') || '';
+
+            // 태그 클릭 이벤트
+            $('.tag').on('click', function () {
+                const tag = $(this).find('a').text().substring(1); // #을 제거한 텍스트
+                window.location.href = `/zzanfeeds?tag=${tag}`;
+            });
+
+            let page = 1;
+            const postGrid = $('#postGrid');
+
+            $(window).on('scroll', _.debounce(function () {
+                if ($(window).scrollTop() + $(window).height() >= $(document).height() - 100) {
+                    loadMorePosts(page, selectedTag);
+                    page++;
+                }
+            }, 200));
+
+            function loadMorePosts(page, tag) {
+                $.ajax({
+                    url: '/zzanfeeds/more',
+                    type: 'GET',
+                    data: {
+                        page: page,
+                        tag: tag
+                    },
+                    success: function (posts) {
+                        if (posts.length > 0) {
+                            posts.forEach(function (post) {
+                                const postHtml = `
+                    <div class="post-item">
+                        <div class="author-info">
+                            <img class="profile-picture" alt="Author Profile Picture"
+                                 src="https://kr.object.ncloudstorage.com/sulbao-file/${post.userDto.profileImageFileName}" />
+                            <div class="author-name">${post.userDto.profileName}</div>
+                        </div>
+                        <a href="/zzanfeeds/${post.id}">
+                            <img alt="Post Thumbnail" class="thumbnail"
+                                 src="https://kr.object.ncloudstorage.com/sulbao-file/${post.thumbnail}">
+                            <div class="title">${post.title}</div>
+                        </a>
+                        <div class="post-meta-icons">
+                            <span class="icon-text">
+                                <i class="fas fa-thumbs-up"></i>
+                                <span>${post.like}</span>
+                            </span>
+                            <span class="icon-text">
+                                <i class="fas fa-comment"></i>
+                                <span>${post.commentDtoList.length}</span>
+                            </span>
+                            <span class="icon-text">
+                                <i class="fas fa-eye"></i>
+                                <span>${post.hit}</span>
+                            </span>
+                        </div>
+                    </div>`;
+                                postGrid.append(postHtml);
+                            });
+                        } else {
+                            $(window).off("scroll");
+                        }
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            }
+        });
+    </script>
+</div>
+</body>
+</html>

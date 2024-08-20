@@ -21,8 +21,8 @@ import java.time.LocalDateTime;
 })
 @NoArgsConstructor
 @AllArgsConstructor
-@Setter
 @Getter
+@Setter
 public class MemberInfo {
 
     @Id
@@ -44,10 +44,10 @@ public class MemberInfo {
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name="businessNumber", column = @Column(name="business_number", table = "tbl_pro_member_info")),
-            @AttributeOverride(name="businessLink", column = @Column(name="business_link", table = "tbl_pro_member_info")),
-            @AttributeOverride(name="proStatus", column = @Column(name="pro_status", table = "tbl_pro_member_info")),
-            @AttributeOverride(name="proRegistDate", column = @Column(name="pro_regist_date", table = "tbl_pro_member_info"))
+            @AttributeOverride(name = "businessNumber", column = @Column(name = "business_number", table = "tbl_pro_member_info")),
+            @AttributeOverride(name = "businessLink", column = @Column(name = "business_link", table = "tbl_pro_member_info")),
+            @AttributeOverride(name = "proStatus", column = @Column(name = "pro_status", table = "tbl_pro_member_info")),
+            @AttributeOverride(name = "proRegistDate", column = @Column(name = "pro_regist_date", table = "tbl_pro_member_info"))
     })
     private ProMemberInfo proMemberInfo;
 

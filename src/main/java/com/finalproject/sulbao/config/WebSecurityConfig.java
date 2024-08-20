@@ -51,6 +51,7 @@ public class WebSecurityConfig {
         http.authorizeHttpRequests((authorizationManagerRequestMatcherRegistry -> {
             authorizationManagerRequestMatcherRegistry
                     .requestMatchers("/", "/index").permitAll()
+                    .requestMatchers("/payments/**").permitAll()
                     .requestMatchers("/**").permitAll()
                     .anyRequest().authenticated();
         }));

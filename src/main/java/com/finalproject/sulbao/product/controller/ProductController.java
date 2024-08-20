@@ -26,7 +26,7 @@ public class ProductController {
     @GetMapping("/list")
     public String productList(Model model, HttpSession session) {
 
-        if(session == null){
+        if(session.getAttribute("userNo") == null){
             return "redirect:/login";
         }
 
@@ -43,6 +43,10 @@ public class ProductController {
     @GetMapping("/search")
     public String productSearch(Model model, @ModelAttribute ProductDTO productDTO, HttpSession session) {
 
+        if(session.getAttribute("userNo") == null){
+            return "redirect:/login";
+        }
+
         productDTO.setUserNo((Long) session.getAttribute("userNo"));
         List<ProductDTO> productList = productService.findBySearchInfo(productDTO);
 
@@ -53,7 +57,10 @@ public class ProductController {
 
     //등록화면으로 이동
     @GetMapping("/detail")
-    public String productRegist(Model model) {
+    public String productRegist(Model model, HttpSession session) {
+        if(session.getAttribute("userNo") == null){
+            return "redirect:/login";
+        }
         model.addAttribute("product", new ProductDTO());
         model.addAttribute("productCategory", ProductCategory.values());
         return "product/productDetail";
@@ -61,8 +68,11 @@ public class ProductController {
 
     //수정화면으로 이동
     @GetMapping("/update/{productNo}")
-    public String productUpdate(Model model,@PathVariable(required = false,name = "productNo") Long productNo) {
+    public String productUpdate(Model model,@PathVariable(required = false,name = "productNo") Long productNo, HttpSession session) {
 
+        if(session.getAttribute("userNo") == null){
+            return "redirect:/login";
+        }
         ProductDTO productDTO =  productService.findByProductNo(productNo);
         model.addAttribute("product", productDTO);
         model.addAttribute("productCategory", ProductCategory.values());
@@ -73,6 +83,9 @@ public class ProductController {
     @PostMapping("/regist")
     public String saveProduct(@ModelAttribute ProductDTO productDTO, HttpSession session) {
 
+        if(session.getAttribute("userNo") == null){
+            return "redirect:/login";
+        }
         productDTO.setUserNo((Long) session.getAttribute("userNo"));
         // 저장
         productService.saveProduct(productDTO);
@@ -83,6 +96,9 @@ public class ProductController {
     @PostMapping("/update")
     public String updateProduct(@ModelAttribute ProductDTO productDTO, HttpSession session) {
 
+        if(session.getAttribute("userNo") == null){
+            return "redirect:/login";
+        }
         productDTO.setUserNo((Long) session.getAttribute("userNo"));
         productService.updateProduct(productDTO);
 
@@ -92,7 +108,10 @@ public class ProductController {
     //상품삭제
     @DeleteMapping("/delete")
     @ResponseBody
-    public String deleteProduct(String productNoList) {
+    public String deleteProduct(String productNoList, HttpSession session) {
+        if(session.getAttribute("userNo") == null){
+            return "redirect:/login";
+        }
         productService.delete(productNoList);
         return "success";
     }
@@ -100,7 +119,10 @@ public class ProductController {
     //상품상태변경
     @PutMapping("/status")
     @ResponseBody
-    public String updateStatus(String productNoList, String type, String status) {
+    public String updateStatus(String productNoList, String type, String status, HttpSession session) {
+        if(session.getAttribute("userNo") == null){
+            return "redirect:/login";
+        }
         productService.updateStatus(productNoList,type,status);
         return "success";
     }
