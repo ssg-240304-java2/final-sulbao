@@ -3,6 +3,7 @@ package com.finalproject.sulbao.product.model.dto;
 import com.finalproject.sulbao.login.model.entity.Login;
 import com.finalproject.sulbao.product.model.entity.Product;
 import com.finalproject.sulbao.product.model.entity.ProductCategory;
+import com.finalproject.sulbao.product.model.entity.ProductComparison;
 import com.finalproject.sulbao.product.model.vo.ProductImage;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,8 +20,8 @@ import java.util.List;
 public class ProductDTO {
 
     private Long productNo;
-    private String displayYn = "N";
-    private String sellYn = "N";
+    private String displayYn;
+    private String sellYn;
     private ProductCategory productCategory;
     private String productName;
     private String productSummary;
@@ -35,6 +36,7 @@ public class ProductDTO {
     private Long userNo;
     private String searchchk;
     private Login sellerInfo;
+    private ProductComparison productComparison;
 
 
     public Product toEntity() {
@@ -51,6 +53,7 @@ public class ProductDTO {
                 .sellerInfo(sellerInfo)
                 .displayYn(displayYn)
                 .productImages(productImages)
+                .comparison(productComparison)
                 .build();
     }
 
@@ -68,6 +71,7 @@ public class ProductDTO {
                 .sellerInfo(product.getSellerInfo())
                 .displayYn(product.getDisplayYn())
                 .productImages(product.getProductImages())
+                .productComparison(product.getComparison())
                 .build();
     }
 
