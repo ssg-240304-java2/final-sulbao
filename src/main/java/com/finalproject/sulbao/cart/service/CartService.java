@@ -2,7 +2,6 @@ package com.finalproject.sulbao.cart.service;
 
 import com.finalproject.sulbao.cart.domain.Carts;
 import com.finalproject.sulbao.cart.dto.CartDTO;
-import com.finalproject.sulbao.cart.dto.OrderDTO;
 import com.finalproject.sulbao.cart.repository.CartRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -81,5 +80,23 @@ public class CartService {
         } else {
             throw new RuntimeException("Cart not found");
         }
+    }
+
+    public void updateToken(Long cartCode, String token) {
+        Optional<Carts> optionalCart = cartRepository.findByCartCode(cartCode);
+        if (optionalCart.isPresent()) {
+            Carts carts = optionalCart.get();
+            carts.updateToken(token);
+            cartRepository.save(carts);
+        } else {
+            throw new RuntimeException("Cart not found");
+        }
+    }
+
+    public List<CartDTO> findCartByToken(String token) {
+        List<Carts> orders = cartRepository.findByToken(token);
+        return orders.stream()
+                .map(cart -> modelMapper.map(cart, CartDTO.class))
+                .collect(Collectors.toList());
     }
 }
