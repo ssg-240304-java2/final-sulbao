@@ -105,16 +105,10 @@ public class EmailService {
         String email = emailVerify.getEmail();
         String code = emailVerify.getCode();
 
-//        EmailVerify emailVerify2 = emailRepository.findByEmail(email);
-//        String originCode = emailVerify2.getCode();
-
         String originCode = emailRepository.findCodeByEmail(email);
 
         boolean isVerified = false;
         isVerified = originCode.equals(code);
-        log.info("오리지널===========================> {}", originCode);
-        log.info("인풋 ===========================> {}", code);
-        log.info("결과 됐어 -========================>>>>>>>>>>>>>> {}", isVerified);
 
         if(isVerified){
 

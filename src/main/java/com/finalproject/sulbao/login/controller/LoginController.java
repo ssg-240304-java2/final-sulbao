@@ -165,8 +165,6 @@ public class LoginController {
     @ResponseBody
     public String existNum (@RequestParam String businessNumber, Model model){
 
-        log.info("Controller 에서 받은 businessNum :=================================== {}", businessNumber);
-
         SellerInfo findSeller = loginService.findSellerByNum(businessNumber);
         if(findSeller != null){
             model.addAttribute("valid_businessNumber_error", "유효하지 않은 사업자등록번호입니다.");

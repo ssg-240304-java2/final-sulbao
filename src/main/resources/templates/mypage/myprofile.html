@@ -6,6 +6,50 @@
     <meta charset="UTF-8">
     <title>술기로운한잔 - 마이페이지</title>
     <link rel="stylesheet" href="/user/css/main-style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        window.onload = function() {
+            if('[[${message}]]'.length > 1)
+            {
+                alert('[[${message}]]');
+            }
+        };
+
+        $(document).ready(function() {
+
+            $("#name-error-message").hide();
+
+            $('#profile-name').on('input', function() {
+                var profileName = $(this).val();
+
+                // 공백이 포함된 경우 메시지 표시
+                if(/\s/.test(profileName)) {
+                    $("#name-error-message").text("이름에 공백이 들어갈 수 없습니다.").show();
+                    return;
+                }
+
+                // 중복 확인 요청을 보냅니다.
+                $.ajax({
+                    type: 'POST',
+                    url: '/mypage/checkProfileName',
+                    data: { profileName: profileName },
+                    success: function(response) {
+                        console.log(response)
+                        // response 값이 0보다 크다면 중복된 이름이 있음
+                        if(response > 0) {
+                            $("#name-error-message").text("이미 사용중인 프로필 이름 입니다.").show();
+                        } else {
+                            $("#name-error-message").hide();
+
+                        }
+                    },
+                    error: function() {
+                        console.log('중복 확인 중 오류가 발생했습니다. 나중에 다시 시도해주세요.');
+                    }
+                });
+            });
+        });
+    </script>
     <style>
         body {
             font-family: "Noto-Sans", sans-serif;
@@ -187,28 +231,29 @@
                             <li><a href="#">전문가신청</a></li>
                     </ul>
                 </nav>
-                <form id="profile" action="/mypage/updateProfile" method="POST">
-                    <div class="content">
-                        <!-- 여기서 선택한 메뉴에 따라 내용이 바뀜 -->
+            <!-- 여기서 선택한 메뉴에 따라 내용이 바뀜 -->
+                <div class="content">
+                    <form id="profile" action="/mypage/updateProfile" method="POST" enctype="multipart/form-data">
                         <div class="profile-container">
                             <div class="profile-header">
-                                <img th:src="@{/user/images/{profileImg}(profileImg=${profileImg})}"  alt="Profile Image" class="profile-image"/>
+                                <img th:src="${profileImg.saveImgUrl}" alt="Profile Image" class="profile-image"/>
+                                <input type="file" id="profile-img" name="image">
                             </div>
 
                             <div class="profile-info">
                                 <div class="profile-row">
                                 <label for="profile-name">프로필 이름</label>
                                     <div class="input-wrapper">
-                                        <input type="text" id="profile-name" name="profileName" th:value="${profileName}" placeholder="프로필 이름이 나타나야해요.">
-                                        <p id="name-error-message" class="error-message">이미 사용중인 프로필 이름 입니다.</p>
+                                        <input type="text" id="profile-name" name="profileName" th:placeholder="${profileName}">
                                     </div>
+                                        <p id="name-error-message" class="error-message"></p>
                                     <hr style="margin-top: 7px">
                                 </div>
 
                                 <div class="profile-row">
                                     <label for="profile-text">소개</label>
                                     <div class="input-wrapper">
-                                        <input type="text" id="profile-text" name="profileText" th:value="${profileText}" placeholder="소개글을 작성해주세요. (최대 50자)">
+                                        <input type="text" id="profile-text" name="profileText" th:placeholder="${profileText}">
                                     </div>
                                     <hr style="margin-top: 7px">
                                 </div>
@@ -218,8 +263,7 @@
                                 <div class="profile-row">
                                     <label for="email">이메일 주소</label>
                                     <div class="input-wrapper">
-                                        <input type="text" id="email" name="email" th:value="${email}" placeholder="이메일을 작성해주세요.">
-                                        <button id="email-btn" type="button" onclick="">인증하기</button>
+                                        <input type="email" id="email" name="email" th:placeholder="${email}">
                                     </div>
                                     <hr style="margin-top: 7px">
                                 </div>
@@ -227,7 +271,7 @@
                                 <div class="profile-row">
                                     <label for="password">비밀번호</label>
                                     <div class="input-wrapper">
-                                        <input type="password" id="password" name="password" placeholder="●●●●●●●●">
+                                        <input type="password" id="password" placeholder="●●●●●●●●" disabled>
                                         <button id="password-btn" type="button" onclick="">변경하기</button>
                                     </div>
                                     <hr style="margin-top: 7px">
@@ -238,7 +282,7 @@
                                 <div class="profile-row">
                                     <label for="birth">생년월일</label>
                                     <div class="input-wrapper">
-                                        <input type="date" id="birth" name="birth" th:value="${birth}" placeholder="생년월일을 입력해주세요.">
+                                        <input type="date" id="birth" name="birth" th:value="${birth}">
                                     </div>
                                     <hr style="margin-top: 7px">
                                 </div>
@@ -246,7 +290,7 @@
                                 <div class="profile-row">
                                     <label for="phone">휴대폰 번호</label>
                                     <div class="input-wrapper">
-                                        <input type="text" id="phone" name="email" th:value="${phone}" placeholder="휴대폰 번호를 입력해주세요.">
+                                        <input type="text" id="phone" name="phone" th:placeholder="${phone}">
                                     </div>
                                     <hr style="margin-top: 7px">
                                 </div>
@@ -254,52 +298,76 @@
                                 <div class="profile-row">
                                     <label>성별</label>
                                     <div class="input-wrapper">
-                                        <input type="radio" id="M" name="gender" th:value="${gender}"/> 남성
-                                        <input type="radio" id="F" name="gender" th:value="${gender}"/> 여성
-                                        <input type="radio" id="none" name="gender" th:value="${gender}"/> 선택하지 않음
+                                        <input type="radio" id="gender-m" name="gender" value="M" th:checked="${gender.equals('M')}"/> 남성
+                                        <input type="radio" id="gender-f" name="gender" value="F" th:checked="${gender.equals('F')}"/> 여성
+                                        <input type="radio" id="gender-none" name="gender" value="None" th:checked="${gender.equals('None')}"/> 선택하지 않음
                                     </div>
                                     <hr style="margin-top: 7px">
                                 </div>
                                     <a href="#" style="font-size: 10px;" >탈퇴하기 ></a>
                                 <button type="submit" class="save-button">저장</button>
                             </div>
-
-
                         </div>
-
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(document).ready(function() {
-            $('#profile-name').on('keyup', function() {
-                var profileName = $(this).val();
+        $(document).ready(function () {
+            $('#profile').on('submit', function (e) {
+                // 초기화
+                let isValid = true;
+                let errorMessage = '';
 
-                // 중복 확인 요청을 보냅니다.
-                $.ajax({
-                    type: 'POST',
-                    url: '/mypage/checkProfileName',
-                    data: { profileName: profileName },
-                    success: function(response) {
-                        // response 값이 'true'라면 중복된 이름이 있음
-                        if(response.isDuplicate) {
-                            $("#name-error-message").show();
-                        } else {
-                            $("#name-error-message").hide();
-
-                        }
-                    },
-                    error: function() {
-                        alert('중복 확인 중 오류가 발생했습니다. 나중에 다시 시도해주세요.');
+                // 1. 프로필 사진 파일 검사
+                const profileImg = $('#profile-img').val();
+                if (profileImg !== "") {
+                    const allowedExtensions = /(\.jpg|\.png)$/i;
+                    if (!allowedExtensions.exec(profileImg)) {
+                        isValid = false;
+                        errorMessage += '프로필 사진은 png, jpg, jpeg 파일만 가능합니다.\n';
                     }
-                });
+                }
+
+                // 2. 프로필 이름 유효성 검사
+                const profileName = $('#profile-name').val();
+                const namePattern = /^[a-zA-Z0-9가-힣]+$/; // 공백과 특수문자 제외
+                if (profileName !== "" && !namePattern.test(profileName)) {
+                    isValid = false;
+                    errorMessage += '프로필 이름에는 공란 또는 특수문자가 포함될 수 없습니다.\n';
+                }
+
+                // 3. 소개 유효성 검사
+                const profileText = $('#profile-text').val();
+                if (profileText != null && profileText.length > 50) {
+                    isValid = false;
+                    errorMessage += '소개는 50자 이내로 작성해야 합니다.\n';
+                }
+
+                // 4. 생년월일 유효성 검사
+                const birth = $('#birth').val();
+                const today = new Date().toISOString().split('T')[0];
+                if (birth != null && birth >= today) {
+                    isValid = false;
+                    errorMessage += '생년월일은 오늘보다 과거 날짜이어야 합니다.\n';
+                }
+
+                // 5. 휴대폰 번호 유효성 검사
+                const phone = $('#phone').val();
+                const phonePattern = /^\d{11}$/; // 숫자만 11자리
+                if (phone !== "" && !phonePattern.test(phone)) {
+                    isValid = false;
+                    errorMessage += '휴대폰 번호는 숫자만 11자리로 입력해야 합니다.\n';
+                }
+                // 유효성 검사 실패 시
+                if (!isValid) {
+                    e.preventDefault(); // 폼 제출 중지
+                    alert(errorMessage); // 오류 메시지 표시
+                }
             });
         });
-    </script>
 
+    </script>
+    </div>
 </body>
 </html>

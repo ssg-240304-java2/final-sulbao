@@ -1,9 +1,13 @@
 package com.finalproject.sulbao.login.model.service;
 
+import com.amazonaws.services.dynamodbv2.xspec.M;
+import com.finalproject.sulbao.common.file.FileDto;
+import com.finalproject.sulbao.common.file.FileService;
 import com.finalproject.sulbao.login.model.dto.MemberProfileDto;
 import com.finalproject.sulbao.login.model.dto.SignupMemberDto;
 import com.finalproject.sulbao.login.model.dto.SignupSellerDto;
 import com.finalproject.sulbao.login.model.entity.Login;
+import com.finalproject.sulbao.login.model.vo.MemberImage;
 import com.finalproject.sulbao.login.model.entity.MemberInfo;
 import com.finalproject.sulbao.login.model.entity.RoleType;
 import com.finalproject.sulbao.login.model.repository.LoginRepository;
@@ -11,19 +15,27 @@ import com.finalproject.sulbao.login.model.repository.MemberInfoRepository;
 import com.finalproject.sulbao.login.model.vo.SellerInfo;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class LoginService {
+
+    @Value("${file.upload-dir}")
+    private String uploadDir;
 
     private final LoginRepository loginRepository;
     private final MemberInfoRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final FileService fileService;
 
 
+    // 회원가입
     @Transactional
     public void registNewMember(SignupMemberDto member){
 
@@ -43,10 +55,12 @@ public class LoginService {
         memberRepository.save(memberInfo);
     }
 
+    // 회원가입 - 중복 체크
     public boolean isUserIdExists(String tmpId) {
         return loginRepository.existsByUserId(tmpId);
     }
 
+    // 입점신청
     @Transactional
     public void registNewSeller(SignupSellerDto seller) {
 
@@ -64,6 +78,7 @@ public class LoginService {
 
     }
 
+    // 입점신청 - 중복체크 사업자번호
     public SellerInfo findSellerByNum(String num) {
 
         SellerInfo findSeller = loginRepository.findSellerByNum(num);
@@ -72,6 +87,7 @@ public class LoginService {
         return findSeller;
     }
 
+    // 입점신청 - 중복체크 사업자이름
     public boolean isbusinessNameExists(String name) {
         SellerInfo findSeller =  loginRepository.findByBusinessName(name);
         if(findSeller != null) {
@@ -80,14 +96,20 @@ public class LoginService {
         return false;
     }
 
+    // 프로필 - 조회
     public MemberProfileDto findMemberByUserId(String userId) {
 
         Login login = loginRepository.findByUserId(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 사용자 입니다."));
         MemberInfo memberInfo = memberRepository.findById(login.getUserNo())
                 .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 멤버 입니다."));
+        MemberImage profileImag = memberInfo.getMemberImage();
 
-        String profileImag = memberInfo.getProfileImg();
+        if(profileImag == null) {
+            profileImag = new MemberImage();
+            profileImag.setSaveName("default-profile.png");
+        }
+
         String profileName = memberInfo.getProfileName();
         String profileText = memberInfo.getProfileText();
         String email = login.getEmail();
@@ -99,11 +121,53 @@ public class LoginService {
         return member;
     }
 
-    public boolean isProfileNameDuplicate(String profileName, String userId) {
+    // 프로필 - 이름 실시간 중복 체크
+    public int isProfileNameDuplicate(String profileName, String userId) {
 
         Long userNo = loginRepository.findByUserId(userId).orElseThrow().getUserNo();
         System.out.println("userNo = " + userNo);
 
         return memberRepository.existsByProfileNameAndUserNoNot(profileName, userNo);
+    }
+
+    // 프로필 - 수정
+    @Transactional
+    public void updateMemberInfo(MemberProfileDto memberProfile, String userId) {
+
+        Login login = loginRepository.findByUserId(userId).orElseThrow();
+        MemberInfo memberInfo = memberRepository.findByUserId(userId);
+
+        login.setBirth(memberProfile.getBirth());
+        login.setEmail(memberProfile.getEmail());
+        login.setPhone(memberProfile.getPhone());
+        login.setGender(memberProfile.getGender());
+
+
+        log.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> {}", memberProfile.getImage().getOriginalFilename());
+
+        if(!memberProfile.getImage().getOriginalFilename().isEmpty()){
+            log.info("service ================>>>>>>>>>>>>>>>> file upload ::::::::: {}", memberProfile.getImage());
+            FileDto fileDto = fileService.uploadFile(memberProfile.getImage(),uploadDir,"sulbao-file/profile");
+            log.info("service ================>>>>>>>>>>>>>>>> file DTO ::::::::: {}", fileDto);
+            MemberImage memberImage = new MemberImage();
+            memberImage.setFileName(fileDto.getOriginalFileName());
+            memberImage.setSaveName(fileDto.getUploadFileName());
+            memberImage.setSaveImgUrl(fileDto.getUploadFileUrl());
+            memberInfo.setMemberImage(memberImage);
+        }
+
+        memberInfo.setProfileName(memberProfile.getProfileName());
+        memberInfo.setProfileText(memberProfile.getProfileText());
+    }
+
+    private boolean isImgExist(MemberImage profileImg) {
+
+        String img = profileImg.getSaveName();
+        String type = img.substring(img.length()-3);
+        boolean result = false;
+        if(type.equals(".png") || type.equals(".jpg")){
+            result = true;
+        }
+        return result;
     }
 }

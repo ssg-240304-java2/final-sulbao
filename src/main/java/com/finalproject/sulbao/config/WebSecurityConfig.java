@@ -52,8 +52,6 @@ public class WebSecurityConfig {
             authorizationManagerRequestMatcherRegistry
                     .requestMatchers("/", "/index").permitAll()
                     .requestMatchers("/**").permitAll()
-//                    .requestMatchers("/testseller").hasRole("SELLER")
-//                    .requestMatchers("/testadmin").hasRole("ADMIN");
                     .anyRequest().authenticated();
         }));
 
