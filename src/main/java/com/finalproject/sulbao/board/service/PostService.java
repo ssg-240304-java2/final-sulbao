@@ -179,4 +179,9 @@ public class PostService {
         }
     }
 
+    public Page<PostDto> findByUser(Long id, Pageable pageable) {
+        Login login = loginRepository.findById(id).orElseThrow();
+        Page<Post> posts = postRepository.findAllByLogin(login, pageable);
+        return posts.map(PostDto::toPostDto);
+    }
 }

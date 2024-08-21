@@ -14,6 +14,11 @@ public class SessionHandler {
 
     private final LoginRepository loginRepository;
 
+    public boolean isLogin(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        return session.getAttribute("userNo") != null;
+    }
+
     public UserDto getUserFromSession(HttpServletRequest request) {
         HttpSession session = request.getSession();
         Object userNo = session.getAttribute("userNo");

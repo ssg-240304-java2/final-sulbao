@@ -28,7 +28,7 @@ public class SearchController {
         model.addAttribute("keyword", keyword);
         model.addAttribute("zzanfeeds", zzanfeeds);
         model.addAttribute("zzanposts", zzanposts);
-        return "/board/search-results";
+        return "board/search-results";
     }
 
 }
