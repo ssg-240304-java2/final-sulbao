@@ -15,6 +15,7 @@ public class MemberProfileDto {
     private String profileName;
     private String profileText;
     private String email;
+    private String emailCode;
     private String birth;
     private String phone;
     private String gender;
@@ -30,12 +31,6 @@ public class MemberProfileDto {
         this.birth = birth;
         this.phone = phone;
         this.gender = gender;
-        this.businessNumber = businessNumber;
-        this.businessLink = businessLink;
-        this.date = date;
-    }
-
-    public MemberProfileDto(String businessNumber, String businessLink, String date) {
         this.businessNumber = businessNumber;
         this.businessLink = businessLink;
         this.date = date;
