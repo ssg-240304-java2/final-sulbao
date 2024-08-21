@@ -11,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name="tbl_product")
-@Data
+@Getter
 @Setter(AccessLevel.PRIVATE)
 @NoArgsConstructor
 @AllArgsConstructor
