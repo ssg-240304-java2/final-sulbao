@@ -93,9 +93,9 @@ public class EmailService {
         try {
             InternetAddress emailAddr = new InternetAddress(emailMessage.getTo());
             emailAddr.validate();
-            System.out.println(emailMessage.getTo() + "========================================= true");
+            System.out.println(emailMessage.getTo() + "========================================= true email address");
         } catch (AddressException ex) {
-            System.out.println(emailMessage.getTo() + "========================================= false");
+            System.out.println(emailMessage.getTo() + "========================================= false email address");
         }
         String code = createCode();
 
@@ -123,11 +123,9 @@ public class EmailService {
         EmailVerify existingEmailVerify = emailRepository.findByEmail(email);
 
         if (existingEmailVerify != null) {
-            // Update the existing code
             existingEmailVerify.setCode(code);
             emailRepository.save(existingEmailVerify);
         } else {
-            // Insert new entry
             EmailVerify newEmailVerify = new EmailVerify();
             newEmailVerify.setEmail(email);
             newEmailVerify.setCode(code);

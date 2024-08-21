@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Optional;
 
 public interface LoginRepository extends JpaRepository<Login, Long> {
+
+    @Query("SELECT u FROM Login u WHERE u.userId = :userId")
     Optional<Login> findByUserId (String userId);
     boolean existsByUserId(String userId);
 
