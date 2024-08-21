@@ -180,7 +180,7 @@ button:hover {
 }
 
 .user-id {
-    font-size: 14px;
+    font-size: 16px;
     color: gray;
 }
 
@@ -212,6 +212,7 @@ button:hover {
     font-size: 14px;
     color: #777;
     margin-left: 10px;
+    margin-bottom: 8px;
 }
 
 .post-date {
@@ -236,7 +237,9 @@ button:hover {
 }
 
 .pagination {
-    text-align: center;
+    display: flex;
+    justify-content: center; /* 버튼을 가운데 정렬 */
+    align-items: center;     /* 수직 가운데 정렬 */
     margin-top: 30px;
 }
 
@@ -255,7 +258,7 @@ button:hover {
 }
 
 .page-link.active {
-    background-color: #007bff;
+    background-color: #6998AB;
     color: #fff;
-    border-color: #007bff;
+    border-color: #6998AB;
 }

@@ -48,20 +48,32 @@
                     <div class="post-list">
                         <div class="post-item" th:each="post : ${posts}">
                             <div class="post-header">
-                                <span class="post-description"><span th:text="${post.categoryName}" class="category"></span>카테고리에 게시물을 작성하였습니다.</span>
+                                <span class="post-description"><span th:text="${post.categoryNameKr}" class="category"></span>카테고리에 게시물을 작성하였습니다.</span>
                                 <span th:text="${#temporals.format(post.createdAt, 'yyyy년 MM월 dd일 HH시 mm분')}" class="post-date"></span>
                             </div>
                             <div class="post-title">
-                                <a th:text="${post.title}" th:href="@{|/${post.categoryName}|}"></a>
+                                <a th:text="${post.title}" th:href="@{|/${post.categoryNameEn}/${post.id}|}"></a>
                             </div>
                         </div>
                     </div>
 
+                    <!-- 페이징 네비게이션 -->
                     <div class="pagination">
-                        <a href="#" class="page-link">1</a>
-                        <a href="#" class="page-link">2</a>
-                        <a href="#" class="page-link">3</a>
-                        <a href="#" class="page-link">다음</a>
+                        <!-- 이전 페이지 링크 -->
+                        <span th:if="${currentPage > 0}">
+                            <a th:href="@{/mypage/board(page=0)}" class="page-link"><</a>
+                        </span>
+
+                        <!-- 페이지 번호 링크들 -->
+                        <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+                            <a th:href="@{/mypage/board(page=${i})}" th:text="${i + 1}"
+                               th:classappend="${i == currentPage} ? 'active' : ''" class="page-link"></a>
+                        </span>
+
+                        <!-- 다음 페이지 링크 -->
+                        <span th:if="${currentPage < totalPages - 1}">
+                            <a th:href="@{/mypage/board(page=${totalPages - 1})}" class="page-link">></a>
+                        </span>
                     </div>
                 </div>
             </div>
