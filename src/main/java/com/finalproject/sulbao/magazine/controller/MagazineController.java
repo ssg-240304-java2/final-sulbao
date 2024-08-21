@@ -10,7 +10,7 @@ public class MagazineController {
     @GetMapping("/magazine/list")
     public String list(Model model){
         model.addAttribute("menu", "magazine");
-        model.addAttribute("submenu", "list");
+        model.addAttribute("submenu", "mlist");
         return "admin/magazine/list";
     }
 

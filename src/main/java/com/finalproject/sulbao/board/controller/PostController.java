@@ -21,9 +21,13 @@ public class PostController {
     private final PostRepository postRepository;
     private final SessionHandler sessionHandler;
 
-    @GetMapping("/admin/board")
+    @GetMapping("/board/list")
     public String admin(Model model) {
+
         List<PostDto> posts = postRepository.findAll().stream().map(PostDto::toPostDto).toList();
+
+        model.addAttribute("menu", "board");
+        model.addAttribute("submenu", "list");
         model.addAttribute("posts", posts);
         return "board/admin/list";
     }

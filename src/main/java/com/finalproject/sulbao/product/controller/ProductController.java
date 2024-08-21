@@ -36,7 +36,7 @@ public class ProductController {
         List<ProductDTO> productList = productService.findByUserNo(productDTO);
 
         model.addAttribute("menu","product");
-        model.addAttribute("submenu","list");
+        model.addAttribute("submenu","plist");
         model.addAttribute("product", productDTO);
         model.addAttribute("productList", productList);
         return "admin/product/productList";
