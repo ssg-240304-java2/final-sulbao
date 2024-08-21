@@ -32,7 +32,6 @@ public class EmailController {
                 .build();
 
         String code = emailService.sendMail(emailMessage, "auth/verify-email");
-
         EmailResponseDto emailResponseDto = new EmailResponseDto();
         emailResponseDto.setCode(code);
 
@@ -40,7 +39,7 @@ public class EmailController {
         emailMap.put("code", code);
         emailMap.put("id", businessEmail);
 
-//        emailService.saveEmailConfirm(emailMap);
+        emailService.saveEmailConfirm(emailMap);
         model.addAttribute("valid_confirmEmail","이메일 인증이 완료되었습니다.");
 
         return ResponseEntity.ok(emailResponseDto);
@@ -57,11 +56,11 @@ public class EmailController {
         EmailVerify emailVerify = new EmailVerify();
         emailVerify.setEmail(email);
         emailVerify.setCode(code);
-//        Boolean isConfirm = emailService.confirmEmailByCode(emailVerify);
+        Boolean isConfirm = emailService.confirmEmailByCode(emailVerify);
 
-//        if(!isConfirm){
-//            return false;
-//        }
+        if(!isConfirm){
+            return false;
+        }
         model.addAttribute("valid_confirmEmail", "true");
         return true;
     }

@@ -3,9 +3,7 @@ package com.finalproject.sulbao.login.model.service;
 import com.amazonaws.services.dynamodbv2.xspec.M;
 import com.finalproject.sulbao.common.file.FileDto;
 import com.finalproject.sulbao.common.file.FileService;
-import com.finalproject.sulbao.login.model.dto.MemberProfileDto;
-import com.finalproject.sulbao.login.model.dto.SignupMemberDto;
-import com.finalproject.sulbao.login.model.dto.SignupSellerDto;
+import com.finalproject.sulbao.login.model.dto.*;
 import com.finalproject.sulbao.login.model.entity.Login;
 import com.finalproject.sulbao.login.model.vo.MemberImage;
 import com.finalproject.sulbao.login.model.entity.MemberInfo;
@@ -172,7 +170,34 @@ public class LoginService {
 
     }
 
+    // 전문가 신청 유저 정보 조회
     public String findProStatusByUserId(String userId) {
         return memberRepository.findProStatusByUserId(userId);
+    }
+
+
+    // 전문가 신청 저장
+    @Transactional
+    public void saveProForm(ProFormDto form, String userId) {
+
+        Login login = loginRepository.findByUserId(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 사용자 입니다."));
+        MemberInfo memberInfo = memberRepository.findByUserId(userId);
+
+//        login.setUserRole(RoleType.PRO_MEMBER);
+        login.setEmail(form.getBusinessEmail());
+
+        Long memberNo = memberInfo.getMemberNo();
+        String num = form.getBusinessNumber();
+        String link = form.getBusinessLink();
+        String status = "WAIT";
+        ProInfoDto proInfo = new ProInfoDto(memberNo,num,link,status);
+        memberRepository.saveProMember(proInfo);
+    }
+
+    @Transactional
+    public void deleteProForm(String userId) {
+        Long memberNo = memberRepository.findByUserId(userId).getMemberNo();
+        memberRepository.deleteProForm(memberNo);
     }
 }

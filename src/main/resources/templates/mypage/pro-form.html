@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{common/layouts/userDefault}">
 <head>
     <meta charset="UTF-8">
@@ -13,6 +12,20 @@
             if('[[${message}]]'.length > 1)
             {
                 alert('[[${message}]]');
+            }
+            // 컨트롤러에서 전달된 프로페셔널 상태 값 가져오기
+            const proStatus = '[[${proStatus}]]';
+            console.log(proStatus);
+
+            const profileForm = document.getElementById('profile');
+            const waitingForm = document.getElementById('waiting-form');
+
+            if (proStatus === "WAIT") {
+                profileForm.style.display = 'none';
+                waitingForm.style.display = 'block';
+            } else {
+                profileForm.style.display = 'block';
+                waitingForm.style.display = 'none';
             }
         };
     </script>
@@ -177,26 +190,6 @@
         }
 
     </style>
-
-    <script>
-        window.onload = function() {
-            // 컨트롤러에서 전달된 프로페셔널 상태 값 가져오기
-            const proStatus = '[[${proStatus}]]';
-            console.log(proStatus);
-
-            const profileForm = document.getElementById('profile');
-            const waitingForm = document.getElementById('waiting-form');
-
-            if (proStatus === "WAIT") {
-                profileForm.style.display = 'none';
-                waitingForm.style.display = 'block';
-            } else {
-                profileForm.style.display = 'block';
-                waitingForm.style.display = 'none';
-            }
-        };
-    </script>
-
 </head>
 <body>
     <div layout:fragment="content">
@@ -218,31 +211,46 @@
                 </nav>
             <!-- 여기서 선택한 메뉴에 따라 내용이 바뀜 -->
                 <div class="content">
-                    <form id="profile" action="/mypage/updateProfile" method="POST" enctype="multipart/form-data">
+                    <form id="profile" action="/mypage/saveProForm" method="POST">
                         <div class="profile-container">
                             <div class="profile-info">
                                 <div class="profile-row">
-                                    <label for="email">이메일 주소</label>
+                                    <label for="business-email">이메일 주소</label>
                                     <div class="input-wrapper">
-                                        <input type="email" id="email" name="email" th:placeholder="${email}">
-                                        <button id="email-btn" type="button" onclick="">인증하기</button>
+                                        <input type="email" id="business-email" name="businessEmail" th:value="${email}" required>
+                                        <button id="verification-email" type="button">인증번호 요청</button>
                                     </div>
                                     <hr style="margin-top: 7px">
                                 </div>
+                                <div class="profile-row">
+                                    <div class="input-wrapper" id="business-verification-section" style="display: none">
+                                        <input type="text" id="business-verification-email-code" name="confirmCode" placeholder="인증코드 입력" required>
+                                        <button id="verification-email-code" type="button">인증번호 확인</button>
+                                        <hr style="margin-top: 7px">
+                                    </div>
+                                    <div>
+                                        <p id="email-code-false" class="error-message" style="display: none">이메일 인증코드가 일치하지 않습니다.</p>
+                                        <p id="email-code-true" class="verification-message">이메일 인증 완료되었습니다.</p>
+                                    </div>
+                                </div>
 
                                 <div class="profile-row">
-                                    <label for="business-num">사업자번호</label>
+                                    <label for="business-number">사업자번호</label>
                                     <div class="input-wrapper">
-                                        <input type="text" id="business-num">
-                                        <button id="business-num-btn" type="button" onclick="">인증하기</button>
+                                        <input type="text" id="business-number" name="businessNumber" required>
+                                        <button id="verification-number" type="button">인증하기</button>
                                     </div>
                                     <hr style="margin-top: 7px">
+                                    <div>
+                                        <p id="business-number-verification-true" class="verification-message">사업자등록번호 인증 완료되었습니다.</p>
+                                        <p id="business-number-verification-false" class="error-message" style="display: none">유효하지 않은 사업자등록번호 입니다.</p>
+                                    </div>
                                 </div>
 
                                 <div class="profile-row">
                                     <label for="link">관련링크</label>
                                     <div class="input-wrapper">
-                                        <input type="text" id="link" name="businessLink" placeholder="사업장 또는 SNS 관련 링크를 첨부해주세요.">
+                                        <input type="text" id="link" name="businessLink" placeholder="사업장 또는 SNS 관련 링크를 첨부해주세요." required>
                                     </div>
                                     <hr style="margin-top: 7px">
                                 </div>
@@ -278,7 +286,7 @@
                                     </div>
                                 </div>
                                 <div class="profile-row">
-                                    <label for="date"><a href="#">신청 취소 하기 ></a></label>
+                                    <a href="javascript:void(0);" id="cancel-form" onclick="confirmCancel()">신청 취소 하기 ></a>
                                 </div>
                                 <button type="button" class="save-button" disabled>승인 대기 중</button>
                             </div>
@@ -286,6 +294,158 @@
                 </div>
             </div>
         </div>
-    </div>
+<script>
+    /* 이메일 인증코드 전송 */
+    document.getElementById('verification-email').addEventListener('click', function () {
+        var businessEmailInput = document.getElementById('business-email');
+        var businessEmail = businessEmailInput.value;
+
+        var isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(businessEmail);
+
+        if (!isValidEmail) {
+            alert("유효한 이메일주소를 입력해주세요.");
+        } else {
+            $.ajax({
+                url: '/email',
+                type: 'POST',
+                data: {businessEmail: businessEmail},
+                success: function (response) {
+                    alert("이메일로 인증코드를 전송했습니다.");
+                    document.getElementById('business-verification-section').style.display = "block";
+                },
+                error: function (error) {
+                    alert("인증코드 전송에 실패했습니다. 다시 시도해주세요.");
+                }
+            });
+        }
+    });
+
+
+    /* 이메일 인증 코드 확인 */
+    document.getElementById('verification-email-code').addEventListener('click', function () {
+        var confirmCode = document.getElementById('business-verification-email-code').value;
+        var businessEmail = document.getElementById('business-email').value;
+
+        var emailVerify = {confirmCode:confirmCode, businessEmail:businessEmail}
+
+        if (confirmCode != null) {
+            $.ajax({
+                url: '/email/code',
+                type: 'POST',
+                contentType : 'application/json',
+                data: JSON.stringify(emailVerify),
+                success: function (response) {
+                    // 서버 응답이 성공적일 때의 동작을 여기에 추가합니다.
+                    if(response){
+                        document.getElementById('email-code-false').style.display="none";
+                        document.getElementById('email-code-true').style.display="block";
+                        alert("이메일이 인증되었습니다.");
+                    } else {
+                        document.getElementById('email-code-false').style.display="block";
+                        document.getElementById('email-code-true').style.display="none";
+                    }
+                },
+                error: function (error) {
+                    document.getElementById('email-code-false').style.display="none";
+                    document.getElementById('email-code-true').style.display="none";
+                    alert("이메일 인증에 실패했습니다.");
+                }
+            });
+        }
+    });
+
+    /* 사업자번호 유효성 확인 */
+    document.getElementById('verification-number').addEventListener('click', function () {
+        var businessNumber = document.getElementById('business-number').value;
+        var isValid = /^\d{10}$/.test(businessNumber);
+
+        const requestData = {
+            b_no: [businessNumber]
+        };
+
+        console.log(requestData);
+
+        if (!isValid) {
+            alert("유효한 사업자등록번호를 입력해주세요.");
+        } else {
+            /* 사업자번호 인증 */
+            $.ajax({
+                url: "https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=va7jrvWhH5Y8Q%2Fi9cZhzC6g4CdKaqPoPaQH3TCKlwO6op8fyPwcof4cV9fgLnqAx1IuYXxN%2BRyfro0wuHGO1GA%3D%3D",
+                type: "POST",
+                contentType: "application/json; charset=UTF-8",
+                data: JSON.stringify(requestData),
+                dataType: "json",
+                success: function (result) {
+
+                    if (result.data && result.data.length > 0 && result.data[0].b_stt_cd === "01") {
+                        console.log("success");
+                        console.log("사업자 등록상태: " + result.data[0]["tax_type"]);
+                        document.getElementById('business-number-verification-true').style.display = "block";
+                        document.getElementById('business-number-verification-false').style.display = "none";
+                        alert("가입 가능한 사업자등록번호 입니다.")
+
+
+
+                    } else {
+                        console.log("Fail");
+                        document.getElementById('business-number-verification-true').style.display = "none";
+                        document.getElementById('business-number-verification-false').style.display = "block";
+                        alert("유효하지 않은 사업자등록번호입니다.");
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.error('Error:', textStatus, errorThrown);
+                    console.error('Response:', jqXHR.responseText);
+                    document.getElementById('business-number-verification-true').style.display = "none";
+                    document.getElementById('business-number-verification-false').style.display = "none";
+                    alert("사업자등록번호 인증에 실패하였습니다.");
+                }
+            });
+        }
+    });
+
+    /* 신청서 유효성 확인 */
+    document.getElementById('business-submit').addEventListener('click', function (event) {
+
+        var businessNumberVerified = document.getElementById('business-number-verification-true').style.display === "block";
+        var emailVerified = document.getElementById('email-code-true').style.display === "block";
+
+        // 인증이 모두 완료되었는지 확인
+        if (!businessNumberVerified) {
+            event.preventDefault();
+            alert("사업자번호 인증이 완료되지 않았습니다.");
+            return false;
+        }
+
+        if (!emailVerified) {
+            event.preventDefault();
+            alert("이메일 인증이 완료되지 않았습니다.");
+            return false;
+        }
+
+    });
+
+
+    // 신청 취소
+    function confirmCancel() {
+        var userResponse = confirm("전문가 신청을 취소하시겠습니까? 신청서 기록은 삭제됩니다.");
+
+        if (userResponse) {
+            $.ajax({
+                url: '/mypage/cancelProForm',
+                type: 'POST',
+                success: function(response) {
+                    alert('전문가 신청이 취소되었습니다.');
+                },
+                error: function(error) {
+                    alert('취소 과정에서 오류가 발생했습니다. 다시 시도해 주세요.');
+                }
+            });
+        }
+    }
+
+</script>
+</div>
+
 </body>
 </html>
