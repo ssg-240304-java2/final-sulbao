@@ -145,16 +145,4 @@ public class ProductController {
         return "success";
     }
 
-    // 사용자 페이지 상품목록
-    @GetMapping("/user/list")
-    public String userList(Model model) {
-        return "product/list";
-    }
-
-    // 사용자 페이지 상품상세조회
-    @GetMapping("/user/detail")
-    public String userDetail(Model model) {
-        return "product/detail";
-    }
-
 }
