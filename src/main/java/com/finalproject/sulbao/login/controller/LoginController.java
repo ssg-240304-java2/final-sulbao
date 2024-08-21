@@ -50,7 +50,7 @@ public class LoginController {
     public String redirect(HttpServletRequest request, @RequestParam String code, Model model) throws ParseException {
         System.out.println("code ======================= " + request.getParameter("code"));
         RestTemplate restTemplate = new RestTemplate();
-        String credentials = "JDJhJDA0JGkyLmt0MEFDNWoxZkRCWUcvVjJ6RS5zdWdwY1AyZnUxbGZscy4w:SHdHUVprLkgxYXVCQUh1";
+        String credentials = "JDJhJDA0JHpwblZnQmNOSjVJVHZjQ2pFSTZ3Q3VEN1g5dWRCbDZwM1FQb1VJ:NEdBU2xHaktYcUNXNVhx";
         String encodedCredentials = new String(Base64.encodeBase64(credentials.getBytes()));
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -58,7 +58,7 @@ public class LoginController {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("code", code);
         params.add("grant_type", "authorization_code");
-        params.add("redirect_uri", "http://localhost:8080/signupAccess/");
+        params.add("redirect_uri", "http://hansool.shop/signupAccess/");
         HttpEntity<MultiValueMap<String, String>> requestParams = new HttpEntity<>(params, headers);
         ResponseEntity<?> response = restTemplate.postForEntity("https://bauth.bbaton.com/oauth/token", requestParams, String.class);
         String responseBody = (String) response.getBody();
