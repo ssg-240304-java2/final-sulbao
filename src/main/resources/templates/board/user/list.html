@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <title>술기로운한잔 - 마이페이지</title>
     <link rel="stylesheet" href="/user/css/main-style.css">
+    <link rel="stylesheet" href="/board/user/list.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         window.onload = function() {
@@ -15,167 +16,6 @@
             }
         };
     </script>
-    <style>
-        body {
-            font-family: "Noto-Sans", sans-serif;
-        }
-
-        /* 사이드 메뉴바 */
-        .mypage-content {
-            padding: 7rem 0 10rem 0;
-            display: flex;
-        }
-
-        .sidebar {
-            width: 200px;
-            padding: 20px;
-            background-color: #ffffff;
-            border-right: 1px solid #ddd;
-        }
-
-        .sidebar ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .sidebar li {
-            margin-bottom: 10px;
-        }
-
-        .sidebar .menu-text {
-            font-size: 16px;
-            font-weight: 700;
-            padding-top: 10px;
-
-        }
-
-        .sidebar li a {
-            text-decoration: none;
-            color: #333;
-            display: block;
-            padding-top: 10px;
-            border-radius: 4px;
-        }
-
-        .sidebar li.active a{
-            color: #6998AB;
-            font-weight: 500;
-        }
-
-        .sidebar li a:hover {
-            font-weight: 500;
-        }
-
-        .content {
-            flex-grow: 1;
-            padding: 20px;
-        }
-
-        /* 내부 컨텐츠 - 나의 프로필 */
-        .profile-container {
-            width: 400px;
-            margin: 20px;
-            font-family: Arial, sans-serif;
-            color: #131313;
-        }
-
-        .profile-header {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 30px;
-        }
-
-        .profile-image {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-        }
-
-        .profile-info {
-            flex-grow: 1;
-        }
-
-        .profile-info h2 {
-            font-size: 18px;
-            margin-bottom: 15px;
-            font-family: "Noto-Sans", sans-serif;
-        }
-
-        .profile-row {
-            margin-bottom: 25px;
-            font-size: 13px;
-            color: #565656;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .profile-container .profile-row label {
-            display: block;
-            margin-bottom: 6px;
-            color: #9d9d9d;
-            font-size: 10px;
-        }
-
-        .profile-container .profile-row input {
-            flex: 1;
-            font-size: 14px !important;
-            margin-right: 10px;
-            border: none;
-        }
-        .profile-row input:focus {
-            /*outline: none;*/
-        }
-
-        .input-wrapper {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        button {
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 8px 12px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        button:hover {
-            background-color: #f0f0f0;
-        }
-
-        .save-button {
-            display: block;
-            width: 100%;
-            background-color: #1A374D;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            margin-top: 20px;
-            padding: 10px 0;
-            font-size: 16px;
-            cursor: pointer;
-            text-align: center;
-        }
-
-        .save-button:hover {
-            background-color: #1A374D;
-        }
-
-        .verification-message {
-            font-size: 10px;
-            color: green;
-            display: none;
-            margin-top: 5px;
-        }
-        .error-message {
-            font-size: 10px;
-            color: red;
-            margin-top: 5px;
-        }
-
-    </style>
 </head>
 <body>
     <div layout:fragment="content">
@@ -195,113 +35,49 @@
                             <li class="active"><a href="/mypage/proform">전문가신청</a></li>
                     </ul>
                 </nav>
-            <!-- 여기서 선택한 메뉴에 따라 내용이 바뀜 -->
+
                 <div class="content">
-                    <form id="profile" action="/mypage/updateProfile" method="POST" enctype="multipart/form-data">
-                        <div class="profile-container">
+                    <div class="profile-section">
+                        <img th:src='|https://kr.object.ncloudstorage.com/sulbao-file/${user.profileImageFileName}|' alt="프로필 사진" class="profile-image">
+                        <div class="profile-info">
+                            <div th:text="${user.profileName}" class="nickname"></div>
+                            <div th:text='|${"@" + user.userId}|' class="user-id"></div>
+                        </div>
+                    </div>
 
-                            <div class="profile-info">
-                                <div class="profile-row">
-                                    <label for="email">이메일 주소</label>
-                                    <div class="input-wrapper">
-                                        <input type="email" id="email" name="email" th:placeholder="${email}">
-                                        <button id="email-btn" type="button" onclick="">인증하기</button>
-                                    </div>
-                                    <hr style="margin-top: 7px">
-                                </div>
-
-                                <div class="profile-row">
-                                    <label for="business-num">사업자번호</label>
-                                    <div class="input-wrapper">
-                                        <input type="text" id="business-num">
-                                        <button id="business-num-btn" type="button" onclick="">인증하기</button>
-                                    </div>
-                                    <hr style="margin-top: 7px">
-                                </div>
+                    <div class="post-list">
+                        <div class="post-item" th:each="post : ${posts}">
+                            <div class="post-header">
+                                <span class="post-description"><span th:text="${post.categoryName}" class="category">자유게시판</span>카테고리에 게시물을 작성하였습니다.</span>
+                                <span th:text="${post.createdAt}" class="post-date"></span>
                             </div>
-
-                            <div class="profile-info">
-                                <div class="profile-row">
-                                    <label for="link">관련링크</label>
-                                    <div class="input-wrapper">
-                                        <input type="text" id="link" name="businessLink" placeholder="사업장 또는 SNS 관련 링크를 첨부해주세요.">
-                                    </div>
-                                    <hr style="margin-top: 7px">
-                                </div>
-
-                                <div class="profile-row">
-                                    <label>분야</label>
-                                    <div class="input-wrapper">
-                                        <input type="checkbox" id="field1" name="gender" value="M"/> 주류 전문가
-                                        <input type="checkbox" id="field2" name="gender" value="M"/> 주류 사업자
-                                        <input type="checkbox" id="field3" name="gender" value="M"/> 문화/정보
-                                        <input type="checkbox" id="field4" name="gender" value="M"/> 기타
-                                    </div>
-                                    <hr style="margin-top: 7px">
-                                </div>
-                            <button type="submit" class="save-button">신청하기</button>
+                            <div class="post-title">
+                                <a th:text="${post.title}" th:href="@{|/${post.categoryName}|}">게시글 제목이 여기에 표시됩니다.</a>
                             </div>
                         </div>
-                    </form>
+
+                        <div class="post-item">
+                            <div class="post-header">
+                                <span class="post-description"><span class="category">Q&A</span>카테고리에 게시물을 작성하였습니다.</span>
+                                <span class="post-date">2024-08-20</span>
+                            </div>
+                            <div class="post-title">
+                                <a href="/board/view/2">또 다른 게시글 제목입니다.</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pagination">
+                        <a href="#" class="page-link">1</a>
+                        <a href="#" class="page-link">2</a>
+                        <a href="#" class="page-link">3</a>
+                        <a href="#" class="page-link">다음</a>
+                    </div>
                 </div>
             </div>
         </div>
-    <script>
-        $(document).ready(function () {
-            $('#profile').on('submit', function (e) {
-                // 초기화
-                let isValid = true;
-                let errorMessage = '';
-
-                // 1. 프로필 사진 파일 검사
-                const profileImg = $('#profile-img').val();
-                if (profileImg !== "") {
-                    const allowedExtensions = /(\.jpg|\.png)$/i;
-                    if (!allowedExtensions.exec(profileImg)) {
-                        isValid = false;
-                        errorMessage += '프로필 사진은 png, jpg, jpeg 파일만 가능합니다.\n';
-                    }
-                }
-
-                // 2. 프로필 이름 유효성 검사
-                const profileName = $('#profile-name').val();
-                const namePattern = /^[a-zA-Z0-9가-힣]+$/; // 공백과 특수문자 제외
-                if (profileName !== "" && !namePattern.test(profileName)) {
-                    isValid = false;
-                    errorMessage += '프로필 이름에는 공란 또는 특수문자가 포함될 수 없습니다.\n';
-                }
-
-                // 3. 소개 유효성 검사
-                const profileText = $('#profile-text').val();
-                if (profileText != null && profileText.length > 50) {
-                    isValid = false;
-                    errorMessage += '소개는 50자 이내로 작성해야 합니다.\n';
-                }
-
-                // 4. 생년월일 유효성 검사
-                const birth = $('#birth').val();
-                const today = new Date().toISOString().split('T')[0];
-                if (birth != null && birth >= today) {
-                    isValid = false;
-                    errorMessage += '생년월일은 오늘보다 과거 날짜이어야 합니다.\n';
-                }
-
-                // 5. 휴대폰 번호 유효성 검사
-                const phone = $('#phone').val();
-                const phonePattern = /^\d{11}$/; // 숫자만 11자리
-                if (phone !== "" && !phonePattern.test(phone)) {
-                    isValid = false;
-                    errorMessage += '휴대폰 번호는 숫자만 11자리로 입력해야 합니다.\n';
-                }
-                // 유효성 검사 실패 시
-                if (!isValid) {
-                    e.preventDefault(); // 폼 제출 중지
-                    alert(errorMessage); // 오류 메시지 표시
-                }
-            });
-        });
-
-    </script>
     </div>
+    <script>
+    </script>
 </body>
 </html>
