@@ -34,6 +34,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "OR t LIKE %:keyword%)")
     List<Post> findByBoardCategoryAndKeyword(BoardCategory boardCategory, String keyword);
 
-    List<Post> findAllByLogin(Login login);
+    Page<Post> findAllByLogin(Login login, Pageable pageable);
 
 }

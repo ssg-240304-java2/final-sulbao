@@ -179,9 +179,9 @@ public class PostService {
         }
     }
 
-    public List<PostDto> findByUser(Long id) {
+    public Page<PostDto> findByUser(Long id, Pageable pageable) {
         Login login = loginRepository.findById(id).orElseThrow();
-        List<Post> posts = postRepository.findAllByLogin(login);
-        return posts.stream().map(PostDto::toPostDto).toList();
+        Page<Post> posts = postRepository.findAllByLogin(login, pageable);
+        return posts.map(PostDto::toPostDto);
     }
 }
