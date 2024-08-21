@@ -9,6 +9,8 @@ import lombok.ToString;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.finalproject.sulbao.board.common.BoardCategoryConstants.ZZANFEED_ID;
+
 @Getter
 @Setter
 @ToString
@@ -25,8 +27,9 @@ public class PostDto {
     private List<CommentDto> commentDtoList;
     private List<String> tags;
     private String thumbnail;
-    private String categoryName;
+    private String categoryNameEn;
     private LocalDateTime createdAt;
+    private String categoryNameKr;
 
     public static PostDto toPostDto(Post post) {
         return PostDto.builder()
@@ -40,7 +43,8 @@ public class PostDto {
                 .commentDtoList(post.getComments().stream().map(CommentDto::toCommentDto).toList())
                 .tags(post.getTags())
                 .thumbnail(post.getThumbnail())
-                .categoryName(post.getBoardCategory().getName())
+                .categoryNameEn(post.getBoardCategory().getName())
+                .categoryNameKr(post.getBoardCategory().getId().equals(ZZANFEED_ID) ? "짠피드" : "술포스트")
                 .createdAt(post.getCreatedAt())
                 .build();
     }
