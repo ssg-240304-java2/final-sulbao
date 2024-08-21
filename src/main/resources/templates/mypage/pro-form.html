@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{common/layouts/userDefault}">
 <head>
     <meta charset="UTF-8">
@@ -176,6 +177,25 @@
         }
 
     </style>
+
+    <script>
+        window.onload = function() {
+            // 컨트롤러에서 전달된 프로페셔널 상태 값 가져오기
+            const proStatus = '[[${proStatus}]]';
+
+            const profileForm = document.getElementById('profile');
+            const waitingForm = document.getElementById('waiting-form');
+
+            if (proStatus !== "WAIT") {
+                profileForm.style.display = 'none';
+                waitingForm.style.display = 'block';
+            } else {
+                profileForm.style.display = 'block';
+                waitingForm.style.display = 'none';
+            }
+        };
+    </script>
+
 </head>
 <body>
     <div layout:fragment="content">
@@ -199,7 +219,6 @@
                 <div class="content">
                     <form id="profile" action="/mypage/updateProfile" method="POST" enctype="multipart/form-data">
                         <div class="profile-container">
-
                             <div class="profile-info">
                                 <div class="profile-row">
                                     <label for="email">이메일 주소</label>
@@ -243,6 +262,39 @@
                             </div>
                         </div>
                     </form>
+                    <div class="profile-container" id="waiting-form">
+                            <div>
+                                <div class="profile-info">
+                                    <div class="profile-row">
+                                        <label for="business-num-wait">전문가 사업자번호</label>
+                                        <div class="input-wrapper">
+                                            <input type="text" id="business-num-wait" name="businessNumber" th:placeholder="${businessNumber}" disabled>
+                                        </div>
+                                        <hr style="margin-top: 7px">
+                                    </div>
+                                </div>
+
+                                <div class="profile-info">
+                                    <div class="profile-row">
+                                        <label for="link-wait">전문가 관련링크</label>
+                                        <div class="input-wrapper">
+                                            <input type="text" id="link-wait" name="businessLink" th:placeholder="${businessLink}" disabled>
+                                            <button id="business-link-btn" type="button" onclick="">변경신청</button>
+                                        </div>
+                                        <hr style="margin-top: 7px">
+                                    </div>
+
+                                    <div class="profile-row">
+                                        <label for="date">전문가 신청일</label>
+                                        <div class="input-wrapper">
+                                            <input type="date" id="date" name="date" th:value="${#strings.substring(date, 0, 10)}" disabled>
+                                        </div>
+                                        <hr style="margin-top: 7px">
+                                    </div>
+                                </div>
+                                <button type="button" class="save-button">수정하기</button>
+                            </div>
+                        </div>
                 </div>
             </div>
         </div>
