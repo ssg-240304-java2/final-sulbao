@@ -96,10 +96,18 @@ public class OrderController {
         if(session.getAttribute("userNo") == null){
             return "redirect:/login";
         }
+        List<ProductDTO> productLists;
+        if(session.getAttribute("role").equals("ROLE_ADMIN")){
+            productLists = orderProductService.findAll();
+        }else{
+            Long userNo = (Long) session.getAttribute("userNo");
+            // 2. 1번을 이용해 판매자의 상품 정보 조회 -> 상품 코드, 상품명
+            productLists = orderProductService.findByUserNo(userNo);
+        }
+
+        String role = session.getAttribute("role").toString();
         // 1. 판매자 아이디 정보를 조회
-        Long userNo = (Long) session.getAttribute("userNo");
-        // 2. 1번을 이용해 판매자의 상품 정보 조회 -> 상품 코드, 상품명
-        List<ProductDTO> productLists = orderProductService.findByUserNo(userNo);
+
         List<Long>productIdList = new ArrayList<>();
         for (ProductDTO productDTO : productLists) {
             productIdList.add(productDTO.getProductNo());
@@ -133,7 +141,7 @@ public class OrderController {
         model.addAttribute("menu", "order");
         model.addAttribute("submenu", "option");
         model.addAttribute("orderProductList", orderProductList);
-
+        model.addAttribute("role", role);
         return "cart/sellerorder";
     }
 
@@ -151,10 +159,16 @@ public class OrderController {
         if(session.getAttribute("userNo") == null){
             return "redirect:/login";
         }
-        // 1. 판매자 아이디 정보를 조회
-        Long userNo = (Long) session.getAttribute("userNo");
-        // 2. 1번을 이용해 판매자의 상품 정보 조회 -> 상품 코드, 상품명
-        List<ProductDTO> productLists = orderProductService.findByUserNo(userNo);
+        List<ProductDTO> productLists;
+        if(session.getAttribute("role").equals("ROLE_ADMIN")){
+            productLists = orderProductService.findAll();
+        }else{
+            Long userNo = (Long) session.getAttribute("userNo");
+            // 2. 1번을 이용해 판매자의 상품 정보 조회 -> 상품 코드, 상품명
+            productLists = orderProductService.findByUserNo(userNo);
+        }
+        String role = session.getAttribute("role").toString();
+
         List<Long>productIdList = new ArrayList<>();
         for (ProductDTO productDTO : productLists) {
             productIdList.add(productDTO.getProductNo());
@@ -202,6 +216,7 @@ public class OrderController {
         model.addAttribute("shippingStatus", shippingStatus);
         model.addAttribute("orderType", orderType);
         model.addAttribute("orderProductList", orderProductList);
+        model.addAttribute("role", role);
         return "cart/sellerorder";
     }
 
@@ -222,4 +237,5 @@ public class OrderController {
         // 업데이트문
         return "redirect:/orderlist";
     }
+
 }
