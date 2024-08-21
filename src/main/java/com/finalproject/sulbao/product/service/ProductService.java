@@ -4,12 +4,15 @@ import com.finalproject.sulbao.common.file.FileDto;
 import com.finalproject.sulbao.common.file.FileService;
 import com.finalproject.sulbao.login.model.entity.Login;
 import com.finalproject.sulbao.login.model.repository.LoginRepository;
+import com.finalproject.sulbao.product.model.dto.ProductComparisonDTO;
 import com.finalproject.sulbao.product.model.dto.ProductDTO;
 import com.finalproject.sulbao.product.model.entity.Product;
 import com.finalproject.sulbao.product.model.vo.ProductImage;
+import com.finalproject.sulbao.product.repository.ProductComparisonRepository;
 import com.finalproject.sulbao.product.repository.ProductRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -28,11 +31,15 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final FileService fileService;
     private final LoginRepository loginRepository;
+    private final ProductComparisonRepository productComparisonRepository;
+    private final ModelMapper modelMapper;
 
-    public ProductService(ProductRepository productRepository, FileService fileService, LoginRepository loginRepository) {
+    public ProductService(ProductRepository productRepository, FileService fileService, LoginRepository loginRepository, ProductComparisonRepository productComparisonRepository, ModelMapper modelMapper) {
         this.productRepository = productRepository;
         this.fileService = fileService;
         this.loginRepository = loginRepository;
+        this.productComparisonRepository = productComparisonRepository;
+        this.modelMapper = modelMapper;
     }
 
 
@@ -184,6 +191,12 @@ public class ProductService {
 
         return productList.stream()
                 .map(product -> new ProductDTO().toDTO(product))
+                .collect(Collectors.toList());
+    }
+
+    public List<ProductComparisonDTO> findByComparison() {
+        return productComparisonRepository.findAll().stream()
+                .map(comparison -> modelMapper.map(comparison, ProductComparisonDTO.class))
                 .collect(Collectors.toList());
     }
 }

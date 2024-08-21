@@ -17,6 +17,7 @@ public class UserDto {
     private String profileImageFileName;
     private String profileName;
     private RoleType roleType;
+    private String userId;
 
     public static UserDto toUserDto(Login login) {
         return UserDto.builder()
@@ -24,6 +25,7 @@ public class UserDto {
                 .profileImageFileName(login.getMemberInfo().getProfileImg())
                 .profileName(login.getMemberInfo().getProfileName())
                 .roleType(login.getUserRole())
+                .userId(login.getUserId())
                 .build();
     }
 

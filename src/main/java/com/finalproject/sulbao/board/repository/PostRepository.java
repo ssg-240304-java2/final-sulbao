@@ -2,6 +2,7 @@ package com.finalproject.sulbao.board.repository;
 
 import com.finalproject.sulbao.board.domain.BoardCategory;
 import com.finalproject.sulbao.board.domain.Post;
+import com.finalproject.sulbao.login.model.entity.Login;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -24,5 +25,15 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("SELECT count(p) FROM Post p JOIN p.tags t WHERE p.boardCategory = :boardCategory AND t = :tag")
     Long countByBoardCategoryAndTag(@Param("boardCategory") BoardCategory boardCategory, @Param("tag") String tag);
+
+    @Query("SELECT p FROM Post p " +
+            "LEFT JOIN p.tags t " +
+            "WHERE p.boardCategory = :boardCategory " +
+            "AND (p.title LIKE %:keyword% " +
+            "OR p.content LIKE %:keyword% " +
+            "OR t LIKE %:keyword%)")
+    List<Post> findByBoardCategoryAndKeyword(BoardCategory boardCategory, String keyword);
+
+    List<Post> findAllByLogin(Login login);
 
 }

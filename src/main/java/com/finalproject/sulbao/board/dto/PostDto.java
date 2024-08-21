@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -24,6 +25,8 @@ public class PostDto {
     private List<CommentDto> commentDtoList;
     private List<String> tags;
     private String thumbnail;
+    private String categoryName;
+    private LocalDateTime createdAt;
 
     public static PostDto toPostDto(Post post) {
         return PostDto.builder()
@@ -37,6 +40,8 @@ public class PostDto {
                 .commentDtoList(post.getComments().stream().map(CommentDto::toCommentDto).toList())
                 .tags(post.getTags())
                 .thumbnail(post.getThumbnail())
+                .categoryName(post.getBoardCategory().getName())
+                .createdAt(post.getCreatedAt())
                 .build();
     }
 
