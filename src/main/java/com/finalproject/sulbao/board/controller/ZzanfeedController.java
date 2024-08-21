@@ -66,7 +66,7 @@ public class ZzanfeedController {
         model.addAttribute("isAdmin", isAdmin);
         model.addAttribute("contents", contents);
         model.addAttribute("postImages", postImages);
-        return "/board/zzanfeed/detail";
+        return "board/zzanfeed/detail";
     }
 
     @GetMapping
@@ -84,7 +84,7 @@ public class ZzanfeedController {
         model.addAttribute("currentPage", page);
         model.addAttribute("count", count);
         model.addAttribute("tags", tags);
-        return "/board/zzanfeed/list";
+        return "board/zzanfeed/list";
     }
 
     @GetMapping("/more")
@@ -116,7 +116,7 @@ public class ZzanfeedController {
         model.addAttribute("post", post);
         model.addAttribute("contents", contents);
         model.addAttribute("thumbnail", thumbnail);
-        return "/board/zzanfeed/edit";
+        return "board/zzanfeed/edit";
     }
 
     @PostMapping("/edit/{postId}")

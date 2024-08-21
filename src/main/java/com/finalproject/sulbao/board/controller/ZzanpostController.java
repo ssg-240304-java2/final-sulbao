@@ -46,7 +46,7 @@ public class ZzanpostController {
         model.addAttribute("posts", posts);
         model.addAttribute("currentPage", page);
         model.addAttribute("count", count);
-        return "/board/zzanpost/list";
+        return "board/zzanpost/list";
     }
 
     @GetMapping("/more")
@@ -64,7 +64,7 @@ public class ZzanpostController {
         }
 
         model.addAttribute("user", user);
-        return "/board/zzanpost/new";
+        return "board/zzanpost/new";
     }
 
     @GetMapping("/edit/{postId}")
@@ -80,7 +80,7 @@ public class ZzanpostController {
         model.addAttribute("user", user);
         model.addAttribute("post", post);
         model.addAttribute("thumbnail", thumbnail);
-        return "/board/zzanpost/edit";
+        return "board/zzanpost/edit";
     }
 
     @PostMapping("/new")
@@ -117,7 +117,7 @@ public class ZzanpostController {
         model.addAttribute("comments", comments);
         model.addAttribute("isPostLikedByUser", isPostLikedByUser);
         model.addAttribute("isAdmin", isAdmin);
-        return "/board/zzanpost/detail";
+        return "board/zzanpost/detail";
     }
 
     @DeleteMapping("/{id}")
