@@ -238,9 +238,7 @@
                                     </div>
                                     <hr style="margin-top: 7px">
                                 </div>
-                            </div>
 
-                            <div class="profile-info">
                                 <div class="profile-row">
                                     <label for="link">관련링크</label>
                                     <div class="input-wrapper">
@@ -262,14 +260,11 @@
                                         </div>
                                         <hr style="margin-top: 7px">
                                     </div>
-                                </div>
 
-                                <div class="profile-info">
                                     <div class="profile-row">
                                         <label for="link-wait">전문가 관련링크</label>
                                         <div class="input-wrapper">
                                             <input type="text" id="link-wait" name="businessLink" th:placeholder="${businessLink}" disabled>
-                                            <button id="business-link-btn" type="button" onclick="">변경신청</button>
                                         </div>
                                         <hr style="margin-top: 7px">
                                     </div>
@@ -282,7 +277,10 @@
                                         <hr style="margin-top: 7px">
                                     </div>
                                 </div>
-                                <button type="button" class="save-button">수정하기</button>
+                                <div class="profile-row">
+                                    <label for="date"><a href="#">신청 취소 하기 ></a></label>
+                                </div>
+                                <button type="button" class="save-button" disabled>승인 대기 중</button>
                             </div>
                         </div>
                 </div>
