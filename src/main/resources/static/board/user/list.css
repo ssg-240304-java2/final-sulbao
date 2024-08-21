@@ -2,7 +2,6 @@ body {
     font-family: "Noto-Sans", sans-serif;
 }
 
-/* 사이드 메뉴바 */
 .mypage-content {
     padding: 7rem 0 10rem 0;
     display: flex;
@@ -53,7 +52,6 @@ body {
     padding: 20px;
 }
 
-/* 내부 컨텐츠 - 나의 프로필 */
 .profile-container {
     width: 400px;
     margin: 20px;
@@ -177,7 +175,7 @@ button:hover {
 }
 
 .nickname {
-    font-size: 20px;
+    font-size: 25px;
     font-weight: bold;
 }
 
@@ -186,7 +184,6 @@ button:hover {
     color: gray;
 }
 
-/* 게시글 목록 스타일 */
 .post-list {
     margin-top: 20px;
 }
@@ -231,6 +228,7 @@ button:hover {
     font-size: 18px;
     color: #333;
     font-weight: bold;
+    margin-left: 1.2%;
 }
 
 .post-title a:hover {

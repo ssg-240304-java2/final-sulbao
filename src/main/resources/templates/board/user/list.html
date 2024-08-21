@@ -5,9 +5,9 @@
 <head>
     <meta charset="UTF-8">
     <title>술기로운한잔 - 마이페이지</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="/user/css/main-style.css">
     <link rel="stylesheet" href="/board/user/list.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         window.onload = function() {
             if('[[${message}]]'.length > 1)
@@ -48,21 +48,11 @@
                     <div class="post-list">
                         <div class="post-item" th:each="post : ${posts}">
                             <div class="post-header">
-                                <span class="post-description"><span th:text="${post.categoryName}" class="category">자유게시판</span>카테고리에 게시물을 작성하였습니다.</span>
-                                <span th:text="${post.createdAt}" class="post-date"></span>
+                                <span class="post-description"><span th:text="${post.categoryName}" class="category"></span>카테고리에 게시물을 작성하였습니다.</span>
+                                <span th:text="${#temporals.format(post.createdAt, 'yyyy년 MM월 dd일 HH시 mm분')}" class="post-date"></span>
                             </div>
                             <div class="post-title">
-                                <a th:text="${post.title}" th:href="@{|/${post.categoryName}|}">게시글 제목이 여기에 표시됩니다.</a>
-                            </div>
-                        </div>
-
-                        <div class="post-item">
-                            <div class="post-header">
-                                <span class="post-description"><span class="category">Q&A</span>카테고리에 게시물을 작성하였습니다.</span>
-                                <span class="post-date">2024-08-20</span>
-                            </div>
-                            <div class="post-title">
-                                <a href="/board/view/2">또 다른 게시글 제목입니다.</a>
+                                <a th:text="${post.title}" th:href="@{|/${post.categoryName}|}"></a>
                             </div>
                         </div>
                     </div>

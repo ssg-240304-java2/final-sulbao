@@ -15,15 +15,18 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-public class PostController {
+public class BoardController {
 
     private final PostService postService;
     private final PostRepository postRepository;
     private final SessionHandler sessionHandler;
 
-    @GetMapping("/admin/board")
+    @GetMapping("/board/list")
     public String admin(Model model) {
         List<PostDto> posts = postRepository.findAll().stream().map(PostDto::toPostDto).toList();
+
+        model.addAttribute("menu", "board");
+        model.addAttribute("submenu", "list");
         model.addAttribute("posts", posts);
         return "board/admin/list";
     }
@@ -36,6 +39,7 @@ public class PostController {
 
         UserDto user = sessionHandler.getUserFromSession(request);
         List<PostDto> posts = postService.findByUser(user.getId());
+
 
         model.addAttribute("user", user);
         model.addAttribute("posts", posts);
