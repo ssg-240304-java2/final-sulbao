@@ -65,8 +65,8 @@ public class EmailService {
 
 
 
-        String link = "http://localhost:8080/validateOrder?token=" + token;
-//        String link = "https://hansool.shop/validateOrder?token=" + token;
+//        String link = "http://localhost:8080/validateOrder?token=" + token;
+        String link = "https://hansool.shop/validateOrder?token=" + token;
 
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 

@@ -25,12 +25,12 @@ public class KakaoPayService {
                 parameters.put("quantity", String.valueOf(quantity));                                        // 상품 수량
                 parameters.put("total_amount", String.valueOf(totalPrice));             // 상품 총액
                 parameters.put("tax_free_amount", "0");                                 // 상품 비과세 금액
-                parameters.put("approval_url", "http://localhost:8080/payments/completed"); // 결제 성공 시 URL
-//                parameters.put("approval_url", "https://hansool.shop/payments/completed"); // 결제 성공 시 URL
-                parameters.put("cancel_url", "http://localhost:8080/orders/cart/order_form");      // 결제 취소 시 URL
-//                parameters.put("cancel_url", "https://hansool.shop/orders/cart/order_form");      // 결제 취소 시 URL
-                parameters.put("fail_url", "http://localhost:8080/orders/cart/order_form");          // 결제 실패 시 URL
-//                parameters.put("fail_url", "https://hansool.shop/orders/cart/order_form");          // 결제 실패 시 URL
+//                parameters.put("approval_url", "http://localhost:8080/payments/completed"); // 결제 성공 시 URL
+                parameters.put("approval_url", "https://hansool.shop/payments/completed"); // 결제 성공 시 URL
+//                parameters.put("cancel_url", "http://localhost:8080/orders/cart/order_form");      // 결제 취소 시 URL
+                parameters.put("cancel_url", "https://hansool.shop/orders/cart/order_form");      // 결제 취소 시 URL
+//                parameters.put("fail_url", "http://localhost:8080/orders/cart/order_form");          // 결제 실패 시 URL
+                parameters.put("fail_url", "https://hansool.shop/orders/cart/order_form");          // 결제 실패 시 URL
 
                 // HttpEntity : HTTP 요청 또는 응답에 해당하는 Http Header와 Http Body를 포함하는 클래스
                 HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(parameters, this.getHeaders());
