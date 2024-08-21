@@ -39,7 +39,7 @@ public class ProductController {
         model.addAttribute("submenu","list");
         model.addAttribute("product", productDTO);
         model.addAttribute("productList", productList);
-        return "adm/product/productList";
+        return "admin/product/productList";
     }
 
     // 관리자 페이지 조회
@@ -56,7 +56,7 @@ public class ProductController {
         model.addAttribute("submenu","list");
         model.addAttribute("product", productDTO);
         model.addAttribute("productList", productList);
-        return "adm/product/productList";
+        return "admin/product/productList";
     }
 
     //등록화면으로 이동
@@ -73,7 +73,7 @@ public class ProductController {
         model.addAttribute("productComparisonList", productComparisonList);
         model.addAttribute("product", new ProductDTO());
         model.addAttribute("productCategory", ProductCategory.values());
-        return "adm/product/productDetail";
+        return "admin/product/productDetail";
     }
 
     //수정화면으로 이동
@@ -90,7 +90,7 @@ public class ProductController {
         ProductDTO productDTO =  productService.findByProductNo(productNo);
         model.addAttribute("product", productDTO);
         model.addAttribute("productCategory", ProductCategory.values());
-        return "adm/product/productUpdate";
+        return "admin/product/productUpdate";
     }
 
     //상품등록

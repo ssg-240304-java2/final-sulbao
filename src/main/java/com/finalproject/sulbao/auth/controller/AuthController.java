@@ -10,7 +10,7 @@ public class AuthController {
     @GetMapping("/main")
     public String adminMain(Model model) {
         model.addAttribute("menu","home");
-        return "adm/index";
+        return "admin/index";
     }
 
 

@@ -3,23 +3,26 @@ package com.finalproject.sulbao.magazine.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/magazine")
 public class MagazineController {
 
-    @GetMapping("/list")
+    @GetMapping("/magazine/list")
     public String list(Model model){
         model.addAttribute("menu", "magazine");
         model.addAttribute("submenu", "list");
-        return "adm/magazine/list";
+        return "admin/magazine/list";
     }
 
-    @GetMapping("/detail")
+    @GetMapping("/magazine/detail")
     public String detail(Model model){
         model.addAttribute("menu", "magazine");
         model.addAttribute("submenu", "detail");
-        return "adm/magazine/detail";
+        return "admin/magazine/detail";
+    }
+
+    @GetMapping("/magazine")
+    public String magazineList(Model model){
+        return "magazine/list";
     }
 }
