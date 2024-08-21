@@ -93,9 +93,11 @@
                         </div>
 
                         <div class="mr-3 mb-4">
-                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="changeStatusYn('배송준비')">배송준비</button>
-                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="changeStatusYn('배송중')">배송중</button>
-                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="changeStatusYn('구매확정')">구매확정</button>
+                            <div th:if="${role != 'ROLE_ADMIN'}">
+                                <button type="button" class="btn btn-sm btn-outline-primary" onclick="changeStatusYn('배송준비')">배송준비</button>
+                                <button type="button" class="btn btn-sm btn-outline-primary" onclick="changeStatusYn('배송중')">배송중</button>
+                                <button type="button" class="btn btn-sm btn-outline-primary" onclick="changeStatusYn('구매확정')">구매확정</button>
+                            </div>
                         </div>
                         <table id="productsTable" class="table table-product" style="width:100%">
                             <thead>
