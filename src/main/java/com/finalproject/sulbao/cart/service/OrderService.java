@@ -100,4 +100,8 @@ public class OrderService {
                         .map(order -> modelMapper.map(order, OrderDTO.class))
                         .collect(Collectors.toList());
     }
+
+    public void updateDeliveryByOrderCode(List<Long> orderCodes , String deliveryStatus) {
+        orderRepository.updateDeliveryByOrderCode(orderCodes, deliveryStatus);
+    }
 }
