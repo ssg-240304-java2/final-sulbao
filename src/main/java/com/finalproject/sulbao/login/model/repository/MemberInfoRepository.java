@@ -11,5 +11,8 @@ public interface MemberInfoRepository extends JpaRepository<MemberInfo, Long> {
 
     @Query("SELECT m FROM MemberInfo m WHERE m.user.userNo = (SELECT u.userNo FROM Login u WHERE u.userId = :userId)")
     MemberInfo findByUserId(String userId);
+
+    @Query("SELECT m.proMemberInfo.proStatus FROM MemberInfo m WHERE m.user.userNo = (SELECT u.userNo FROM Login u WHERE u.userId = :userId)")
+    String findProStatusByUserId(String userId);
 }
 

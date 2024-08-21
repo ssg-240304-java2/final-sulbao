@@ -116,8 +116,15 @@ public class LoginService {
         String birth = login.getBirth();
         String phone = login.getPhone();
         String gender = login.getGender();
+        String businessNumber = memberInfo.getProMemberInfo().getBusinessNumber();
+        String businessLink = memberInfo.getProMemberInfo().getBusinessLink();
+        String date = String.valueOf(memberInfo.getProMemberInfo().getUpdatedAt());
 
-        MemberProfileDto member = new MemberProfileDto(profileImag, profileName, profileText, email, birth, phone, gender);
+        log.info("business info ================+>>>>>>>>>>>>>>>>>>>>>>> {}", businessNumber);
+        log.info("business info ================+>>>>>>>>>>>>>>>>>>>>>>> {}", businessLink);
+        log.info("business info ================+>>>>>>>>>>>>>>>>>>>>>>> {}", date);
+
+        MemberProfileDto member = new MemberProfileDto(profileImag, profileName, profileText, email, birth, phone, gender, businessNumber, businessLink, date);
         return member;
     }
 
@@ -162,5 +169,9 @@ public class LoginService {
             memberInfo.setProfileText(memberProfile.getProfileText());
         }
 
+    }
+
+    public String findProStatusByUserId(String userId) {
+        return memberRepository.findProStatusByUserId(userId);
     }
 }
