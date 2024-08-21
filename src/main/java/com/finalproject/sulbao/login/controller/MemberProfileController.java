@@ -1,6 +1,7 @@
 package com.finalproject.sulbao.login.controller;
 
 import com.finalproject.sulbao.login.model.dto.MemberProfileDto;
+import com.finalproject.sulbao.login.model.dto.ProFormDto;
 import com.finalproject.sulbao.login.model.service.LoginService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -93,8 +94,41 @@ public class MemberProfileController {
         return "redirect:/mypage/myprofile";
     }
 
+    // 전문가 신청 페이지 이동
     @GetMapping("/proform")
-    public String proFormPage() {
-        return "/mypage/pro-form";
+    public String proFormPage(Model model) {
+
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        String status = service.findProStatusByUserId(userId);
+        log.info("pro status============================================= {}", status);
+        MemberProfileDto member = service.findMemberByUserId(userId);
+
+        model.addAttribute("proStatus", status);
+        model.addAttribute("email", member.getEmail());
+        model.addAttribute("businessNumber", member.getBusinessNumber());
+        model.addAttribute("businessLink", member.getBusinessLink());
+        model.addAttribute("date", member.getDate());
+
+        return "mypage/pro-form";
+    }
+
+    // 전문가 신청 저장
+    @PostMapping("/saveProForm")
+    public String saveProForm(@ModelAttribute ProFormDto form, RedirectAttributes redirectAttributes){
+
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        service.saveProForm(form, userId);
+        redirectAttributes.addFlashAttribute("message", "성공적으로 저장되었습니다. 승인 심사 결과는 메일로 전송됩니다.");
+        return "redirect:/mypage/proform";
+    }
+
+    // 전문가 신청 취소
+    @PostMapping("/cancelProForm")
+    public String deleteProForm(RedirectAttributes redirectAttributes) {
+
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        service.deleteProForm(userId);
+        redirectAttributes.addFlashAttribute("message", "전문가 신청이 취소되었습니다.");
+        return "redirect:/mypage/proform";
     }
 }

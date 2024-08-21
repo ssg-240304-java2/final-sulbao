@@ -169,6 +169,6 @@ public class KakaoController {
         }
 
 
-        return "redirect:/ordercomplete";
+        return "cart/ordercomplete";
     }
 }

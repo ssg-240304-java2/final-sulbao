@@ -3,6 +3,7 @@ package com.finalproject.sulbao.cart.repository;
 import com.finalproject.sulbao.cart.domain.Order;
 import com.finalproject.sulbao.cart.vo.OrderItem;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -18,5 +19,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query(value="select k from Order p join p.orderItems k where k.productNo in :productIdList")
     List<OrderItem> findByProductId(List<Long> productIdList);
 
-
+    @Modifying
+    @Query(value ="Update Order k SET k.delivery= :deliveryStatus where k.orderCode IN :orderCodes")
+    void updateDeliveryByOrderCode(List<Long> orderCodes, String deliveryStatus);
 }
