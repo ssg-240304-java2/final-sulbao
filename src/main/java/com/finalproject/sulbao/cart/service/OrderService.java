@@ -3,7 +3,6 @@ package com.finalproject.sulbao.cart.service;
 
 import com.finalproject.sulbao.cart.domain.Order;
 import com.finalproject.sulbao.cart.dto.OrderDTO;
-import com.finalproject.sulbao.cart.repository.CartRepository;
 import com.finalproject.sulbao.cart.repository.OrderRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -93,5 +92,12 @@ public class OrderService {
                 orderRepository.save(order);
             }
         }
+    }
+
+    public List<OrderDTO> findByProductNo(List<Long> producList) {
+        List<Order> orders = orderRepository.findByProductNo(producList);
+        return orders.stream()
+                        .map(order -> modelMapper.map(order, OrderDTO.class))
+                        .collect(Collectors.toList());
     }
 }

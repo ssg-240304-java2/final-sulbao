@@ -2,9 +2,13 @@ package com.finalproject.sulbao.cart.controller;
 
 import com.finalproject.sulbao.cart.dto.CartDTO;
 import com.finalproject.sulbao.cart.dto.OrderDTO;
+
 import com.finalproject.sulbao.cart.dto.OrderItemDTO;
+import com.finalproject.sulbao.cart.dto.OrderProductDTO;
 import com.finalproject.sulbao.cart.service.CartService;
 import com.finalproject.sulbao.cart.service.OrderService;
+import com.finalproject.sulbao.cart.service.OrderProductService;
+import com.finalproject.sulbao.product.model.dto.ProductDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ui.Model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -20,9 +25,13 @@ public class OrderController {
 
     private final OrderService orderService;
     private final CartService cartService;
-    public OrderController(OrderService orderService, CartService cartService) {
+    private final OrderProductService orderProductService;
+    public OrderController(OrderService orderService,
+                           CartService cartService,
+                           OrderProductService orderProductService) {
         this.orderService = orderService;
         this.cartService = cartService;
+        this.orderProductService = orderProductService;
     }
 
 
@@ -77,5 +86,50 @@ public class OrderController {
         }
 
         return "redirect:/presentcomplete"; // 주문 확인 페이지로 리다이렉트 또는 포워드
+    }
+
+    @GetMapping("/orderlist")
+    public String orderlist(Model model, HttpSession session) {
+        if(session.getAttribute("userNo") == null){
+            return "redirect:/login";
+        }
+        // 1. 판매자 아이디 정보를 조회
+        Long userNo = (Long) session.getAttribute("userNo");
+        // 2. 1번을 이용해 판매자의 상품 정보 조회 -> 상품 코드, 상품명
+        List<ProductDTO> productLists = orderProductService.findByUserNo(userNo);
+        List<Long>productIdList = new ArrayList<>();
+        for (ProductDTO productDTO : productLists) {
+            productIdList.add(productDTO.getProductNo());
+        }
+        // 3. order_item 테이블의 2번의 리스트 목록을 조회 -> amount랑 토탈 프라이스, 오더 코드
+        List<OrderItemDTO> orderItemList = orderProductService.findByProductNo(productIdList);
+        List<OrderDTO> orderList = orderService.findByProductNo(productIdList);
+        List<OrderProductDTO> orderProductList = new ArrayList<>();
+
+        System.out.println(orderList);
+
+        for (int i = 0; i < orderItemList.size(); i++) {
+            OrderProductDTO orderProductDTO = new OrderProductDTO();
+
+            orderProductDTO.setCode(orderList.get(i).getOrderCode());
+
+            orderProductDTO.setName(orderProductService.findByProductNoName(orderItemList.get(i).getProductNo()));
+
+            orderProductDTO.setOrderName(orderList.get(i).getNames());
+            System.out.println("list 추가 =======> "+orderList.get(i).getNames());
+            orderProductDTO.setQuantity(orderItemList.get(i).getAmount());
+            orderProductDTO.setProductStatus(orderList.get(i).getDelivery());
+            orderProductDTO.setTotalPrice(orderItemList.get(i).getTotalPrice());
+            if(orderList.get(i).isPresent()){
+                orderProductDTO.setPresent("선물결제");
+            }else{
+                orderProductDTO.setPresent("일반결제");
+            }
+            orderProductList.add(orderProductDTO);
+        }
+
+        model.addAttribute("orderProductList", orderProductList);
+
+        return "sellerorder";
     }
 }
