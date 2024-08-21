@@ -56,9 +56,9 @@ public class UserAuthenticationSuccessHandler implements AuthenticationSuccessHa
         } else if (role.equals("ROLE_PRO_MEMBER")){
             response.sendRedirect("/");
         } else if (role.equals("ROLE_SELLER")){
-            response.sendRedirect("/auth/testSeller");  // 셀러 로그인 후 이동 페이지
+            response.sendRedirect("/main");  // 셀러 로그인 후 이동 페이지
         } else if (role.equals("ROLE_ADMIN")) {
-            response.sendRedirect("/auth/testadmin");   // 어드민 로그인 후 이동 페이지
+            response.sendRedirect("/main");   // 어드민 로그인 후 이동 페이지
         }
     }
 
