@@ -2,6 +2,7 @@ package com.finalproject.sulbao.board.repository;
 
 import com.finalproject.sulbao.board.domain.BoardCategory;
 import com.finalproject.sulbao.board.domain.Post;
+import com.finalproject.sulbao.login.model.entity.Login;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -32,5 +33,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "OR p.content LIKE %:keyword% " +
             "OR t LIKE %:keyword%)")
     List<Post> findByBoardCategoryAndKeyword(BoardCategory boardCategory, String keyword);
+
+    List<Post> findAllByLogin(Login login);
 
 }

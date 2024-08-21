@@ -179,4 +179,9 @@ public class PostService {
         }
     }
 
+    public List<PostDto> findByUser(Long id) {
+        Login login = loginRepository.findById(id).orElseThrow();
+        List<Post> posts = postRepository.findAllByLogin(login);
+        return posts.stream().map(PostDto::toPostDto).toList();
+    }
 }
