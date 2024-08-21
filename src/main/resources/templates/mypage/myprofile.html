@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{common/layouts/userDefault}">
+<head>
+    <meta charset="UTF-8">
+    <title>술기로운한잔 - 마이페이지</title>
+    <link rel="stylesheet" href="/user/css/main-style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        window.onload = function() {
+            if('[[${message}]]'.length > 1)
+            {
+                alert('[[${message}]]');
+            }
+        };
+
+        $(document).ready(function() {
+
+            $("#name-error-message").hide();
+
+            $('#profile-name').on('input', function() {
+                var profileName = $(this).val();
+
+                // 공백이 포함된 경우 메시지 표시
+                if(/\s/.test(profileName)) {
+                    $("#name-error-message").text("이름에 공백이 들어갈 수 없습니다.").show();
+                    return;
+                }
+
+                // 중복 확인 요청을 보냅니다.
+                $.ajax({
+                    type: 'POST',
+                    url: '/mypage/checkProfileName',
+                    data: { profileName: profileName },
+                    success: function(response) {
+                        console.log(response)
+                        // response 값이 0보다 크다면 중복된 이름이 있음
+                        if(response > 0) {
+                            $("#name-error-message").text("이미 사용중인 프로필 이름 입니다.").show();
+                        } else {
+                            $("#name-error-message").hide();
+
+                        }
+                    },
+                    error: function() {
+                        console.log('중복 확인 중 오류가 발생했습니다. 나중에 다시 시도해주세요.');
+                    }
+                });
+            });
+        });
+    </script>
+    <style>
+        body {
+            font-family: "Noto-Sans", sans-serif;
+        }
+
+        /* 사이드 메뉴바 */
+        .mypage-content {
+            padding: 7rem 0 10rem 0;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 200px;
+            padding: 20px;
+            background-color: #ffffff;
+            border-right: 1px solid #ddd;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .sidebar li {
+            margin-bottom: 10px;
+        }
+
+        .sidebar .menu-text {
+            font-size: 16px;
+            font-weight: 700;
+            padding-top: 10px;
+
+        }
+
+        .sidebar li a {
+            text-decoration: none;
+            color: #333;
+            display: block;
+            padding-top: 10px;
+            border-radius: 4px;
+        }
+
+        .sidebar li.active a{
+            color: #6998AB;
+            font-weight: 500;
+        }
+
+        .sidebar li a:hover {
+            font-weight: 500;
+        }
+
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+        }
+
+        /* 내부 컨텐츠 - 나의 프로필 */
+        .profile-container {
+            width: 400px;
+            margin: 20px;
+            font-family: Arial, sans-serif;
+            color: #131313;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 30px;
+        }
+
+        .profile-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border-color: #3b3a3a;
+        }
+
+        .profile-info {
+            flex-grow: 1;
+        }
+
+        .profile-info h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            font-family: "Noto-Sans", sans-serif;
+        }
+
+        .profile-row {
+            margin-bottom: 25px;
+            font-size: 13px;
+            color: #565656;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .profile-container .profile-row label {
+            display: block;
+            margin-bottom: 6px;
+            color: #9d9d9d;
+            font-size: 10px;
+        }
+
+        .profile-container .profile-row input {
+            flex: 1;
+            font-size: 14px !important;
+            margin-right: 10px;
+            border: none;
+        }
+        .profile-row input:focus {
+            outline: none;
+        }
+
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        button {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background-color: #f0f0f0;
+        }
+
+        .save-button {
+            display: block;
+            width: 100%;
+            background-color: #1A374D;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            padding: 10px 0;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .save-button:hover {
+            background-color: #1A374D;
+        }
+
+        .verification-message {
+            font-size: 10px;
+            color: green;
+            display: none;
+            margin-top: 5px;
+        }
+        .error-message {
+            font-size: 10px;
+            color: red;
+            margin-top: 5px;
+        }
+
+    </style>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="container">
+            <div class="mypage-content">
+                <nav class="sidebar">
+                    <ul>
+                        <li class="menu-text">나의 쇼핑정보</li>
+                            <li><a href="#">최근 본 상품</a></li>
+                            <li><a href="#">주문내역조회</a></li>
+                        <li class="menu-text">나의 활동</li>
+                            <li class="active"><a href="/mypage/myprofile">나의 정보</a></li>
+                            <li><a href="/mypage/board">나의 게시글</a></li>
+                            <li><a href="#">나의 리뷰</a></li>
+                        <li class="menu-text">고객센터</li>
+                            <li><a href="#">문의게시판</a></li>
+                            <li sec:authorize="hasRole('ROLE_MEMBER')"><a href="/mypage/proform">전문가신청</a></li>
+                    </ul>
+                </nav>
+            <!-- 여기서 선택한 메뉴에 따라 내용이 바뀜 -->
+                <div class="content">
+                    <form id="profile" action="/mypage/updateProfile" method="POST" enctype="multipart/form-data">
+                        <div class="profile-container">
+                            <div class="profile-header">
+                                <img th:src="${profileImg}" alt="Profile Image" class="profile-image"/>
+                                <input type="file" id="profile-img" name="image">
+                            </div>
+
+                            <div class="profile-info">
+                                <div class="profile-row">
+                                <label for="profile-name">프로필 이름</label>
+                                    <div class="input-wrapper">
+                                        <input type="text" id="profile-name" name="profileName" th:placeholder="${profileName}">
+                                    </div>
+                                        <p id="name-error-message" class="error-message"></p>
+                                    <hr style="margin-top: 7px">
+                                </div>
+
+                                <div class="profile-row">
+                                    <label for="profile-text">소개</label>
+                                    <div class="input-wrapper">
+                                        <input type="text" id="profile-text" name="profileText" th:placeholder="${profileText}">
+                                    </div>
+                                    <hr style="margin-top: 7px">
+                                </div>
+                            </div>
+
+                            <div class="profile-info">
+                                <div class="profile-row">
+                                    <label for="email">이메일 주소</label>
+                                    <div class="input-wrapper">
+                                        <input type="email" id="email" name="email" th:placeholder="${email}">
+                                    </div>
+                                    <hr style="margin-top: 7px">
+                                </div>
+
+                                <div class="profile-row">
+                                    <label for="password">비밀번호</label>
+                                    <div class="input-wrapper">
+                                        <input type="password" id="password" placeholder="●●●●●●●●" disabled>
+                                        <button id="password-btn" type="button" onclick="">변경하기</button>
+                                    </div>
+                                    <hr style="margin-top: 7px">
+                                </div>
+                            </div>
+
+                            <div class="profile-info">
+                                <div class="profile-row">
+                                    <label for="birth">생년월일</label>
+                                    <div class="input-wrapper">
+                                        <input type="date" id="birth" name="birth" th:value="${birth}">
+                                    </div>
+                                    <hr style="margin-top: 7px">
+                                </div>
+
+                                <div class="profile-row">
+                                    <label for="phone">휴대폰 번호</label>
+                                    <div class="input-wrapper">
+                                        <input type="text" id="phone" name="phone" th:placeholder="${phone}">
+                                    </div>
+                                    <hr style="margin-top: 7px">
+                                </div>
+
+                                <div class="profile-row">
+                                    <label>성별</label>
+                                    <div class="input-wrapper">
+                                        <input type="radio" id="gender-m" name="gender" value="M" th:checked="${gender.equals('M')}"/> 남성
+                                        <input type="radio" id="gender-f" name="gender" value="F" th:checked="${gender.equals('F')}"/> 여성
+                                        <input type="radio" id="gender-none" name="gender" value="None" th:checked="${gender.equals('None')}"/> 선택하지 않음
+                                    </div>
+                                    <hr style="margin-top: 7px">
+                                </div>
+                            </div>
+                                <div sec:authorize="hasRole('ROLE_PRO_MEMBER')">
+                                <div class="profile-info">
+                                    <div class="profile-row">
+                                        <label for="business-num">전문가 사업자번호</label>
+                                        <div class="input-wrapper">
+                                            <input type="text" id="business-num" name="businessNumber" th:placeholder="${businessNumber}" disabled>
+                                            <button id="business-num-btn" type="button" onclick="">변경신청</button>
+                                        </div>
+                                        <hr style="margin-top: 7px">
+                                    </div>
+                                </div>
+
+                                <div class="profile-info">
+                                    <div class="profile-row">
+                                        <label for="link">전문가 관련링크</label>
+                                        <div class="input-wrapper">
+                                            <input type="text" id="link" name="businessLink" th:placeholder="${businessLink}" disabled>
+                                            <button id="business-link-btn" type="button" onclick="">변경신청</button>
+                                        </div>
+                                        <hr style="margin-top: 7px">
+                                    </div>
+
+                                    <div class="profile-row">
+                                        <label for="date">전문가 갱신일</label>
+                                        <div class="input-wrapper">
+                                            <input type="date" id="date" name="date" th:value="${#strings.substring(date, 0, 10)}" disabled>
+                                        </div>
+                                        <hr style="margin-top: 7px">
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="save-button">저장</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    <script>
+        $(document).ready(function () {
+            $('#profile').on('submit', function (e) {
+                // 초기화
+                let isValid = true;
+                let errorMessage = '';
+
+                // 1. 프로필 사진 파일 검사
+                const profileImg = $('#profile-img').val();
+                if (profileImg !== "") {
+                    const allowedExtensions = /(\.jpg|\.png)$/i;
+                    if (!allowedExtensions.exec(profileImg)) {
+                        isValid = false;
+                        errorMessage += '프로필 사진은 png, jpg, jpeg 파일만 가능합니다.\n';
+                    }
+                }
+
+                // 2. 프로필 이름 유효성 검사
+                const profileName = $('#profile-name').val();
+                const namePattern = /^[a-zA-Z0-9가-힣]+$/; // 공백과 특수문자 제외
+                if (profileName !== "" && !namePattern.test(profileName)) {
+                    isValid = false;
+                    errorMessage += '프로필 이름에는 공란 또는 특수문자가 포함될 수 없습니다.\n';
+                }
+
+                // 3. 소개 유효성 검사
+                const profileText = $('#profile-text').val();
+                if (profileText != null && profileText.length > 50) {
+                    isValid = false;
+                    errorMessage += '소개는 50자 이내로 작성해야 합니다.\n';
+                }
+
+                // 4. 생년월일 유효성 검사
+                const birth = $('#birth').val();
+                const today = new Date().toISOString().split('T')[0];
+                if (birth != null && birth >= today) {
+                    isValid = false;
+                    errorMessage += '생년월일은 오늘보다 과거 날짜이어야 합니다.\n';
+                }
+
+                // 5. 휴대폰 번호 유효성 검사
+                const phone = $('#phone').val();
+                const phonePattern = /^\d{11}$/; // 숫자만 11자리
+                if (phone !== "" && !phonePattern.test(phone)) {
+                    isValid = false;
+                    errorMessage += '휴대폰 번호는 숫자만 11자리로 입력해야 합니다.\n';
+                }
+                // 유효성 검사 실패 시
+                if (!isValid) {
+                    e.preventDefault(); // 폼 제출 중지
+                    alert(errorMessage); // 오류 메시지 표시
+                }
+            });
+        });
+
+    </script>
+    </div>
+</body>
+</html>

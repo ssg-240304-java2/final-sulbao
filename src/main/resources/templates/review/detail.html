@@ -32,7 +32,7 @@
         </div>
           <div th:utext="${review.reviewContent}"></div>
           <div class="mt-4 d-flex justify-content-center">
-            <button type="button" class="btn btn-lg btn-primary" th:onclick="'location.href=\'' + @{/review/update/}+${review.reviewId} + '\''">수정하기</button>
+            <button type="button" class="btn btn-lg btn-primary" th:if="${#temporals.format(order.plusDays(3), 'yyyy-MM-dd')} >= ${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}"  th:onclick="'location.href=\'' + @{/review/update/}+${review.reviewId} + '\''">수정하기</button>
             <button type="button" class="btn btn-lg btn-secondary" onclick="location.href='/review/list'">목록</button>
           </div>
       </div>

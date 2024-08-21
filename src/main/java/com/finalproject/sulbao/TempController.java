@@ -23,4 +23,7 @@ public class TempController {
 
     @GetMapping("/ordercomplete")
     public void ordercomplete() {}
+
+    @GetMapping("/presentcomplete")
+    public void presentcomplete() {}
 }

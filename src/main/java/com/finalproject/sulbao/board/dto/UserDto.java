@@ -17,14 +17,24 @@ public class UserDto {
     private String profileImageFileName;
     private String profileName;
     private RoleType roleType;
+    private String userId;
 
     public static UserDto toUserDto(Login login) {
         return UserDto.builder()
                 .id(login.getUserNo())
-                .profileImageFileName(login.getMemberInfo().getProfileName())
+                .profileImageFileName(login.getMemberInfo().getProfileImg())
                 .profileName(login.getMemberInfo().getProfileName())
                 .roleType(login.getUserRole())
+                .userId(login.getUserId())
                 .build();
     }
 
+    public static UserDto getAnonymous() {
+        return UserDto.builder()
+                .id(0L)
+                .profileImageFileName(null)
+                .profileName(null)
+                .roleType(RoleType.MEMBER)
+                .build();
+    }
 }

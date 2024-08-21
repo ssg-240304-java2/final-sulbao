@@ -26,14 +26,14 @@
         <div class="row border mb-4">
           <img class="m-3" th:src="${product.productImages[0].saveImgUrl}" style="width: 10%;" alt="상품 이미지">
           <div class="m-3">
+            <p class="card-text" th:text="${product.sellerInfo.sellerInfo.businessName}">상품옵션(수량)</p>
             <h5 class="card-title mt-3" th:text="${product.productName}"> 상품명</h5>
-<!--            <p class="card-text" th:text="|${orderItem.amount} 개|">상품옵션(수량)</p>-->
           </div>
         </div>
 
         <form action="/review/regist" method="post" onsubmit="return checkReview();">
-          <input type="hidden" name="productNo" th:value="${productNo}">
-          <input type="hidden" name="orderNo" th:value="${orderNo}">
+          <input type="hidden" name="productNo" th:value="${product.productNo}">
+          <input type="hidden" name="orderNo" th:value="${order.orderCode}">
           <div id="summernote"></div>
           <input type="hidden" id="reviewContent" name="reviewContent"/>
           <div class="mt-4 d-flex justify-content-center">

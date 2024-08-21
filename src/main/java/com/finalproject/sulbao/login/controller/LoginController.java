@@ -98,16 +98,16 @@ public class LoginController {
                 } else {
                     //인증 실패 처리
                     model.addAttribute("error-message", "술기로운 한잔은 19세 이상 성인만 가입 가능합니다.");
-                    return "redirect:/";
+                    return "/";
                 }
             } else {
                 model.addAttribute("error-message", "성인인증에 실패하였습니다.");
-                return "redirect:/";
+                return "/";
             }
         } else {
             //토큰 호출 실패
             model.addAttribute("error-message", "성인인증에 실패하였습니다.");
-            return "redirect:/";
+            return "/";
         }
     }
 
@@ -164,8 +164,6 @@ public class LoginController {
     @PostMapping("/seller/number")
     @ResponseBody
     public String existNum (@RequestParam String businessNumber, Model model){
-
-        log.info("Controller 에서 받은 businessNum :=================================== {}", businessNumber);
 
         SellerInfo findSeller = loginService.findSellerByNum(businessNumber);
         if(findSeller != null){

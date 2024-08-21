@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{common/layouts/userDefault}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title>전통술 최저가 비교 커뮤니티! 술기로운 한 잔</title>
+    <script src="https://unpkg.com/@yaireo/tagify"></script>
+    <script src="https://unpkg.com/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
+    <link href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css"/>
+    <link href="/board/zzanfeed/edit.css" rel="stylesheet">
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="hero hero-inner">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mx-auto text-center">
+                    <div class="intro-wrap">
+                        <h1 class="mb-0">#짠피드</h1>
+                        <p class="text-white">
+                            전통주와 함께한 특별한 순간을 짠피드에 업로드하세요.<br/>
+                            지금 당신의 전통주 이야기를 들려주세요.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input accept="image/*" id="thumbnail" name="thumbnail" type="file">
+    <div class="cover-upload-container" id="coverPreview"
+         th:style="'background-image: url(' + ${'https://kr.object.ncloudstorage.com/sulbao-file/' + thumbnail} + '); background-size: cover; background-position: center; color: transparent;'">
+        커버 사진을 업로드해주세요.
+        <div class="upload-button-container">
+            <button class="upload-button" id="uploadButton">
+                커버사진 추가하기
+            </button>
+        </div>
+    </div>
+
+    <div class="title-container">
+        <div class="input-group">
+            <label for="postTitle"></label>
+            <input class="form-control" id="postTitle" placeholder="제목을 입력해주세요." th:value="${post.title}" type="text">
+        </div>
+    </div>
+
+    <div class="hashtag-container">
+        <input class='some_class_name' name='tags' placeholder='해시태그를 추가해주세요.'>
+    </div>
+
+    <div class="editor-wrapper-container">
+        <th:block th:each="content : ${contents}">
+            <div class="editor-wrapper">
+                <div class="square-box"
+                     th:style="'background-image: url(' + ${'https://kr.object.ncloudstorage.com/sulbao-file/' + content.image} + '); background-size: cover; background-position: center; color: transparent;'"
+                >
+                    <input class="file-input" multiple style="display: none;" type="file"/>
+                    <div class="upload-content">
+                        <div class="camera-icon" th:if="${content.image == null}">📷</div>
+                        <p th:if="${content.image == null}">사진을 업로드하세요.</p>
+                        <p>10장까지 올릴 수 있어요.</p>
+                        <button class="upload-button" onclick="uploadImage(this)">PC에서 불러오기</button>
+                    </div>
+                </div>
+                <div class="editor-container">
+                    <div class="summernote" th:text="${content.text}"></div>
+                </div>
+            </div>
+        </th:block>
+    </div>
+
+    <div class="add-wrapper">
+        <div class="square-box add-box" onclick="addEditorWrapper()">
+            <div class="add-content">+</div>
+        </div>
+    </div>
+
+    <div class="submit-wrapper">
+        <button class="submit-button" onclick="submitContent()">등록하기</button>
+    </div>
+
+    <script th:inline="javascript">
+        $('#uploadButton').click(function () {
+            $('#thumbnail').click();
+        });
+
+        $('#thumbnail').change(function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#coverPreview').css({
+                        'background-image': `url(${e.target.result})`,
+                        'background-size': 'cover',
+                        'background-position': 'center',
+                        'color': 'transparent'
+                    });
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        let input = document.querySelector('input[name="tags"]');
+
+        let whitelist = [
+            "#막걸리", "#소주", "#청주", "#와인", "#전통주", "#주막", "#술집", "#전통주추천",
+            "#전통주맛집", "#막걸리맛집", "#소주맛집", "#청주맛집", "#한잔합시다", "#술자리",
+            "#술안주", "#술한잔", "#전통주스타그램", "#술이야기", "#전통주사랑", "#막걸리사랑",
+            "#소주사랑", "#청주사랑", "#한잔의여유", "#술과함께", "#전통주여행", "#전통주문화",
+            "#전통주축제", "#전통주한잔", "#전통주역사", "#막걸리한잔", "#소주한잔", "#청주한잔",
+            "#술과전통", "#전통주기행", "#술한잔어때", "#한잔의행복", "#전통주정모", "#전통주일기",
+            "#술사랑", "#막걸리일기", "#소주일기", "#청주일기", "#전통주한상", "#술과문화",
+            "#술과이야기", "#술이야기나누기", "#전통주추천맛집", "#막걸리추천맛집", "#소주추천맛집",
+            "#청주추천맛집", "#술과의시간", "#전통주이야기", "#전통주와함께", "#막걸리와함께",
+            "#소주와함께", "#청주와함께", "#술자리가좋은곳", "#전통주관광", "#전통주체험",
+            "#술과전통문화", "#술로여행", "#전통주여행기", "#술과명소", "#전통주명소", "#막걸리명소",
+            "#소주명소", "#청주명소", "#전통주맛집탐방", "#술자리추천", "#술자리팁"
+        ];
+
+        let tagify = new Tagify(input, {
+            whitelist: whitelist,
+            maxTags: 10,
+            dropdown: {
+                maxItems: 20,
+                classname: "tags-look",
+                enabled: 0,
+                closeOnSelect: false
+            }
+        })
+
+        let initialTags = [[${tags}]];
+        tagify.addTags(initialTags);
+
+        $(document).ready(function () {
+            $('.summernote').summernote({
+                lang: 'ko-KR',
+                height: 180,
+                disableResizeEditor: true
+            });
+
+            const summernoteEditors = document.querySelectorAll('.summernote');
+            [[${contents}]].forEach((content, index) => {
+                $(summernoteEditors[index]).summernote({
+                    lang: 'ko-KR',
+                    height: 180,
+                    disableResizeEditor: true
+                });
+                $(summernoteEditors[index]).summernote('code', content.text);
+            });
+        });
+
+        function addEditorWrapper() {
+            const newWrapper = `
+        <div class="editor-wrapper">
+            <div class="square-box">
+            <input class="file-input" multiple style="display: none;" type="file"/>
+                <div class="upload-content">
+                    <div class="camera-icon">📷</div>
+                    <p>사진을 업로드하세요</p>
+                    <p>10장까지 올릴 수 있어요</p>
+                    <button class="upload-button" onclick="uploadImage(this)">PC에서 불러오기</button>
+                </div>
+            </div>
+            <div class="editor-container">
+                <div class="summernote"></div>
+            </div>
+        </div>
+    `;
+
+            $(newWrapper).insertBefore('.add-wrapper');
+
+            $('.summernote').last().summernote({
+                height: 180,
+                disableResizeEditor: true
+            });
+        }
+
+        function uploadImage(button) {
+            const squareBox = $(button).closest('.square-box');
+            const fileInput = squareBox.find('.file-input');
+
+            fileInput.click();
+            fileInput.on('change', function (event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        squareBox.css({
+                            'background-image': `url(${e.target.result})`,
+                            'background-size': 'cover',
+                            'background-position': 'center',
+                            'color': 'transparent'
+                        });
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        function submitContent() {
+            let formData = new FormData();
+
+            formData.append('title', document.getElementById('postTitle').value);
+
+            let tags = tagify.value.map(tag => tag.value);
+            tags.forEach(tag => formData.append('tags', tag));
+
+            const thumbnailFile = document.getElementById('thumbnail').files[0];
+            if (thumbnailFile != null) {
+                formData.append('thumbnail', thumbnailFile);
+            }
+
+            const contentImages = document.querySelectorAll('.file-input');
+            contentImages.forEach((input, index) => {
+                if (input.files.length === 0) {
+                    formData.append('contentImages', new Blob());
+                } else {
+                    for (let i = 0; i < input.files.length; i++) {
+                        formData.append('contentImages', input.files[i]);
+                    }
+                }
+            });
+
+            const contents = document.querySelectorAll('.summernote');
+            contents.forEach((editor, index) => {
+                formData.append('contents', $(editor).summernote('code'));
+            });
+
+            $.ajax({
+                url: `/zzanfeeds/edit/[[${post.getId()}]]`,
+                method: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (postId) {
+                    location.href = `/zzanfeeds/[[${post.getId()}]]`;
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+    </script>
+</div>
+</body>
+</html>

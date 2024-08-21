@@ -3,11 +3,11 @@
       layout:decorate="~{common/layouts/userDefault}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-    <title>짠 피드</title>
+    <title>전통술 최저가 비교 커뮤니티! 술기로운 한 잔</title>
     <script src="https://unpkg.com/@yaireo/tagify"></script>
     <script src="https://unpkg.com/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
-    <link href="/board/zzanfeed/new.css" rel="stylesheet">
     <link href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css"/>
+    <link href="/board/zzanfeed/new.css" rel="stylesheet">
 </head>
 <body>
 <div layout:fragment="content">
@@ -16,7 +16,7 @@
             <div class="row align-items-center">
                 <div class="col-lg-6 mx-auto text-center">
                     <div class="intro-wrap">
-                        <h1 class="mb-0">짠 피드</h1>
+                        <h1 class="mb-0">#짠피드</h1>
                         <p class="text-white">
                             전통주와 함께한 특별한 순간을 짠피드에 업로드하세요.<br/>
                             지금 당신의 전통주 이야기를 들려주세요.
@@ -50,11 +50,10 @@
 
     <div class="editor-wrapper">
         <div class="square-box">
+            <input class="file-input" multiple style="display: none;" type="file"/>
             <div class="upload-content">
                 <div class="camera-icon">📷</div>
-                <p>사진을 업로드하세요</p>
-                <p>10장까지 올릴 수 있어요</p>
-                <input class="file-input" multiple style="display: none;" type="file"/>
+                <p>사진을 업로드하세요.</p>
                 <button class="upload-button" onclick="uploadImage(this)">PC에서 불러오기</button>
             </div>
         </div>
@@ -123,13 +122,6 @@
         })
 
         $(document).ready(function () {
-            $('#summernote').summernote({
-                height: 180,
-                disableResizeEditor: true
-            });
-        });
-
-        $(document).ready(function () {
             $('.summernote').summernote({
                 lang: 'ko-KR',
                 height: 180,
@@ -138,15 +130,13 @@
         });
 
         function addEditorWrapper() {
-            // 새 editor-wrapper HTML
             const newWrapper = `
         <div class="editor-wrapper">
             <div class="square-box">
+            <input class="file-input" multiple style="display: none;" type="file"/>
                 <div class="upload-content">
                     <div class="camera-icon">📷</div>
                     <p>사진을 업로드하세요</p>
-                    <p>10장까지 올릴 수 있어요</p>
-                    <input class="file-input" multiple style="display: none;" type="file"/>
                     <button class="upload-button" onclick="uploadImage(this)">PC에서 불러오기</button>
                 </div>
             </div>
@@ -156,10 +146,8 @@
         </div>
     `;
 
-            // 기존의 add-box 위에 새로운 editor-wrapper 추가
             $(newWrapper).insertBefore('.add-wrapper');
 
-            // 새로 추가된 summernote를 초기화
             $('.summernote').last().summernote({
                 height: 180,
                 disableResizeEditor: true
@@ -167,65 +155,82 @@
         }
 
         function uploadImage(button) {
-            const fileInput = $(button).siblings('.file-input');
+            const squareBox = $(button).closest('.square-box');
+            const fileInput = squareBox.find('.file-input');
+
             fileInput.click();
-
             fileInput.on('change', function (event) {
-                const files = event.target.files;
-
-                if (files.length > 0) {
+                const file = event.target.files[0];
+                if (file) {
                     const reader = new FileReader();
-
                     reader.onload = function (e) {
-                        const imagePreview = `
-                        <img src="${e.target.result}" alt="미리보기" style="width: 100%; height: auto; border-radius: 5px;">
-                    `;
-                        // 기존의 .upload-content 내용을 미리보기 이미지로 대체
-                        $(button).parent().html(imagePreview);
-                    };
-
-                    reader.readAsDataURL(files[0]); // 첫 번째 파일만 처리
+                        squareBox.css({
+                            'background-image': `url(${e.target.result})`,
+                            'background-size': 'cover',
+                            'background-position': 'center',
+                            'color': 'transparent'
+                        });
+                    }
+                    reader.readAsDataURL(file);
                 }
             });
         }
 
         function submitContent() {
-            const imageList = [];
-            const textList = [];
+            let formData = new FormData();
 
-            // 각 editor-wrapper에서 이미지를 수집
-            $('.editor-wrapper').each(function () {
-                const imageElement = $(this).find('img');
-                const textContent = $(this).find('.summernote').summernote('code');
+            let title = document.getElementById('postTitle').value;
+            if (title === "") {
+                alert('제목을 입력하세요.');
+                return;
+            }
+            formData.append('title', title);
 
-                console.log(textContent);
+            let tags = tagify.value.map(tag => tag.value);
+            tags.forEach(tag => formData.append('tags', tag));
 
-                if (imageElement.length > 0) {
-                    imageList.push(imageElement.attr('src'));
+            const thumbnailFile = document.getElementById('thumbnail').files[0];
+            if (thumbnailFile == null) {
+                alert('썸네일 이미지를 등록하세요.');
+                return;
+            }
+            formData.append('thumbnail', thumbnailFile);
+
+            let isImageUploaded = true;
+            const contentImages = document.querySelectorAll('.file-input');
+            contentImages.forEach((input, index) => {
+                if (input.files.length === 0) {
+                    isImageUploaded = false;
+                    return;
                 }
-
-                textList.push(textContent);
+                if (input.files.length > 0) {
+                    for (let i = 0; i < input.files.length; i++) {
+                        formData.append('contentImages', input.files[i]);
+                    }
+                }
             });
 
-            // 서버로 전송하는 부분 (예: Ajax 사용)
-            const postData = {
-                images: imageList,
-                texts: textList
-            };
+            if (!isImageUploaded) {
+                alert('이미지는 필수 등록 요소입니다.');
+                return;
+            }
 
-            // console.log('전송할 데이터:', postData);
+            const contents = document.querySelectorAll('.summernote');
+            contents.forEach((editor, index) => {
+                formData.append('contents', $(editor).summernote('code'));
+            });
 
-            // 예시로 POST 요청
             $.ajax({
-                url: '/your-server-endpoint',  // 서버의 엔드포인트로 변경
+                url: '/zzanfeeds/new',
                 method: 'POST',
-                data: JSON.stringify(postData),
-                contentType: 'application/json',
-                success: function (response) {
-                    alert('성공적으로 등록되었습니다!');
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (postId) {
+                    location.href = `/zzanfeeds/${postId}`;
                 },
                 error: function (error) {
-                    alert('등록 중 오류가 발생했습니다.');
+                    console.log(error);
                 }
             });
         }

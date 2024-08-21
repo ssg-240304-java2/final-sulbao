@@ -11,7 +11,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh; /* 페이지 전체 높이 */
+            height: 20vh; /* 페이지 높이를 반으로 설정 */
             text-align: center;
         }
 
@@ -41,44 +41,6 @@
 <div layout:fragment="content">
     <div class="hero hero-inner">
         <div class="container">
-            <div class="row">
-                <div class="table-wrap">
-                                <table class="table">
-                                    <thead class="thead-primary">
-                                    <tr>
-                                        <th style="width: 20%">&nbsp;</th>
-                                        <th style="width: 35%">Product</th>
-                                        <th style="width: 10%">Price</th>
-                                        <th style="width: 15%">Quantity</th>
-                                        <th style="width: 20%">Total</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr class="alert" role="alert" th:each="cart:${carts}">
-                                        <div id="user-id" th:data-user-id="${cart.userId}"></div>
-                                        <div id="order-code" th:data-user-code="${cart.cartCode}"></div>
-                                        <td>
-                                            <div class="img" th:style="'background-image:url(' + 'https://kr.object.ncloudstorage.com/sulbao-file/product/' + ${cart.products.productImages[0].saveName} + ');'"></div>
-                                        </td>
-                                        <td>
-                                            <div class="product-info">
-                                                <span class="company-name" th:text="${cart.products.sellerInfo.sellerInfo.businessName}"></span>
-                                                <span class="product-name" th:text="${cart.products.getProductName()}"></span>
-                                            </div>
-                                        </td>
-                                        <td class="product-price">
-                                            <span class="alchol-price" th:text="${cart.products.productPrice}"></span>
-                                        </td>
-                                        <td class="quantity">
-                                            <span class="quantity-number" th:text="${cart.amount}"></span>
-                                        </td>
-                                        <td class="total-price" th:text="${cart.totalPrice}" th:data-number="${cart.cartCode}" style="text-align: center"></td>
-                                    </tr>
-                                    <!-- 추가 항목은 이와 유사한 구조로 작성 -->
-                                    </tbody>
-                                </table>
-                            </div>
-            </div>
             <div class="row align-items-center">
                 <div class="col-lg-6 mx-auto text-center">
                     <div class="intro-wrap">
@@ -88,6 +50,9 @@
             </div>
         </div>
     </div>
+    <br>
+    <br>
+    <h1 style="text-align: center">결제가 완료되었습니다.</h1>
     <div class="order-complete-container">
         <a href="/" class="home-button">홈으로 가기</a>
     </div>

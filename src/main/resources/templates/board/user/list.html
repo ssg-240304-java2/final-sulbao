@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layouts/userDefault}">
+<head>
+    <meta charset="UTF-8">
+    <title>술기로운한잔 - 마이페이지</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="/user/css/main-style.css">
+    <link rel="stylesheet" href="/board/user/list.css">
+    <script>
+        window.onload = function() {
+            if('[[${message}]]'.length > 1)
+            {
+                alert('[[${message}]]');
+            }
+        };
+    </script>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="container">
+            <div class="mypage-content">
+                <nav class="sidebar">
+                    <ul>
+                        <li class="menu-text">나의 쇼핑정보</li>
+                            <li><a href="#">최근 본 상품</a></li>
+                            <li><a href="#">주문내역조회</a></li>
+                        <li class="menu-text">나의 활동</li>
+                            <li><a href="/mypage/myprofile">나의 정보</a></li>
+                            <li><a href="/mypage/board">나의 게시글</a></li>
+                            <li><a href="#">나의 리뷰</a></li>
+                        <li class="menu-text">고객센터</li>
+                            <li><a href="#">문의게시판</a></li>
+                            <li class="active"><a href="/mypage/proform">전문가신청</a></li>
+                    </ul>
+                </nav>
+
+                <div class="content">
+                    <div class="profile-section">
+                        <img th:src='|https://kr.object.ncloudstorage.com/sulbao-file/${user.profileImageFileName}|' alt="프로필 사진" class="profile-image">
+                        <div class="profile-info">
+                            <div th:text="${user.profileName}" class="nickname"></div>
+                            <div th:text='|${"@" + user.userId}|' class="user-id"></div>
+                        </div>
+                    </div>
+
+                    <div class="post-list">
+                        <div class="post-item" th:each="post : ${posts}">
+                            <div class="post-header">
+                                <span class="post-description"><span th:text="${post.categoryNameKr}" class="category"></span>카테고리에 게시물을 작성하였습니다.</span>
+                                <span th:text="${#temporals.format(post.createdAt, 'yyyy년 MM월 dd일 HH시 mm분')}" class="post-date"></span>
+                            </div>
+                            <div class="post-title">
+                                <a th:text="${post.title}" th:href="@{|/${post.categoryNameEn}/${post.id}|}"></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 페이징 네비게이션 -->
+                    <div class="pagination">
+                        <!-- 이전 페이지 링크 -->
+                        <span th:if="${currentPage > 0}">
+                            <a th:href="@{/mypage/board(page=0)}" class="page-link"><</a>
+                        </span>
+
+                        <!-- 페이지 번호 링크들 -->
+                        <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+                            <a th:href="@{/mypage/board(page=${i})}" th:text="${i + 1}"
+                               th:classappend="${i == currentPage} ? 'active' : ''" class="page-link"></a>
+                        </span>
+
+                        <!-- 다음 페이지 링크 -->
+                        <span th:if="${currentPage < totalPages - 1}">
+                            <a th:href="@{/mypage/board(page=${totalPages - 1})}" class="page-link">></a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    </script>
+</body>
+</html>

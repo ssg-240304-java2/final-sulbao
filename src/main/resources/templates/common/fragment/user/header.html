@@ -5,9 +5,11 @@
 <head>
     <meta charset="UTF-8">
     <title>About Us</title>
+    <link rel="stylesheet" href="/user/css/main-style.css">
 </head>
 <body>
 <header th:fragment="headerFragment" id="header">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <div class="site-mobile-menu site-navbar-target">
         <div class="site-mobile-menu-header">
             <div class="site-mobile-menu-close">
@@ -17,54 +19,71 @@
         <div class="site-mobile-menu-body"></div>
     </div>
 
-    <nav class="site-nav">
+    <nav class="site-nav" style="background-color: #6998AB;">
         <div class="container">
             <div class="site-navigation">
-                <a href="index">
-                    <img src="sulbao-white.png" style="width: 140px; height: 20px"/>
+                <a href="/">
+                    <img src="/user/images/sulbao-white.png" style="width: 170px; height: 36px;"/>
                 </a>
-
-
-                <ul class="js-clone-nav d-none d-lg-inline-block text-left site-menu">
-                    <li class="active"><a href="#">#짠피드</a></li>
-                    <li><a href="#">매거진</a></li>
-                    <li><a href="#">술포스트</a></li>
+                <ul class="js-clone-nav d-none d-lg-inline-block text-left site-menu" style="margin-left: -12px;">
+                    <li class="active"><a href="/zzanfeeds">#짠피드</a></li>
+                    <li><a href="/magazine">매거진</a></li>
+                    <li><a href="/zzanposts">술포스트</a></li>
                     <li><a href="#">쇼핑</a></li>
                     <li><a href="#">이벤트</a></li>
 
+                    <li>
+                        <form action="/search" method="GET">
+                            <input type="text" name="keyword" id="search" class="search" placeholder="요즘 핫한 막걸리?" style="padding-left: 30px; width: 250px;">
+                            <button type="submit" style="border: none; background: none; cursor: pointer; margin-left: -36px; position: absolute;">
+                                <span class="material-icons">search</span>
+                            </button>
+                        </form>
+                    </li>
+
                     <li class="float-right" sec:authorize="isAnonymous()">
                         <ul class="site-menu-account">
-                            <!--                            <li><a href="#">검색</a></li>-->
                             <li><a href="/login">로그인</a></li>
                             <li><a href="/verifyagePage">회원가입</a></li>
                             <li class="has-children">
-                                <a href="#" style="font-size: 16px; margin-left: 10px">글쓰기</a>
+                                <a href="#">글쓰기</a>
                                 <ul class="dropdown">
-                                    <li><a href="#">새피드 작성하기</a></li>
-                                    <li><a href="#">포스트 작성하기</a></li>
+                                    <li>
+                                        <a href="/zzanfeeds/new" sec:authorize="isAuthenticated()">새피드 작성하기</a>
+                                        <a href="/login" sec:authorize="isAnonymous()">새피드 작성하기</a>
+                                    </li>
+                                    <li sec:authorize="hasRole('ROLE_PRO_MEMBER')"><a href="/zzanposts/new">포스트 작성하기</a></li>
                                 </ul>
                             </li>
                         </ul>
                     </li>
 
-                    <li class="float-right" style="margin-top: 8px" sec:authorize="isAuthenticated()">
+                    <li class="float-right" sec:authorize="isAuthenticated()">
                         <ul class="site-menu-account">
-                            <li th:text="|${#authentication.getName()} 님 환영합니다. |"></li>
-                            <!--                            <li><a href="#">검색</a></li>-->
-                            <li><a href="/orders/cart">장바구니</a></li>
-                            <!--                            <li><a href="/mypage">마이페이지</a></li>-->
+                            <li>
+                            <a href="/orders/cart">
+                                <span class="material-icons">shopping_cart</span>
+                                <span style="width:18px; height:18px; border-radius: 50%; border: none; background: deepskyblue; margin-left: -7px; margin-top: -7px; position: absolute; text-align: center; color: white">3</span>
+                            </a>
+                            </li>
+                            <li><a href="/mypage/myprofile">
+                                <img th:src="${session.get('profileUrl')}" id="profileImage" alt="profile" class="profile" onclick="href='/mypage/myprofile'">
+                                <img sec:authorize="hasRole('ROLE_PRO_MEMBER')" src="/user/images/icon-crown.png" alt="role" style="width:18px; height:18px; border-radius: 50%; border: none; background: #ffdf7e; margin-left: -7px; margin-top: -10px; position: absolute;">
+                            </a></li>
                             <li><a href="/logout">로그아웃</a></li>
                             <li class="has-children">
                                 <a href="#">글쓰기</a>
                                 <ul class="dropdown">
-                                    <li><a href="#">새피드 작성하기</a></li>
-                                    <li><a href="#">포스트 작성하기</a></li>
+                                    <li>
+                                        <a href="/zzanfeeds/new" sec:authorize="isAuthenticated()">새피드 작성하기</a>
+                                        <a href="/login" sec:authorize="isAnonymous()">새피드 작성하기</a>
+                                    </li>
+                                    <li sec:authorize="hasRole('ROLE_PRO_MEMBER')"><a href="/zzanposts/new">포스트 작성하기</a></li>
                                 </ul>
                             </li>
                         </ul>
                     </li>
                 </ul>
-
                 <a href="#" class="burger ml-auto float-right site-menu-toggle js-menu-toggle d-inline-block d-lg-none light" data-toggle="collapse" data-target="#main-navbar">
                     <span></span>
                 </a>

@@ -4,6 +4,7 @@ import com.finalproject.sulbao.product.model.dto.ProductDTO;
 import com.finalproject.sulbao.product.model.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -38,4 +39,8 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     @Query(value = "select p from Product p where p.sellerInfo.userNo= :#{#product.userNo} and p.productName like concat('%', :#{#product.searchInput},'%')" )
     List<Product> findBySearchProductAllCategoryAndAllDisplayAllSell(@RequestParam("product") ProductDTO product);
+
+
+    @Query(value = "select p.productName from Product p where p.productNo = :productNo")
+    String findByProductNoName(Long productNo);
 }

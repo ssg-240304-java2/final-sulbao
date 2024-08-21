@@ -141,7 +141,6 @@
     display: flex;
     align-items: center;
     margin-bottom: 40px;
-    /*border-top: 1px solid #ddd;*/
     padding-top: 10px;
 }
 
@@ -200,6 +199,11 @@
     flex-grow: 1;
 }
 
+.comment-text {
+    word-wrap: break-word;
+    word-break: break-word;
+}
+
 .comment-content .username {
     font-weight: bold;
     margin-bottom: 5px;
@@ -253,6 +257,7 @@
     border: 1px solid #ddd;
     border-radius: 5px;
     margin-right: 10px;
+    width: 800px;
 }
 
 .comment-edit-form button {
