@@ -101,8 +101,8 @@ public class LoginService {
 
         Login login = loginRepository.findByUserId(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 사용자 입니다."));
-        MemberInfo memberInfo = memberRepository.findById(login.getUserNo())
-                .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 멤버 입니다."));
+        MemberInfo memberInfo = memberRepository.findByUserId(userId);
+        log.info("sevice member ============================> {}", memberInfo);
         MemberImage profileImag = memberInfo.getMemberImage();
 
         if(profileImag == null) {
@@ -141,7 +141,8 @@ public class LoginService {
     @Transactional
     public void updateMemberInfo(MemberProfileDto memberProfile, String userId) {
 
-        Login login = loginRepository.findByUserId(userId).orElseThrow();
+        Login login = loginRepository.findByUserId(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 사용자 입니다."));
         MemberInfo memberInfo = memberRepository.findByUserId(userId);
 
         // 개인정보 업데이트

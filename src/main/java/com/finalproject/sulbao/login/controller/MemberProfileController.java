@@ -94,7 +94,18 @@ public class MemberProfileController {
     }
 
     @GetMapping("/proform")
-    public String proFormPage() {
+    public String proFormPage(Model model) {
+
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        String status = service.findProStatusByUserId(userId);
+        log.info("pro status============================================= {}", status);
+        MemberProfileDto member = service.findMemberByUserId(userId);
+
+        model.addAttribute("proStatus", status);
+        model.addAttribute("businessNumber", member.getBusinessNumber());
+        model.addAttribute("businessLink", member.getBusinessLink());
+        model.addAttribute("date", member.getDate());
+
         return "/mypage/pro-form";
     }
 }
