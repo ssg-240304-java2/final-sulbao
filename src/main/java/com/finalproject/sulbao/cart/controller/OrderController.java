@@ -1,5 +1,7 @@
 package com.finalproject.sulbao.cart.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.finalproject.sulbao.cart.dto.CartDTO;
 import com.finalproject.sulbao.cart.dto.OrderDTO;
 
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +58,7 @@ public class OrderController {
             System.out.println("-------------------->>>>>>>>>>>>>>>>>>"+orderCodeList);
             model.addAttribute("carts", cartLists);
 
-            return "success"; // 성공 페이지로 리다이렉션
+            return "cart/success"; // 성공 페이지로 리다이렉션
         }
         else {
             return "error"; // 유효하지 않은 토큰 처리
@@ -70,7 +73,7 @@ public class OrderController {
         @RequestParam("address") String address,
         @RequestParam("detailAddress") String detailAddress,
         Model model, HttpServletRequest request) {
-        System.out.println("야발");
+
         HttpSession session = request.getSession();
 
         String token = (String) session.getAttribute("token");
@@ -130,6 +133,92 @@ public class OrderController {
 
         model.addAttribute("orderProductList", orderProductList);
 
-        return "sellerorder";
+        return "cart/sellerorder";
+    }
+
+
+    @GetMapping("/searchorderlist")
+    public String search(Model model, HttpSession session, @RequestParam(name = "searchInput", required = false) String searchInput,
+                @RequestParam(name = "shippingStatus", required = false) String shippingStatus,
+                @RequestParam(name = "orderType", required = false) String orderType) {
+
+        System.out.println("searchInput = "+searchInput);
+        System.out.println("shippingStatus = "+shippingStatus);
+        System.out.println("orderType = "+orderType);
+
+
+        if(session.getAttribute("userNo") == null){
+            return "redirect:/login";
+        }
+        // 1. 판매자 아이디 정보를 조회
+        Long userNo = (Long) session.getAttribute("userNo");
+        // 2. 1번을 이용해 판매자의 상품 정보 조회 -> 상품 코드, 상품명
+        List<ProductDTO> productLists = orderProductService.findByUserNo(userNo);
+        List<Long>productIdList = new ArrayList<>();
+        for (ProductDTO productDTO : productLists) {
+            productIdList.add(productDTO.getProductNo());
+        }
+        // 3. order_item 테이블의 2번의 리스트 목록을 조회 -> amount랑 토탈 프라이스, 오더 코드
+        List<OrderItemDTO> orderItemList = orderProductService.findByProductNo(productIdList);
+        List<OrderDTO> orderList = orderService.findByProductNo(productIdList);
+        List<OrderProductDTO> orderProductList = new ArrayList<>();
+        for (int i = 0; i < orderItemList.size(); i++) {
+            OrderProductDTO orderProductDTO = new OrderProductDTO();
+            orderProductDTO.setCode(orderList.get(i).getOrderCode());
+            orderProductDTO.setName(orderProductService.findByProductNoName(orderItemList.get(i).getProductNo()));
+            orderProductDTO.setOrderName(orderList.get(i).getNames());
+            System.out.println("list 추가 =======> "+orderList.get(i).getNames());
+            orderProductDTO.setQuantity(orderItemList.get(i).getAmount());
+            orderProductDTO.setProductStatus(orderList.get(i).getDelivery());
+            orderProductDTO.setTotalPrice(orderItemList.get(i).getTotalPrice());
+            if(orderList.get(i).isPresent()){
+                orderProductDTO.setPresent("선물결제");
+            }else{
+                orderProductDTO.setPresent("일반결제");
+            }
+            if(searchInput == null){
+
+            }else if(!orderProductDTO.getName().contains(searchInput)){
+                continue;
+            }
+
+            if(shippingStatus.equals("전체")){
+            }else if(!orderProductDTO.getProductStatus().equals(shippingStatus)){
+                continue;
+            }
+
+            if(orderType.equals("전체")){
+
+            }else if(!orderProductDTO.getPresent().equals(orderType)){
+                continue;
+            }
+
+
+            orderProductList.add(orderProductDTO);
+        }
+        System.out.println(orderProductList);
+        model.addAttribute("searchInput", searchInput);
+        model.addAttribute("shippingStatus", shippingStatus);
+        model.addAttribute("orderType", orderType);
+        model.addAttribute("orderProductList", orderProductList);
+        return "cart/sellerorder";
+    }
+
+    @PostMapping("/changeStatus")
+    public String changeOrderStatus(@RequestParam("status") String status,
+                @RequestParam("orderCodes") String orderCodesJson) {
+        ObjectMapper mapper = new ObjectMapper();
+        List<Long> orderCodes = null;
+        try {
+            orderCodes = mapper.readValue(orderCodesJson, new TypeReference<List<Long>>() {});
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "error";
+        }
+        System.out.println("orderCodes = " + orderCodes);
+        // 처리 성공 시
+        orderService.updateDeliveryByOrderCode(orderCodes, status);
+        // 업데이트문
+        return "redirect:/orderlist";
     }
 }
