@@ -311,7 +311,7 @@
                                     <div class="profile-row">
                                         <label for="business-num">전문가 사업자번호</label>
                                         <div class="input-wrapper">
-                                            <input type="text" id="business-num" name="businessNumber" th:placeholde="${businessNumber}" disabled>
+                                            <input type="text" id="business-num" name="businessNumber" th:placeholder="${businessNumber}" disabled>
                                             <button id="business-num-btn" type="button" onclick="">변경신청</button>
                                         </div>
                                         <hr style="margin-top: 7px">
@@ -322,7 +322,7 @@
                                     <div class="profile-row">
                                         <label for="link">전문가 관련링크</label>
                                         <div class="input-wrapper">
-                                            <input type="text" id="link" name="businessLink" th:placeholder="businessLink" disabled>
+                                            <input type="text" id="link" name="businessLink" th:placeholder="${businessLink}" disabled>
                                             <button id="business-link-btn" type="button" onclick="">변경신청</button>
                                         </div>
                                         <hr style="margin-top: 7px">
@@ -331,7 +331,7 @@
                                     <div class="profile-row">
                                         <label for="date">전문가 갱신일</label>
                                         <div class="input-wrapper">
-                                            <input type="date" id="date" name="date" th:value="${date}" disabled>
+                                            <input type="date" id="date" name="date" th:value="${#strings.substring(date, 0, 10)}" disabled>
                                         </div>
                                         <hr style="margin-top: 7px">
                                     </div>

@@ -24,7 +24,8 @@ public class MemberProfileController {
     public String myProfilePage(Model model) {
 
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-
+        String status = service.findProStatusByUserId(userId);
+        log.info("pro status============================================= {}", status);
         MemberProfileDto member = service.findMemberByUserId(userId);
 
         String profileText = member.getProfileText();
@@ -46,6 +47,7 @@ public class MemberProfileController {
         model.addAttribute("birth", member.getBirth());
         model.addAttribute("phone", phone);
         model.addAttribute("gender", member.getGender());
+        model.addAttribute("proStatus", status);
         model.addAttribute("businessNumber", member.getBusinessNumber());
         model.addAttribute("businessLink", member.getBusinessLink());
         model.addAttribute("date", member.getDate());
