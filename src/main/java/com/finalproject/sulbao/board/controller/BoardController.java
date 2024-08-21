@@ -27,6 +27,7 @@ public class BoardController {
 
     @GetMapping("/board/list")
     public String admin(Model model) {
+
         List<PostDto> posts = postRepository.findAll().stream().map(PostDto::toPostDto).toList();
 
         model.addAttribute("menu", "board");

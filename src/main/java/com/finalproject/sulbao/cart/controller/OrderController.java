@@ -70,7 +70,7 @@ public class OrderController {
         @RequestParam("address") String address,
         @RequestParam("detailAddress") String detailAddress,
         Model model, HttpServletRequest request) {
-        System.out.println("야발");
+
         HttpSession session = request.getSession();
 
         String token = (String) session.getAttribute("token");
@@ -116,7 +116,6 @@ public class OrderController {
             orderProductDTO.setName(orderProductService.findByProductNoName(orderItemList.get(i).getProductNo()));
 
             orderProductDTO.setOrderName(orderList.get(i).getNames());
-            System.out.println("list 추가 =======> "+orderList.get(i).getNames());
             orderProductDTO.setQuantity(orderItemList.get(i).getAmount());
             orderProductDTO.setProductStatus(orderList.get(i).getDelivery());
             orderProductDTO.setTotalPrice(orderItemList.get(i).getTotalPrice());
@@ -128,6 +127,8 @@ public class OrderController {
             orderProductList.add(orderProductDTO);
         }
 
+        model.addAttribute("menu", "order");
+        model.addAttribute("submenu", "option");
         model.addAttribute("orderProductList", orderProductList);
 
         return "sellerorder";
