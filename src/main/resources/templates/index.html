@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html
-		xmlns:th="http://www.thymeleaf.org"
 		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 		layout:decorate="~{common/layouts/userDefault}">
 <head>
@@ -62,18 +61,18 @@
 			<div class="container">
 				<div class="row text-center">
 					<div class="col-md-12">
-						<p class="mb-2 font-weight-bold" style="font-size: 18px;">지금 인기있는 #키워드</p>
-						<p class="mb-4 font-weight-bold text-white-opacity" style="font-size: 14px">사람들이 최근 많이 찾아 본 검색어를 알려드릴게요.</p>
+						<p class="mb-2 font-weight-bold" style="font-size: 20px;">지금 인기있는 #키워드</p>
+						<p class="mb-4 font-weight-bold text-white-opacity" style="font-size: 16px">사람들이 최근 많이 찾아 본 검색어를 알려드릴게요.</p>
 						<p class="d-flex justify-content-center">
-							<a href="#" class="btn btn-outline-colors btn-md font-weight-bold text-white" style="margin: 2px 6px">#전통주입문자에게추천🔰</a>
-							<a href="#" class="btn btn-outline-colors btn-md font-weight-bold text-white" style="margin: 2px 6px">#한잔합시다🍵</a>
-							<a href="#" class="btn btn-outline-colors btn-md font-weight-bold text-white" style="margin: 2px 6px">#성시경탁주🔆</a>
-							<a href="#" class="btn btn-outline-colors btn-md font-weight-bold text-white" style="margin: 2px 6px">#전통주여행기🚃</a>
+							<a href="/zzanfeeds?tag=전통주입문자에게추천🔰" class="btn btn-outline-colors btn-md" style="margin: 2px 6px">#전통주입문자에게추천🔰</a>
+							<a href="/zzanfeeds?tag=한잔합시다🍵" class="btn btn-outline-colors btn-md" style="margin: 2px 6px">#한잔합시다🍵</a>
+							<a href="/zzanfeeds?tag=성시경탁주🔆" class="btn btn-outline-colors btn-md" style="margin: 2px 6px">#성시경탁주🔆</a>
+							<a href="/zzanfeeds?tag=전통주여행기🚃" class="btn btn-outline-colors btn-md" style="margin: 2px 6px">#전통주여행기🚃</a>
 						</p>
 						<p class="d-flex justify-content-center" style="margin-top: -10px;">
-							<a href="#" class="btn btn-outline-colors btn-md font-weight-bold text-white" style="margin: 2px 6px">#혼자먹기딱좋은술</a>
-							<a href="#" class="btn btn-outline-colors btn-md font-weight-bold text-white" style="margin: 2px 6px">#추석특선전통주🎊</a>
-							<a href="#" class="btn btn-outline-colors btn-md font-weight-bold text-white" style="margin: 2px 6px">#팀장님선물용💐</a>
+							<a href="/zzanfeeds?tag=혼자먹기딱좋은술" class="btn btn-outline-colors btn-md" style="margin: 2px 6px">#혼자먹기딱좋은술</a>
+							<a href="/zzanfeeds?tag=추석특선전통주🎊" class="btn btn-outline-colors btn-md" style="margin: 2px 6px">#추석특선전통주🎊</a>
+							<a href="/zzanfeeds?tag=팀장님선물용💐" class="btn btn-outline-colors btn-md" style="margin: 2px 6px">#팀장님선물용💐</a>
 						</p>
 					</div>
 				</div>
@@ -81,362 +80,181 @@
 		</div>
 	</div>
 
+	<div class="main-zzanfeed">
+		<div class="container">
+			<!--	짠피드 6개	-->
+			<p class="main-h3">#짠피드 📸</p>
+			<div class="caption">
+				<p class="text">전통주와 함께한 특별한 순간들을 확인하세요.</p>
+				<a class="more" th:href="@{/zzanfeeds}" >더보기</a>
+			</div>
+			<div class="feed-conainer">
+				<div class="main-feed-grid">
+					<img class="media-thumb-zzan" alt="zzan-01" style="margin-left: -40px" src="/user/images/mainpage/main-zzan-03.png"/>
+					<div class="profile-likes">
+						<img class="profile-sm" src="/user/images/mainpage/profile-04.jpg"/>
+						<p class="profile-author">디플로</p>
+					</div>
+				</div>
+				<div class="main-feed-grid">
+					<img class="media-thumb-zzan" alt="zzan-01" style="margin-left: -240px" src="/user/images/mainpage/main-zzan-02.jpg"/>
+					<div class="profile-likes">
+						<img class="profile-sm" src="/user/images/mainpage/profile-01.jpeg"/>
+						<p class="profile-author">익명이</p>
+					</div>
+				</div>
+				<div class="main-feed-grid">
+					<img class="media-thumb-zzan" alt="zzan-01" style="margin-left: -20px" src="/user/images/mainpage/main-zzan-05.jpg"/>
+					<div class="profile-likes">
+						<img class="profile-sm" src="/user/images/mainpage/profile-02.jpg"/>
+						<p class="profile-author">디플로</p>
+					</div>
+				</div>
+				<div class="main-feed-grid">
+					<img class="media-thumb-zzan" alt="zzan-01" style="margin-left: -180px" src="/user/images/mainpage/main-zzan-06.jpg"/>
+					<div class="profile-likes">
+						<img class="profile-sm" src="/user/images/mainpage/profile-03.jpg"/>
+						<p class="profile-author">익명이</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="main-zzanfeed">
+		<div class="container">
+			<!--	짠포스트	-->
+			<div class="caption">
+				<p class="main-h3">술포스트에서 전문가들의 이야기를 확인해보세요. 🎨</p>
+				<a class="more" th:href="@{/zzanposts}" >더보기</a>
+			</div>
+
+			<div class="feed-conainer">
+				<div>
+					<div class="main-feed-post">
+						<img class="media-thumb-post" alt="zzan-01" style="height: 270px;" src="/user/images/mainpage/main-post-01.jpeg"/>
+					</div>
+					<div class="post-content">
+						<p class="post-title">전통주와 추석을 즐길 수 있는 최고의 장소를 소개해요.</p>
+						<div class="post-author">
+								<img class="profile-sm" src="/user/images/mainpage/profile-05.jpg"/>
+								<p class="profile-author">위아전통주</p>
+						</div>
+					</div>
+				</div>
+
+				<div>
+					<div class="main-feed-post">
+						<img class="media-thumb-post" style="height: 330px; margin-left: -30px; margin-top: -30px;" alt="zzan-01" src="/user/images/mainpage/main-post-04.jpg"/>
+					</div>
+					<div class="post-content">
+						<p class="post-title">전통주와 추석을 즐길 수 있는 최고의 장소를 소개해요.</p>
+						<div class="post-author">
+							<img class="profile-sm" src="/user/images/mainpage/profile-01.jpeg"/>
+							<p class="profile-author">익명이</p>
+						</div>
+					</div>
+				</div>
+
+				<div>
+					<div class="main-feed-post">
+						<img class="media-thumb-post" alt="zzan-01" style="height: 340px; margin-left: -50px; margin-top: -20px;" src="/user/images/mainpage/main-post-02.jpg"/>
+					</div>
+					<div class="post-content">
+						<p class="post-title">전통주와 추석을 즐길 수 있는 최고의 장소를 소개해요.</p>
+						<div class="post-author">
+							<img class="profile-sm" src="/user/images/mainpage/profile-06.jpg"/>
+							<p class="profile-author">감자만두</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<!-- 상품 및 매거진	-->
 	<div class="untree_co-section">
 		<div class="container">
-			<div class="row mb-5 justify-content-center">
-				<div class="col-lg-6 text-center">
-					<h2 class="section-title text-center mb-3">Our Services</h2>
-					<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
-				</div>
-			</div>
-			<div class="row align-items-stretch">
-				<div class="col-lg-4 order-lg-1">
-					<div class="h-100"><div class="frame h-100"><div class="feature-img-bg h-100" style="background-image: url('/user/images/hero-slider-1.jpg');"></div></div></div>
-				</div>
-
-				<div class="col-6 col-sm-6 col-lg-4 feature-1-wrap d-md-flex flex-md-column order-lg-1" >
-
-					<div class="feature-1 d-md-flex">
-						<div class="align-self-center">
-							<span class="flaticon-house display-4 text-primary"></span>
-							<h3>Beautiful Condo</h3>
-							<p class="mb-0">Even the all-powerful Pointing has no control about the blind texts.</p>
-						</div>
+			<div class="row justify-content-between">
+				<div class="shopping-block col-lg-8">
+					<div class="caption">
+						<p class="main-h3">쇼핑하기 🛍</p>
+						<a class="more" href="#">더보기</a>
 					</div>
-
-					<div class="feature-1 ">
-						<div class="align-self-center">
-							<span class="flaticon-restaurant display-4 text-primary"></span>
-							<h3>Restaurants & Cafe</h3>
-							<p class="mb-0">Even the all-powerful Pointing has no control about the blind texts.</p>
-						</div>
-					</div>
-
-				</div>
-
-				<div class="col-6 col-sm-6 col-lg-4 feature-1-wrap d-md-flex flex-md-column order-lg-3" >
-
-					<div class="feature-1 d-md-flex">
-						<div class="align-self-center">
-							<span class="flaticon-mail display-4 text-primary"></span>
-							<h3>Easy to Connect</h3>
-							<p class="mb-0">Even the all-powerful Pointing has no control about the blind texts.</p>
-						</div>
-					</div>
-
-					<div class="feature-1 d-md-flex">
-						<div class="align-self-center">
-							<span class="flaticon-phone-call display-4 text-primary"></span>
-							<h3>24/7 Support</h3>
-							<p class="mb-0">Even the all-powerful Pointing has no control about the blind texts.</p>
-						</div>
-					</div>
-
-				</div>
-
-			</div>
-		</div>
-	</div>
-
-	<div class="untree_co-section count-numbers py-5">
-		<div class="container">
-			<div class="row">
-				<div class="col-6 col-sm-6 col-md-6 col-lg-3">
-					<div class="counter-wrap">
-						<div class="counter">
-							<span class="" data-number="9313">0</span>
-						</div>
-						<span class="caption">No. of Travels</span>
-					</div>
-				</div>
-				<div class="col-6 col-sm-6 col-md-6 col-lg-3">
-					<div class="counter-wrap">
-						<div class="counter">
-							<span class="" data-number="8492">0</span>
-						</div>
-						<span class="caption">No. of Clients</span>
-					</div>
-				</div>
-				<div class="col-6 col-sm-6 col-md-6 col-lg-3">
-					<div class="counter-wrap">
-						<div class="counter">
-							<span class="" data-number="100">0</span>
-						</div>
-						<span class="caption">No. of Employees</span>
-					</div>
-				</div>
-				<div class="col-6 col-sm-6 col-md-6 col-lg-3">
-					<div class="counter-wrap">
-						<div class="counter">
-							<span class="" data-number="120">0</span>
-						</div>
-						<span class="caption">No. of Countries</span>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<div class="untree_co-section">
-		<div class="container">
-			<div class="row text-center justify-content-center mb-5">
-				<div class="col-lg-7"><h2 class="section-title text-center">Popular Destination</h2></div>
-			</div>
-
-			<div class="owl-carousel owl-3-slider">
-
-				<div class="item">
-					<a class="media-thumb" href="/user/images/hero-slider-1.jpg" data-fancybox="gallery">
-						<div class="media-text">
-							<h3>Pragser Wildsee</h3>
-							<span class="location">Italy</span>
-						</div>
-						<img src="/user/images/hero-slider-1.jpg" alt="Image" class="img-fluid">
-					</a>
-				</div>
-
-				<div class="item">
-					<a class="media-thumb" href="/user/images/hero-slider-2.jpg" data-fancybox="gallery">
-						<div class="media-text">
-							<h3>Oia</h3>
-							<span class="location">Greece</span>
-						</div>
-						<img src="/user/images/hero-slider-2.jpg" alt="Image" class="img-fluid">
-					</a>
-				</div>
-
-				<div class="item">
-					<a class="media-thumb" href="/user/images/hero-slider-3.jpg" data-fancybox="gallery">
-						<div class="media-text">
-							<h3>Perhentian Islands</h3>
-							<span class="location">Malaysia</span>
-						</div>
-						<img src="/user/images/hero-slider-3.jpg" alt="Image" class="img-fluid">
-					</a>
-				</div>
-
-
-				<div class="item">
-					<a class="media-thumb" href="/user/images/hero-slider-4.jpg" data-fancybox="gallery">
-						<div class="media-text">
-							<h3>Rialto Bridge</h3>
-							<span class="location">Italy</span>
-						</div>
-						<img src="/user/images/hero-slider-4.jpg" alt="Image" class="img-fluid">
-					</a>
-				</div>
-
-				<div class="item">
-					<a class="media-thumb" href="/user/images/hero-slider-5.jpg" data-fancybox="gallery">
-						<div class="media-text">
-							<h3>San Francisco, United States</h3>
-							<span class="location">United States</span>
-						</div>
-						<img src="/user/images/hero-slider-5.jpg" alt="Image" class="img-fluid">
-					</a>
-				</div>
-
-				<div class="item">
-					<a class="media-thumb" href="/user/images/hero-slider-1.jpg" data-fancybox="gallery">
-						<div class="media-text">
-							<h3>Lake Thun</h3>
-							<span class="location">Switzerland</span>
-						</div>
-						<img src="/user/images/hero-slider-2.jpg" alt="Image" class="img-fluid">
-					</a>
-				</div>
-
-			</div>
-
-		</div>
-	</div>
-
-	<div class="untree_co-section testimonial-section mt-5">
-		<div class="container">
-			<div class="row justify-content-center">
-				<div class="col-lg-7 text-center">
-					<h2 class="section-title text-center mb-5">Testimonials</h2>
-
-					<div class="owl-single owl-carousel no-nav">
-						<div class="testimonial mx-auto">
-							<figure class="img-wrap">
-								<img src="/user/images/person_2.jpg" alt="Image" class="img-fluid">
-							</figure>
-							<h3 class="name">Adam Aderson</h3>
-							<blockquote>
-								<p>&ldquo;There live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.&rdquo;</p>
-							</blockquote>
-						</div>
-
-						<div class="testimonial mx-auto">
-							<figure class="img-wrap">
-								<img src="/user/images/person_3.jpg" alt="Image" class="img-fluid">
-							</figure>
-							<h3 class="name">Lukas Devlin</h3>
-							<blockquote>
-								<p>&ldquo;There live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.&rdquo;</p>
-							</blockquote>
-						</div>
-
-						<div class="testimonial mx-auto">
-							<figure class="img-wrap">
-								<img src="/user/images/person_4.jpg" alt="Image" class="img-fluid">
-							</figure>
-							<h3 class="name">Kayla Bryant</h3>
-							<blockquote>
-								<p>&ldquo;There live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.&rdquo;</p>
-							</blockquote>
-						</div>
-
-					</div>
-
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<div class="untree_co-section">
-		<div class="container">
-			<div class="row justify-content-center text-center mb-5">
-				<div class="col-lg-6">
-					<h2 class="section-title text-center mb-3">Special Offers &amp; Discounts</h2>
-					<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-6 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-					<div class="media-1">
-						<a href="#" class="d-block mb-3"><img src="/user/images/hero-slider-1.jpg" alt="Image" class="img-fluid"></a>
-						<span class="d-flex align-items-center loc mb-2">
-							<span class="icon-room mr-3"></span>
-							<span>Italy</span>
+					<div class="tag-container mb-2">
+						<span class="tag">
+							<a href="#" class="active">#전체</a>
+							<a href="#">#핫이슈</a>
+							<a href="#">#막믈리에</a>
+							<a href="#">#페어링</a>
+							<a href="#">#추석선물추천</a>
+							<a href="#">#오늘의한잔</a>
+							<a href="#">#전통주린이</a>
+							<a href="#">#양조장리뷰</a>
 						</span>
-						<div class="d-flex align-items-center">
-							<div>
-								<h3><a href="#">Rialto Mountains</a></h3>
-								<div class="price ml-auto">
-									<span>$520.00</span>
+					</div>
+					<div class="product-container">
+						<div class = "product-card">
+							<img style="width: 100%; height: 200px; object-fit: contain; margin-left: -240px; margin-top: 15px;" src="/user/images/mainpage/profile-02.jpg"/>
+						</div>
+						<div class = "product-card">
+							<img style="width: 100%; height: 200px; object-fit: contain; margin-left: -240px; margin-top: 15px;" src="/user/images/mainpage/profile-02.jpg"/>
+						</div>
+						<div class = "product-card">
+							<img style="width: 100%; height: 200px; object-fit: contain; margin-left: -240px; margin-top: 15px;" src="/user/images/mainpage/profile-02.jpg"/>
+						</div>
+						<div class = "product-card">
+							<img style="width: 100%; height: 200px; object-fit: contain; margin-left: -240px; margin-top: 15px;" src="/user/images/mainpage/profile-02.jpg"/>
+						</div>
+						<div class = "product-card">
+							<img style="width: 100%; height: 200px; object-fit: contain; margin-left: -240px; margin-top: 15px;" src="/user/images/mainpage/profile-02.jpg"/>
+						</div>
+						<div class = "product-card">
+							<img style="width: 100%; height: 200px; object-fit: contain; margin-left: -240px; margin-top: 15px;" src="/user/images/mainpage/profile-02.jpg"/>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-lg-4 justify-content-lg-start" style="width: 100%">
+					<div class="side-banner-container">
+						<div class = "magazine">
+							<div class="media-1">
+								<div class="flex-column">
+									<div class="caption" style="display: flex !important;">
+										<p class="main-h3" style="margin-bottom: 20px;">이달의 한술 🌙</p>
+										<a class="more" style="margin-left: auto; font-size: 18px; font-weight: bold;" href="#">더보기</a>
+									</div>
+									<div class="tag-container mb-2">
+										<span class="tag" style="justify-content: flex-start !important;">
+											<a href="#" style="margin-right: 8px;">#월간</a>
+											<a href="#" style="margin-right: 8px;">#한술히스토리</a>
+											<a href="#" style="margin-right: 8px;">#라이프</a>
+										</span>
+									</div>
+									<div>
+										<a href="https://content.29cm.co.kr/brand-commentary/2024/07/19/branden" target="_blank"><img src="user/images/hero-slider-2.jpg" alt="Image" class="main-magazine-img"></a>
+									</div>
+									<div class="megazine-text" style="position:absolute; margin-top: -82px;">
+										<div>
+											<span style="font-size: 60px; font-weight: 100; font-family:Source Serif Pro, serif;">09</span>
+											<span>
+												<h3 style="margin-top: -50px; margin-left: 80px; font-weight: bold; font-size: 24px; font-family: 'Noto-Sans', sans-serif;">풍성한 추석을 한 잔</h3>
+											</span>
+										</div>
+									</div>
+									<div class="mt-4" style="width: 100%; justify-content: flex-start">
+										<a href="#"><img style="height: 178px; object-fit: cover;" src="/user/images/mainpage/main-banner.png" alt="Image"></a>
+									</div>
 								</div>
 							</div>
-
-						</div>
-
-					</div>
-				</div>
-				<div class="col-6 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-					<div class="media-1">
-						<a href="#" class="d-block mb-3"><img src="/user/images/hero-slider-2.jpg" alt="Image" class="img-fluid"></a>
-						<span class="d-flex align-items-center loc mb-2">
-							<span class="icon-room mr-3"></span>
-							<span>United States</span>
-						</span>
-						<div class="d-flex align-items-center">
-							<div>
-								<h3><a href="#">San Francisco</a></h3>
-								<div class="price ml-auto">
-									<span>$520.00</span>
-								</div>
-							</div>
-
-						</div>
-
-					</div>
-				</div>
-				<div class="col-6 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-					<div class="media-1">
-						<a href="#" class="d-block mb-3"><img src="/user/images/hero-slider-3.jpg" alt="Image" class="img-fluid"></a>
-						<span class="d-flex align-items-center loc mb-2">
-							<span class="icon-room mr-3"></span>
-							<span>Malaysia</span>
-						</span>
-						<div class="d-flex align-items-center">
-							<div>
-								<h3><a href="#">Perhentian Islands</a></h3>
-								<div class="price ml-auto">
-									<span>$750.00</span>
-								</div>
-							</div>
-
-						</div>
-
-					</div>
-				</div>
-				<div class="col-6 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-					<div class="media-1">
-						<a href="#" class="d-block mb-3"><img src="/user/images/hero-slider-4.jpg" alt="Image" class="img-fluid"></a>
-
-						<span class="d-flex align-items-center loc mb-2">
-							<span class="icon-room mr-3"></span>
-							<span>Switzerland</span>
-						</span>
-
-						<div class="d-flex align-items-center">
-							<div>
-								<h3><a href="#">Lake Thun</a></h3>
-								<div class="price ml-auto">
-									<span>$520.00</span>
-								</div>
-							</div>
-
-						</div>
-
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<div class="untree_co-section">
-		<div class="container">
-			<div class="row justify-content-between align-items-center">
-
-				<div class="col-lg-6">
-					<figure class="img-play-video">
-						<a id="play-video" class="video-play-button" href="https://www.youtube.com/watch?v=mwtbEGNABWU" data-fancybox>
-							<span></span>
-						</a>
-						<img src="/user/images/hero-slider-2.jpg" alt="Image" class="img-fluid rounded-20">
-					</figure>
-				</div>
-
-				<div class="col-lg-5">
-					<h2 class="section-title text-left mb-4">Take a look at Tour Video</h2>
-					<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
-
-					<p class="mb-4">A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
-
-					<ul class="list-unstyled two-col clearfix">
-						<li>Outdoor recreation activities</li>
-						<li>Airlines</li>
-						<li>Car Rentals</li>
-						<li>Cruise Lines</li>
-						<li>Hotels</li>
-						<li>Railways</li>
-						<li>Travel Insurance</li>
-						<li>Package Tours</li>
-						<li>Insurance</li>
-						<li>Guide Books</li>
-					</ul>
-
-					<p><a href="#" class="btn btn-primary">Get Started</a></p>
 
 
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<div class="py-5 cta-section">
-		<div class="container">
-			<div class="row text-center">
-				<div class="col-md-12">
-					<h2 class="mb-2 text-white">Lets you Explore the Best. Contact Us Now</h2>
-					<p class="mb-4 lead text-white text-white-opacity">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi, fugit?</p>
-					<p class="mb-0"><a href="booking.html" class="btn btn-outline-white text-white btn-md font-weight-bold">Get in touch</a></p>
-				</div>
-			</div>
-		</div>
-	</div>
 
 	<script>
 		$(function() {

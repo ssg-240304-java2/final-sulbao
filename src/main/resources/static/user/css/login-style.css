@@ -141,13 +141,13 @@ header h1 {
     background: none;
     border: none;
     cursor: pointer;
-    color: #1A374D;
+    color: #615EFC;
 }
 
 .submit-button {
     width: 100%;
     padding: 10px;
-    background-color: #1A374D;
+    background-color: #615EFC;
     color: white;
     border: none;
     border-radius: 4px;
@@ -157,7 +157,7 @@ header h1 {
 }
 
 .submit-button:hover {
-    background-color: #1A374D;
+    background-color: #615EFC;
 }
 
 .additional-links {
@@ -168,7 +168,7 @@ header h1 {
 
 .additional-links a {
     font-size: 12px;
-    color: #1A374D;
+    color: #615EFC;
     text-decoration: none;
 }
 
@@ -176,7 +176,8 @@ header h1 {
     text-decoration: underline;
 }
 
-.verification-wrapper {
+.
+verification-wrapper {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -189,17 +190,17 @@ header h1 {
 
 .verification-wrapper button {
     padding: 8px 12px;
-    background-color: #1A374D;
+    background-color: #615EFC;
     color: white;
-    border: 1px solid #1A374D;
+    border: 1px solid #615EFC;
     border-radius: 4px;
     cursor: pointer;
     box-sizing: border-box;
 }
 
 .verification-wrapper button:hover {
-    background: #1A374D;
-    border-color: #1A374D;
+    background: #615EFC;
+    border-color: #615EFC;
 }
 
 .verification-input-wrapper {
@@ -216,17 +217,17 @@ header h1 {
 
 .verification-input-wrapper button {
     padding: 8px 12px;
-    background-color: #1A374D;
+    background-color: #615EFC;
     color: white;
-    border: 1px solid #1A374D;
+    border: 1px solid #615EFC;
     border-radius: 4px;
     cursor: pointer;
     box-sizing: border-box;
 }
 
 .verification-input-wrapper button:hover {
-    background-color: #1A374D;
-    border-color: #1A374D;
+    background-color: #615EFC;
+    border-color: #615EFC;
 }
 
 
