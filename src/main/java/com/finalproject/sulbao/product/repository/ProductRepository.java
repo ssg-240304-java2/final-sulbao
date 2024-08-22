@@ -40,7 +40,11 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     @Query(value = "select p from Product p where p.sellerInfo.userNo= :#{#product.userNo} and p.productName like concat('%', :#{#product.searchInput},'%')" )
     List<Product> findBySearchProductAllCategoryAndAllDisplayAllSell(@RequestParam("product") ProductDTO product);
 
-
     @Query(value = "select p.productName from Product p where p.productNo = :productNo")
     String findByProductNoName(Long productNo);
+
+    @Query(value = "select min(p.productPrice) from Product p where p.comparison.comparisonNo = :comparisonNo")
+    Integer findByMinProductPrice(Long comparisonNo);
+
+    List<Product> findByComparison_comparisonNoOrderByProductPriceAsc(long comparisonNo);
 }
