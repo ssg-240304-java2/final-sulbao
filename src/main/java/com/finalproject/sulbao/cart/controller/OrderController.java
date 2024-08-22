@@ -335,7 +335,7 @@ public class OrderController {
 
         System.out.println("orderListDTOList = " + orderListDTOList);
         model.addAttribute("orders", orderListDTOList);
-
+        model.addAttribute("menu","order");
         return "cart/memberorder";
     }
 
