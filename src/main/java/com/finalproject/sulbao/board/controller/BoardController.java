@@ -70,6 +70,8 @@ public class BoardController {
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("hasPreviousGroup", currentGroup > 0);
         model.addAttribute("hasNextGroup", endPage < totalPages);
+        model.addAttribute("menu","board");
+
         return "board/user/list";
     }
 

@@ -2,7 +2,7 @@
 <html lang="ko"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      layout:decorate="~{common/layouts/userDefault}">
+      layout:decorate="~{common/layouts/mypageDefault}">
 <head>
     <meta charset="UTF-8">
     <title>술기로운한잔 - 마이페이지</title>
@@ -216,130 +216,112 @@
 </head>
 <body>
     <div layout:fragment="content">
-        <div class="container">
-            <div class="mypage-content">
-                <nav class="sidebar">
-                    <ul>
-                        <li class="menu-text">나의 쇼핑정보</li>
-                            <li><a href="#">최근 본 상품</a></li>
-                            <li><a href="#">주문내역조회</a></li>
-                        <li class="menu-text">나의 활동</li>
-                            <li class="active"><a href="/mypage/myprofile">나의 정보</a></li>
-                            <li><a href="/mypage/board">나의 게시글</a></li>
-                            <li><a href="/review/list">나의 리뷰</a></li>
-                        <li class="menu-text">고객센터</li>
-                            <li><a href="#">문의게시판</a></li>
-                            <li sec:authorize="hasRole('ROLE_MEMBER')"><a href="/mypage/proform">전문가신청</a></li>
-                    </ul>
-                </nav>
-            <!-- 여기서 선택한 메뉴에 따라 내용이 바뀜 -->
-                <div class="content">
-                    <form id="profile" action="/mypage/updateProfile" method="POST" enctype="multipart/form-data">
-                        <div class="profile-container">
-                            <div class="profile-header">
-                                <img th:src="${profileImg}" alt="Profile Image" class="profile-image"/>
-                                <input type="file" id="profile-img" name="image">
+        <div class="content">
+            <form id="profile" action="/mypage/updateProfile" method="POST" enctype="multipart/form-data">
+                <div class="profile-container">
+                    <div class="profile-header">
+                        <img th:src="${profileImg}" alt="Profile Image" class="profile-image"/>
+                        <input type="file" id="profile-img" name="image">
+                    </div>
+
+                    <div class="profile-info">
+                        <div class="profile-row">
+                            <label for="profile-name">프로필 이름</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="profile-name" name="profileName" th:placeholder="${profileName}">
                             </div>
+                            <p id="name-error-message" class="error-message"></p>
+                            <hr style="margin-top: 7px">
+                        </div>
 
-                            <div class="profile-info">
-                                <div class="profile-row">
-                                <label for="profile-name">프로필 이름</label>
-                                    <div class="input-wrapper">
-                                        <input type="text" id="profile-name" name="profileName" th:placeholder="${profileName}">
-                                    </div>
-                                        <p id="name-error-message" class="error-message"></p>
-                                    <hr style="margin-top: 7px">
-                                </div>
-
-                                <div class="profile-row">
-                                    <label for="profile-text">소개</label>
-                                    <div class="input-wrapper">
-                                        <input type="text" id="profile-text" name="profileText" th:placeholder="${profileText}">
-                                    </div>
-                                    <hr style="margin-top: 7px">
-                                </div>
-
-                                <div class="profile-row">
-                                    <label for="email">이메일 주소</label>
-                                    <div class="input-wrapper">
-                                        <input type="email" id="email" name="email" th:placeholder="${email}">
-                                    </div>
-                                    <hr style="margin-top: 7px">
-                                </div>
-
-                                <div class="profile-row">
-                                    <label for="password">비밀번호</label>
-                                    <div class="input-wrapper">
-                                        <input type="password" id="password" placeholder="●●●●●●●●" disabled>
-                                        <button id="password-btn" type="button" onclick="">변경하기</button>
-                                    </div>
-                                    <hr style="margin-top: 7px">
-                                </div>
-
-                                <div class="profile-row">
-                                    <label for="birth">생년월일</label>
-                                    <div class="input-wrapper">
-                                        <input type="date" id="birth" name="birth" th:value="${birth}">
-                                    </div>
-                                    <hr style="margin-top: 7px">
-                                </div>
-
-                                <div class="profile-row">
-                                    <label for="phone">휴대폰 번호</label>
-                                    <div class="input-wrapper">
-                                        <input type="text" id="phone" name="phone" th:placeholder="${phone}">
-                                    </div>
-                                    <hr style="margin-top: 7px">
-                                </div>
-
-                                <div class="profile-row">
-                                    <label>성별</label>
-                                    <div class="input-wrapper">
-                                        <input type="radio" id="gender-m" name="gender" value="M" th:checked="${gender.equals('M')}"/> 남성
-                                        <input type="radio" id="gender-f" name="gender" value="F" th:checked="${gender.equals('F')}"/> 여성
-                                        <input type="radio" id="gender-none" name="gender" value="None" th:checked="${gender.equals('None')}"/> 선택하지 않음
-                                    </div>
-                                    <hr style="margin-top: 7px">
-                                </div>
+                        <div class="profile-row">
+                            <label for="profile-text">소개</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="profile-text" name="profileText" th:placeholder="${profileText}">
                             </div>
-                                <div sec:authorize="hasRole('ROLE_PRO_MEMBER')">
-                                <div class="profile-info">
-                                    <div class="profile-row">
-                                        <label for="business-num">전문가 사업자번호</label>
-                                        <div class="input-wrapper">
-                                            <input type="text" id="business-num" name="businessNumber" th:placeholder="${businessNumber}" disabled>
-                                            <button id="business-num-btn" type="button" onclick="">변경신청</button>
-                                        </div>
-                                        <hr style="margin-top: 7px">
-                                    </div>
+                            <hr style="margin-top: 7px">
+                        </div>
 
-                                    <div class="profile-row">
-                                        <label for="link">전문가 관련링크</label>
-                                        <div class="input-wrapper">
-                                            <input type="text" id="link" name="businessLink" th:placeholder="${businessLink}" disabled>
-                                            <button id="business-link-btn" type="button" onclick="">변경신청</button>
-                                        </div>
-                                        <hr style="margin-top: 7px">
-                                    </div>
-
-                                    <div class="profile-row">
-                                        <label for="date">전문가 갱신일</label>
-                                        <div class="input-wrapper">
-                                            <input type="date" id="date" name="date" th:value="${#strings.substring(date, 0, 10)}" disabled>
-                                        </div>
-                                        <hr style="margin-top: 7px">
-                                    </div>
-                                </div>
+                        <div class="profile-row">
+                            <label for="email">이메일 주소</label>
+                            <div class="input-wrapper">
+                                <input type="email" id="email" name="email" th:placeholder="${email}">
                             </div>
+                            <hr style="margin-top: 7px">
+                        </div>
+
+                        <div class="profile-row">
+                            <label for="password">비밀번호</label>
+                            <div class="input-wrapper">
+                                <input type="password" id="password" placeholder="●●●●●●●●" disabled>
+                                <button id="password-btn" type="button" onclick="">변경하기</button>
+                            </div>
+                            <hr style="margin-top: 7px">
+                        </div>
+
+                        <div class="profile-row">
+                            <label for="birth">생년월일</label>
+                            <div class="input-wrapper">
+                                <input type="date" id="birth" name="birth" th:value="${birth}">
+                            </div>
+                            <hr style="margin-top: 7px">
+                        </div>
+
+                        <div class="profile-row">
+                            <label for="phone">휴대폰 번호</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="phone" name="phone" th:placeholder="${phone}">
+                            </div>
+                            <hr style="margin-top: 7px">
+                        </div>
+
+                        <div class="profile-row">
+                            <label>성별</label>
+                            <div class="input-wrapper">
+                                <input type="radio" id="gender-m" name="gender" value="M" th:checked="${gender.equals('M')}"/> 남성
+                                <input type="radio" id="gender-f" name="gender" value="F" th:checked="${gender.equals('F')}"/> 여성
+                                <input type="radio" id="gender-none" name="gender" value="None" th:checked="${gender.equals('None')}"/> 선택하지 않음
+                            </div>
+                            <hr style="margin-top: 7px">
+                        </div>
+                    </div>
+                    <div sec:authorize="hasRole('ROLE_PRO_MEMBER')">
+                        <div class="profile-info">
                             <div class="profile-row">
-                                <label for="date"><a href="#">탈퇴 하기 ></a></label>
+                                <label for="business-num">전문가 사업자번호</label>
+                                <div class="input-wrapper">
+                                    <input type="text" id="business-num" name="businessNumber" th:placeholder="${businessNumber}" disabled>
+                                    <button id="business-num-btn" type="button" onclick="">변경신청</button>
+                                </div>
+                                <hr style="margin-top: 7px">
                             </div>
-                            <button type="submit" class="save-button">저장</button>
+
+                            <div class="profile-row">
+                                <label for="link">전문가 관련링크</label>
+                                <div class="input-wrapper">
+                                    <input type="text" id="link" name="businessLink" th:placeholder="${businessLink}" disabled>
+                                    <button id="business-link-btn" type="button" onclick="">변경신청</button>
+                                </div>
+                                <hr style="margin-top: 7px">
                             </div>
-                    </form>
+
+                            <div class="profile-row">
+                                <label for="date">전문가 갱신일</label>
+                                <div class="input-wrapper">
+                                    <input type="date" id="date" name="date" th:value="${#strings.substring(date, 0, 10)}" disabled>
+                                </div>
+                                <hr style="margin-top: 7px">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-row">
+                        <label for="date"><a href="#">탈퇴 하기 ></a></label>
+                    </div>
+                    <button type="submit" class="save-button">저장</button>
                 </div>
-            </div>
+            </form>
         </div>
+    </div>
     <script>
         $(document).ready(function () {
             $('#profile').on('submit', function (e) {

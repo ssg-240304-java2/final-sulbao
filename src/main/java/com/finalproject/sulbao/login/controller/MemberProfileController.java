@@ -51,6 +51,7 @@ public class MemberProfileController {
         model.addAttribute("businessNumber", member.getBusinessNumber());
         model.addAttribute("businessLink", member.getBusinessLink());
         model.addAttribute("date", member.getDate());
+        model.addAttribute("menu","myinfo");
 
         return "mypage/myprofile";
     }
@@ -107,6 +108,7 @@ public class MemberProfileController {
         model.addAttribute("businessNumber", member.getBusinessNumber());
         model.addAttribute("businessLink", member.getBusinessLink());
         model.addAttribute("date", member.getDate());
+        model.addAttribute("menu","pro");
 
         return "mypage/pro-form";
     }
