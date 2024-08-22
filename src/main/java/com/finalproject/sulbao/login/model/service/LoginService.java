@@ -1,17 +1,14 @@
 package com.finalproject.sulbao.login.model.service;
 
-import com.amazonaws.services.dynamodbv2.xspec.M;
 import com.finalproject.sulbao.common.file.FileDto;
 import com.finalproject.sulbao.common.file.FileService;
-import com.finalproject.sulbao.login.model.dto.MemberProfileDto;
-import com.finalproject.sulbao.login.model.dto.SignupMemberDto;
-import com.finalproject.sulbao.login.model.dto.SignupSellerDto;
+import com.finalproject.sulbao.login.model.dto.*;
 import com.finalproject.sulbao.login.model.entity.Login;
-import com.finalproject.sulbao.login.model.vo.MemberImage;
 import com.finalproject.sulbao.login.model.entity.MemberInfo;
 import com.finalproject.sulbao.login.model.entity.RoleType;
 import com.finalproject.sulbao.login.model.repository.LoginRepository;
 import com.finalproject.sulbao.login.model.repository.MemberInfoRepository;
+import com.finalproject.sulbao.login.model.vo.MemberImage;
 import com.finalproject.sulbao.login.model.vo.SellerInfo;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -101,8 +98,8 @@ public class LoginService {
 
         Login login = loginRepository.findByUserId(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 사용자 입니다."));
-        MemberInfo memberInfo = memberRepository.findById(login.getUserNo())
-                .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 멤버 입니다."));
+        MemberInfo memberInfo = memberRepository.findByUserId(userId);
+        log.info("sevice member ============================> {}", memberInfo);
         MemberImage profileImag = memberInfo.getMemberImage();
 
         if(profileImag == null) {
@@ -116,8 +113,11 @@ public class LoginService {
         String birth = login.getBirth();
         String phone = login.getPhone();
         String gender = login.getGender();
+        String businessNumber = memberInfo.getProMemberInfo().getBusinessNumber();
+        String businessLink = memberInfo.getProMemberInfo().getBusinessLink();
+        String date = String.valueOf(memberInfo.getProMemberInfo().getUpdatedAt());
 
-        MemberProfileDto member = new MemberProfileDto(profileImag, profileName, profileText, email, birth, phone, gender);
+        MemberProfileDto member = new MemberProfileDto(profileImag, profileName, profileText, email, birth, phone, gender, businessNumber, businessLink, date);
         return member;
     }
 
@@ -130,25 +130,23 @@ public class LoginService {
         return memberRepository.existsByProfileNameAndUserNoNot(profileName, userNo);
     }
 
-    // 프로필 - 수정
+    // 프로필 - 업데이트
     @Transactional
     public void updateMemberInfo(MemberProfileDto memberProfile, String userId) {
 
-        Login login = loginRepository.findByUserId(userId).orElseThrow();
+        Login login = loginRepository.findByUserId(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 사용자 입니다."));
         MemberInfo memberInfo = memberRepository.findByUserId(userId);
 
+        // 개인정보 업데이트
         login.setBirth(memberProfile.getBirth());
         login.setEmail(memberProfile.getEmail());
         login.setPhone(memberProfile.getPhone());
         login.setGender(memberProfile.getGender());
 
-
-        log.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> {}", memberProfile.getImage().getOriginalFilename());
-
+        // 프로필 사진 업데이트
         if(!memberProfile.getImage().getOriginalFilename().isEmpty()){
-            log.info("service ================>>>>>>>>>>>>>>>> file upload ::::::::: {}", memberProfile.getImage());
             FileDto fileDto = fileService.uploadFile(memberProfile.getImage(),uploadDir,"sulbao-file/profile");
-            log.info("service ================>>>>>>>>>>>>>>>> file DTO ::::::::: {}", fileDto);
             MemberImage memberImage = new MemberImage();
             memberImage.setFileName(fileDto.getOriginalFileName());
             memberImage.setSaveName(fileDto.getUploadFileName());
@@ -156,18 +154,45 @@ public class LoginService {
             memberInfo.setMemberImage(memberImage);
         }
 
-        memberInfo.setProfileName(memberProfile.getProfileName());
-        memberInfo.setProfileText(memberProfile.getProfileText());
+        // 프로필 이름 업데이트
+        if(!memberProfile.getProfileName().isEmpty()){
+            memberInfo.setProfileName(memberProfile.getProfileName());
+        }
+        // 프로필 소개 업데이트
+        if(!memberProfile.getProfileText().isEmpty()){
+            memberInfo.setProfileText(memberProfile.getProfileText());
+        }
+
     }
 
-    private boolean isImgExist(MemberImage profileImg) {
+    // 전문가 신청 유저 정보 조회
+    public String findProStatusByUserId(String userId) {
+        return memberRepository.findProStatusByUserId(userId);
+    }
 
-        String img = profileImg.getSaveName();
-        String type = img.substring(img.length()-3);
-        boolean result = false;
-        if(type.equals(".png") || type.equals(".jpg")){
-            result = true;
-        }
-        return result;
+
+    // 전문가 신청 저장
+    @Transactional
+    public void saveProForm(ProFormDto form, String userId) {
+
+        Login login = loginRepository.findByUserId(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 사용자 입니다."));
+        MemberInfo memberInfo = memberRepository.findByUserId(userId);
+
+//        login.setUserRole(RoleType.PRO_MEMBER);
+        login.setEmail(form.getBusinessEmail());
+
+        Long memberNo = memberInfo.getMemberNo();
+        String num = form.getBusinessNumber();
+        String link = form.getBusinessLink();
+        String status = "WAIT";
+        ProInfoDto proInfo = new ProInfoDto(memberNo,num,link,status);
+        memberRepository.saveProMember(proInfo);
+    }
+
+    @Transactional
+    public void deleteProForm(String userId) {
+        Long memberNo = memberRepository.findByUserId(userId).getMemberNo();
+        memberRepository.deleteProForm(memberNo);
     }
 }

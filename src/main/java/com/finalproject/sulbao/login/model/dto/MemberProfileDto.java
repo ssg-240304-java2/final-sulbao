@@ -15,11 +15,15 @@ public class MemberProfileDto {
     private String profileName;
     private String profileText;
     private String email;
+    private String emailCode;
     private String birth;
     private String phone;
     private String gender;
+    private String businessNumber;
+    private String businessLink;
+    private String date;
 
-    public MemberProfileDto(MemberImage profileImg, String profileName, String profileText, String email, String birth, String phone, String gender) {
+    public MemberProfileDto(MemberImage profileImg, String profileName, String profileText, String email, String birth, String phone, String gender, String businessNumber, String businessLink, String date) {
         this.profileImg = profileImg;
         this.profileName = profileName;
         this.profileText = profileText;
@@ -27,5 +31,8 @@ public class MemberProfileDto {
         this.birth = birth;
         this.phone = phone;
         this.gender = gender;
+        this.businessNumber = businessNumber;
+        this.businessLink = businessLink;
+        this.date = date;
     }
 }

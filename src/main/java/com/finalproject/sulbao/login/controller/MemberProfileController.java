@@ -1,21 +1,14 @@
 package com.finalproject.sulbao.login.controller;
 
 import com.finalproject.sulbao.login.model.dto.MemberProfileDto;
-import com.finalproject.sulbao.login.model.repository.LoginRepository;
+import com.finalproject.sulbao.login.model.dto.ProFormDto;
 import com.finalproject.sulbao.login.model.service.LoginService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/mypage")
@@ -23,7 +16,7 @@ import java.util.Map;
 public class MemberProfileController {
 
     private final LoginService service;
-    public MemberProfileController(LoginService service, LoginRepository repository) {
+    public MemberProfileController(LoginService service) {
         this.service = service;
     }
 
@@ -32,7 +25,7 @@ public class MemberProfileController {
     public String myProfilePage(Model model) {
 
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-
+        String status = service.findProStatusByUserId(userId);
         MemberProfileDto member = service.findMemberByUserId(userId);
 
         String profileText = member.getProfileText();
@@ -47,15 +40,27 @@ public class MemberProfileController {
             phone = "휴대폰 번호 숫자만 입력해주세요.";
         }
 
-        model.addAttribute("profileImg", member.getProfileImg());
+        model.addAttribute("profileImg", defaultUrlCheck(member.getProfileImg().getSaveImgUrl()));
         model.addAttribute("profileName", member.getProfileName());
-        model.addAttribute("profileText", member.getProfileText());
+        model.addAttribute("profileText", profileText);
         model.addAttribute("email", member.getEmail());
         model.addAttribute("birth", member.getBirth());
         model.addAttribute("phone", phone);
         model.addAttribute("gender", member.getGender());
+        model.addAttribute("proStatus", status);
+        model.addAttribute("businessNumber", member.getBusinessNumber());
+        model.addAttribute("businessLink", member.getBusinessLink());
+        model.addAttribute("date", member.getDate());
 
         return "mypage/myprofile";
+    }
+
+    // 프로필 디폴트 이미지 여부
+    private String defaultUrlCheck(String saveImgUrl) {
+        if(saveImgUrl == null || saveImgUrl.isEmpty()){
+            saveImgUrl = "https://kr.object.ncloudstorage.com/sulbao-file/profile/default-profile.png";
+        }
+        return saveImgUrl;
     }
 
     // 실시간 닉네임 중복 체크
@@ -77,22 +82,52 @@ public class MemberProfileController {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 
         try {
-            log.info("memberProfile ========+>>>>>> {}", memberProfile);
             service.updateMemberInfo(memberProfile, userId);
             message = "프로필이 업데이트 되었습니다.";
         } catch (Exception e) {
             message = "프로필 업데이트 중 오류가 발생했습니다. 나중에 다시 시도해주세요.";
-            log.info("Error =============================== updateProfile");
             log.info("Error =============================== {}", e.toString());
         }
 
         redirectAttributes.addFlashAttribute("message", message);
-
         return "redirect:/mypage/myprofile";
     }
 
+    // 전문가 신청 페이지 이동
     @GetMapping("/proform")
-    public String proFormPage() {
-        return "/mypage/pro-form";
+    public String proFormPage(Model model) {
+
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        String status = service.findProStatusByUserId(userId);
+        log.info("pro status============================================= {}", status);
+        MemberProfileDto member = service.findMemberByUserId(userId);
+
+        model.addAttribute("proStatus", status);
+        model.addAttribute("email", member.getEmail());
+        model.addAttribute("businessNumber", member.getBusinessNumber());
+        model.addAttribute("businessLink", member.getBusinessLink());
+        model.addAttribute("date", member.getDate());
+
+        return "mypage/pro-form";
+    }
+
+    // 전문가 신청 저장
+    @PostMapping("/saveProForm")
+    public String saveProForm(@ModelAttribute ProFormDto form, RedirectAttributes redirectAttributes){
+
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        service.saveProForm(form, userId);
+        redirectAttributes.addFlashAttribute("message", "성공적으로 저장되었습니다. 승인 심사 결과는 메일로 전송됩니다.");
+        return "redirect:/mypage/proform";
+    }
+
+    // 전문가 신청 취소
+    @PostMapping("/cancelProForm")
+    public String deleteProForm(RedirectAttributes redirectAttributes) {
+
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        service.deleteProForm(userId);
+        redirectAttributes.addFlashAttribute("message", "전문가 신청이 취소되었습니다.");
+        return "redirect:/mypage/proform";
     }
 }

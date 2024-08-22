@@ -12,7 +12,7 @@
 <body>
 <div layout:fragment="content">
     <div class="hero hero-inner">
-        <div class="container">
+        <div class="my-container">
             <div class="row align-items-center">
                 <div class="col-lg-6 mx-auto text-center">
                     <div class="intro-wrap">
@@ -27,7 +27,7 @@
         </div>
     </div>
 
-    <div class="container">
+    <div class="my-container">
         <div class="tag-container">
             <span class="tag" th:each="tag : ${tags}">
                 <a th:href="@{|/zzanfeeds?tag=${tag.substring(1)}|}" th:text="${tag}"></a>
@@ -41,7 +41,7 @@
                 <div class="author-info">
                     <img class="profile-picture"
                          alt="Author Profile Picture"
-                         th:src="@{|https://kr.object.ncloudstorage.com/sulbao-file/${post.userDto.profileImageFileName}|}" />
+                         th:src="@{${post.userDto.getProfileImageFileUrl()}}">
                     <div class="author-name" th:text="${post.userDto.profileName}"></div>
                 </div>
                 <a th:href="@{|zzanfeeds/${post.id}|}">
@@ -113,7 +113,7 @@
                     <div class="post-item">
                         <div class="author-info">
                             <img class="profile-picture" alt="Author Profile Picture"
-                                 src="https://kr.object.ncloudstorage.com/sulbao-file/${post.userDto.profileImageFileName}" />
+                                 src="${post.userDto.profileImageFileUrl}" />
                             <div class="author-name">${post.userDto.profileName}</div>
                         </div>
                         <a href="/zzanfeeds/${post.id}">

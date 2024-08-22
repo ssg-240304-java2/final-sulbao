@@ -46,4 +46,4 @@ bin/
 
 ### Config
 src/main/resources/config/connection-info.properties
-src/main/resources/application-secret-local.yml
+src/main/resources/application.yml

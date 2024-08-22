@@ -361,6 +361,7 @@ $(document).ready(function () {
     productsTable.DataTable({
       info: false,
       lengthChange: false,
+      searching: false,
       lengthMenu: [
         [10, 10, 30, -1],
         [10, 20, 30, "All"],

@@ -47,123 +47,48 @@
         unicode-bidi: isolate;
       }
     </style>
-    <div class="hero hero-inner">
-      <div class="container">
-        <div class="row align-items-center">
-          <div class="col-lg-6 mx-auto text-center">
-            <div class="intro-wrap">
-              <h1 class="mb-0">Product</h1>
-              <p class="text-white">구매 가능한 상품리스트 </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
     <div class="untree_co-section">
       <div class="container">
-          <div style="height: 43px; border-bottom: 1px solid #dedede;"> <!-- 카테고리 영역 -->
-            <div style="width: 940px; margin: 0 auto;"> <!-- 카테고리 표시 영역 -->
-              <div style="padding: 10px 0 8px; line-height: 25px; color: #acacac;">
-                <span>전통주</span>
-                >
-                <span>막걸/탁주</span>
-              </div>
-            </div>
-          </div>
           <div style="width: 940px; margin: 0 auto; padding-bottom: 65px;">
-            <div style="overflow: hidden; padding-bottom: 14px;">
-              <h2 style="padding: 25px 170px 0 0; font-family: helvetica, Arial, NanumGothic, sans-serif; font-size: 24px; line-height: 32px; font-weight: 700; word-break: break-all;">상품명</h2>
-            </div> <!-- 상품명 -->
-            <div style="border-top: 2px solid #242424;">
+            <div class="mt-4">
               <div style="width: 940px; padding-bottom: 40px;">
                 <div class="row" style="padding-top: 45px;">
                   <div style="width: 390px;">
                     <div style="overflow: hidden; width: 388px; height: 388px; border: 1px solid #e8eaee; text-align: center; vertical-align: middle;">
                       <div style="height: 100%; font-size: 0; line-height: 0; vertical-align: top;">
-                        <img style="max-width: 100%; max-height: 100%; vertical-align: middle;" src="https://shopping-phinf.pstatic.net/main_4518864/45188645618.20240806140710.jpg?type=f640" alt="상품이미지">
+                        <img style="max-width: 100%; max-height: 100%; vertical-align: middle;" th:src="${product.productImages[0].saveImgUrl}" alt="상품이미지">
                       </div>
                     </div>
                   </div> <!-- 상품 이미지 영역 -->
+                  <input type="hidden" id="productNo" th:value="${product.productNo}">
                   <div class="ml-5" style="width: 520px;">
                     <div style="padding-bottom: 28px;">
-                      <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: block; padding-right: 155px; font-size: 22px; font-weight: 700; line-height: 40px; color: #d40022;">
-                        최저
-                        <em style="display: inline-block; font-size: 26px; font-family: helvetica, Arial, NanumGothic, sans-serif; vertical-align: -2px;font-style: normal;">4,100</em>원
+                      <h2 style="font-family: NanumGothic, sans-serif;font-size: 24px; line-height: 32px; font-weight: 700; word-break: break-all;" th:text="${product.productName}">복순도가 찹쌀탁주 9도</h2>
+                      <div class="text-right" style="overflow: hidden; font-family: NanumGothic, sans-serif; text-overflow: ellipsis; white-space: nowrap; display: block; font-size: 22px; font-weight: 700; line-height: 40px; color: #d40022;" th:text="|${#numbers.formatInteger(product.productPrice, 3, 'COMMA')}원|">
+
                       </div><!-- 최저 가격 정보-->
-                      <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-right: 155px; font-size: 11px; color: #777;">
-                        <div style="display: inline; vertical-align: top;">
-                          수량 1개
-                        </div>
-                        <div class="product-shop" style="display: inline; vertical-align: top;">
-                          쇼핑몰 명
-                        </div>
-                      </div> <!-- 최저가 수량 및 쇼핑몰명 정보 -->
-                      <div style="position: absolute; top: 0; right: 0;">
-                        <div style="position: relative;">
-                          <a href="#" style="display: inline-block; padding: 0 20px; background-color: #2d3648; font-size: 13px; font-weight: 700; line-height: 40px; color: #fff; letter-spacing: -.5px; vertical-align: top;">최저가 사러가기</a>
-                        </div>
-                      </div> <!-- 최저가 사러가기 버튼 -->
                     </div> <!-- 가격 정보 영역-->
+                    <input type="hidden" id="productPrice" name="productPrice" th:value="${product.productPrice}">
                     <div style="margin: -5px 0 28px; padding: 10px 0 12px; border: 1px solid #e9edf0; background-color: #fafbfc; font-size: 11px; line-height: 18px; color: #444; letter-spacing: -.5px; text-align: center;">
                       <strong style="background-image: url(https://ssl.pstatic.net/shoppingsearch/static/pc/pc-240813-151706/img/sprite/png/spCatalog.png); background-size: 357px 333px; background-position: 0 -92px; width: 203px; height: 21px; overflow: hidden; white-space: nowrap; text-indent: 100%; display: block; margin: 0 auto 4px;">
                         19금 주류의 통신판매에 관한 명령위임고시
                       </strong>
                       관계법령에 따라 미성년자는 구매할 수 없으며, 19세 이상 성인인증을 하셔야 구매가능한 상품입니다.
                     </div> <!-- 주류 구매 경고 메세지  -->
-                    <div style="display: block; unicode-bidi: isolate;">
-                      <div style="display: block; unicode-bidi: isolate;">
-                        <h3 style="margin-bottom: 7px; font-size: 14px; font-family: helvetica, Arial, NanumGothic, sans-serif;  font-weight: 700; line-height: 20px;">쇼핑몰별 최저가</h3>
-                      </div> <!-- 쇼핑몰별 최저가 타이틀 -->
-                      <table class="shop-table" style="width: 100%; table-layout: fixed; border-collapse: collapse; border-top: 1px solid #eaebec; font-size: 11px;">
-                        <colgroup style="display: table-column-group; unicode-bidi: isolate;">
-                          <col style="width:240px">
-                          <col style="width:130px">
-                          <!--                        <col style="width:90px">-->
-                          <col style="width:auto">
-                        </colgroup>
-                        <thead style="display: table-header-group; vertical-align: middle; unicode-bidi: isolate; border-color: inherit;">
-                        <tr style="display: table-row; vertical-align: inherit; unicode-bidi: isolate; border-color: inherit;">
-                          <th scope="col">판매처</th>
-                          <th scope="col">판매가</th>
-                          <!--                          <th scope="col">배송비</th>-->
-                          <th scope="col">사러가기</th>
-                        </tr>
-                        </thead>
-                        <tbody style="display: table-row-group; vertical-align: middle; unicode-bidi: isolate; border-color: inherit;">
-                        <tr style="display: table-row; vertical-align: inherit;cunicode-bidi: isolate; border-color: inherit;">
-                          <td style="height: 30px; line-height: 30px; display: flex;">
-                            <div style="display: flex; align-items: center;">
-                              <a href="#" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; color: #444; text-decoration: none;">DOSU</a>
-                            </div>
-                          </td>
-                          <td style="padding-right: 10px; text-align: center;">
-                            <a href="#" style="color: #d40022;">
-                              최저 <em style="font-style: normal;">4,100</em>
-                            </a>
-                          </td>
-                          <td class="text-center" >
-                            <a href="#" style="display: inline-block; vertical-align: middle; width: 54px; height: 19px; padding-top: 1px; border: 1px solid #f0f0f0; background-color: #fcfcfc; font-size: 11px; line-height: 20px; color: #777; letter-spacing: -1px; text-align: center;">사러가기</a>
-                          </td>
-                        </tr>
-                        <tr style="display: table-row; vertical-align: inherit;cunicode-bidi: isolate; border-color: inherit;">
-                          <td style="height: 30px; line-height: 30px; display: flex;">
-                            <div style="display: flex; align-items: center;">
-                              <a href="#" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; color: #444; text-decoration: none;">더본mall</a>
-                            </div>
-                          </td>
-                          <td style="padding-right: 10px; text-align: center;">
-                            <a href="#" style="color: #000;">
-                              <em style="font-style: normal;">4,100</em>
-                            </a>
-                          </td>
-                          <td class="text-center" >
-                            <a href="#" style="display: inline-block; vertical-align: middle; width: 54px; height: 19px; padding-top: 1px; border: 1px solid #f0f0f0; background-color: #fcfcfc; font-size: 11px; line-height: 20px; color: #777; letter-spacing: -1px; text-align: center;">사러가기</a>
-                          </td>
-                        </tr>
-                        </tbody>
-                      </table><!-- 최저가 비교 쇼핑몰 리스트 -->
-                    </div> <!-- 최저가 비교 쇼핑몰 정보 -->
-                  </div> <!-- 상품정보 + 쇼핑몰 -->
+                    <div class="mt-4">
+                      수량 : <input class="text-center" type="number" id="quantity" value="1" min="1" onkeyup="sumPrice();">
+                    </div>
+                    <div class="mt-4">
+                      <div style="overflow: hidden; font-family: NanumGothic, sans-serif; text-overflow: ellipsis; white-space: nowrap; display: block; font-size: 22px; font-weight: 700; line-height: 40px; color: #d40022;">
+                        <strong style="color: black; text-align: left">총 상품 금액</strong>
+                        <div style="float: right" id="result" th:text="|${#numbers.formatInteger(product.productPrice, 3, 'COMMA')}원|">4,100원</div>
+                        <input type="hidden" id="totalPrice" th:value="${product.productPrice}">
+                      </div>
+                    </div>
+                    <div class="mt-4 align-content-center">
+                      <button type="button" class="btn btn-primary btn-lg btn-block" onclick="addCart();">장바구니</button>
+                    </div>
+                  </div> <!-- 상품정보 -->
                 </div>
               </div><!-- 상품 판매정보 -->
               <div style="width: 940px;">
@@ -172,16 +97,7 @@
                 </div> <!-- 제목 부분 -->
                 <div style="padding-top: 50px;">
                   <div style="overflow: hidden; padding: 0 0 15px;">
-                    <div style="overflow: hidden; width: 940px; margin: 0 auto; text-align: center;">
-                      <div> 아래의 내용은 상품 상세 내용으로 대치
-                        <div>
-
-
-                          <p><img loading="lazy" alt="" src="https://shopping-phinf.pstatic.net/20240111_17/ccf1badd-e79a-4682-8d93-9c5434070122.jpg" style="width: 860px; height: 10043px;" width="900px" height="10509px"></p>
-
-                        </div>
-                      </div>
-                    </div>
+                    <div style="overflow: hidden; width: 940px; margin: 0 auto; text-align: center;" th:utext="${product.productDescription}"></div>
                   </div>
                 </div> <!-- 상세 이미지 -->
               </div> <!-- 상세정보 -->
@@ -190,6 +106,49 @@
         </div>
       </div>
     </div>
+    <script>
+      function sumPrice(){
+        let price = document.getElementById("productPrice").value;
+        let amount = document.getElementById("quantity").value;
+        document.getElementById('result').innerText = (price*amount).toLocaleString('ko-KR')+'원';
+        document.getElementById('totalPrice').value=price*amount;
+      }
+
+
+      function addCart(){
+
+        let isLogin = [[${isLogin}]];
+        if(isLogin === false){
+          if(confirm("로그인이 필요한 서비스입니다. 로그인페이지로 이동하시겠습니까?")){
+            window.location.href='/login';
+          }
+        }
+        let productNo = $('#productNo').val();
+        let totalPrice = $('#totalPrice').val();
+        let quantity = $('#quantity').val();
+        console.log(productNo);
+        $.ajax({
+          method:"post",
+          url:'/product/addCart',
+          data:{
+            "productNo": productNo,
+            "totalPrice" : totalPrice,
+            "quantity" : quantity
+          },
+          success:function (result) {
+            if(result === 'success' ){
+              if(confirm("장바구니로 이동하시겠습니까?")){
+                window.location.href='/orders/cart';
+              }
+            }
+          },
+          error:function () {
+            alert("동작중 오류 발생");
+            document.getElementById('checkFlg').value=false;
+          }
+        });
+      }
+    </script>
   </div>
 
 </body>

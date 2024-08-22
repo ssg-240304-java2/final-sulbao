@@ -43,7 +43,7 @@ public class CartController {
         String userId = login.getUsername();
         List<CartDTO> cartList = cartService.findCartByUserId(userId);
         model.addAttribute("carts", cartList);
-        return "cart";
+        return "cart/cart";
     }
 
     /***
@@ -98,7 +98,7 @@ public class CartController {
         int totalPurchasePrice = cartService.sumCartByCartCodeIn(cartCodes);
         model.addAttribute("carts", checkOutList);
         model.addAttribute("totalPurchasePrice", totalPurchasePrice);
-        return "order";
+        return "cart/order";
     }
 
 
@@ -120,6 +120,6 @@ public class CartController {
         int totalPurchasePrice = cartService.sumCartByCartCodeIn(cartCodes);
         model.addAttribute("carts", checkOutList);
         model.addAttribute("totalPurchasePrice", totalPurchasePrice);
-        return "presentOrder"; // View 또는 redirect 경로
+        return "cart/presentOrder"; // View 또는 redirect 경로
     }
 }

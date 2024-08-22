@@ -47,17 +47,26 @@ public class UserAuthenticationSuccessHandler implements AuthenticationSuccessHa
         session.setAttribute("userNo", userNo);
         session.setAttribute("userId", userId);
         session.setAttribute("role", role);
-        session.setAttribute("profileUrl", profileUrl);
+        session.setAttribute("profileUrl", defaultUrlCheck(profileUrl));
         session.setMaxInactiveInterval(3600); // Session이 60분동안 유지
 
 
         if(role.equals("ROLE_MEMBER")) {
             response.sendRedirect("/");
+        } else if (role.equals("ROLE_PRO_MEMBER")){
+            response.sendRedirect("/");
         } else if (role.equals("ROLE_SELLER")){
-
-            response.sendRedirect("/auth/testSeller");  // 셀러 로그인 후 이동 페이지
+            response.sendRedirect("/main");  // 셀러 로그인 후 이동 페이지
         } else if (role.equals("ROLE_ADMIN")) {
-            response.sendRedirect("/auth/testadmin");   // 어드민 로그인 후 이동 페이지
+            response.sendRedirect("/main");   // 어드민 로그인 후 이동 페이지
         }
+    }
+
+    private String defaultUrlCheck(String profileUrl) {
+
+        if(profileUrl == null || profileUrl.isEmpty()){
+            profileUrl = "https://kr.object.ncloudstorage.com/sulbao-file/profile/default-profile.png";
+        }
+        return profileUrl;
     }
 }

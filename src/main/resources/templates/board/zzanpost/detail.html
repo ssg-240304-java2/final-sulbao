@@ -29,7 +29,7 @@
 
         <div class="post-meta">
             <img alt="작성자 프로필 사진"
-                 th:src="@{|https://kr.object.ncloudstorage.com/sulbao-file/${post.userDto.profileImageFileName}|}">
+                 th:src="@{${post.userDto.profileImageFileUrl}}">
             <div class="username" th:text="${post.userDto.getProfileName()}"></div>
             <div class="edit-buttons" th:if="${user.id == post.userDto.id or isAdmin}">
                 <button onclick="editPost()">수정</button>
@@ -68,7 +68,7 @@
             <div class="comment-container" th:each="comment : ${comments}">
                 <div class="comment">
                     <img alt="comment writer's profile image"
-                         th:src="@{|https://kr.object.ncloudstorage.com/sulbao-file/${comment.userDto.profileImageFileName}|}">
+                         th:src="@{${comment.userDto.profileImageFileUrl}}">
                     <div class="comment-content">
                         <div class="username" th:text="${comment.userDto.profileName}"></div>
                         <div class="comment-text" th:text="${comment.content}"></div>
@@ -84,7 +84,7 @@
                 <form action="/comments/update" class="comment-edit-form" method="post" style="display: none">
                     <div class="comment-input">
                         <img alt="comment writer's profile image"
-                             th:src="@{|https://kr.object.ncloudstorage.com/sulbao-file/${comment.userDto.profileImageFileName}|}">
+                             th:src="@{${comment.userDto.profileImageFileUrl}}">
                         <label>
                             <input class="commentContent" name="content" th:value="${comment.content}" type="text">
                         </label>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{common/layouts/adminDefault}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="content-wrapper">
+            <div class="content">
+
+                <div class="card card-default">
+                    <div class="card-header">
+                        <h2>주문목록</h2>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="mr-3 mb-4">
+                            <form action="/searchorderlist" method="get">
+                                <table class="table table-bordered">
+                                <tr>
+                                    <th>상품명</th>
+                                    <td colspan="3">
+                                        <div class="form-row">
+                                            <input class="form-control col-8" name="searchInput">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        배송상태 변경
+                                    </th>
+                                    <td colspan="3">
+                                        <div class="custom-control custom-radio d-inline-block mr-3">
+                                            <input type="radio" class="custom-control-input" id="searchAll" name="shippingStatus" value="전체" checked
+                                                   th:checked="${shippingStatus == '전체' or shippingStatus == null}">
+                                            <label class="custom-control-label" for="searchAll">전체</label>
+                                        </div>
+                                        <div class="custom-control custom-radio d-inline-block mr-3">
+                                            <input type="radio" class="custom-control-input" id="customCheck1" name="shippingStatus" value="결제완료"
+                                                   th:checked="${shippingStatus == '결제완료'}">
+                                            <label class="custom-control-label" for="customCheck1">결제 완료</label>
+                                        </div>
+                                        <div class="custom-control custom-radio d-inline-block mr-3">
+                                            <input type="radio" class="custom-control-input" id="customCheck2" name="shippingStatus" value="배송준비"
+                                                   th:checked="${shippingStatus == '배송준비'}">
+                                            <label class="custom-control-label" for="customCheck2">배송 준비</label>
+                                        </div>
+                                        <div class="custom-control custom-radio d-inline-block mr-3">
+                                            <input type="radio" class="custom-control-input" id="customCheck3" name="shippingStatus" value="배송중"
+                                                   th:checked="${shippingStatus == '배송중'}">
+                                            <label class="custom-control-label" for="customCheck3">배송 중</label>
+                                        </div>
+                                        <div class="custom-control custom-radio d-inline-block mr-3">
+                                            <input type="radio" class="custom-control-input" id="customCheck4" name="shippingStatus" value="구매확정"
+                                                   th:checked="${shippingStatus == '구매확정'}">
+                                            <label class="custom-control-label" for="customCheck4">구매 확정</label>
+                                        </div>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>주문구분</th>
+                                    <td rowspan="3">
+                                        <div class="custom-control custom-radio d-inline-block mr-3">
+                                            <input type="radio" id="displayAll" name="orderType" value="전체" class="custom-control-input" checked
+                                                   th:checked="${orderType == '전체' or orderType == null}">
+                                            <label class="custom-control-label" for="displayAll">전체</label>
+                                        </div>
+                                        <div class="custom-control custom-radio d-inline-block mr-3">
+                                            <input type="radio" id="displayY" name="orderType" value="일반결제" class="custom-control-input"
+                                                   th:checked="${orderType == '일반결제'}">
+                                            <label class="custom-control-label" for="displayY">일반결제</label>
+                                        </div>
+                                        <div class="custom-control custom-radio d-inline-block mr-3">
+                                            <input type="radio" id="displayN" name="orderType" value="선물결제" class="custom-control-input"
+                                                   th:checked="${orderType == '선물결제'}">
+                                            <label class="custom-control-label" for="displayN">선물결제</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                                <div class="row mt-5 mb-5">
+                                    <div class="col text-center">
+                                        <button type="submit" class="btn btn-sm btn-primary">조회</button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="location.href='/orderlist'">초기화</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="mr-3 mb-4">
+                            <div th:if="${role != 'ROLE_ADMIN'}">
+                                <button type="button" class="btn btn-sm btn-outline-primary" onclick="changeStatusYn('배송준비')">배송준비</button>
+                                <button type="button" class="btn btn-sm btn-outline-primary" onclick="changeStatusYn('배송중')">배송중</button>
+                                <button type="button" class="btn btn-sm btn-outline-primary" onclick="changeStatusYn('구매확정')">구매확정</button>
+                            </div>
+                        </div>
+                        <table id="productsTable" class="table table-product" style="width:100%">
+                            <thead>
+                            <tr>
+                                <th><input type="checkbox" id="cbx_chkAll"></th>
+                                <th style="width: 5%; text-align: center" >주문번호</th>
+                                <th style="width: 35%; text-align: center">상품명</th>
+                                <th style="width: 10%; text-align: center">주문자</th>
+                                <th style="width: 5%; text-align: center">주문 수량</th>
+                                <th style="width: 15%; text-align: center">상품 상태</th>
+                                <th style="width: 15%; text-align: center">총 결제 금액</th>
+                                <th style="width: 15%; text-align: center">결제방법</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="orderProduct : ${orderProductList}">
+                                <td><input type="checkbox" name="chk" th:value="${orderProduct.getCode()}"></td>
+                                <td th:text="${orderProduct.getCode()}" style="text-align: center"></td>
+                                <td th:text="${orderProduct.getName()}" style="text-align: center">Coach Swagger</td>
+                                <td th:text="${orderProduct.getOrderName()}" style="text-align: center"></td>
+                                <td th:text="${orderProduct.getQuantity()}" style="text-align: center">27</td>
+                                <td th:text="${orderProduct.getProductStatus()}" style="text-align: center">1</td>
+                                <td th:text="${orderProduct.getTotalPrice()}" style="text-align: center">2</td>
+                                <td th:text="${orderProduct.getPresent()}" style="text-align: center">2</td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <script>
+            //상품 체크박스
+            $(document).ready(function() {
+                // 상품리스트
+                $("#cbx_chkAll").click(function() {
+                    if($("#cbx_chkAll").is(":checked")) $("input[name=chk]").prop("checked", true);
+                    else $("input[name=chk]").prop("checked", false);
+                });
+
+                $("input[name=chk]").click(function() {
+                    var total = $("input[name=chk]").length;
+                    var checked = $("input[name=chk]:checked").length;
+
+                    if(total != checked) $("#cbx_chkAll").prop("checked", false);
+                    else $("#cbx_chkAll").prop("checked", true);
+                });
+
+            });
+
+            function changeStatusYn(status) {
+                var checkedOrders = $("input[name=chk]:checked").length;
+                if (checkedOrders === 0) {
+                    alert("주문목록을 선택해 주세요.");
+                    return;
+                }
+
+                // 폼 생성 및 제출
+                var form = $('<form>', {
+                    'method': 'post',
+                    'action': '/changeStatus'
+                }).append($('<input>', {
+                    'name': 'status',
+                    'value': status,
+                    'type': 'hidden'
+                })).append($('<input>', {
+                    'name': 'orderCodes',
+                    'value': JSON.stringify($("input[name=chk]:checked").map(function() { return $(this).val(); }).get()),
+                    'type': 'hidden'
+                }));
+
+                $('body').append(form);
+                form.submit();
+            }
+
+        </script>
+    </div>
+
+</body>
+</html>

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{common/layouts/userDefault}">
 <head>
     <meta charset="UTF-8">
@@ -224,11 +225,11 @@
                             <li><a href="#">주문내역조회</a></li>
                         <li class="menu-text">나의 활동</li>
                             <li class="active"><a href="/mypage/myprofile">나의 정보</a></li>
-                            <li><a href="#">나의 게시글</a></li>
-                            <li><a href="#">나의 리뷰</a></li>
+                            <li><a href="/mypage/board">나의 게시글</a></li>
+                            <li><a href="/review/list">나의 리뷰</a></li>
                         <li class="menu-text">고객센터</li>
                             <li><a href="#">문의게시판</a></li>
-                            <li><a href="/mypage/proform">전문가신청</a></li>
+                            <li sec:authorize="hasRole('ROLE_MEMBER')"><a href="/mypage/proform">전문가신청</a></li>
                     </ul>
                 </nav>
             <!-- 여기서 선택한 메뉴에 따라 내용이 바뀜 -->
@@ -236,7 +237,7 @@
                     <form id="profile" action="/mypage/updateProfile" method="POST" enctype="multipart/form-data">
                         <div class="profile-container">
                             <div class="profile-header">
-                                <img th:src="${profileImg.saveImgUrl}" alt="Profile Image" class="profile-image"/>
+                                <img th:src="${profileImg}" alt="Profile Image" class="profile-image"/>
                                 <input type="file" id="profile-img" name="image">
                             </div>
 
@@ -257,9 +258,7 @@
                                     </div>
                                     <hr style="margin-top: 7px">
                                 </div>
-                            </div>
 
-                            <div class="profile-info">
                                 <div class="profile-row">
                                     <label for="email">이메일 주소</label>
                                     <div class="input-wrapper">
@@ -276,9 +275,7 @@
                                     </div>
                                     <hr style="margin-top: 7px">
                                 </div>
-                            </div>
 
-                            <div class="profile-info">
                                 <div class="profile-row">
                                     <label for="birth">생년월일</label>
                                     <div class="input-wrapper">
@@ -304,10 +301,41 @@
                                     </div>
                                     <hr style="margin-top: 7px">
                                 </div>
-                                    <a href="#" style="font-size: 10px;" >탈퇴하기 ></a>
-                                <button type="submit" class="save-button">저장</button>
                             </div>
-                        </div>
+                                <div sec:authorize="hasRole('ROLE_PRO_MEMBER')">
+                                <div class="profile-info">
+                                    <div class="profile-row">
+                                        <label for="business-num">전문가 사업자번호</label>
+                                        <div class="input-wrapper">
+                                            <input type="text" id="business-num" name="businessNumber" th:placeholder="${businessNumber}" disabled>
+                                            <button id="business-num-btn" type="button" onclick="">변경신청</button>
+                                        </div>
+                                        <hr style="margin-top: 7px">
+                                    </div>
+
+                                    <div class="profile-row">
+                                        <label for="link">전문가 관련링크</label>
+                                        <div class="input-wrapper">
+                                            <input type="text" id="link" name="businessLink" th:placeholder="${businessLink}" disabled>
+                                            <button id="business-link-btn" type="button" onclick="">변경신청</button>
+                                        </div>
+                                        <hr style="margin-top: 7px">
+                                    </div>
+
+                                    <div class="profile-row">
+                                        <label for="date">전문가 갱신일</label>
+                                        <div class="input-wrapper">
+                                            <input type="date" id="date" name="date" th:value="${#strings.substring(date, 0, 10)}" disabled>
+                                        </div>
+                                        <hr style="margin-top: 7px">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="profile-row">
+                                <label for="date"><a href="#">탈퇴 하기 ></a></label>
+                            </div>
+                            <button type="submit" class="save-button">저장</button>
+                            </div>
                     </form>
                 </div>
             </div>
