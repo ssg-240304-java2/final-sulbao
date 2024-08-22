@@ -16,7 +16,7 @@
             <div class="row align-items-center">
                 <div class="col-lg-6 mx-auto text-center">
                     <div class="intro-wrap">
-                        <h1 class="mb-0">#짠피드</h1>
+                        <h1 class="mb-0"># Hashtag</h1>
                         <p class="text-white">
                             전통주와 함께한 특별한 순간을 짠피드에 업로드하세요.<br/>
                             지금 당신의 전통주 이야기를 들려주세요.
@@ -29,7 +29,7 @@
 
     <div class="my-container">
         <div class="tag-container">
-            <span class="tag" th:each="tag : ${tags}">
+            <span class="my-tag" th:each="tag : ${tags}">
                 <a th:href="@{|/zzanfeeds?tag=${tag.substring(1)}|}" th:text="${tag}"></a>
             </span>
         </div>
@@ -72,7 +72,7 @@
             const currentTag = new URLSearchParams(window.location.search).get('tag');
 
             if (currentTag) {
-                $('.tag').each(function () {
+                $('.my-tag').each(function () {
                     const tagText = $(this).find('a').text().substring(1);
                     if (tagText === currentTag) {
                         $(this).addClass('active');
@@ -84,7 +84,7 @@
 
             // 태그 클릭 이벤트
             $('.tag').on('click', function () {
-                const tag = $(this).find('a').text().substring(1); // #을 제거한 텍스트
+                const tag = $(this).find('a').text().substring(1);
                 window.location.href = `/zzanfeeds?tag=${tag}`;
             });
 
