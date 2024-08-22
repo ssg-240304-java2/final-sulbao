@@ -47,18 +47,6 @@
         unicode-bidi: isolate;
       }
     </style>
-    <div class="hero hero-inner">
-      <div class="container">
-        <div class="row align-items-center">
-          <div class="col-lg-6 mx-auto text-center">
-            <div class="intro-wrap">
-              <h1 class="mb-0">Product</h1>
-              <p class="text-white">구매 가능한 상품리스트 </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
     <div class="untree_co-section">
       <div class="container">
           <div style="height: 43px; border-bottom: 1px solid #dedede;"> <!-- 카테고리 영역 -->
@@ -66,13 +54,13 @@
               <div style="padding: 10px 0 8px; line-height: 25px; color: #acacac;">
                 <span>전통주</span>
                 >
-                <span>막걸/탁주</span>
+                <span th:text="${comparison.comparisonCategory}">막걸/탁주</span>
               </div>
             </div>
           </div>
           <div style="width: 940px; margin: 0 auto; padding-bottom: 65px;">
             <div style="overflow: hidden; padding-bottom: 14px;">
-              <h2 style="padding: 25px 170px 0 0; font-family: helvetica, Arial, NanumGothic, sans-serif; font-size: 24px; line-height: 32px; font-weight: 700; word-break: break-all;">상품명</h2>
+              <h2 style="padding: 25px 170px 0 0; font-family: helvetica, Arial, NanumGothic, sans-serif; font-size: 24px; line-height: 32px; font-weight: 700; word-break: break-all;" th:text="${comparison.comparisonName}">상품명</h2>
             </div> <!-- 상품명 -->
             <div style="border-top: 2px solid #242424;">
               <div style="width: 940px; padding-bottom: 40px;">
@@ -80,7 +68,7 @@
                   <div style="width: 390px;">
                     <div style="overflow: hidden; width: 388px; height: 388px; border: 1px solid #e8eaee; text-align: center; vertical-align: middle;">
                       <div style="height: 100%; font-size: 0; line-height: 0; vertical-align: top;">
-                        <img style="max-width: 100%; max-height: 100%; vertical-align: middle;" src="https://shopping-phinf.pstatic.net/main_4518864/45188645618.20240806140710.jpg?type=f640" alt="상품이미지">
+                        <img style="max-width: 100%; max-height: 100%; vertical-align: middle;" th:src="${comparison.productImages[0].saveImgUrl}" alt="상품이미지">
                       </div>
                     </div>
                   </div> <!-- 상품 이미지 영역 -->
@@ -88,18 +76,18 @@
                     <div style="padding-bottom: 28px;">
                       <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: block; padding-right: 155px; font-size: 22px; font-weight: 700; line-height: 40px; color: #d40022;">
                         최저
-                        <em style="display: inline-block; font-size: 26px; font-family: helvetica, Arial, NanumGothic, sans-serif; vertical-align: -2px;font-style: normal;">4,100</em>원
+                        <em style="display: inline-block; font-size: 26px; font-family: helvetica, Arial, NanumGothic, sans-serif; vertical-align: -2px;font-style: normal;" th:text="${#numbers.formatInteger(comparison.minPrice, 3, 'COMMA')}">4,100</em>원
                       </div><!-- 최저 가격 정보-->
                       <div>
                         <div style="position: relative;">
-                          <a href="#" style="display: inline-block; padding: 0 20px; background-color: #2d3648; font-size: 13px; font-weight: 700; line-height: 40px; color: #fff; letter-spacing: -.5px; vertical-align: top;">최저가 사러가기</a>
+                          <a th:href="@{/product/user/detail/}+${productList[0].productNo}" style="display: inline-block; padding: 0 20px; background-color: #2d3648; font-size: 13px; font-weight: 700; line-height: 40px; color: #fff; letter-spacing: -.5px; vertical-align: top;">최저가 사러가기</a>
                         </div>
                       </div> <!-- 최저가 사러가기 버튼 -->
                       <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-right: 155px; font-size: 11px; color: #777;">
                         <div style="display: inline; vertical-align: top;">
                           수량 1개
                         </div>
-                        <div class="product-shop" style="display: inline; vertical-align: top;">
+                        <div class="product-shop" style="display: inline; vertical-align: top;" th:text="${productList[0].sellerInfo.sellerInfo.businessName}">
                           쇼핑몰 명
                         </div>
                       </div> <!-- 최저가 수량 및 쇼핑몰명 정보 -->
@@ -119,76 +107,32 @@
                         <colgroup style="display: table-column-group; unicode-bidi: isolate;">
                           <col style="width:240px">
                           <col style="width:130px">
-                          <!--                        <col style="width:90px">-->
                           <col style="width:auto">
                         </colgroup>
                         <thead style="display: table-header-group; vertical-align: middle; unicode-bidi: isolate; border-color: inherit;">
                         <tr style="display: table-row; vertical-align: inherit; unicode-bidi: isolate; border-color: inherit;">
                           <th scope="col">판매처</th>
                           <th scope="col">판매가</th>
-                          <!--                          <th scope="col">배송비</th>-->
                           <th scope="col">사러가기</th>
                         </tr>
                         </thead>
                         <tbody style="display: table-row-group; vertical-align: middle; unicode-bidi: isolate; border-color: inherit;">
-                        <tr style="display: table-row; vertical-align: inherit;cunicode-bidi: isolate; border-color: inherit;">
+                        <tr style="display: table-row; vertical-align: inherit;cunicode-bidi: isolate; border-color: inherit;" th:each="product, i : ${productList}">
                           <td style="height: 30px; line-height: 30px; display: flex;">
                             <div style="display: flex; align-items: center;">
-                              <a href="/product/user/detail/1" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; color: #444; text-decoration: none;">상품1</a>
+                              <a th:href="@{/product/user/detail/}+${product.productNo}" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; color: #444; text-decoration: none;" th:text="${product.sellerInfo.sellerInfo.businessName}">상품1</a>
                             </div>
                           </td>
                           <td style="padding-right: 10px; text-align: center;">
-                            <a href="/product/user/detail/1" style="color: #d40022;">
-                              최저 <em style="font-style: normal;">4,100</em>
+                            <a th:href="@{/product/user/detail/}+${product.productNo}" style="color: #d40022;" th:if="${i.index == 0}">
+                              최저 <em style="font-style: normal;" th:text="|${#numbers.formatInteger(product.productPrice, 3, 'COMMA')}원|">4,100</em>
+                            </a>
+                            <a th:href="@{/product/user/detail/}+${product.productNo}" style="color: #000;" th:unless="${i.index == 0}">
+                              <em style="font-style: normal;" th:text="|${#numbers.formatInteger(product.productPrice, 3, 'COMMA')}원|">4,100</em>
                             </a>
                           </td>
                           <td class="text-center" >
-                            <a href="/product/user/detail/1" style="display: inline-block; vertical-align: middle; width: 54px; height: 19px; padding-top: 1px; border: 1px solid #f0f0f0; background-color: #fcfcfc; font-size: 11px; line-height: 20px; color: #777; letter-spacing: -1px; text-align: center;">사러가기</a>
-                          </td>
-                        </tr>
-                        <tr style="display: table-row; vertical-align: inherit;cunicode-bidi: isolate; border-color: inherit;">
-                          <td style="height: 30px; line-height: 30px; display: flex;">
-                            <div style="display: flex; align-items: center;">
-                              <a href="/product/user/detail/2" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; color: #444; text-decoration: none;">상품2</a>
-                            </div>
-                          </td>
-                          <td style="padding-right: 10px; text-align: center;">
-                            <a href="/product/user/detail/2" style="color: #000;">
-                              <em style="font-style: normal;">4,100</em>
-                            </a>
-                          </td>
-                          <td class="text-center" >
-                            <a href="/product/user/detail/2" style="display: inline-block; vertical-align: middle; width: 54px; height: 19px; padding-top: 1px; border: 1px solid #f0f0f0; background-color: #fcfcfc; font-size: 11px; line-height: 20px; color: #777; letter-spacing: -1px; text-align: center;">사러가기</a>
-                          </td>
-                        </tr>
-                        <tr style="display: table-row; vertical-align: inherit;cunicode-bidi: isolate; border-color: inherit;">
-                          <td style="height: 30px; line-height: 30px; display: flex;">
-                            <div style="display: flex; align-items: center;">
-                              <a href="/product/user/detail/3" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; color: #444; text-decoration: none;">상품3</a>
-                            </div>
-                          </td>
-                          <td style="padding-right: 10px; text-align: center;">
-                            <a href="/product/user/detail/3" style="color: #000;">
-                              <em style="font-style: normal;">4,100</em>
-                            </a>
-                          </td>
-                          <td class="text-center" >
-                            <a href="/product/user/detail/3" style="display: inline-block; vertical-align: middle; width: 54px; height: 19px; padding-top: 1px; border: 1px solid #f0f0f0; background-color: #fcfcfc; font-size: 11px; line-height: 20px; color: #777; letter-spacing: -1px; text-align: center;">사러가기</a>
-                          </td>
-                        </tr>
-                        <tr style="display: table-row; vertical-align: inherit;cunicode-bidi: isolate; border-color: inherit;">
-                          <td style="height: 30px; line-height: 30px; display: flex;">
-                            <div style="display: flex; align-items: center;">
-                              <a href="/product/user/detail/4" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; color: #444; text-decoration: none;">상품4</a>
-                            </div>
-                          </td>
-                          <td style="padding-right: 10px; text-align: center;">
-                            <a href="/product/user/detail/4" style="color: #000;">
-                              <em style="font-style: normal;">4,100</em>
-                            </a>
-                          </td>
-                          <td class="text-center" >
-                            <a href="/product/user/detail/4" style="display: inline-block; vertical-align: middle; width: 54px; height: 19px; padding-top: 1px; border: 1px solid #f0f0f0; background-color: #fcfcfc; font-size: 11px; line-height: 20px; color: #777; letter-spacing: -1px; text-align: center;">사러가기</a>
+                            <a th:href="@{/product/user/detail/}+${product.productNo}" style="display: inline-block; vertical-align: middle; width: 54px; height: 19px; padding-top: 1px; border: 1px solid #f0f0f0; background-color: #fcfcfc; font-size: 11px; line-height: 20px; color: #777; letter-spacing: -1px; text-align: center;">사러가기</a>
                           </td>
                         </tr>
                         </tbody>
@@ -204,13 +148,7 @@
                 <div style="padding-top: 50px;">
                   <div style="overflow: hidden; padding: 0 0 15px;">
                     <div style="overflow: hidden; width: 940px; margin: 0 auto; text-align: center;">
-                      <div> 아래의 내용은 상품 상세 내용으로 대치
-                        <div>
-
-
-                          <p><img loading="lazy" alt="" src="https://shopping-phinf.pstatic.net/20240111_17/ccf1badd-e79a-4682-8d93-9c5434070122.jpg" style="width: 860px; height: 10043px;" width="900px" height="10509px"></p>
-
-                        </div>
+                      <div th:utext="${comparison.comparisonDescription}">
                       </div>
                     </div>
                   </div>

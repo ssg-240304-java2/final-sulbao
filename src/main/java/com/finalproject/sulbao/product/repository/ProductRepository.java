@@ -47,4 +47,5 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     Integer findByMinProductPrice(Long comparisonNo);
 
     List<Product> findByComparison_comparisonNoOrderByProductPriceAsc(long comparisonNo);
+
 }
