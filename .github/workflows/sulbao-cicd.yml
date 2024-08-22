@@ -15,7 +15,6 @@ on:
 jobs:
   # 1. CI - 통합(build) 
   build:
-    if: github.repository == 'ssg-240304-java2/final-sulbao'
     runs-on: ubuntu-latest
     steps:
     # 저장소의 커밋된 main브랜치 내려받기

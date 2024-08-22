@@ -3,10 +3,12 @@ package com.finalproject.sulbao.board.service;
 import com.finalproject.sulbao.board.domain.BoardCategory;
 import com.finalproject.sulbao.board.domain.Post;
 import com.finalproject.sulbao.board.domain.PostImage;
+import com.finalproject.sulbao.board.dto.AdminPostSearchRequestDto;
 import com.finalproject.sulbao.board.dto.PostDto;
 import com.finalproject.sulbao.board.dto.ZzanfeedRequestDto;
 import com.finalproject.sulbao.board.repository.BoardCategoryRepository;
 import com.finalproject.sulbao.board.repository.PostRepository;
+import com.finalproject.sulbao.board.repository.PostSpecification;
 import com.finalproject.sulbao.common.file.FileService;
 import com.finalproject.sulbao.login.model.entity.Login;
 import com.finalproject.sulbao.login.model.repository.LoginRepository;
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -184,4 +187,28 @@ public class PostService {
         Page<Post> posts = postRepository.findAllByLogin(login, pageable);
         return posts.map(PostDto::toPostDto);
     }
+
+    public List<PostDto> search(AdminPostSearchRequestDto request) {
+        Specification<Post> spec = Specification.where(null);
+
+        if (request.getKeyword() != null && !request.getKeyword().isEmpty()) {
+            spec = switch (request.getType()) {
+                case "title" -> spec.and(PostSpecification.titleContains(request.getKeyword()));
+                case "content" -> spec.and(PostSpecification.contentContains(request.getKeyword()));
+                default -> spec;
+            };
+        }
+
+        if (request.getCategory() != null && !request.getCategory().isEmpty()) {
+            spec = spec.and(PostSpecification.categoryEquals(request.getCategory()));
+        }
+
+        if (request.getStartDate() != null && request.getEndDate() != null) {
+            spec = spec.and(PostSpecification.dateBetween(request.getStartDate(), request.getEndDate()));
+        }
+
+        return postRepository.findAll(spec).stream().map(PostDto::toPostDto).toList();
+
+    }
+
 }
