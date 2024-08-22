@@ -86,7 +86,7 @@ public class ReviewController {
 
         List<ReviewDTO> reviewList = reviewService.findByUserNo((Long) session.getAttribute("userNo"));
         model.addAttribute("reviewList", reviewList);
-
+        model.addAttribute("menu","review");
         return "review/list";
     }
 

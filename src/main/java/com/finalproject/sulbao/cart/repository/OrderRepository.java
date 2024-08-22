@@ -22,4 +22,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Modifying
     @Query(value ="Update Order k SET k.delivery= :deliveryStatus where k.orderCode IN :orderCodes")
     void updateDeliveryByOrderCode(List<Long> orderCodes, String deliveryStatus);
+
+
+    @Query(value = "select k from Order k where k.userId = :userId order by k.orderCode")
+    List<Order> findByUserId(String userId);
 }
