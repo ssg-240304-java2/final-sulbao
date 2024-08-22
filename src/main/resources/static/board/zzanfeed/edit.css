@@ -134,15 +134,11 @@
     padding: 10px 20px;
     font-size: 1rem;
     color: white;
-    background-color: #1A374D;
+    background-color: #7E8EF1;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
-}
-
-.upload-button:hover {
-    background-color: #0056b3;
 }
 
 .editor-container {
@@ -189,14 +185,10 @@
     padding: 10px 20px;
     font-size: 1rem;
     color: white;
-    background-color: #1A374D;
+    background-color: #7E8EF1;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
     margin: 5%;
-}
-
-.submit-button:hover {
-    background-color: #0056b3;
 }
