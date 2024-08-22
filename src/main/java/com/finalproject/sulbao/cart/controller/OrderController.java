@@ -328,13 +328,14 @@ public class OrderController {
             }
             orderListDTO.setAmount(orderDTOList.get(i).getOrderItems().iterator().next().getAmount());
             orderListDTO.setTotalPirce(orderDTOList.get(i).getOrderItems().iterator().next().getTotalPrice());
+            orderListDTO.setStatus(orderDTOList.get(i).getDelivery());
             orderListDTO.setOrderDate(orderDTOList.get(i).getOrderDate());
             orderListDTOList.add(orderListDTO);
         }
 
         System.out.println("orderListDTOList = " + orderListDTOList);
         model.addAttribute("orders", orderListDTOList);
-
+        model.addAttribute("menu","order");
         return "cart/memberorder";
     }
 

@@ -1,5 +1,6 @@
 package com.finalproject.sulbao.cart.controller;
 
+import com.finalproject.sulbao.board.common.SessionHandler;
 import com.finalproject.sulbao.cart.dto.*;
 
 import com.finalproject.sulbao.cart.service.CartService;
@@ -16,6 +17,7 @@ import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,15 +38,17 @@ public class KakaoController {
     private final OrderItemService orderItemService;
     private final CartService cartService;
     private final EmailService emailService;
+    private final SessionHandler sessionHandler;
 
 
     @Autowired
-        public KakaoController(KakaoPayService kakaoPayService,OrderService orderService, OrderItemService orderItemService, CartService cartService, EmailService emailService) {
+        public KakaoController(KakaoPayService kakaoPayService,OrderService orderService, OrderItemService orderItemService, CartService cartService, EmailService emailService, SessionHandler sessionHandler) {
         this.kakaoPayService = kakaoPayService;
         this.orderService = orderService;
         this.orderItemService = orderItemService;
         this.cartService = cartService;
         this.emailService = emailService;
+        this.sessionHandler = sessionHandler;
     }
 
     @PostMapping("/kakaopay")
@@ -98,7 +102,12 @@ public class KakaoController {
     }
 
     @GetMapping("/completed")
-    public String payCompleted(@RequestParam("pg_token") String pgToken, HttpServletRequest request) {
+    public String payCompleted(@RequestParam("pg_token") String pgToken, HttpServletRequest request, Authentication authentication) {
+
+        if(!sessionHandler.isLogin(authentication)){
+            return "redirect:/login";
+        }
+
         String tid = SessionUtils.getStringAttributeValue("tid");
         log.info("결제승인 요청을 인증하는 토큰: " + pgToken);
         log.info("결제 고유번호: " + tid);
