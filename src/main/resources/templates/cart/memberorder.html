@@ -4,7 +4,30 @@
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         layout:decorate="~{common/layouts/mypageDefault}">
 <head>
-  <title>임시 주문리스트</title>
+    <title>임시 주문리스트</title>
+    <style>
+        /* 제품명 크기 키우기 */
+        .product-name {
+          font-size: 1.5em; /* 크기 증가 */
+          display: block;
+          margin-top: 10px;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        /* 수량, 총 가격, 상태의 값을 중앙에 정렬 */
+        .product-price,
+        .quantity,
+        .Status-status,
+        .total-price {
+          text-align: center;
+          vertical-align: middle; /* 수직 중앙 정렬 */
+        }
+
+        .table td {
+          vertical-align: middle; /* 모든 셀에 대해 수직 중앙 정렬 */
+        }
+      </style>
 </head>
 
 <body>
@@ -17,19 +40,22 @@
         <tr>
           <th style="width: 20%">&nbsp;</th>
           <th style="width: 35%">Product</th>
-          <th style="width: 10%">Quantity</th>
-          <th style="width: 15%">TotalPrice</th>
-          <th style="width: 20%">Date</th>
+          <th style="width: 10%; text-align: center" >Quantity</th>
+          <th style="width: 10%; text-align: center">TotalPrice</th>
+          <th style="width: 15%; text-align: center">Status</th>
+          <th style="width: 10%; text-align: center">Date</th>
         </tr>
         </thead>
         <tbody>
         <tr class="alert" role="alert" th:each="order:${orders}">
-          <td>
-            <div class="img" th:style="'background-image:url(' + ${order.getPicture()} + ');'"></div>
+          <td style="height: 150px; width: 150px;">
+<!--            <div class="img" th:style="'background-image:url(' + ${order.getPicture()} + ');'"></div>-->
+            <img th:src="${order.getPicture()}" width="150px" height="150px"/>
           </td>
           <td>
             <div class="product-info">
-              <span class="company-name" th:text="${order.getCompany()}"></span>
+              <span class="company-name" th:text="${order.getCompany()}" ></span>
+              <br>
               <span class="product-name" th:text="${order.getName()}"></span>
             </div>
           </td>
@@ -38,6 +64,9 @@
           </td>
           <td class="quantity">
             <span class="quantity-number" th:text="${order.getTotalPirce()}"></span>
+          </td>
+          <td class="Status-status">
+            <span class="status-status-status" th:text="${order.getStatus()}"></span>
           </td>
           <td class="total-price">
             <span class="date-date" th:text="${order.getOrderDate()}"></span>

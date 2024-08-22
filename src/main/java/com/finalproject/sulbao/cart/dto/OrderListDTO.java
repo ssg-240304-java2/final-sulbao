@@ -15,5 +15,6 @@ public class OrderListDTO {
     private String name;
     private int amount;
     private int totalPirce;
+    private String status;
     private LocalDate orderDate;
 }

@@ -42,12 +42,6 @@ public class CartController {
      */
     @GetMapping("/cart")
     public String viewCart(Model model,Authentication authentication, HttpSession session){
-        //세션 존재여부 확인
-//        if(session.getAttribute("userNo") == null){
-//            return "redirect:/login";
-//        }
-//        LoginDetails login = (LoginDetails) authentication.getPrincipal();
-//        String userId = login.getUsername();
         if(!sessionHandler.isLogin(authentication)){
             return "redirect:/login";
         }
@@ -101,10 +95,6 @@ public class CartController {
      */
     @PostMapping("/cart/order_form")
     public String orderForm(@RequestParam("cartCodes") List<Long> cartCodes, Model model, HttpSession session, Authentication authentication) {
-//        if(session.getAttribute("userNo") == null){
-//            return "redirect:/login";
-//        }
-//
         Long userNo = sessionHandler.getUserId(authentication);
         Login login1 = loginRepository.findById(userNo).orElseThrow();
         String userId1 = login1.getUserId();
