@@ -22,7 +22,7 @@ public class SessionHandler {
     }
 
     public boolean isLogin(Authentication authentication) {
-        return ((LoginDetails) authentication.getPrincipal()).getUserNo() != null;
+        return authentication != null;
     }
 
     public Long getUserId(Authentication authentication) {

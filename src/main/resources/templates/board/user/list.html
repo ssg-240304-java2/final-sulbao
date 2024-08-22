@@ -39,7 +39,7 @@
 
                 <div class="content">
                     <div class="profile-section">
-                        <img th:src='|https://kr.object.ncloudstorage.com/sulbao-file/${user.profileImageFileName}|' alt="프로필 사진" class="profile-image">
+                        <img th:src='@{${user.getProfileImageFileUrl()}}' alt="프로필 사진" class="profile-image">
                         <div class="profile-info">
                             <div th:text="${user.profileName}" class="nickname"></div>
                             <div th:text='|${"@" + user.userId}|' class="user-id"></div>
