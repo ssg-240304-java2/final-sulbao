@@ -3,6 +3,7 @@ package com.finalproject.sulbao.cart.repository;
 import com.finalproject.sulbao.cart.domain.Carts;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -25,4 +26,15 @@ public interface CartRepository extends JpaRepository<Carts, Integer> {
     Carts findByCartCodes(@Param("cartCode") Long cartCode);
 
     List<Carts> findByToken(String token);
+
+    @Query(value = "select k from Carts k join k.products j where j.productNo = :productNo AND k.userId = :userId")
+    List<Carts> findCartByProductNo(Long productNo, String userId);
+
+    @Modifying
+    @Query(value = "update Carts k set k.amount = :quantity where k.cartCode = :cartCode")
+    void updateQuantityByCartNo(Long cartCode, int quantity);
+
+    @Modifying
+    @Query(value = "update Carts k set k.totalPrice = :totalPrice where k.cartCode = :cartCode")
+    void updateTotalPriceByCartNo(Long cartCode, int totalPrice);
 }
