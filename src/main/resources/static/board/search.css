@@ -114,11 +114,6 @@
     margin-top: 10px;
 }
 
-.title {
-    font-weight: bold;
-    font-size: 1.4rem;
-}
-
 .post-meta-icons {
     display: flex;
     justify-content: space-between;
@@ -206,6 +201,7 @@
     font-weight: bold;
     font-size: 1.4rem;
     margin-top: 10px;
+    color: black;
 }
 
 .author {
