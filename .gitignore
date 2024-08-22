@@ -5,7 +5,6 @@ build/
 !**/src/test/**/build/
 /src/main/resources/application-secret-local.yml
 
-
 ### IntelliJ IDEA ###
 .idea/
 .idea/modules.xml
@@ -18,7 +17,6 @@ build/
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
-*.yml
 
 ### Eclipse ###
 .apt_generated
