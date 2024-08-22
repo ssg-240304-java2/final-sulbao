@@ -40,7 +40,7 @@ public class UserProductController {
 
         // 쇼핑몰 정보 취득
         for (ProductComparisonDTO comparison : comparisonList){
-            List<ProductDTO> productList = productService.findByComparisonNo(comparison.getComparisonNo());
+            List<ProductDTO> productList = productService.findByProductPriceToComparisonNo(comparison.getComparisonNo());
             comparison.setShoppingMallInfo(productList);
         }
 
@@ -52,6 +52,19 @@ public class UserProductController {
     @GetMapping("/user/low/{comparisonNo}")
     public String userDetail(@PathVariable Long comparisonNo ,Model model) {
         log.info("comparisonNo ===== {}", comparisonNo);
+
+
+        //최저가 비교 상품 구분
+        ProductComparisonDTO comparison = productService.findByComparisonNo(comparisonNo);
+        log.info("최저가 비교 상품 구분 ================== {}",comparison);
+
+        // 쇼핑몰 정보
+        List<ProductDTO> productList = productService.findByProductPriceToComparisonNo(comparison.getComparisonNo());
+        log.info("쇼핑몰 정보 리스트 ================== {}",productList);
+
+        model.addAttribute("comparison", comparison);
+        model.addAttribute("productList", productList);
+
         return "product/low";
     }
 
