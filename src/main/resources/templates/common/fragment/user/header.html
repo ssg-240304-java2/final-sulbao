@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>About Us</title>
@@ -19,7 +18,7 @@
         <div class="site-mobile-menu-body"></div>
     </div>
 
-    <nav class="site-nav" style="background-color: #6998AB;">
+    <nav class="site-nav" style="background-color: #7E8EF1;">
         <div class="container">
             <div class="site-navigation">
                 <a href="/">
@@ -27,15 +26,14 @@
                 </a>
                 <ul class="js-clone-nav d-none d-lg-inline-block text-left site-menu" style="margin-left: -12px;">
                     <li class="active"><a href="/zzanfeeds">#짠피드</a></li>
-                    <li><a href="#">매거진</a></li>
+                    <li><a href="/magazine">매거진</a></li>
                     <li><a href="/zzanposts">술포스트</a></li>
                     <li><a href="#">쇼핑</a></li>
-                    <li><a href="#">이벤트</a></li>
 
                     <li>
                         <form action="/search" method="GET">
-                            <input type="text" name="search" id="search" class="search" placeholder="요즘 핫한 막걸리?" style="padding-left: 30px; width: 250px;">
-                            <button type="submit" style="border: none; background: none; cursor: pointer; margin-left: -54px; position: absolute;">
+                            <input type="text" name="keyword" id="search" class="search" placeholder="요즘 핫한 막걸리?" style="padding-left: 30px; width: 250px;">
+                            <button type="submit" style="border: none; background: none; cursor: pointer; margin-left: -36px; position: absolute;">
                                 <span class="material-icons">search</span>
                             </button>
                         </form>
@@ -63,13 +61,12 @@
                             <li>
                             <a href="/orders/cart">
                                 <span class="material-icons">shopping_cart</span>
-                                <span style="width:18px; height:18px; border-radius: 50%; border: none; background: deepskyblue; margin-left: -7px; margin-top: -7px; position: absolute; text-align: center; color: white">3</span>
+<!--                                <span style="width:18px; height:18px; border-radius: 50%; border: none; background: deepskyblue; margin-left: -7px; margin-top: -7px; position: absolute; text-align: center; color: white">3</span>-->
                             </a>
                             </li>
-<!--                            <li><a href="/mypage/myprofile" th:text="|${#authentication.getName()} 님|"></a></li>-->
                             <li><a href="/mypage/myprofile">
-                                <img th:src="${session.get('profileUrl')}" alt="profile" class="profile" onclick="href='/mypage/myprofile'">
-                                <img sec:authorize="hasRole('ROLE_PRO_MEMBER')" src="/user/images/icon-crown.png" alt="role" style="width:18px; height:18px; border-radius: 50%; border: none; background: #ffdf7e; margin-left: -7px; margin-top: -4px; position: absolute;">
+                                <img th:src="${session.get('profileUrl')}" id="profileImage" alt="profile" class="profile" onclick="href='/mypage/myprofile'">
+                                <img sec:authorize="hasRole('ROLE_PRO_MEMBER')" src="/user/images/icon-crown.png" alt="role" style="width:18px; height:18px; border-radius: 50%; border: none; background: #ffdf7e; margin-left: -7px; margin-top: -10px; position: absolute;">
                             </a></li>
                             <li><a href="/logout">로그아웃</a></li>
                             <li class="has-children">
@@ -84,9 +81,7 @@
                             </li>
                         </ul>
                     </li>
-
                 </ul>
-
                 <a href="#" class="burger ml-auto float-right site-menu-toggle js-menu-toggle d-inline-block d-lg-none light" data-toggle="collapse" data-target="#main-navbar">
                     <span></span>
                 </a>
