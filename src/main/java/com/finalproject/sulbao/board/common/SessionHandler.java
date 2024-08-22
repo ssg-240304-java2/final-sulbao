@@ -42,13 +42,13 @@ public class SessionHandler {
     }
 
     public UserDto getUser(Authentication authentication) {
-        Long userId = ((LoginDetails) authentication.getPrincipal()).getUserNo();
-        if (userId == null) {
+        if (isLogin(authentication)) {
+            Long userId = ((LoginDetails) authentication.getPrincipal()).getUserNo();
+            Login user = loginRepository.findById(userId).orElseThrow();
+            return UserDto.toUserDto(user);
+        } else {
             return UserDto.getAnonymous();
         }
-
-        Login user = loginRepository.findById(userId).orElseThrow();
-        return UserDto.toUserDto(user);
     }
 
 }
