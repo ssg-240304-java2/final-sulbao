@@ -1,4 +1,4 @@
-.container {
+.my-container {
     max-width: 1300px;
     padding: 20px;
     margin: 30px auto 0;
@@ -59,6 +59,7 @@
 .title {
     font-weight: bold;
     font-size: 1.4rem;
+    color: black;
 }
 
 .author {

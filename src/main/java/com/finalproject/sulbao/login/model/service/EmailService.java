@@ -61,6 +61,8 @@ public class EmailService {
             System.out.println(emailMessage.getTo() + "=========================================이메일 서버 false");
         }
 
+
+
         String token = UUID.randomUUID().toString();
 
 
@@ -75,9 +77,10 @@ public class EmailService {
             mimeMessageHelper.setTo(emailMessage.getTo()); // 메일 수신자
             mimeMessageHelper.setSubject(emailMessage.getSubject()); // 메일 제목
 
-            String htmlContent = "<a id='code' href='" + link + "'>인증 링크를 클릭하세요</a>";
+            String htmlContent = "<a id='code' href='" + link + "'>링크를 눌러 배송지를 등록해주세요.</a>";
 
             mimeMessageHelper.setText(htmlContent, true); // 메일 본문 내용, HTML 여부
+            mimeMessageHelper.setText(setContext(link, type), true); // 메일 본문 내용, HTML 여부
             javaMailSender.send(mimeMessage);
 
             return token;

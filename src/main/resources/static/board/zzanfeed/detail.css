@@ -1,4 +1,4 @@
-.container {
+.my-container {
     max-width: 1300px;
     padding: 20px;
     margin: 30px auto 0;
@@ -57,7 +57,7 @@
 }
 
 .post-meta .edit-buttons button {
-    background-color: #1A374D;
+    background-color: #7E8EF1;
     color: #ffffff;
     border: none;
     border-radius: 5px;
@@ -128,9 +128,14 @@
     outline: none;
 }
 
-.thumbs-up {
+/*.thumbs-up {
     width: 70px;
     height: 70px;
+}*/
+
+.thumbs-up {
+    font-size: 3.5rem;
+    margin-top: 40%;
 }
 
 .recommend-button img {
@@ -162,7 +167,6 @@
     font-weight: bold;
     margin-bottom: 20px;
     font-size: large;
-    border-bottom: 1px solid #ddd;
 }
 
 .comments-count span {
@@ -173,8 +177,8 @@
     display: flex;
     align-items: center;
     margin-bottom: 40px;
-    /*border-top: 1px solid #ddd;*/
-    padding-top: 10px;
+    border-top: 1px solid #ddd;
+    padding-top: 30px;
 }
 
 .comment-input img {
@@ -194,7 +198,7 @@
 }
 
 .comment-input button {
-    background-color: #1A374D;
+    background-color: #7E8EF1;
     color: #ffffff;
     border: none;
     border-radius: 5px;
@@ -206,7 +210,6 @@
 }
 
 .comment-input button:hover {
-    background-color: #2A4D6E;
     transform: scale(1.05);
 }
 
@@ -257,7 +260,7 @@
 }
 
 .comment .edit-buttons button {
-    background-color: #1A374D;
+    background-color: #7E8EF1;
     color: #ffffff;
     border: none;
     border-radius: 5px;
@@ -269,7 +272,6 @@
 }
 
 .comment .edit-buttons button:hover {
-    background-color: #2A4D6E;
     transform: scale(1.05);
 }
 
@@ -294,7 +296,7 @@
 }
 
 .comment-edit-form button {
-    background-color: #1A374D;
+    background-color: #7E8EF1;
     color: #ffffff;
     border: none;
     border-radius: 5px;

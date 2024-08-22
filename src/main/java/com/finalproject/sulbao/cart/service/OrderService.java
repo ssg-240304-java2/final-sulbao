@@ -104,4 +104,11 @@ public class OrderService {
     public void updateDeliveryByOrderCode(List<Long> orderCodes , String deliveryStatus) {
         orderRepository.updateDeliveryByOrderCode(orderCodes, deliveryStatus);
     }
+
+    public List<OrderDTO> findByUserId(String userId) {
+        List<Order> orders = orderRepository.findByUserId(userId);
+        return orders.stream()
+                .map(order -> modelMapper.map(order, OrderDTO.class))
+                .collect(Collectors.toList());
+    }
 }

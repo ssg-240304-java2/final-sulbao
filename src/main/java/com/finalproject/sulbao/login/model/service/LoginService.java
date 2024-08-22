@@ -1,15 +1,14 @@
 package com.finalproject.sulbao.login.model.service;
 
-import com.amazonaws.services.dynamodbv2.xspec.M;
 import com.finalproject.sulbao.common.file.FileDto;
 import com.finalproject.sulbao.common.file.FileService;
 import com.finalproject.sulbao.login.model.dto.*;
 import com.finalproject.sulbao.login.model.entity.Login;
-import com.finalproject.sulbao.login.model.vo.MemberImage;
 import com.finalproject.sulbao.login.model.entity.MemberInfo;
 import com.finalproject.sulbao.login.model.entity.RoleType;
 import com.finalproject.sulbao.login.model.repository.LoginRepository;
 import com.finalproject.sulbao.login.model.repository.MemberInfoRepository;
+import com.finalproject.sulbao.login.model.vo.MemberImage;
 import com.finalproject.sulbao.login.model.vo.SellerInfo;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -100,7 +99,7 @@ public class LoginService {
         Login login = loginRepository.findByUserId(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 사용자 입니다."));
         MemberInfo memberInfo = memberRepository.findByUserId(userId);
-        log.info("sevice member ============================> {}", memberInfo);
+//        log.info("sevice member ============================> {}", memberInfo);
         MemberImage profileImag = memberInfo.getMemberImage();
 
         if(profileImag == null) {
@@ -117,10 +116,6 @@ public class LoginService {
         String businessNumber = memberInfo.getProMemberInfo().getBusinessNumber();
         String businessLink = memberInfo.getProMemberInfo().getBusinessLink();
         String date = String.valueOf(memberInfo.getProMemberInfo().getUpdatedAt());
-
-        log.info("business info ================+>>>>>>>>>>>>>>>>>>>>>>> {}", businessNumber);
-        log.info("business info ================+>>>>>>>>>>>>>>>>>>>>>>> {}", businessLink);
-        log.info("business info ================+>>>>>>>>>>>>>>>>>>>>>>> {}", date);
 
         MemberProfileDto member = new MemberProfileDto(profileImag, profileName, profileText, email, birth, phone, gender, businessNumber, businessLink, date);
         return member;

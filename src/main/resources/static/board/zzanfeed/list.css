@@ -1,4 +1,4 @@
-.container {
+.my-container {
     max-width: 1300px;
     padding: 20px;
     margin: 30px auto 0;
@@ -26,7 +26,7 @@
     margin-bottom: 20px;
 }
 
-.tag {
+.my-tag {
     background-color: #f1f1f1;
     border-radius: 5px;
     padding: 5px 10px;
@@ -35,12 +35,16 @@
     transition: background-color 0.3s ease;
 }
 
-.tag:hover {
+.my-tag a {
+    color: black;
+}
+
+.my-tag:hover {
     background-color: #ddd;
 }
 
-.tag.active {
-    background-color: #ced4da;
+.my-tag.active {
+    background-color: #7E8EF1;
     color: #fff;
     font-weight: bold;
 }
@@ -105,6 +109,7 @@
 .title {
     font-weight: bold;
     font-size: 1.4rem;
+    color: black;
 }
 
 .post-meta-icons {

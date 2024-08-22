@@ -99,4 +99,19 @@ public class CartService {
                 .map(cart -> modelMapper.map(cart, CartDTO.class))
                 .collect(Collectors.toList());
     }
+
+    public List<CartDTO> findCartByProductNo(Long productNo, String userId) {
+        List<Carts> orders = cartRepository.findCartByProductNo(productNo, userId);
+        return orders.stream()
+                .map(cart->modelMapper.map(cart, CartDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    public void updateQuantityByCartNo(Long cartCode, int quantity) {
+        cartRepository.updateQuantityByCartNo(cartCode, quantity);
+    }
+
+    public void updateTotalPriceByCartNo(Long cartCode, int totalPirce) {
+        cartRepository.updateTotalPriceByCartNo(cartCode, totalPirce);
+    }
 }

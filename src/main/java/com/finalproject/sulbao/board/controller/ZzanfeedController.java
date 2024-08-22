@@ -4,12 +4,12 @@ import com.finalproject.sulbao.board.common.SessionHandler;
 import com.finalproject.sulbao.board.dto.*;
 import com.finalproject.sulbao.board.service.LikeService;
 import com.finalproject.sulbao.board.service.PostService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -36,16 +36,16 @@ public class ZzanfeedController {
 
     @PostMapping("/new")
     @ResponseBody
-    public ResponseEntity<Long> savePost(@ModelAttribute ZzanfeedRequestDto requestDto, HttpServletRequest request) {
-        Long userId = (Long) request.getSession().getAttribute("userNo");
+    public ResponseEntity<Long> savePost(@ModelAttribute ZzanfeedRequestDto requestDto, Authentication authentication) {
+        Long userId = sessionHandler.getUserId(authentication);
         PostDto post = postService.save(userId, ZZANFEED_ID, requestDto);
         return ResponseEntity.ok(post.getId());
     }
 
     @GetMapping("/{postId}")
-    public String detail(@PathVariable Long postId, Model model, HttpServletRequest request) {
+    public String detail(@PathVariable Long postId, Model model, Authentication authentication) {
         postService.updateHit(postId);
-        UserDto user = sessionHandler.getUserFromSession(request);
+        UserDto user = sessionHandler.getUser(authentication);
         PostDto post = postService.findById(postId);
         boolean isPostLikedByUser = likeService.isPostLikedByUser(postId, user.getId());
         boolean isAdmin = (user.getRoleType() == ADMIN);
@@ -94,8 +94,8 @@ public class ZzanfeedController {
     }
 
     @GetMapping("/edit/{postId}")
-    public String edit(@PathVariable Long postId, HttpServletRequest request, Model model) {
-        UserDto user = sessionHandler.getUserFromSession(request);
+    public String edit(@PathVariable Long postId, Authentication authentication, Model model) {
+        UserDto user = sessionHandler.getUser(authentication);
         PostDto post = postService.findById(postId);
 
         if (!post.getUserDto().getId().equals(user.getId()) && user.getRoleType() != ADMIN) {
@@ -121,7 +121,7 @@ public class ZzanfeedController {
 
     @PostMapping("/edit/{postId}")
     @ResponseBody
-    public ResponseEntity<Void> editPost(@PathVariable Long postId, @ModelAttribute ZzanfeedRequestDto requestDto, HttpServletRequest request) {
+    public ResponseEntity<Void> editPost(@PathVariable Long postId, @ModelAttribute ZzanfeedRequestDto requestDto) {
         postService.update(postId, requestDto);
         return ResponseEntity.ok().build();
     }
