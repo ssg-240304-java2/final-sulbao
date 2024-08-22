@@ -1,11 +1,8 @@
 package com.finalproject.sulbao.login.controller;
 
-import com.finalproject.sulbao.login.model.dto.LoginDetails;
 import com.finalproject.sulbao.login.model.dto.SignupMemberDto;
 import com.finalproject.sulbao.login.model.dto.SignupSellerDto;
-import com.finalproject.sulbao.login.model.entity.Login;
 import com.finalproject.sulbao.login.model.service.LoginService;
-import com.finalproject.sulbao.login.model.vo.LoginVO;
 import com.finalproject.sulbao.login.model.vo.SellerInfo;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,9 +15,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.http.*;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
@@ -33,8 +27,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Collection;
-import java.util.List;
 
 
 @RequiredArgsConstructor
@@ -58,7 +50,7 @@ public class LoginController {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("code", code);
         params.add("grant_type", "authorization_code");
-        params.add("redirect_uri", "http://hansool.shop/signupAccess/");
+        params.add("redirect_uri", "https://hansool.shop/signupAccess/");
         HttpEntity<MultiValueMap<String, String>> requestParams = new HttpEntity<>(params, headers);
         ResponseEntity<?> response = restTemplate.postForEntity("https://bauth.bbaton.com/oauth/token", requestParams, String.class);
         String responseBody = (String) response.getBody();

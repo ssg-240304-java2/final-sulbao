@@ -3,6 +3,7 @@ package com.finalproject.sulbao.product.controller;
 import com.finalproject.sulbao.cart.dto.CartDTO;
 import com.finalproject.sulbao.login.model.dto.LoginDetails;
 import com.finalproject.sulbao.product.model.dto.ProductComparisonDTO;
+import com.finalproject.sulbao.cart.service.CartService;
 import com.finalproject.sulbao.product.model.dto.ProductDTO;
 import com.finalproject.sulbao.product.model.entity.Product;
 import com.finalproject.sulbao.product.service.ProductService;
@@ -22,9 +23,11 @@ import java.util.List;
 public class UserProductController {
 
     private final ProductService productService;
+    private final CartService cartService;
 
-    public UserProductController(ProductService productService) {
+    public UserProductController(ProductService productService, CartService cartService) {
         this.productService = productService;
+        this.cartService = cartService;
     }
 
 
@@ -83,9 +86,21 @@ public class UserProductController {
         cartDTO.setProducts(new Product().builder().productNo(productNo).build());
         cartDTO.setTotalPrice(totalPrice);
         cartDTO.setAmount(quantity);
+        List<CartDTO> cartDTOList = cartService.findCartByProductNo(productNo, userId);
 
-        productService.addCart(cartDTO);
-
+        System.out.println("테스트 ---------------->" + cartDTOList);
+        // 여기서 카트 조회 한 후productno값이 같을 경우 가격 수정 , 수량 수정
+        if(cartDTOList.size() == 1){
+            if(quantity + cartDTOList.get(0).getAmount() > 99){
+                return "amountError";
+            }else {
+                cartService.updateQuantityByCartNo(cartDTOList.get(0).getCartCode(), quantity + cartDTOList.get(0).getAmount());
+                cartService.updateTotalPriceByCartNo(cartDTOList.get(0).getCartCode(), totalPrice + cartDTOList.get(0).getTotalPrice());
+            }
+        }else{
+            productService.addCart(cartDTO);
+        }
         return "success";
     }
+
 }
