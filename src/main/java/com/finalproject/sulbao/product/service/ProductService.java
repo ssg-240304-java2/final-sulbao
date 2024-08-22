@@ -1,5 +1,6 @@
 package com.finalproject.sulbao.product.service;
 
+import com.fasterxml.jackson.core.util.MinimalPrettyPrinter;
 import com.finalproject.sulbao.cart.domain.Carts;
 import com.finalproject.sulbao.cart.dto.CartDTO;
 import com.finalproject.sulbao.cart.repository.CartRepository;
@@ -10,6 +11,7 @@ import com.finalproject.sulbao.login.model.repository.LoginRepository;
 import com.finalproject.sulbao.product.model.dto.ProductComparisonDTO;
 import com.finalproject.sulbao.product.model.dto.ProductDTO;
 import com.finalproject.sulbao.product.model.entity.Product;
+import com.finalproject.sulbao.product.model.entity.ProductComparison;
 import com.finalproject.sulbao.product.model.vo.ProductImage;
 import com.finalproject.sulbao.product.repository.ProductComparisonRepository;
 import com.finalproject.sulbao.product.repository.ProductRepository;
@@ -214,5 +216,38 @@ public class ProductService {
                 .amount(cartDTO.getAmount())
                 .build();
         cartRepository.save(carts);
+    }
+
+    public List<ProductComparisonDTO> findByComparisonList() {
+
+        List<ProductComparison> comparisonList = productComparisonRepository.findAllByComparison();
+        log.info("Service comparisonList ============== {}",comparisonList.toString());
+
+        List<ProductComparisonDTO> productComparisonList = new ArrayList<>();
+
+        for (ProductComparison comparison : comparisonList) {
+            Integer minPrice = productRepository.findByMinProductPrice(comparison.getComparisonNo());
+            ProductComparisonDTO productComparisonDTO = ProductComparisonDTO.builder()
+                    .comparisonNo(comparison.getComparisonNo())
+                    .comparisonName(comparison.getComparisonName())
+                    .comparisonDescription(comparison.getComparisonDescription())
+                    .comparisonCategory(comparison.getComparisonCategory())
+                    .minPrice(minPrice)
+                    .productImages(comparison.getComparisonImages())
+                    .build();
+            productComparisonList.add(productComparisonDTO);
+        }
+
+        return productComparisonList;
+    }
+
+    //최저가 상품 정보
+    public List<ProductDTO> findByComparisonNo(Long comparisonNo) {
+
+        List<Product> productList = productRepository.findByComparison_comparisonNoOrderByProductPriceAsc(comparisonNo);
+
+        return productList.stream()
+                .map(product -> new ProductDTO().toDTO(product))
+                .collect(Collectors.toList());
     }
 }

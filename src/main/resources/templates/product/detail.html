@@ -65,7 +65,6 @@
                     <div style="padding-bottom: 28px;">
                       <h2 style="font-family: NanumGothic, sans-serif;font-size: 24px; line-height: 32px; font-weight: 700; word-break: break-all;" th:text="${product.productName}">복순도가 찹쌀탁주 9도</h2>
                       <div class="text-right" style="overflow: hidden; font-family: NanumGothic, sans-serif; text-overflow: ellipsis; white-space: nowrap; display: block; font-size: 22px; font-weight: 700; line-height: 40px; color: #d40022;" th:text="|${#numbers.formatInteger(product.productPrice, 3, 'COMMA')}원|">
-
                       </div><!-- 최저 가격 정보-->
                     </div> <!-- 가격 정보 영역-->
                     <input type="hidden" id="productPrice" name="productPrice" th:value="${product.productPrice}">
@@ -76,7 +75,7 @@
                       관계법령에 따라 미성년자는 구매할 수 없으며, 19세 이상 성인인증을 하셔야 구매가능한 상품입니다.
                     </div> <!-- 주류 구매 경고 메세지  -->
                     <div class="mt-4">
-                      수량 : <input class="text-center" type="number" id="quantity" value="1" min="1" onkeyup="sumPrice();">
+                      수량 : <input class="text-center" type="number" id="quantity" value="1" min="1" onclick="sumPrice();" onkeyup="sumPrice();">
                     </div>
                     <div class="mt-4">
                       <div style="overflow: hidden; font-family: NanumGothic, sans-serif; text-overflow: ellipsis; white-space: nowrap; display: block; font-size: 22px; font-weight: 700; line-height: 40px; color: #d40022;">
@@ -102,7 +101,6 @@
                 </div> <!-- 상세 이미지 -->
               </div> <!-- 상세정보 -->
             </div><!-- 상품정보(상세포함) -->
-
         </div>
       </div>
     </div>
