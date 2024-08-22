@@ -2,10 +2,10 @@ body {
     font-family: "Noto-Sans", sans-serif;
 }
 
-.mypage-content {
+/*.mypage-content {
     padding: 7rem 0 10rem 0;
     display: flex;
-}
+}*/
 
 .sidebar {
     width: 200px;

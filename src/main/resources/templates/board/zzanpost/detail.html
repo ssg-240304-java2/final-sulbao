@@ -9,7 +9,7 @@
 <body>
 <div layout:fragment="content">
     <div class="hero hero-inner">
-        <div class="container">
+        <div class="my-container">
             <div class="row align-items-center">
                 <div class="col-lg-6 mx-auto text-center">
                     <div class="intro-wrap">
@@ -57,14 +57,6 @@
         <div class="comments-section">
             <div class="comments-count">댓글 <span th:text="${comments.size()}"></span></div>
 
-            <div class="comment-input">
-                <img alt="default profile"
-                     src="https://kr.object.ncloudstorage.com/sulbao-file/profile/default-profile.png">
-                <label for="commentContent"></label>
-                <input id="commentContent" placeholder="댓글을 입력하세요" type="text" th:disabled="${user.id == 0}">
-                <button onclick="saveComment()" type="submit">입력</button>
-            </div>
-
             <div class="comment-container" th:each="comment : ${comments}">
                 <div class="comment">
                     <img alt="comment writer's profile image"
@@ -98,6 +90,15 @@
                     </div>
                 </form>
             </div>
+
+            <div class="comment-input">
+                <img alt="default profile"
+                     src="https://kr.object.ncloudstorage.com/sulbao-file/profile/default-profile.png">
+                <label for="commentContent"></label>
+                <input id="commentContent" placeholder="댓글을 입력하세요" type="text" th:disabled="${user.id == 0}">
+                <button onclick="saveComment()" type="submit">입력</button>
+            </div>
+
         </div>
     </div>
 

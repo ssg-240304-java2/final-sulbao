@@ -4,16 +4,17 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <title>전통술 최저가 비교 커뮤니티! 술기로운 한 잔</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="/board/zzanfeed/detail.css" rel="stylesheet">
 </head>
 <body>
 <div layout:fragment="content">
     <div class="hero hero-inner">
-        <div class="container">
+        <div class="my-container">
             <div class="row align-items-center">
                 <div class="col-lg-6 mx-auto text-center">
                     <div class="intro-wrap">
-                        <h1 class="mb-0">#짠피드</h1>
+                        <h1 class="mb-0"># Hashtag</h1>
                         <p class="text-white">
                             전통주와 함께한 특별한 순간을 짠피드에 업로드하세요.<br/>
                             지금 당신의 전통주 이야기를 들려주세요.
@@ -49,10 +50,12 @@
             <div class="recommendation-section">
                 <div class="recommend-container">
                     <button class="recommend-button">
-                        <img alt="thumbs up" class="thumbs-up" src="/board/image/thumbs-up.png"
+                        <!--<img alt="thumbs up" class="thumbs-up" src="/board/image/thumbs-up.png"
                              th:if="${!isPostLikedByUser}">
                         <img alt="thumbs up" class="thumbs-up" src="/board/image/thumbs-up-colored.png"
-                             th:if="${isPostLikedByUser}">
+                             th:if="${isPostLikedByUser}">-->
+                        <i class="far fa-thumbs-up thumbs-up" th:if="${!isPostLikedByUser}"></i>
+                        <i class="fas fa-thumbs-up thumbs-up" th:if="${isPostLikedByUser}"></i>
                     </button>
                     <span class="recommend-count" th:text="${post.like}"></span>
                 </div>
@@ -68,13 +71,7 @@
         <div class="comments-section">
             <div class="comments-count">댓글 <span th:text="${comments.size()}"></span></div>
 
-            <div class="comment-input">
-                <img alt="default profile"
-                     src="https://kr.object.ncloudstorage.com/sulbao-file/profile/default-profile.png">
-                <label for="commentContent"></label>
-                <input id="commentContent" th:placeholder='${user.id == 0 ? "로그인 후 작성 가능합니다." : "댓글을 입력하세요."}' type="text" th:disabled="${user.id == 0}">
-                <button onclick="saveComment()" type="submit">입력</button>
-            </div>
+
 
             <div class="comment-container" th:each="comment : ${comments}">
                 <div class="comment">
@@ -83,7 +80,7 @@
                     <div class="comment-content">
                         <div class="username" th:text="${comment.userDto.profileName}"></div>
                         <div class="comment-text" th:text="${comment.content}"></div>
-                        <div class="timestamp" th:text="${comment.createdAt}"></div>
+                        <div class="timestamp" th:text="${#temporals.format(comment.createdAt, 'yyyy년 MM월 dd일 HH시 mm분')}"></div>
                     </div>
 
                     <div class="edit-buttons" th:if="${user.id == comment.userDto.id or isAdmin}">
@@ -109,6 +106,15 @@
                     </div>
                 </form>
             </div>
+
+            <div class="comment-input">
+                <img alt="default profile"
+                     src="https://kr.object.ncloudstorage.com/sulbao-file/profile/default-profile.png">
+                <label for="commentContent"></label>
+                <input id="commentContent" th:placeholder='${user.id == 0 ? "로그인 후 작성 가능합니다." : "댓글을 입력하세요."}' type="text" th:disabled="${user.id == 0}">
+                <button onclick="saveComment()" type="submit">입력</button>
+            </div>
+
         </div>
     </div>
 
@@ -124,8 +130,9 @@
         document.addEventListener('DOMContentLoaded', function () {
             const recommendButton = document.querySelector('.recommend-button');
             const recommendImg = document.querySelector('.recommend-button img');
-            const defaultImageUrl = '/board/image/thumbs-up.png';
-            const activeImageUrl = '/board/image/thumbs-up-colored.png';
+            // const defaultImageUrl = '/board/image/thumbs-up.png';
+            // const activeImageUrl = '/board/image/thumbs-up-colored.png';
+            const recommendIcon = recommendButton.querySelector('i');
             let flag = [[${isPostLikedByUser}]];
 
             recommendButton.addEventListener('click', function () {
@@ -145,9 +152,11 @@
                 updateLike(user, post);
 
                 setTimeout(() => {
-                    recommendImg.src = (flag ? defaultImageUrl : activeImageUrl);
+                    // recommendImg.src = (flag ? defaultImageUrl : activeImageUrl);
+                    recommendIcon.classList.toggle('far', flag);
+                    recommendIcon.classList.toggle('fas', !flag);
                     flag = !flag;
-                }, 300);
+                }, 1);
             });
         });
 
