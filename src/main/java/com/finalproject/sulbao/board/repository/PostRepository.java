@@ -14,14 +14,15 @@ import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificationExecutor<Post> {
 
-    Page<Post> findByBoardCategory(BoardCategory boardCategory, Pageable pageable);
+    @Query("SELECT p FROM Post p WHERE p.boardCategory = :boardCategory ORDER BY p.createdAt DESC")
+    Page<Post> findByBoardCategory(@Param("boardCategory") BoardCategory boardCategory, Pageable pageable);
 
     Long countByBoardCategory(BoardCategory boardCategory);
 
     @Query("SELECT tag FROM Post p JOIN p.tags tag GROUP BY tag ORDER BY count(tag) DESC")
     List<String> findTopTags();
 
-    @Query("SELECT p FROM Post p JOIN p.tags t WHERE p.boardCategory = :boardCategory AND t = :tag")
+    @Query("SELECT p FROM Post p JOIN p.tags t WHERE p.boardCategory = :boardCategory AND t = :tag ORDER BY p.createdAt DESC")
     Page<Post> findByBoardCategoryAndTag(@Param("boardCategory") BoardCategory boardCategory, @Param("tag") String tag, Pageable pageable);
 
     @Query("SELECT count(p) FROM Post p JOIN p.tags t WHERE p.boardCategory = :boardCategory AND t = :tag")
