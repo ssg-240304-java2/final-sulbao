@@ -43,7 +43,7 @@
                     <div class="author-info">
                         <img class="profile-picture"
                              alt="Author Profile Picture"
-                             th:src="@{|https://kr.object.ncloudstorage.com/sulbao-file/${post.userDto.profileImageFileName}|}" />
+                             th:src="@{${post.userDto.profileImageFileUrl}|}" />
                         <div class="author-name" th:text="${post.userDto.profileName}"></div>
                     </div>
                     <a th:href="@{|zzanfeeds/${post.id}|}">
