@@ -50,4 +50,12 @@ public class OrderProductService {
         String productName = productRepository.findByProductNoName(productNo);
         return productName;
     }
+
+    public List<ProductDTO> findAll() {
+        List<Product> productList = productRepository.findAll();
+
+        return productList.stream()
+                .map(product -> new ProductDTO().toDTO(product))
+                .collect(Collectors.toList());
+    }
 }

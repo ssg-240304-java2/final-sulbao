@@ -1,5 +1,8 @@
 package com.finalproject.sulbao.product.service;
 
+import com.finalproject.sulbao.cart.domain.Carts;
+import com.finalproject.sulbao.cart.dto.CartDTO;
+import com.finalproject.sulbao.cart.repository.CartRepository;
 import com.finalproject.sulbao.common.file.FileDto;
 import com.finalproject.sulbao.common.file.FileService;
 import com.finalproject.sulbao.login.model.entity.Login;
@@ -33,13 +36,15 @@ public class ProductService {
     private final LoginRepository loginRepository;
     private final ProductComparisonRepository productComparisonRepository;
     private final ModelMapper modelMapper;
+    private final CartRepository cartRepository;
 
-    public ProductService(ProductRepository productRepository, FileService fileService, LoginRepository loginRepository, ProductComparisonRepository productComparisonRepository, ModelMapper modelMapper) {
+    public ProductService(ProductRepository productRepository, FileService fileService, LoginRepository loginRepository, ProductComparisonRepository productComparisonRepository, ModelMapper modelMapper, CartRepository cartRepository) {
         this.productRepository = productRepository;
         this.fileService = fileService;
         this.loginRepository = loginRepository;
         this.productComparisonRepository = productComparisonRepository;
         this.modelMapper = modelMapper;
+        this.cartRepository = cartRepository;
     }
 
 
@@ -198,5 +203,16 @@ public class ProductService {
         return productComparisonRepository.findAll().stream()
                 .map(comparison -> modelMapper.map(comparison, ProductComparisonDTO.class))
                 .collect(Collectors.toList());
+    }
+
+    public void addCart(CartDTO cartDTO) {
+        log.info("Service CartDTO ============== {}",cartDTO.toString());
+        Carts carts = Carts.builder()
+                .products(cartDTO.getProducts())
+                .totalPrice(cartDTO.getTotalPrice())
+                .userId(cartDTO.getUserId())
+                .amount(cartDTO.getAmount())
+                .build();
+        cartRepository.save(carts);
     }
 }
