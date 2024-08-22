@@ -27,7 +27,7 @@ public interface CartRepository extends JpaRepository<Carts, Integer> {
 
     List<Carts> findByToken(String token);
 
-    @Query(value = "select k from Carts k join k.products j where j.productNo = :productNo AND k.userId = :userId")
+    @Query(value = "select k from Carts k join k.products j where j.productNo = :productNo AND k.userId = :userId and k.isOrder = false ")
     List<Carts> findCartByProductNo(Long productNo, String userId);
 
     @Modifying

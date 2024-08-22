@@ -2,39 +2,57 @@ package com.finalproject.sulbao.cart.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.finalproject.sulbao.cart.dto.CartDTO;
-import com.finalproject.sulbao.cart.dto.OrderDTO;
+import com.finalproject.sulbao.board.common.SessionHandler;
+import com.finalproject.sulbao.board.dto.UserDto;
+import com.finalproject.sulbao.cart.dto.*;
 
-import com.finalproject.sulbao.cart.dto.OrderItemDTO;
-import com.finalproject.sulbao.cart.dto.OrderProductDTO;
 import com.finalproject.sulbao.cart.service.CartService;
 import com.finalproject.sulbao.cart.service.OrderService;
 import com.finalproject.sulbao.cart.service.OrderProductService;
+import com.finalproject.sulbao.login.model.entity.Login;
+import com.finalproject.sulbao.login.model.entity.RoleType;
+import com.finalproject.sulbao.login.model.repository.LoginRepository;
 import com.finalproject.sulbao.product.model.dto.ProductDTO;
+import com.finalproject.sulbao.product.repository.ProductRepository;
+import com.finalproject.sulbao.product.service.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
+@Slf4j
 public class OrderController {
 
     private final OrderService orderService;
     private final CartService cartService;
     private final OrderProductService orderProductService;
+    private final SessionHandler sessionHandler;
+    private final LoginRepository loginRepository;
+    private final ProductRepository productRepository;
+    private final ProductService productService;
+
     public OrderController(OrderService orderService,
                            CartService cartService,
-                           OrderProductService orderProductService) {
+                           OrderProductService orderProductService,
+                           SessionHandler sessionHandler,
+                           LoginRepository loginRepository, ProductRepository productRepository, ProductService productService) {
         this.orderService = orderService;
         this.cartService = cartService;
         this.orderProductService = orderProductService;
+        this.sessionHandler = sessionHandler;
+        this.loginRepository = loginRepository;
+        this.productRepository = productRepository;
+        this.productService = productService;
     }
 
 
@@ -92,20 +110,32 @@ public class OrderController {
     }
 
     @GetMapping("/orderlist")
-    public String orderlist(Model model, HttpSession session) {
-        if(session.getAttribute("userNo") == null){
+    public String orderlist(Model model, HttpSession session, Authentication authentication) {
+//        if(session.getAttribute("userNo") == null){
+//            return "redirect:/login";
+//        }
+
+        UserDto userdto = sessionHandler.getUser(authentication);
+
+        if(!sessionHandler.isLogin(authentication)){
             return "redirect:/login";
         }
+
+        String role = "";
         List<ProductDTO> productLists;
-        if(session.getAttribute("role").equals("ROLE_ADMIN")){
+        if(userdto.getRoleType() == RoleType.ADMIN){
             productLists = orderProductService.findAll();
-        }else{
+            role = "ROLE_ADMIN";
+        }else if(userdto.getRoleType() == RoleType.SELLER){
             Long userNo = (Long) session.getAttribute("userNo");
             // 2. 1번을 이용해 판매자의 상품 정보 조회 -> 상품 코드, 상품명
             productLists = orderProductService.findByUserNo(userNo);
+            role = "ROLE_SELLER";
+        }else{
+            return "error";
         }
 
-        String role = session.getAttribute("role").toString();
+//        String role = session.getAttribute("role").toString();
         // 1. 판매자 아이디 정보를 조회
 
         List<Long>productIdList = new ArrayList<>();
@@ -149,25 +179,47 @@ public class OrderController {
     @GetMapping("/searchorderlist")
     public String search(Model model, HttpSession session, @RequestParam(name = "searchInput", required = false) String searchInput,
                 @RequestParam(name = "shippingStatus", required = false) String shippingStatus,
-                @RequestParam(name = "orderType", required = false) String orderType) {
+                @RequestParam(name = "orderType", required = false) String orderType, Authentication authentication) {
 
         System.out.println("searchInput = "+searchInput);
         System.out.println("shippingStatus = "+shippingStatus);
         System.out.println("orderType = "+orderType);
 
 
-        if(session.getAttribute("userNo") == null){
+//        if(session.getAttribute("userNo") == null){
+//            return "redirect:/login";
+//        }
+
+        UserDto userdto = sessionHandler.getUser(authentication);
+
+        if(!sessionHandler.isLogin(authentication)){
             return "redirect:/login";
         }
+
+
+//        List<ProductDTO> productLists;
+//        if(session.getAttribute("role").equals("ROLE_ADMIN")){
+//            productLists = orderProductService.findAll();
+//        }else{
+//            Long userNo = (Long) session.getAttribute("userNo");
+//            // 2. 1번을 이용해 판매자의 상품 정보 조회 -> 상품 코드, 상품명
+//            productLists = orderProductService.findByUserNo(userNo);
+//        }
+//        String role = session.getAttribute("role").toString();
+
+        String role = "";
         List<ProductDTO> productLists;
-        if(session.getAttribute("role").equals("ROLE_ADMIN")){
+        if(userdto.getRoleType() == RoleType.ADMIN){
             productLists = orderProductService.findAll();
-        }else{
+            role = "ROLE_ADMIN";
+        }else if(userdto.getRoleType() == RoleType.SELLER){
             Long userNo = (Long) session.getAttribute("userNo");
             // 2. 1번을 이용해 판매자의 상품 정보 조회 -> 상품 코드, 상품명
             productLists = orderProductService.findByUserNo(userNo);
+            role = "ROLE_SELLER";
+        }else{
+            return "error";
         }
-        String role = session.getAttribute("role").toString();
 
         List<Long>productIdList = new ArrayList<>();
         for (ProductDTO productDTO : productLists) {
@@ -236,6 +288,54 @@ public class OrderController {
         orderService.updateDeliveryByOrderCode(orderCodes, status);
         // 업데이트문
         return "redirect:/orderlist";
+    }
+
+    @GetMapping("/myorder")
+    public String myOrder(Model model, HttpSession session, Authentication authentication) {
+
+        if(!sessionHandler.isLogin(authentication)){
+            return "redirect:/login";
+        }
+
+        Long userNo = sessionHandler.getUserId(authentication);
+        Login login = loginRepository.findById(userNo).orElseThrow();
+        String userId = login.getUserId();
+        // 1. 내 오더 리스트 출력
+        List<OrderDTO> orderDTOList = orderService.findByUserId(userId);
+
+        System.out.println("orderDTOList = " + orderDTOList);
+
+        List<ProductDTO> productDTOList = new ArrayList<>();
+        for(OrderDTO orderDTO : orderDTOList){
+            Long productNo = orderDTO.getOrderItems().iterator().next().getProductNo();
+            log.info("ProductNo ======== {}" , productNo);
+            productDTOList.add(productService.findByProductNo(productNo));
+
+        }
+        log.info("productDTOList = " + productDTOList);
+
+        // 2. 제품 이름, 사진 정보 가지고 오기
+        List<OrderListDTO> orderListDTOList = new ArrayList<>();
+        for(int i = orderDTOList.size() - 1; i > -1; i--){
+            OrderListDTO orderListDTO = new OrderListDTO();
+            for(int j = 0; j < productDTOList.size(); j++){
+                if(Objects.equals(orderDTOList.get(i).getOrderItems().iterator().next().getProductNo(), productDTOList.get(j).getProductNo())){
+                    orderListDTO.setPicture(productDTOList.get(j).getProductImages().get(0).getSaveImgUrl());
+                    orderListDTO.setCompany(productDTOList.get(j).getSellerInfo().getSellerInfo().getBusinessName());
+                    orderListDTO.setName(productDTOList.get(j).getProductName());
+                    break;
+                }
+            }
+            orderListDTO.setAmount(orderDTOList.get(i).getOrderItems().iterator().next().getAmount());
+            orderListDTO.setTotalPirce(orderDTOList.get(i).getOrderItems().iterator().next().getTotalPrice());
+            orderListDTO.setOrderDate(orderDTOList.get(i).getOrderDate());
+            orderListDTOList.add(orderListDTO);
+        }
+
+        System.out.println("orderListDTOList = " + orderListDTOList);
+        model.addAttribute("orders", orderListDTOList);
+
+        return "cart/memberorder";
     }
 
 }

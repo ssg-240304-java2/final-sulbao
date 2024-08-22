@@ -1,9 +1,12 @@
 package com.finalproject.sulbao.cart.controller;
 
+import com.finalproject.sulbao.board.common.SessionHandler;
 import com.finalproject.sulbao.cart.domain.Carts;
 import com.finalproject.sulbao.cart.dto.CartDTO;
 import com.finalproject.sulbao.cart.service.CartService;
 import com.finalproject.sulbao.login.model.dto.LoginDetails;
+import com.finalproject.sulbao.login.model.entity.Login;
+import com.finalproject.sulbao.login.model.repository.LoginRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +25,14 @@ import java.util.List;
 public class CartController {
 
     private final CartService cartService;
+    private final SessionHandler sessionHandler;
+    private final LoginRepository loginRepository;
 
     @Autowired
-    public CartController(CartService cartService) {
+    public CartController(CartService cartService, SessionHandler sessionHandler, LoginRepository loginRepository) {
         this.cartService = cartService;
+        this.sessionHandler = sessionHandler;
+        this.loginRepository = loginRepository;
     }
 
     /***
@@ -36,12 +43,21 @@ public class CartController {
     @GetMapping("/cart")
     public String viewCart(Model model,Authentication authentication, HttpSession session){
         //세션 존재여부 확인
-        if(session.getAttribute("userNo") == null){
+//        if(session.getAttribute("userNo") == null){
+//            return "redirect:/login";
+//        }
+//        LoginDetails login = (LoginDetails) authentication.getPrincipal();
+//        String userId = login.getUsername();
+        if(!sessionHandler.isLogin(authentication)){
             return "redirect:/login";
         }
-        LoginDetails login = (LoginDetails) authentication.getPrincipal();
-        String userId = login.getUsername();
-        List<CartDTO> cartList = cartService.findCartByUserId(userId);
+        Long userNo = sessionHandler.getUserId(authentication);
+        Login login1 = loginRepository.findById(userNo).orElseThrow();
+        String userId1 = login1.getUserId();
+
+
+
+        List<CartDTO> cartList = cartService.findCartByUserId(userId1);
         model.addAttribute("carts", cartList);
         return "cart/cart";
     }
@@ -84,10 +100,20 @@ public class CartController {
      * @return
      */
     @PostMapping("/cart/order_form")
-    public String orderForm(@RequestParam("cartCodes") List<Long> cartCodes, Model model, HttpSession session) {
-        if(session.getAttribute("userNo") == null){
+    public String orderForm(@RequestParam("cartCodes") List<Long> cartCodes, Model model, HttpSession session, Authentication authentication) {
+//        if(session.getAttribute("userNo") == null){
+//            return "redirect:/login";
+//        }
+//
+        Long userNo = sessionHandler.getUserId(authentication);
+        Login login1 = loginRepository.findById(userNo).orElseThrow();
+        String userId1 = login1.getUserId();
+
+        if(!sessionHandler.isLogin(authentication)){
             return "redirect:/login";
         }
+
+
 
         if (cartCodes == null || cartCodes.isEmpty()) {
             throw new IllegalArgumentException("No products selected.");
@@ -109,10 +135,22 @@ public class CartController {
      * @return
      */
     @PostMapping("/cart/present_form")
-    public String presentForm(@RequestParam("cartCodes") List<Long> cartCodes, Model model, HttpSession session) {
-        if(session.getAttribute("userNo") == null){
+    public String presentForm(@RequestParam("cartCodes") List<Long> cartCodes, Model model, HttpSession session, Authentication authentication) {
+//        if(session.getAttribute("userNo") == null){
+//            return "redirect:/login";
+//        }
+
+        Long userNo = sessionHandler.getUserId(authentication);
+        Login login1 = loginRepository.findById(userNo).orElseThrow();
+
+        String userId1 = login1.getUserId();
+
+        if(!sessionHandler.isLogin(authentication)){
             return "redirect:/login";
         }
+
+
+
         if (cartCodes == null || cartCodes.isEmpty()) {
             throw new IllegalArgumentException("No products selected.");
         }

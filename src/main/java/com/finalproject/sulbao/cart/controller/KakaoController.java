@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -141,11 +142,13 @@ public class KakaoController {
             String code = emailService.presentSendMail(emailMessage, orderCodeList.get(0), "present-email");
             orderDTO.setToken(code);
         }
+        LocalDate currentDate = LocalDate.now();
         orderDTO.setPresent(isPresent);
         orderDTO.setAddress2(detailAddress);
         orderDTO.setZipCode(zipCode);
         orderDTO.setPresentEmail(email);
         orderDTO.setUserId(userId);
+        orderDTO.setOrderDate(currentDate);
 
         for(int i=0; i<len; i++) {
             OrderItemDTO orderItemDTO = new OrderItemDTO();
