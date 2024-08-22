@@ -7,11 +7,11 @@ import com.finalproject.sulbao.board.dto.UserDto;
 import com.finalproject.sulbao.board.service.LikeService;
 import com.finalproject.sulbao.board.service.PostService;
 import com.finalproject.sulbao.common.file.FileService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -56,8 +56,8 @@ public class ZzanpostController {
     }
 
     @GetMapping("/new")
-    public String newPost(Model model, HttpServletRequest request) {
-        UserDto user = sessionHandler.getUserFromSession(request);
+    public String newPost(Model model, Authentication authentication) {
+        UserDto user = sessionHandler.getUser(authentication);
 
         if (!EnumSet.of(PRO_MEMBER, ADMIN).contains(user.getRoleType())) {
             return "redirect:/";
@@ -68,8 +68,8 @@ public class ZzanpostController {
     }
 
     @GetMapping("/edit/{postId}")
-    public String editPost(Model model, @PathVariable Long postId, HttpServletRequest request) {
-        UserDto user = sessionHandler.getUserFromSession(request);
+    public String editPost(Model model, @PathVariable Long postId, Authentication authentication) {
+        UserDto user = sessionHandler.getUser(authentication);
         PostDto post = postService.findById(postId);
         String thumbnail = post.getThumbnail();
 
@@ -84,8 +84,8 @@ public class ZzanpostController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<Long> savePost(String title, String content, MultipartFile multipartFile, HttpServletRequest request) {
-        UserDto user = sessionHandler.getUserFromSession(request);
+    public ResponseEntity<Long> savePost(String title, String content, MultipartFile multipartFile, Authentication authentication) {
+        UserDto user = sessionHandler.getUser(authentication);
         Long userId = user.getId();
         String thumbnail = fileService.uploadFiles(multipartFile, uploadDir).getUploadFileName();
         PostDto post = postService.save(userId, title, content, ZZANPOST_ID, thumbnail);
@@ -94,7 +94,7 @@ public class ZzanpostController {
     }
 
     @PutMapping("/edit")
-    public ResponseEntity<Long> updatePost(Long postId, String title, String content, MultipartFile multipartFile, HttpServletRequest request) {
+    public ResponseEntity<Long> updatePost(Long postId, String title, String content, MultipartFile multipartFile) {
         String thumbnailFileName = null;
         if (multipartFile != null) {
             thumbnailFileName = fileService.uploadFiles(multipartFile, uploadDir).getUploadFileName();
@@ -104,9 +104,9 @@ public class ZzanpostController {
     }
 
     @GetMapping("/{postId}")
-    public String detail(@PathVariable Long postId, Model model, HttpServletRequest request) {
+    public String detail(@PathVariable Long postId, Model model, Authentication authentication) {
         postService.updateHit(postId);
-        UserDto user = sessionHandler.getUserFromSession(request);
+        UserDto user = sessionHandler.getUser(authentication);
         PostDto post = postService.findById(postId);
         boolean isPostLikedByUser = likeService.isPostLikedByUser(postId, user.getId());
         boolean isAdmin = (user.getRoleType() == ADMIN);

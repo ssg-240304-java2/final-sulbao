@@ -5,12 +5,12 @@ import com.finalproject.sulbao.board.dto.PostDto;
 import com.finalproject.sulbao.board.dto.UserDto;
 import com.finalproject.sulbao.board.repository.PostRepository;
 import com.finalproject.sulbao.board.service.PostService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,21 +44,20 @@ public class BoardController {
     @GetMapping("/mypage/board")
     public String user(
             Model model,
-            HttpServletRequest request,
+            Authentication authentication,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size
             ) {
-        if (!sessionHandler.isLogin(request)) {
+        if (!sessionHandler.isLogin(authentication)) {
             return "redirect:/login";
         }
 
-        UserDto user = sessionHandler.getUserFromSession(request);
+        UserDto user = sessionHandler.getUser(authentication);
         Pageable pageable = PageRequest.of(page, size);
         Page<PostDto> posts = postService.findByUser(user.getId(), pageable);
 
         int currentPage = posts.getNumber();
         int totalPages = posts.getTotalPages();
-
         int currentGroup = currentPage / 10;
         int startPage = currentGroup * 10 + 1;
         int endPage = Math.min(startPage + 9, totalPages);
