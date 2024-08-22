@@ -71,13 +71,7 @@
         <div class="comments-section">
             <div class="comments-count">댓글 <span th:text="${comments.size()}"></span></div>
 
-            <div class="comment-input">
-                <img alt="default profile"
-                     src="https://kr.object.ncloudstorage.com/sulbao-file/profile/default-profile.png">
-                <label for="commentContent"></label>
-                <input id="commentContent" th:placeholder='${user.id == 0 ? "로그인 후 작성 가능합니다." : "댓글을 입력하세요."}' type="text" th:disabled="${user.id == 0}">
-                <button onclick="saveComment()" type="submit">입력</button>
-            </div>
+
 
             <div class="comment-container" th:each="comment : ${comments}">
                 <div class="comment">
@@ -86,7 +80,7 @@
                     <div class="comment-content">
                         <div class="username" th:text="${comment.userDto.profileName}"></div>
                         <div class="comment-text" th:text="${comment.content}"></div>
-                        <div class="timestamp" th:text="${comment.createdAt}"></div>
+                        <div class="timestamp" th:text="${#temporals.format(comment.createdAt, 'yyyy년 MM월 dd일 HH시 mm분')}"></div>
                     </div>
 
                     <div class="edit-buttons" th:if="${user.id == comment.userDto.id or isAdmin}">
@@ -112,6 +106,15 @@
                     </div>
                 </form>
             </div>
+
+            <div class="comment-input">
+                <img alt="default profile"
+                     src="https://kr.object.ncloudstorage.com/sulbao-file/profile/default-profile.png">
+                <label for="commentContent"></label>
+                <input id="commentContent" th:placeholder='${user.id == 0 ? "로그인 후 작성 가능합니다." : "댓글을 입력하세요."}' type="text" th:disabled="${user.id == 0}">
+                <button onclick="saveComment()" type="submit">입력</button>
+            </div>
+
         </div>
     </div>
 
