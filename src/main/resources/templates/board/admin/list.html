@@ -5,6 +5,7 @@
         layout:decorate="~{common/layouts/adminDefault}">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/board/admin/list.css">
     <title>Title</title>
 </head>
 <body>
@@ -26,7 +27,7 @@
                                     <th>게시글 명</th>
                                     <td colspan="3">
                                         <div class="form-row">
-                                            <label>
+                                            <label class="title-label">
                                                 <input class="form-control col-8" name="searchInput">
                                             </label>
                                         </div>
@@ -71,17 +72,23 @@
                             </table>
                             <div class="row mt-5 mb-5">
                                 <div class="col text-center">
-                                    <button type="submit" class="btn btn-sm btn-primary">조회</button>
+                                    <button onclick="alert('hi')" type="submit" class="btn btn-sm btn-primary">조회</button>
                                     <button type="button" class="btn btn-sm btn-outline-secondary" onclick="location.reload()">초기화</button>
                                 </div>
                             </div>
                         </form>
                     </div>
 
-                    <table id="productsTable" class="table table-product" style="width:100%">
+                    <div class="row mb-3">
+                        <div class="col text-left">
+                            <button type="button" class="btn btn-sm btn-danger" onclick="deleteProduct()">삭제</button>
+                        </div>
+                    </div>
+
+                    <table id="myProductsTable" class="table table-product" style="width:100%">
                         <thead>
                         <tr>
-                            <th><input type="checkbox" id="cbx_chkAll"></th>
+                            <th><label for="cbx_chkAll"></label><input type="checkbox" id="cbx_chkAll"></th>
                             <th>번호</th>
                             <th>카테고리</th>
                             <th>제목</th>
@@ -96,13 +103,13 @@
                         <tr th:each="post : ${posts}">
                             <td><label><input type="checkbox" name="chk" th:value="${post.id}"></label></td>
                             <td th:text="${post.id}"></td>
-                            <td th:text="${post.categoryName}"></td>
-                            <td><a th:text="${post.title}" th:href='@{|/${post.categoryName}/${post.id}|}'></a></td>
+                            <td th:text="${post.categoryNameKr}"></td>
+                            <td><a th:text="${post.title}" th:href='@{|/${post.categoryNameEn}/${post.id}|}'></a></td>
                             <td th:text="${post.userDto.profileName}"></td>
                             <td th:text="${post.hit}"></td>
                             <td th:text="${post.like}"></td>
                             <td th:text="${post.commentDtoList.size()}"></td>
-                            <td th:text="${post.createdAt}"></td>
+                            <td th:text="${#temporals.format(post.createdAt, 'yyyy년 MM월 dd일 HH시 mm분')}"></td>
                         </tr>
                         </tbody>
                     </table>
@@ -112,7 +119,18 @@
         </div>
     </div>
     <script>
-        /*//상품 체크박스
+        $(document).ready(function() {
+            $('#myProductsTable').DataTable({
+                searching: false,
+
+                "columnDefs": [
+                    { "orderable": true, "targets": [1, 2, 3, 4, 5, 6, 7] },
+                    { "orderable": false, "targets": [0] }
+                ]
+            });
+        });
+
+        //상품 체크박스
         $(document).ready(function() {
             // 상품리스트
             $("#cbx_chkAll").click(function() {
@@ -139,20 +157,15 @@
             });
 
             $.ajax({
-                url: "/product/delete",
-                data: {
-                    "productNoList": check_arr
-                },
-                type: "delete",
-                success: function(data){
-                    if(data === 'success'){
-                        alert("선택하신 상품이 삭제되었습니다.");
-                        location.reload();
-                    }else{
-                        alert("상품삭제에 실패했습니다.");
-                    }
+                url: "/board/delete",
+                data: JSON.stringify(check_arr),
+                contentType: "application/json",
+                type: "POST",
+                success: function(){
+                    alert("선택하신 상품이 삭제되었습니다.");
+                    location.reload();
                 },error: function (error){
-                    alert("상품삭제에 실패했습니다.");
+                    console.log(error);
                 }
             });
         }
@@ -185,9 +198,8 @@
                     alert("상태변경에 실패했습니다.");
                 }
             });
-        }*/
-    </tr>
-</div>
-
+        }
+    </script>
+    </div>
 </body>
 </html>
