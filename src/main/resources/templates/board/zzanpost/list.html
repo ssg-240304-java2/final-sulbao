@@ -11,7 +11,7 @@
 <body>
 <div layout:fragment="content">
     <div class="hero hero-inner">
-        <div class="container">
+        <div class="my-container">
             <div class="row align-items-center">
                 <div class="col-lg-6 mx-auto text-center">
                     <div class="intro-wrap">
@@ -26,7 +26,7 @@
         </div>
     </div>
 
-    <div class="container">
+    <div class="my-container">
         <div class="post-count" th:text="|전체 ${count}|"></div>
         <div class="post-grid" id="postGrid">
             <div class="post-item" th:each="post : ${posts}">
