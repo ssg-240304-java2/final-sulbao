@@ -1,4 +1,4 @@
-.container {
+.my-container {
     max-width: 1300px;
     padding: 20px;
     margin: 30px auto 0;
@@ -128,9 +128,14 @@
     outline: none;
 }
 
-.thumbs-up {
+/*.thumbs-up {
     width: 70px;
     height: 70px;
+}*/
+
+.thumbs-up {
+    font-size: 3.5rem;
+    margin-top: 40%;
 }
 
 .recommend-button img {

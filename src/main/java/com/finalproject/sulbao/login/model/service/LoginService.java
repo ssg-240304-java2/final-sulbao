@@ -99,7 +99,7 @@ public class LoginService {
         Login login = loginRepository.findByUserId(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 사용자 입니다."));
         MemberInfo memberInfo = memberRepository.findByUserId(userId);
-        log.info("sevice member ============================> {}", memberInfo);
+//        log.info("sevice member ============================> {}", memberInfo);
         MemberImage profileImag = memberInfo.getMemberImage();
 
         if(profileImag == null) {
