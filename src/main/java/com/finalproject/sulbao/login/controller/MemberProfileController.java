@@ -25,7 +25,6 @@ public class MemberProfileController {
 
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         String status = service.findProStatusByUserId(userId);
-        log.info("pro status============================================= {}", status);
         MemberProfileDto member = service.findMemberByUserId(userId);
 
         String profileText = member.getProfileText();
