@@ -6,12 +6,13 @@ import com.finalproject.sulbao.login.model.entity.Login;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface PostRepository extends JpaRepository<Post, Long> {
+public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificationExecutor<Post> {
 
     Page<Post> findByBoardCategory(BoardCategory boardCategory, Pageable pageable);
 
@@ -31,7 +32,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "WHERE p.boardCategory = :boardCategory " +
             "AND (p.title LIKE %:keyword% " +
             "OR p.content LIKE %:keyword% " +
-            "OR t LIKE %:keyword%)")
+            "OR t LIKE %:keyword%)" +
+            "ORDER BY p.createdAt DESC")
     List<Post> findByBoardCategoryAndKeyword(BoardCategory boardCategory, String keyword);
 
     Page<Post> findAllByLogin(Login login, Pageable pageable);
