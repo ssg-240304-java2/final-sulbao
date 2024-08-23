@@ -7,6 +7,7 @@ import com.finalproject.sulbao.cart.service.CartService;
 import com.finalproject.sulbao.login.model.dto.LoginDetails;
 import com.finalproject.sulbao.login.model.entity.Login;
 import com.finalproject.sulbao.login.model.repository.LoginRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,9 +63,15 @@ public class CartController {
      * @return
      */
     @DeleteMapping("/cart/delete/{cartCode}")
-    public ResponseEntity<String> deleteCart(@PathVariable Long cartCode){
+    public ResponseEntity<String> deleteCart(@PathVariable Long cartCode, HttpServletRequest request, Authentication authentication){
+        HttpSession session = request.getSession();
+        Long userNo = sessionHandler.getUserId(authentication);
+        Login login1 = loginRepository.findById(userNo).orElseThrow();
+        String userId = login1.getUserId();
         try{
             cartService.deleteByCartCode(cartCode);
+            int cartList = cartService.findCartCountByUserId(userId);
+            session.setAttribute("cartList", cartList);
             return ResponseEntity.ok("Product deleted successfully");
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting product");
