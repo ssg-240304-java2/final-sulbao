@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificationExecutor<Post> {
@@ -38,5 +39,12 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
     List<Post> findByBoardCategoryAndKeyword(BoardCategory boardCategory, String keyword);
 
     Page<Post> findAllByLogin(Login login, Pageable pageable);
+
+
+    @Query("SELECT p FROM Post p WHERE p.boardCategory = :boardCategory AND p.createdAt BETWEEN :startOfWeek AND :endOfWeek ORDER BY p.hit DESC")
+    List<Post> findTopPostsByBoardCategoryAndDateRange(@Param("boardCategory") BoardCategory boardCategory,
+                                                       @Param("startOfWeek") LocalDateTime startOfWeek,
+                                                       @Param("endOfWeek") LocalDateTime endOfWeek,
+                                                       Pageable pageable);
 
 }
