@@ -114,19 +114,20 @@ public class OrderController {
 //        if(session.getAttribute("userNo") == null){
 //            return "redirect:/login";
 //        }
-
-        UserDto userdto = sessionHandler.getUser(authentication);
+        System.out.println("인증 전");
+        SellerDto sellerDto = sessionHandler.getSeller(authentication);
 
         if(!sessionHandler.isLogin(authentication)){
             return "redirect:/login";
         }
+        System.out.println(sellerDto + "아약스");
 
         String role = "";
         List<ProductDTO> productLists;
-        if(userdto.getRoleType() == RoleType.ADMIN){
+        if(sellerDto.getRoleType() == RoleType.ADMIN){
             productLists = orderProductService.findAll();
             role = "ROLE_ADMIN";
-        }else if(userdto.getRoleType() == RoleType.SELLER){
+        }else if(sellerDto.getRoleType() == RoleType.SELLER){
             Long userNo = (Long) session.getAttribute("userNo");
             // 2. 1번을 이용해 판매자의 상품 정보 조회 -> 상품 코드, 상품명
             productLists = orderProductService.findByUserNo(userNo);
@@ -172,6 +173,7 @@ public class OrderController {
         model.addAttribute("submenu", "option");
         model.addAttribute("orderProductList", orderProductList);
         model.addAttribute("role", role);
+        System.out.println("테스트");
         return "cart/sellerorder";
     }
 
