@@ -114,4 +114,8 @@ public class CartService {
     public void updateTotalPriceByCartNo(Long cartCode, int totalPirce) {
         cartRepository.updateTotalPriceByCartNo(cartCode, totalPirce);
     }
+
+    public int findCartCountByUserId(String userId) {
+        return cartRepository.findCartCountByUserId(userId);
+    }
 }

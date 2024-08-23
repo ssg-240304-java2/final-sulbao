@@ -7,6 +7,7 @@ import com.finalproject.sulbao.cart.service.CartService;
 import com.finalproject.sulbao.product.model.dto.ProductDTO;
 import com.finalproject.sulbao.product.model.entity.Product;
 import com.finalproject.sulbao.product.service.ProductService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -81,7 +82,7 @@ public class UserProductController {
     //장바구니 추가
     @PostMapping("/addCart")
     @ResponseBody
-    public String addCart(@RequestParam Long productNo, @RequestParam Integer quantity, @RequestParam Integer totalPrice, Authentication authentication) {
+    public String addCart(@RequestParam Long productNo, @RequestParam Integer quantity, @RequestParam Integer totalPrice, Authentication authentication, HttpServletRequest request) {
 
         log.info("authentication: {}", authentication);
         log.info("productNo: {}", productNo);
@@ -113,6 +114,10 @@ public class UserProductController {
         }else{
             productService.addCart(cartDTO);
         }
+        int cartList = cartService.findCartCountByUserId(userId);
+
+        HttpSession session = request.getSession();
+        session.setAttribute("cartList", cartList);
         return "success";
     }
 

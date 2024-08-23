@@ -1,5 +1,6 @@
 package com.finalproject.sulbao.login.controller;
 
+import com.finalproject.sulbao.cart.service.CartService;
 import com.finalproject.sulbao.login.model.dto.LoginDetails;
 import com.finalproject.sulbao.login.model.repository.LoginRepository;
 import jakarta.servlet.ServletException;
@@ -25,9 +26,11 @@ public class UserAuthenticationSuccessHandler implements AuthenticationSuccessHa
     private String defaultUrl;
 
     private final LoginRepository repository;
+    private final CartService cartService;
 
-    public UserAuthenticationSuccessHandler(LoginRepository repository) {
+    public UserAuthenticationSuccessHandler(LoginRepository repository, CartService cartService) {
         this.repository = repository;
+        this.cartService = cartService;
     }
 
     @Override
@@ -49,7 +52,8 @@ public class UserAuthenticationSuccessHandler implements AuthenticationSuccessHa
         session.setAttribute("role", role);
         session.setAttribute("profileUrl", defaultUrlCheck(profileUrl));
         session.setMaxInactiveInterval(3600); // Session이 60분동안 유지
-
+        int cartList = cartService.findCartCountByUserId(userId);
+        session.setAttribute("cartList", cartList);
 
         if(role.equals("ROLE_MEMBER")) {
             response.sendRedirect("/");
