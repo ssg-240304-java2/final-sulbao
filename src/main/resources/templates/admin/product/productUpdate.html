@@ -81,6 +81,7 @@
                                     <th>상품상세 설명</th>
                                     <td>
                                         <div id="summernote" th:utext="${product.productDescription}"></div>
+                                        <input type="hidden" id="productDescription" name="productDescription" th:value="${product.productDescription}">
                                     </td>
                                 </tr>
                                 <tr>

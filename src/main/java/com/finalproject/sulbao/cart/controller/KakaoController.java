@@ -180,6 +180,8 @@ public class KakaoController {
             cartService.updateToken(cartDTO.getCartCode(),orderDTO.getToken());
         }
 
+        int cartList = cartService.findCartCountByUserId(userId);
+        session.setAttribute("cartList", cartList);
 
         return "cart/ordercomplete";
     }

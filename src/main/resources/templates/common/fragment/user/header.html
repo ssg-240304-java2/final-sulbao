@@ -61,7 +61,7 @@
                             <li>
                             <a href="/orders/cart">
                                 <span class="material-icons">shopping_cart</span>
-<!--                                <span style="width:18px; height:18px; border-radius: 50%; border: none; background: deepskyblue; margin-left: -7px; margin-top: -7px; position: absolute; text-align: center; color: white">3</span>-->
+                                <span th:if="${session.get('cartList')} > 0" style="width:18px; height:18px; border-radius: 50%; border: none; background: deepskyblue; margin-left: -7px; margin-top: -7px; position: absolute; text-align: center; color: white; text-align: center; font-size: 11px" th:text="${session.get('cartList')}">3</span>
                             </a>
                             </li>
                             <li><a href="/mypage/myprofile">
