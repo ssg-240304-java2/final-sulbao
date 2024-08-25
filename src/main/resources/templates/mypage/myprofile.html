@@ -14,6 +14,30 @@
             {
                 alert('[[${message}]]');
             }
+
+            // 프로필 이미지 변경 이벤트 리스너 등록
+            const profileImgInput = document.getElementById('profile-img');
+            const profileImgServer = document.getElementById('profile-img-server');
+            const profileImgPreview = document.getElementById('profile-img-preview');
+
+            profileImgInput.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+
+                    reader.onload = function(e) {
+                        // 서버에서 로드된 이미지 숨기기
+                        profileImgServer.style.display = 'none';
+
+                        // 새로운 이미지 미리보기 표시
+                        profileImgPreview.style.display = 'block';
+                        profileImgPreview.src = e.target.result;
+                    };
+
+                    reader.readAsDataURL(file);
+                }
+            });
+
         };
 
         $(document).ready(function() {
@@ -113,18 +137,21 @@
             margin: 20px;
             font-family: Arial, sans-serif;
             color: #131313;
+
         }
 
         .profile-header {
             display: flex;
-            align-items: flex-start;
+            align-items: start;
             margin-bottom: 30px;
         }
 
         .profile-image {
-            width: 150px;
+            min-width: 150px;
+            width: 150px !important;
             height: 150px;
             border-radius: 50%;
+            object-fit: cover;
             border-color: #3b3a3a;
         }
 
@@ -220,7 +247,8 @@
             <form id="profile" action="/mypage/updateProfile" method="POST" enctype="multipart/form-data">
                 <div class="profile-container">
                     <div class="profile-header">
-                        <img th:src="${profileImg}" alt="Profile Image" class="profile-image"/>
+                        <img id="profile-img-server" th:src="${profileImg}" alt="Profile Image" class="profile-image"/>
+                        <img id="profile-img-preview" alt="Profile Image" class="profile-image" style="display: none"/>
                         <input type="file" id="profile-img" name="image">
                     </div>
 

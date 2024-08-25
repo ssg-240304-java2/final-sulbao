@@ -10,6 +10,7 @@ import com.finalproject.sulbao.login.model.repository.LoginRepository;
 import com.finalproject.sulbao.login.model.repository.MemberInfoRepository;
 import com.finalproject.sulbao.login.model.vo.MemberImage;
 import com.finalproject.sulbao.login.model.vo.SellerInfo;
+import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -132,7 +133,7 @@ public class LoginService {
 
     // 프로필 - 업데이트
     @Transactional
-    public void updateMemberInfo(MemberProfileDto memberProfile, String userId) {
+    public void updateMemberInfo(MemberProfileDto memberProfile, String userId, HttpSession session) {
 
         Login login = loginRepository.findByUserId(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 사용자 입니다."));
@@ -152,6 +153,8 @@ public class LoginService {
             memberImage.setSaveName(fileDto.getUploadFileName());
             memberImage.setSaveImgUrl(fileDto.getUploadFileUrl());
             memberInfo.setMemberImage(memberImage);
+            session.setAttribute("profileUrl", fileDto.getUploadFileUrl());
+
         }
 
         // 프로필 이름 업데이트
