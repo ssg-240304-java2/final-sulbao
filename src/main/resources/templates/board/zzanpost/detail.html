@@ -30,7 +30,10 @@
         <div class="post-meta">
             <img alt="작성자 프로필 사진"
                  th:src="@{${post.userDto.profileImageFileUrl}}">
-            <div class="username" th:text="${post.userDto.getProfileName()}"></div>
+            <div class="username-and-date">
+                <div class="username" th:text="${post.userDto.getProfileName()}"></div>
+                <div class="post-created-at" th:text="${#temporals.format(post.createdAt, 'yyyy년 MM월 dd일 HH시 mm분')}"></div>
+            </div>
             <div class="edit-buttons" th:if="${user.id == post.userDto.id or isAdmin}">
                 <button onclick="editPost()">수정</button>
                 <button onclick="deletePost()">삭제</button>
@@ -64,7 +67,7 @@
                     <div class="comment-content">
                         <div class="username" th:text="${comment.userDto.profileName}"></div>
                         <div class="comment-text" th:text="${comment.content}"></div>
-                        <div class="timestamp" th:text="${comment.createdAt}"></div>
+                        <div class="timestamp" th:text="${#temporals.format(comment.createdAt, 'yyyy년 MM월 dd일 HH시 mm분')}"></div>
                     </div>
 
                     <div class="edit-buttons" th:if="${user.id == comment.userDto.id or isAdmin}">
@@ -74,7 +77,7 @@
                 </div>
 
                 <form action="/comments/update" class="comment-edit-form" method="post" style="display: none">
-                    <div class="comment-input">
+                    <div class="comment-edit-input">
                         <img alt="comment writer's profile image"
                              th:src="@{${comment.userDto.profileImageFileUrl}}">
                         <label>
