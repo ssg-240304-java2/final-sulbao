@@ -28,6 +28,7 @@ public class ZzanfeedController {
     private final PostService postService;
     private final SessionHandler sessionHandler;
     private final LikeService likeService;
+//    private final BadWordFiltering contentFilter;
 
     @GetMapping("/new")
     public String newPost() {

@@ -59,6 +59,7 @@
         </div>
         <div class="editor-container">
             <div class="summernote"></div>
+            <div id="content-warning" style="margin-top: 10px;"></div>
         </div>
     </div>
 
@@ -125,9 +126,33 @@
             $('.summernote').summernote({
                 lang: 'ko-KR',
                 height: 180,
-                disableResizeEditor: true
+                disableResizeEditor: true,
+                callbacks: {
+                    onChange: function(contents, $editable) {
+                        filterContent(contents);
+                    }
+                }
             });
         });
+
+        function filterContent(contents) {
+            $.ajax({
+                url: '/zzanposts/filter-contents',
+                type: 'POST',
+                data: JSON.stringify({ content: contents }),
+                contentType: 'application/json',
+                success: function (response) {
+                    if (response.hasBadWords) {
+                        $('#badword-warning').text('비속어가 포함되어 있습니다.').css('color', 'red');
+                    } else {
+                        $('#badword-warning').text('');
+                    }
+                },
+                error: function () {
+                    console.log('비속어 검사를 실패했습니다.');
+                }
+            });
+        }
 
         function addEditorWrapper() {
             const newWrapper = `
