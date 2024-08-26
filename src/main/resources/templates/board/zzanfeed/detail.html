@@ -104,7 +104,8 @@
             </div>
 
             <div class="comment-input">
-                <img alt="default profile"
+                <img th:if="${user.id != 0}" th:src="${user.profileImageFileUrl}" alt="user profile">
+                <img th:if="${user.id == 0}" alt="default profile"
                      src="https://kr.object.ncloudstorage.com/sulbao-file/profile/default-profile.png">
                 <label for="commentContent"></label>
                 <input id="commentContent" th:placeholder='${user.id == 0 ? "로그인 후 작성 가능합니다." : "댓글을 입력하세요."}' type="text" th:disabled="${user.id == 0}">

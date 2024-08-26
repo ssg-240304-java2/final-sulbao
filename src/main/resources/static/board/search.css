@@ -184,7 +184,7 @@
 
 .zzanpost-post-item img.thumbnail {
     width: 100%;
-    height: auto;
+    height: 300px;
     max-width: 400px;
     max-height: 300px;
     object-fit: cover;
