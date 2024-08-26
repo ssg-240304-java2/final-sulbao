@@ -25,7 +25,7 @@
                             <form action="#" method="get">
                                 <table class="table table-bordered">
                                 <tr>
-                                    <th>상품명</th>
+                                    <th>메거진명</th>
                                     <td colspan="3">
                                         <div class="form-row">
                                             <input class="form-control col-8" name="searchInput">
@@ -33,39 +33,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>
-                                        상품카테고리
-                                    </th>
-                                    <td colspan="3">
-                                        <div class="custom-control custom-radio d-inline-block mr-3">
-                                            <input type="radio" class="custom-control-input" id="searchAll" name="productCategory" value="" checked>
-                                            <label class="custom-control-label" for="searchAll">전체</label>
-                                        </div>
-                                        <div class="custom-control custom-radio d-inline-block mr-3">
-                                            <input type="radio" class="custom-control-input" id="customCheck1" name="productCategory" value="탁주">
-                                            <label class="custom-control-label" for="customCheck1">탁주</label>
-                                        </div>
-                                        <div class="custom-control custom-radio d-inline-block mr-3">
-                                            <input type="radio" class="custom-control-input" id="customCheck2" name="productCategory" value="과실주">
-                                            <label class="custom-control-label" for="customCheck2">과실주</label>
-                                        </div>
-                                        <div class="custom-control custom-radio d-inline-block mr-3">
-                                            <input type="radio" class="custom-control-input" id="customCheck3" name="productCategory" value="약주">
-                                            <label class="custom-control-label" for="customCheck3">약주</label>
-                                        </div>
-                                        <div class="custom-control custom-radio d-inline-block mr-3">
-                                            <input type="radio" class="custom-control-input" id="customCheck4" name="productCategory" value="전통소주">
-                                            <label class="custom-control-label" for="customCheck4">전통소주</label>
-                                        </div>
-                                        <div class="custom-control custom-radio d-inline-block mr-3">
-                                            <input type="radio" class="custom-control-input" id="customCheck5" name="productCategory" value="기타">
-                                            <label class="custom-control-label" for="customCheck5">기타</label>
-                                        </div>
-
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>진열상태</th>
+                                    <th>표시상태</th>
                                     <td rowspan="3">
                                         <div class="custom-control custom-radio d-inline-block mr-3">
                                             <input type="radio" id="displayAll" name="displayYn" value="" class="custom-control-input" checked>
@@ -80,21 +48,6 @@
                                             <label class="custom-control-label" for="displayN">진열안함</label>
                                         </div>
                                     </td>
-                                    <th>판매상태</th>
-                                    <td>
-                                        <div class="custom-control custom-radio d-inline-block mr-3">
-                                            <input type="radio" id="sellAll" name="sellYn" value="" class="custom-control-input" checked>
-                                            <label class="custom-control-label" for="sellY">전체</label>
-                                        </div>
-                                        <div class="custom-control custom-radio d-inline-block mr-3">
-                                            <input type="radio" id="sellY" name="sellYn" value="Y" class="custom-control-input">
-                                            <label class="custom-control-label" for="sellY">판매함</label>
-                                        </div>
-                                        <div class="custom-control custom-radio d-inline-block mr-3">
-                                            <input type="radio" id="sellN" name="sellYn" value="N" class="custom-control-input">
-                                            <label class="custom-control-label" for="sellN">판매안함</label>
-                                        </div>
-                                    </td>
                                 </tr>
                             </table>
                                 <div class="row mt-5 mb-5">
@@ -107,10 +60,8 @@
                         </div>
 
                         <div class="mr-3 mb-4">
-                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="changeStatusYn('display','Y')">진열함</button>
-                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="changeStatusYn('display','N')">진열안함</button>
-                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="changeStatusYn('seller','Y')">판매함</button>
-                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="changeStatusYn('seller','N')">판매안함</button>
+                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="changeStatusYn('display','Y')">표시함</button>
+                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="changeStatusYn('display','N')">표시안함</button>
                             <button type="button" class="btn btn-sm btn-danger" onclick="deleteProduct()">삭제</button>
                         </div>
 
@@ -118,27 +69,17 @@
                             <thead>
                             <tr>
                                 <th><input type="checkbox" id="cbx_chkAll"></th>
-                                <th>상품이미지</th>
-                                <th>상품카테고리</th>
-                                <th>상품 명</th>
-                                <th>상품 가격</th>
-                                <th>재고 수</th>
-                                <th>진열상태</th>
-                                <th>판매상태</th>
+                                <th>매거진명</th>
+                                <th>매거진 출간일</th>
+                                <th>표시 상태</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="product : ${productList}">
-                                <td><input type="checkbox" name="chk" th:value="${product.productNo}"></td>
-                                <td class="py-1">
-                                    <img style="max-height: 100px; max-width: 100px;" th:src="|https://kr.object.ncloudstorage.com/sulbao-file/product/@{${product.productImages[0].saveName}}|" alt="Product Image">
-                                </td>
-                                <td th:text="${product.productCategory}">Coach Swagger</td>
-                                <td><a th:href="@{'/product/update/'+${product.productNo}}">[[${product.productName}]]</a></td>
-                                <td th:text="${product.productPrice}">27</td>
-                                <td th:text="${product.productStock}">1</td>
-                                <td th:text="${product.displayYn == 'Y'}?'진열함':'진열안함'">2</td>
-                                <td th:text="${product.sellYn == 'Y'}? '판매중':'판매안함'">2</td>
+                            <tr th:each="magazine : ${magazineList}">
+                                <td><input type="checkbox" name="chk" th:value="${magazine.magazineNo}"></td>
+                                <td><a th:href="@{'/magazine/update/'+${magazine.magazineNo}}">[[${magazine.magazineTitle}]]</a></td>
+                                <td th:text="${magazine.publishDate}">Coach Swagger</td>
+                                <td th:text="${magazine.displayYn == 'Y'}?'표시함':'표시안함'">2</td>
                             </tr>
 
                             </tbody>

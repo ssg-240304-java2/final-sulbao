@@ -30,7 +30,7 @@ public class Product extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ProductCategory productCategory;
 
-    @Column(name="product_description")
+    @Column(name="product_description", columnDefinition = "TEXT")
     private String productDescription;
 
     @Column(name="product_summary")
@@ -42,13 +42,13 @@ public class Product extends BaseEntity {
     @Column(name="product_stock")
     private int productStock;
 
-    @Column(name="product_hashtag")
+    @Column(name="product_hashtag", length = 500)
     private String productHashTag;
 
-    @Column(name="sell_yn")
+    @Column(name="sell_yn", length = 1, columnDefinition = "CHAR(1) DEFAULT 'n'")
     private String sellYn;
 
-    @Column(name="display_yn")
+    @Column(name="display_yn", length = 1, columnDefinition = "CHAR(1) DEFAULT 'n'")
     private String displayYn;
 
     @ElementCollection(fetch = FetchType.EAGER)
