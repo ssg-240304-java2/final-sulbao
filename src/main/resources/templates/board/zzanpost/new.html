@@ -55,6 +55,7 @@
                 <ul>
                     <li>커뮤니티 규정을 준수해 주세요.</li>
                     <li>가이드라인에 어긋나는 게시글은 사전 경고 없이 삭제될 수 있습니다.</li>
+                    <li style="color: red">비속어 필터링이 동작하고 있습니다. 바르고 고운말을 사용해주세요.</li>
                 </ul>
             </li>
         </ul>
@@ -67,10 +68,10 @@
     <input accept="image/*" id="thumbnail" name="thumbnail" type="file">
 
     <div class="cover-upload-container" id="coverPreview">
-        커버 사진을 업로드해주세요.
+        썸네일 사진을 업로드해주세요.
         <div class="upload-button-container">
             <button class="upload-button" id="uploadButton">
-                커버사진 추가하기
+                썸네일 사진 추가하기
             </button>
         </div>
     </div>
@@ -156,7 +157,7 @@
             if (fileInput) {
                 formData.append('multipartFile', fileInput);
             } else {
-                alert('커버사진을 등록해주시기 바랍니다.');
+                alert('썸네일 이미지를 등록해주시기 바랍니다.');
                 return;
             }
 

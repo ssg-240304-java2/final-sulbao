@@ -23,7 +23,7 @@
     text-align: center;
     padding: 20px;
     border-radius: 5px;
-    width: 60%;
+    width: 25%;
     height: 400px;
     display: flex;
     flex-direction: column;
@@ -157,19 +157,20 @@
     background-color: #d3d3d3;
     color: black;
     font-size: 1.2rem;
-    width: 40px;
-    height: 40px;
+    width: 60px;
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.3s;
     border-radius: 5px;
     margin-top: 5%;
 }
 
 .add-box:hover {
     background-color: #c0c0c0;
+    transform: scale(1.1);
 }
 
 .add-content {
@@ -189,6 +190,10 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.3s;
     margin: 5%;
+}
+
+.submit-button:hover {
+    transform: scale(1.1);
 }

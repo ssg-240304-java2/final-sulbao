@@ -1,5 +1,6 @@
 package com.finalproject.sulbao.board.service;
 
+import com.finalproject.sulbao.board.common.TopTagScheduler;
 import com.finalproject.sulbao.board.domain.BoardCategory;
 import com.finalproject.sulbao.board.domain.Post;
 import com.finalproject.sulbao.board.domain.PostImage;
@@ -44,6 +45,7 @@ public class PostService {
     private final LoginRepository loginRepository;
     private final BoardCategoryRepository boardCategoryRepository;
     private final FileService fileService;
+    private final TopTagScheduler topTagScheduler;
 
     public void updateHit(Long id) {
         postRepository.findById(id).orElseThrow().updateHit();
@@ -173,7 +175,8 @@ public class PostService {
     }
 
     public List<String> findTopTags() {
-        return postRepository.findTopTags().stream().limit(15).toList();
+        return topTagScheduler.getTopTagNames();
+//        return postRepository.findTopTags().stream().limit(15).toList();
     }
 
     public List<PostDto> findByCategoryAndKeyword(String keyword, Long boardCategoryId) {

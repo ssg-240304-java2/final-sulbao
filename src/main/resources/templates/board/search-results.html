@@ -88,6 +88,16 @@
             </div>
         </div>
     </div>
+
+    <script th:inline="javascript">
+        document.addEventListener("DOMContentLoaded", function() {
+            let keyword = [[${keyword}]];
+            let searchInput = document.getElementById("search");
+            if (keyword && searchInput) {
+                searchInput.value = keyword;
+            }
+        });
+    </script>
 </div>
 </body>
 </html>

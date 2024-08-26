@@ -29,10 +29,10 @@
 
     <input accept="image/*" id="thumbnail" name="thumbnail" type="file">
     <div class="cover-upload-container" id="coverPreview">
-        커버 사진을 업로드해주세요.
+        썸네일 이미지를 업로드해주세요.
         <div class="upload-button-container">
             <button class="upload-button" id="uploadButton">
-                커버사진 추가하기
+                썸네일 추가하기
             </button>
         </div>
     </div>
@@ -125,14 +125,21 @@
         $(document).ready(function () {
             $('.summernote').summernote({
                 lang: 'ko-KR',
-                height: 180,
+                height: 220,
                 disableResizeEditor: true,
                 callbacks: {
                     onChange: function(contents, $editable) {
                         filterContent(contents);
                     }
-                }
+                },
+                toolbar: [
+                    ['style', ['style']],       // 스타일 드롭다운 (헤딩 등)
+                    ['font', ['bold', 'italic', 'underline', 'clear']], // 글꼴 스타일
+                    ['fontname', ['fontname']], // 글꼴 이름 변경
+                ]
             });
+
+            $('.note-editor').css('width', '100%'); // 원하는 너비로 조정
         });
 
         function filterContent(contents) {
@@ -174,9 +181,16 @@
             $(newWrapper).insertBefore('.add-wrapper');
 
             $('.summernote').last().summernote({
-                height: 180,
-                disableResizeEditor: true
+                height: 220,
+                disableResizeEditor: true,
+                toolbar: [
+                    ['style', ['style']],       // 스타일 드롭다운 (헤딩 등)
+                    ['font', ['bold', 'italic', 'underline', 'clear']], // 글꼴 스타일
+                    ['fontname', ['fontname']], // 글꼴 이름 변경
+                ]
             });
+
+            $('.note-editor').css('width', '100%'); // 원하는 너비로 조정
         }
 
         function uploadImage(button) {

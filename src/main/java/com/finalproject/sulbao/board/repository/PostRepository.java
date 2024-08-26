@@ -23,6 +23,9 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
     @Query("SELECT tag FROM Post p JOIN p.tags tag GROUP BY tag ORDER BY count(tag) DESC")
     List<String> findTopTags();
 
+    @Query("SELECT tag, COUNT(tag) FROM Post p JOIN p.tags tag GROUP BY tag ORDER BY COUNT(tag) DESC")
+    List<Object[]> findTopTagsWithCount();
+
     @Query("SELECT p FROM Post p JOIN p.tags t WHERE p.boardCategory = :boardCategory AND t = :tag ORDER BY p.createdAt DESC")
     Page<Post> findByBoardCategoryAndTag(@Param("boardCategory") BoardCategory boardCategory, @Param("tag") String tag, Pageable pageable);
 
