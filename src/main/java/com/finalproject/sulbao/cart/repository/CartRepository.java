@@ -40,4 +40,8 @@ public interface CartRepository extends JpaRepository<Carts, Integer> {
 
     @Query(value = "select count(k) from Carts k where k.userId= :userId and k.isOrder = false ")
     int findCartCountByUserId(String userId);
+
+
+    @Query(value = "select C from Carts C where C.cartCode In (:orderCodeLists)")
+    List<Carts> findByCartCodesIn(List<Long> orderCodeLists);
 }

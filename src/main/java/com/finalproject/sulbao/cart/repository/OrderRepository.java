@@ -26,4 +26,14 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     @Query(value = "select k from Order k where k.userId = :userId order by k.orderCode")
     List<Order> findByUserId(String userId);
+
+    @Modifying
+    @Query(value = "update Order k set k.delivery = '환불중' where k.orderCode = :orderCode")
+    void refundOrder(Long orderCode);
+
+    @Query(value = "select j.amount from Order k join k.orderItems j where k.orderCode IN (:orderCodes)")
+    List<Integer> findByOrderCodes(List<Long> orderCodes);
+
+    @Query(value = "select j.productNo from Order k join k.orderItems j where k.orderCode IN (:orderCodes)")
+    List<Long> findByProductNos(List<Long> orderCodes);
 }
