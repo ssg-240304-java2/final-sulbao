@@ -218,9 +218,15 @@ public class ProductService {
         cartRepository.save(carts);
     }
 
-    public List<ProductComparisonDTO> findByComparisonList() {
+    public List<ProductComparisonDTO> findByComparisonList(String category) {
 
-        List<ProductComparison> comparisonList = productComparisonRepository.findAllByComparison();
+        List<ProductComparison> comparisonList = new ArrayList<>();
+
+        if(category == null || category.isBlank()){
+            comparisonList = productComparisonRepository.findAllByComparison();
+        }else{
+            comparisonList = productComparisonRepository.findByComparisonCategory(category);
+        }
         log.info("Service comparisonList ============== {}",comparisonList.toString());
 
         List<ProductComparisonDTO> productComparisonList = new ArrayList<>();

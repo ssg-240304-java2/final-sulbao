@@ -19,16 +19,35 @@
     </style>
     <div class="untree_co-section">
       <div class="container">
-        <div class="mt-4">
-          <div>
-            <select class="form-control form-control-sm mb-5"  style="display: inline-block; float: right; width: 15%;">
-              <option value="">20개씩 보기</option>
-              <option value="">40개씩 보기</option>
-              <option value="">60개씩 보기</option>
-              <option value="">80개씩 보기</option>
-            </select>
+        <div style="margin-bottom: 5%;">
+          <div style="margin: 8% 0 3% 0;">
+            <button type="button" th:class="${category} == null ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-outline-primary'" onclick="location.href='/product/user/list'">전체</button>
+            <button type="button" th:class="${category} == '과실주' ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-outline-primary'" onclick="location.href='/product/user/list?category=과실주'">과실주</button>
+            <button type="button" th:class="${category} == '약주' ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-outline-primary'" onclick="location.href='/product/user/list?category=약주'">약주</button>
+            <button type="button" th:class="${category} == '전통소주' ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-outline-primary'" onclick="location.href='/product/user/list?category=전통소주'">전통소주</button>
+            <button type="button" th:class="${category} == '탁주' ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-outline-primary'" onclick="location.href='/product/user/list?category=탁주'">탁주</button>
+            <button type="button" th:class="${category} == '기타' ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-outline-primary'" onclick="location.href='/product/user/list?category=기타'">기타</button>
+
+            <!-- TODO: 기능작업예정 -->
+<!--            <select class="form-control form-control-sm mb-5"  style="display: inline-block; float: right; width: 15%;">-->
+<!--              <option value="">20개씩 보기</option>-->
+<!--              <option value="">40개씩 보기</option>-->
+<!--              <option value="">60개씩 보기</option>-->
+<!--              <option value="">80개씩 보기</option>-->
+<!--            </select>-->
           </div> <!-- 페이징 상품 select Box -->
-          <div th:each="comparison : ${comparisonList}">
+          <div th:if="${comparisonList} == null or ${#lists.size(comparisonList)} == 0" >
+
+              <div class="d-flex justify-content-center align-middle">
+                <img src="https://kr.object.ncloudstorage.com/sulbao-file/no-content.gif" alt="No Content"/>
+              </div>
+              <div class="align-middle">
+                <p style="text-align: center; font-size: 30px; font-weight: bold;">상품 실종</p>
+              </div>
+
+
+          </div>
+          <div th:each="comparison : ${comparisonList}" th:unless="${comparisonList} == null or ${#lists.size(comparisonList)} == 0">
             <div style="padding: 20px 0; border-bottom: 1px solid #ececec;">
               <div style="display: table; width: 100%; table-layout: fixed;">
                 <div style="position: relative; display: table-cell; width: 140px; vertical-align: top;"><!-- 상품 이미지 -->
