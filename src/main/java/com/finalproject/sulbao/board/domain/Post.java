@@ -32,6 +32,9 @@ public class Post extends BaseEntity {
     @Column(columnDefinition = "longtext")
     private String content;
 
+    @Column(columnDefinition = "longtext")
+    private String tag;
+
     @ColumnDefault("0")
     private Long hit;
 
@@ -84,12 +87,17 @@ public class Post extends BaseEntity {
         return post;
     }
 
-    public static Post createPost(Login login, BoardCategory boardCategory, String title, String content, String thumbnail, List<PostImage> postImages, List<String> tags) {
+    public static Post createPost(Login login, BoardCategory boardCategory, String title, String content, String thumbnail, List<PostImage> postImages, List<String> tags, String tag) {
         Post post = createPost(login, boardCategory, title, content, thumbnail, postImages);
         if (tags != null) {
+            post.setTag(tag);
             post.setTags(tags);
         }
         return post;
+    }
+
+    private void setTag(String tag) {
+        this.tag = tag;
     }
 
     private void setTags(List<String> tags) {

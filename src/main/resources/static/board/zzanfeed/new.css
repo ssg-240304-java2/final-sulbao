@@ -41,6 +41,7 @@
 .tagify {
     width: 100%;
     max-width: 700px;
+    height: 80px;
 }
 
 .tags-look .tagify__dropdown__item {
@@ -66,15 +67,9 @@
 
 .hashtag-container {
     margin: 20px auto;
-    width: 60%;
+    width: 100%;
     display: flex;
     justify-content: center;
-}
-
-.some_class_name {
-    width: 100%;
-    max-width: 700px;
-    box-sizing: border-box;
 }
 
 .editor-wrapper {
@@ -130,7 +125,6 @@
 }
 
 .editor-container {
-    display: flex;
     align-items: flex-start;
 }
 
@@ -143,7 +137,7 @@
     font-size: 24px;
     cursor: pointer;
     transition: color 0.3s ease;
-    margin-top: 1%;
+    margin-top: 30px;
 }
 
 .delete-button:hover {
