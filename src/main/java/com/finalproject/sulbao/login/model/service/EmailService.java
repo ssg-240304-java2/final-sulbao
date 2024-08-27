@@ -1,5 +1,7 @@
 package com.finalproject.sulbao.login.model.service;
 
+
+import com.finalproject.sulbao.cart.dto.CartDTO;
 import com.finalproject.sulbao.login.model.dto.EmailMessage;
 import com.finalproject.sulbao.login.model.entity.EmailVerify;
 import com.finalproject.sulbao.login.model.repository.EmailRepository;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
@@ -49,11 +52,13 @@ public class EmailService {
     // thymeleaf를 통한 html 적용
     public String setContext(String code, String type) {
         Context context = new Context();
+        String photo = "https://kr.object.ncloudstorage.com/sulbao-file/main/sulbao-blue.png";
         context.setVariable("code", code);
+        context.setVariable("photo", photo);
         return templateEngine.process(type, context);
     }
 
-    public String presentSendMail(EmailMessage emailMessage, String orderCodeList, String type) {
+    public String presentSendMail(EmailMessage emailMessage, List<CartDTO> cartLists,String nickname ,String type) {
         try {
             InternetAddress emailAddr = new InternetAddress(emailMessage.getTo());
             emailAddr.validate();
@@ -64,12 +69,12 @@ public class EmailService {
 
 
         String token = UUID.randomUUID().toString();
-
-
+        System.out.println(nickname);
+        System.out.println(cartLists + "아약스아약스"); // 카트리스트 번호
 
 //        String link = "http://localhost:8080/validateOrder?token=" + token;
         String link = "https://hansool.shop/validateOrder?token=" + token;
-
+        String photo = "https://kr.object.ncloudstorage.com/sulbao-file/main/sulbao-blue.png";
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
         try {
@@ -77,10 +82,19 @@ public class EmailService {
             mimeMessageHelper.setTo(emailMessage.getTo()); // 메일 수신자
             mimeMessageHelper.setSubject(emailMessage.getSubject()); // 메일 제목
 
-            String htmlContent = "<a id='code' href='" + link + "'>링크를 눌러 배송지를 등록해주세요.</a>";
+//            String htmlContent = "<a id='code' href='" + link + "'>링크를 눌러 배송지를 등록해주세요.</a>";
+//
+//            mimeMessageHelper.setText(htmlContent, true); // 메일 본문 내용, HTML 여부
+//            mimeMessageHelper.setText(setContext(link, type), true); // 메일 본문 내용, HTML 여부
 
+            Context context = new Context();
+            context.setVariable("nickname", nickname);
+            context.setVariable("cartLists", cartLists);
+            context.setVariable("link", link);
+            context.setVariable("photo", photo);
+            // Thymeleaf 템플릿 처리
+            String htmlContent = templateEngine.process("present-email", context);
             mimeMessageHelper.setText(htmlContent, true); // 메일 본문 내용, HTML 여부
-            mimeMessageHelper.setText(setContext(link, type), true); // 메일 본문 내용, HTML 여부
             javaMailSender.send(mimeMessage);
 
             return token;
