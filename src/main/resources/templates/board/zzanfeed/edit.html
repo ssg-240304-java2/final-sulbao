@@ -49,6 +49,7 @@
                 </div>
                 <div class="editor-container">
                     <div class="summernote" th:text="${content.text}"></div>
+                    <div class="content-warning" style="margin-top: 10px; font-size: 1.1rem; margin-left: 17%"></div>
                 </div>
             </div>
         </th:block>
@@ -120,7 +121,17 @@
             $('.summernote').summernote({
                 lang: 'ko-KR',
                 height: 180,
-                disableResizeEditor: true
+                disableResizeEditor: true,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'italic', 'underline', 'clear']],
+                    ['fontname', ['fontname']],
+                ],
+                callbacks: {
+                    onChange: function(contents, $editable) {
+                        filterContent(contents, $(this));
+                    }
+                }
             });
 
             const summernoteEditors = document.querySelectorAll('.summernote');
@@ -128,7 +139,17 @@
                 $(summernoteEditors[index]).summernote({
                     lang: 'ko-KR',
                     height: 180,
-                    disableResizeEditor: true
+                    disableResizeEditor: true,
+                    toolbar: [
+                        ['style', ['style']],
+                        ['font', ['bold', 'italic', 'underline', 'clear']],
+                        ['fontname', ['fontname']],
+                    ],
+                    callbacks: {
+                        onChange: function(contents, $editable) {
+                            filterContent(contents, $(this));
+                        }
+                    }
                 });
                 $(summernoteEditors[index]).summernote('code', content.text);
             });
@@ -148,6 +169,7 @@
             </div>
             <div class="editor-container">
                 <div class="summernote"></div>
+                <div class="content-warning" style="margin-top: 10px; font-size: 1.1rem; margin-left: 17%"></div>
             </div>
         </div>
     `;
@@ -156,7 +178,41 @@
 
             $('.summernote').last().summernote({
                 height: 180,
-                disableResizeEditor: true
+                disableResizeEditor: true,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'italic', 'underline', 'clear']],
+                    ['fontname', ['fontname']],
+                ],
+                callbacks: {
+                    onChange: function(contents, $editable) {
+                        filterContent(contents, $(this));
+                    }
+                }
+            });
+        }
+
+        function filterContent(contents, editor) {
+            $.ajax({
+                url: '/zzanposts/filter-contents',
+                type: 'POST',
+                data: JSON.stringify({ content: contents }),
+                contentType: 'application/json',
+                success: function (response) {
+                    const contentWarning = editor.closest('.editor-wrapper').find('.content-warning');
+                    const submitButton = $('.submit-button');
+
+                    if (response.hasBadWords) {
+                        contentWarning.text('⚠️ 현재 본문에 비속어가 포함되어 있습니다. ⚠️').css('color', 'red');
+                        submitButton.prop('disabled', true).css('background-color', 'gray').css('color', 'darkgray');
+                    } else {
+                        contentWarning.text('');
+                        submitButton.prop('disabled', false).css('background-color', '#7E8EF1').css('color', 'white');
+                    }
+                },
+                error: function () {
+                    console.log('비속어 검사를 실패했습니다.');
+                }
             });
         }
 

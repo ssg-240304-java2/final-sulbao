@@ -258,6 +258,7 @@
 .comment-content .timestamp {
     color: #aaa;
     font-size: 0.8rem;
+    margin-top: 3%;
 }
 
 .comment .edit-buttons {

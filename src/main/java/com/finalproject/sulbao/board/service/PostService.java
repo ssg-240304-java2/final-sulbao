@@ -122,7 +122,7 @@ public class PostService {
         }
 
         String title = requestDto.getTitle();
-//        List<String> tags = requestDto.getTags();
+        List<String> tags = requestDto.getTags();
         String content = String.join("|", requestDto.getContents());
 
         List<MultipartFile> contentImages = requestDto.getContentImages();
@@ -137,7 +137,7 @@ public class PostService {
             }
         }
 
-//        post.update(thumbnail, title, content, tags, postImages);
+        post.update(thumbnail, title, content, tags, postImages);
     }
 
     public Page<PostDto> getPostPage(Long boardCategoryId, int page) {

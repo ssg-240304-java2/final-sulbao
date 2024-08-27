@@ -125,7 +125,6 @@
         });
 
         function filterContent(contents, editor) {
-            console.log("hihihi");
             $.ajax({
                 url: '/zzanposts/filter-contents',
                 type: 'POST',
@@ -166,7 +165,7 @@
                 <button class="delete-button" onclick="deleteEditorWrapper(this)">X</button>
             </div>
         </div>
-    `;
+              `;
 
             $(newWrapper).insertBefore('.add-wrapper');
 
