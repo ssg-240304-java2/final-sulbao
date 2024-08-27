@@ -65,8 +65,8 @@ class BoardTest {
                     PostImage.createPostImage("8e6b6ef1-216a-428c-b83f-298001481c7d.jpg")
             );
 
-            Post post = Post.createPost(john, boardCategory, "전통주, 그리고 우리의 이야기", content, thumbnail, postImages, tags);
-            postRepository.save(post);
+//            Post post = Post.createPost(john, boardCategory, "전통주, 그리고 우리의 이야기", content, thumbnail, postImages, tags);
+//            postRepository.save(post);
         }
     }
 

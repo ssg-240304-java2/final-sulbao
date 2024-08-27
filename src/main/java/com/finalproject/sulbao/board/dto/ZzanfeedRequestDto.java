@@ -13,7 +13,7 @@ import java.util.List;
 public class ZzanfeedRequestDto {
 
     private String title;
-    private List<String> tags;
+    private String tags;
     private MultipartFile thumbnail;
     private List<MultipartFile> contentImages;
     private List<String> contents;
