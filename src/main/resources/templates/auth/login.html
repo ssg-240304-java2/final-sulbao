@@ -26,12 +26,16 @@
 <div class="container">
     <div class="card">
         <header>
-            <h1>술기로운한잔</h1>
+            <h1>
+                <a href="/">
+                    <img src="/user/images/sulbao-blue.png" style="width: 170px; height: 36px;"/>
+                </a>
+            </h1>
         </header>
 
         <div class="tab-menu">
-            <button class="tab active" onclick="openForm(event, 'general')">일반회원</button>
-            <button class="tab" onclick="openForm(event, 'business')">판매자회원</button>
+<!--            <button class="tab active" onclick="openForm(event, 'general')">일반회원</button>-->
+<!--            <button class="tab" onclick="openForm(event, 'business')">판매자회원</button>-->
         </div>
 
         <form id="general" class="form-content active" th:action="@{/auth/login}" method="POST">

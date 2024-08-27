@@ -171,6 +171,30 @@ public class EmailService {
         return isVerified;
     }
 
+
+    // 권한 승인 메일 전송
+    public void sendApproveMail(EmailMessage emailMessage, String type) {
+
+        try {
+            InternetAddress emailAddr = new InternetAddress(emailMessage.getTo());
+            emailAddr.validate();
+        } catch (AddressException ex) {}
+
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+
+        try {
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
+            mimeMessageHelper.setTo(emailMessage.getTo()); // 메일 수신자
+            mimeMessageHelper.setSubject(emailMessage.getSubject()); // 메일 제목
+            mimeMessageHelper.setText(setContext("", type), true); // 메일 본문 내용, HTML 여부
+            javaMailSender.send(mimeMessage);
+
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
     // 배송지 등록요청 메일
     public void presentDelaySendMail(EmailMessage emailMessage, String link, String type) {
 

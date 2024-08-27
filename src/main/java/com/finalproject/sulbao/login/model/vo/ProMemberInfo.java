@@ -14,4 +14,8 @@ public class ProMemberInfo extends BaseEntity {
     private String businessNumber;
     private String businessLink;
     private String proStatus;
+
+    public void setStatusApprove() {
+        this.proStatus = "APPROVE";
+    }
 }
