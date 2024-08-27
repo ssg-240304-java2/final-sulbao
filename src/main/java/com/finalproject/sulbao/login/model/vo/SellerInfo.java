@@ -17,4 +17,8 @@ public class SellerInfo {
     private String businessName;
 
     private String sellerStatus;
+
+    public void setStatusApprove() {
+        this.sellerStatus = "APPROVE";
+    }
 }

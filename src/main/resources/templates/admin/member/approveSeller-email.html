@@ -3,7 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>회원가입 이메일 인증 코드</title>
+    <title>계정 승인 메일</title>
     <style media="all" type="text/css">
 
         body {
@@ -156,7 +156,7 @@
             <div class="content">
 
                 <!-- START CENTERED WHITE CONTAINER -->
-                <span class="preheader">[술기로운한잔] 이메일 인증을 위한 인증 코드 발송</span>
+                <span class="preheader">[술기로운한잔] 판매자 계정 승인 안내</span>
                 <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="main">
 
                     <!-- START MAIN CONTENT AREA -->
@@ -164,8 +164,7 @@
                         <td class="wrapper">
                             <img th:src="${photo}" alt="img" style="width: 100px;"/>
                             <hr>
-                            <p>Welcome to hansool.shop</p>
-                            <p>아래 이메일 인증 코드를 회원가입 창에 입력하여 이메일 인증을 완료해 주세요.</p>
+                            <p>술기로운 한 잔에 입점 승인되었습니다.</p>
                             <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                                 <tbody>
                                 <tr>
@@ -173,7 +172,7 @@
                                         <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                                             <tbody>
                                             <tr>
-                                                <td id="code" th:text="${code}"></td>
+                                                <a href="https://hansool.shop/login">술기로운 한잔 바로가기</a>
                                             </tr>
                                             </tbody>
                                         </table>
