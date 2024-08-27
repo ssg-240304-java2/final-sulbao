@@ -1,6 +1,5 @@
 package com.finalproject.sulbao.product.service;
 
-import com.fasterxml.jackson.core.util.MinimalPrettyPrinter;
 import com.finalproject.sulbao.cart.domain.Carts;
 import com.finalproject.sulbao.cart.dto.CartDTO;
 import com.finalproject.sulbao.cart.repository.CartRepository;
@@ -280,7 +279,7 @@ public class ProductService {
     public List<ProductComparisonDTO> findByProductComparsionOrderByDesc() {
 
         List<ProductComparison> comparisonList = productComparisonRepository.findAllByComparisonOrderByCreateAtDesc();
-        log.info("최근 등록된 최저가 비교 상품   comparisonList ============== {}",comparisonList.toString());
+//        log.info("최근 등록된 최저가 비교 상품   comparisonList ============== {}",comparisonList.toString());
 
         List<ProductComparisonDTO> productComparisonList = new ArrayList<>();
 

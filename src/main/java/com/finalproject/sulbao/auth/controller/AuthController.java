@@ -1,7 +1,8 @@
 package com.finalproject.sulbao.auth.controller;
 
+import com.finalproject.sulbao.board.dto.PostDto;
+import com.finalproject.sulbao.board.service.PostService;
 import com.finalproject.sulbao.product.model.dto.ProductComparisonDTO;
-import com.finalproject.sulbao.product.model.dto.ProductDTO;
 import com.finalproject.sulbao.product.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,13 +10,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
+import static com.finalproject.sulbao.board.common.BoardCategoryConstants.ZZANFEED_ID;
+import static com.finalproject.sulbao.board.common.BoardCategoryConstants.ZZANPOST_ID;
+
 @Controller
 public class AuthController {
 
     private final ProductService productService;
+    private final PostService postService;
 
-    public AuthController(ProductService productService) {
+    public AuthController(ProductService productService, PostService postService) {
         this.productService = productService;
+        this.postService = postService;
     }
 
 
@@ -33,6 +39,10 @@ public class AuthController {
         List<ProductComparisonDTO> productList = productService.findByProductComparsionOrderByDesc();
         model.addAttribute("productList", productList);
 
+        List<PostDto> zzanfeeds = postService.getWeeklyposts(ZZANFEED_ID);
+        List<PostDto> zzanposts = postService.getWeeklyposts(ZZANPOST_ID);
+        model.addAttribute("zzanfeeds", zzanfeeds);
+        model.addAttribute("zzanposts", zzanposts);
         return "index";
     }
 
