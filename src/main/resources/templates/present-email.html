@@ -161,8 +161,9 @@
                     <!-- START MAIN CONTENT AREA -->
                     <tr>
                         <td class="wrapper">
-                            <p>Welcome to hansool.shop</p>
-                            <p>🥳<span th:text="${nickname}">닉네임</span> 넴이 보낸 선물이 도착했습니다.🥳</p>
+                            <img th:src="${photo}" alt="img" style="width: 100px;"/>
+                            <hr>
+                            <p>🥳<span th:text="${nickname}">닉네임</span> 님이 보낸 선물이 도착했습니다.🥳</p>
                             <div class="table-wrap">
                                   <table class="table">
                                     <thead class="thead-primary">
@@ -174,16 +175,14 @@
                                     </thead>
                                     <tbody>
                                     <tr class="alert" role="alert" th:each="order:${cartLists}">
-                                      <td style="height: 150px; width: 150px;">
-<!--                                        <div class="img" th:style="'background-image:url(' + ${order.getPicture()} + ');'"></div>-->
-<!--                                          <div class="img" id="myImage" th:src="'https://kr.object.ncloudstorage.com/sulbao-file/product/' + ${order.products.productImages[0].saveName}"></div>-->
-                                          <img th:src="'https://kr.object.ncloudstorage.com/sulbao-file/product/' + ${order.products.productImages[0].saveName}" alt="img" style="width: 60%; height: 60%;"/>
+                                      <td style="height: 150px; width: 150px; text-align: center; vertical-align: middle;" >
+                                          <img th:src="'https://kr.object.ncloudstorage.com/sulbao-file/product/' + ${order.products.productImages[0].saveName}" alt="img" style="width: 80%; height: 80%;"/>
                                       </td>
-                                      <td>
-                                        <div class="product-info">
-                                          <span class="company-name" th:text="${order.getProducts().getSellerInfo().getSellerInfo().getBusinessName()}" ></span>
+                                      <td style="vertical-align: middle;">
+                                        <div class="product-info" >
+                                          <span class="company-name" th:text="${order.getProducts().getSellerInfo().getSellerInfo().getBusinessName()}" style="font-size: 0.875rem; color: #777;" ></span>
                                           <br>
-                                          <span class="product-name" th:text="${order.getProducts().getProductName()}"></span>
+                                          <span class="product-name" th:text="${order.getProducts().getProductName()}" style="font-size: 1rem;"></span>
                                         </div>
                                       </td>
                                       <td class="product-price" style="text-align: center; vertical-align: middle;" >

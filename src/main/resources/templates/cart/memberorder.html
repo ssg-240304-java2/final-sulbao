@@ -39,12 +39,12 @@
         <thead class="thead-primary">
         <tr>
           <th style="width: 20%">&nbsp;</th>
-          <th style="width: 30%">Product</th>
-          <th style="width: 5%; text-align: center" >Quantity</th>
-          <th style="width: 10%; text-align: center">TotalPrice</th>
-          <th style="width: 15%; text-align: center">Status</th>
-          <th style="width: 10%; text-align: center">Date</th>
-          <th style="width: 10%; text-align: center">action</th>
+          <th style="width: 30%">상품명</th>
+          <th style="width: 5%; text-align: center" >수량</th>
+          <th style="width: 10%; text-align: center">총 가격</th>
+          <th style="width: 15%; text-align: center">상태</th>
+          <th style="width: 10%; text-align: center">날짜</th>
+          <th style="width: 10%; text-align: center">환불</th>
         </tr>
         </thead>
         <tbody>
@@ -55,9 +55,9 @@
           </td>
           <td>
             <div class="product-info">
-              <span class="company-name" th:text="${order.getCompany()}" ></span>
+              <span class="company-name" th:text="${order.getCompany()}" style="color: #777;" ></span>
               <br>
-              <span class="product-name" th:text="${order.getName()}"></span>
+              <span class="product-name" th:text="${order.getName()}" style="font-size: 1rem;"></span>
             </div>
           </td>
           <td class="product-price">
