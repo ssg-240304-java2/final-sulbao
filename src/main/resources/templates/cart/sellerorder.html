@@ -5,7 +5,7 @@
     layout:decorate="~{common/layouts/adminDefault}">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>전체 주문 조회</title>
 </head>
 <body>
     <div layout:fragment="content">
@@ -33,7 +33,7 @@
                                     <th>
                                         배송상태 변경
                                     </th>
-                                    <td colspan="3">
+                                    <td colspan="5">
                                         <div class="custom-control custom-radio d-inline-block mr-3">
                                             <input type="radio" class="custom-control-input" id="searchAll" name="shippingStatus" value="전체" checked
                                                    th:checked="${shippingStatus == '전체' or shippingStatus == null}">
@@ -59,7 +59,16 @@
                                                    th:checked="${shippingStatus == '구매확정'}">
                                             <label class="custom-control-label" for="customCheck4">구매 확정</label>
                                         </div>
-
+                                        <div class="custom-control custom-radio d-inline-block mr-3">
+                                            <input type="radio" class="custom-control-input" id="customCheck5" name="shippingStatus" value="환불중"
+                                                   th:checked="${shippingStatus == '환불중'}">
+                                            <label class="custom-control-label" for="customCheck5">환불중</label>
+                                        </div>
+                                        <div class="custom-control custom-radio d-inline-block mr-3">
+                                            <input type="radio" class="custom-control-input" id="customCheck6" name="shippingStatus" value="환불완료"
+                                                   th:checked="${shippingStatus == '환불완료'}">
+                                            <label class="custom-control-label" for="customCheck6">환불완료</label>
+                                        </div>
                                     </td>
                                 </tr>
                                 <tr>
@@ -94,9 +103,10 @@
 
                         <div class="mr-3 mb-4">
                             <div th:if="${role != 'ROLE_ADMIN'}">
-                                <button type="button" class="btn btn-sm btn-outline-primary" onclick="changeStatusYn('배송준비')">배송준비</button>
-                                <button type="button" class="btn btn-sm btn-outline-primary" onclick="changeStatusYn('배송중')">배송중</button>
-                                <button type="button" class="btn btn-sm btn-outline-primary" onclick="changeStatusYn('구매확정')">구매확정</button>
+                                <button type="button" id="prepareButton" class="btn btn-sm btn-outline-primary" onclick="changeStatusYn('배송준비')">배송준비</button>
+                                <button type="button" id="shippingButton" class="btn btn-sm btn-outline-primary" onclick="changeStatusYn('배송중')">배송중</button>
+                                <button type="button" id="confirmButton" class="btn btn-sm btn-outline-primary" onclick="changeStatusYn('구매확정')">구매확정</button>
+                                <button type="button" id="refundCompleteButton" class="btn btn-sm btn-outline-primary" onclick="changeStatusYn('환불완료')">환불완료</button>
                             </div>
                         </div>
                         <table id="productsTable" class="table table-product" style="width:100%">
@@ -117,9 +127,9 @@
                                 <td><input type="checkbox" name="chk" th:value="${orderProduct.getCode()}"></td>
                                 <td th:text="${orderProduct.getCode()}" style="text-align: center"></td>
                                 <td th:text="${orderProduct.getName()}" style="text-align: center">Coach Swagger</td>
-                                <td th:text="${orderProduct.getOrderName()}" style="text-align: center"></td>
+                                <td th:text="${orderProduct.getOrderName()}" class="order-name" style="text-align: center"></td>
                                 <td th:text="${orderProduct.getQuantity()}" style="text-align: center">27</td>
-                                <td th:text="${orderProduct.getProductStatus()}" style="text-align: center">1</td>
+                                <td th:text="${orderProduct.getProductStatus()}" class="product-status" style="text-align: center">1</td>
                                 <td th:text="${orderProduct.getTotalPrice()}" style="text-align: center">2</td>
                                 <td th:text="${orderProduct.getPresent()}" style="text-align: center">2</td>
                             </tr>
@@ -134,47 +144,105 @@
         <script>
             //상품 체크박스
             $(document).ready(function() {
-                // 상품리스트
-                $("#cbx_chkAll").click(function() {
-                    if($("#cbx_chkAll").is(":checked")) $("input[name=chk]").prop("checked", true);
-                    else $("input[name=chk]").prop("checked", false);
+                    // 상품리스트 전체 선택/해제
+                    $("#cbx_chkAll").click(function() {
+                        if ($("#cbx_chkAll").is(":checked")) {
+                            $("input[name=chk]").prop("checked", true);
+                        } else {
+                            $("input[name=chk]").prop("checked", false);
+                        }
+                        validateRefundButton();
+                    });
+
+                    // 개별 체크박스 선택/해제 시
+                    $("input[name=chk]").click(function() {
+                        var total = $("input[name=chk]").length;
+                        var checked = $("input[name=chk]:checked").length;
+
+                        if (total != checked) {
+                            $("#cbx_chkAll").prop("checked", false);
+                        } else {
+                            $("#cbx_chkAll").prop("checked", true);
+                        }
+                        validateRefundButton();
+                    });
+
+                    // 버튼 활성화 여부 체크
+                    function validateRefundButton() {
+                        var enableRefund = true;
+                        $("input[name=chk]:checked").each(function() {
+                            var row = $(this).closest('tr');
+                            var productStatus = row.find('.product-status').text().trim(); // 상품 상태 가져오기
+                            if (productStatus !== '환불중') { // '환불중' 상태가 아니면
+                                enableRefund = false;
+                            }
+                        });
+                        $("#refundCompleteButton").prop("disabled", !enableRefund); // 버튼 활성화/비활성화
+                    }
                 });
 
-                $("input[name=chk]").click(function() {
-                    var total = $("input[name=chk]").length;
-                    var checked = $("input[name=chk]:checked").length;
+                function changeStatusYn(status) {
+                    var checkedOrders = $("input[name=chk]:checked").length;
+                    if (checkedOrders === 0) {
+                        alert("주문목록을 선택해 주세요.");
+                        return;
+                    }
 
-                    if(total != checked) $("#cbx_chkAll").prop("checked", false);
-                    else $("#cbx_chkAll").prop("checked", true);
-                });
+                    // 상태에 따라 체크된 항목의 product-status 값 확인
+                    var allMatch = true;
+                    var allRefund = true;
+                    var isPresent = true;
+                    $("input[name=chk]:checked").each(function() {
+                        var row = $(this).closest('tr');
+                        var productStatus = row.find('.product-status').text().trim(); // 상품 상태 가져오기
+                        var orderName = row.find('.order-name').text().trim();
 
-            });
+                        // 상태별로 필요한 조건을 검사
+                        if (status === '배송준비' && productStatus !== '결제완료') {
+                            allMatch = false;
+                        } else if (status === '배송중' && productStatus !== '배송준비') {
+                            allMatch = false;
+                        } else if (status === '구매확정' && productStatus !== '배송중') {
+                            allMatch = false;
+                        } else if (status === '환불완료' && productStatus !== '환불중') {
+                            allRefund = false;
+                        }
 
-            function changeStatusYn(status) {
-                var checkedOrders = $("input[name=chk]:checked").length;
-                if (checkedOrders === 0) {
-                    alert("주문목록을 선택해 주세요.");
-                    return;
+                        if (status === '배송준비' && productStatus === '결제완료' && orderName === ''){
+                            isPresent = false;
+                        }
+                    });
+
+                    if (!allMatch) {
+                        alert(status + " 상태로 변경할 수 있는 상품 상태가 아닙니다. 제품 상태를 확인해 주세요.");
+                        return;
+                    }
+                    else if (!allRefund){
+                        alert("환불중인 상품만 환불처리가 가능합니다.");
+                        return;
+                    }
+                    else if(!isPresent){
+                        alert("아직 선물 수신인이 배송지를 입력하지 않았습니다.");
+                        return;
+                    }
+
+                    // 폼 생성 및 제출
+                    var form = $('<form>', {
+                        'method': 'post',
+                        'action': '/changeStatus'
+                    }).append($('<input>', {
+                        'name': 'status',
+                        'value': status,
+                        'type': 'hidden'
+                    })).append($('<input>', {
+                        'name': 'orderCodes',
+                        'value': JSON.stringify($("input[name=chk]:checked").map(function() { return $(this).val(); }).get()),
+                        'type': 'hidden'
+                    }));
+
+                    $('body').append(form);
+                    form.submit();
                 }
-
-                // 폼 생성 및 제출
-                var form = $('<form>', {
-                    'method': 'post',
-                    'action': '/changeStatus'
-                }).append($('<input>', {
-                    'name': 'status',
-                    'value': status,
-                    'type': 'hidden'
-                })).append($('<input>', {
-                    'name': 'orderCodes',
-                    'value': JSON.stringify($("input[name=chk]:checked").map(function() { return $(this).val(); }).get()),
-                    'type': 'hidden'
-                }));
-
-                $('body').append(form);
-                form.submit();
-            }
-
         </script>
     </div>
 

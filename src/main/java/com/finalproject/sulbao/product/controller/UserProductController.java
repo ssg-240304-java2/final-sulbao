@@ -7,6 +7,7 @@ import com.finalproject.sulbao.cart.service.CartService;
 import com.finalproject.sulbao.product.model.dto.ProductDTO;
 import com.finalproject.sulbao.product.model.entity.Product;
 import com.finalproject.sulbao.product.service.ProductService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -33,17 +35,44 @@ public class UserProductController {
 
     // 사용자 페이지 상품목록
     @GetMapping("/user/list")
-    public String userList(Model model) {
+    public String userList(Model model, @RequestParam(required = false) String category) {
 
-        //상품 최저가 구분 상품 정보 취득
-        List<ProductComparisonDTO> comparisonList =  productService.findByComparisonList();
+        log.info("Controller search Category: {}", category);
+
+        //상품 최저가 구분 상품 정보 취득(전체)
+        List<ProductComparisonDTO> comparisonList =  productService.findByComparisonList(category);
 
         // 쇼핑몰 정보 취득
         for (ProductComparisonDTO comparison : comparisonList){
-            List<ProductDTO> productList = productService.findByComparisonNo(comparison.getComparisonNo());
+            List<ProductDTO> productList = productService.findByProductPriceToComparisonNo(comparison.getComparisonNo());
             comparison.setShoppingMallInfo(productList);
         }
 
+        log.info("Controller search comparisonList index : {}", comparisonList);
+
+        model.addAttribute("category",category);
+        model.addAttribute("comparisonList", comparisonList);
+        return "product/list";
+    }
+
+    // 사용자 페이지 키워드 검색 -> 더보기
+    @GetMapping("/search/list")
+    public String searchProductMore(Model model, @RequestParam String keyword) {
+
+        log.info("Controller search keyword: {}", keyword);
+
+        //상품 최저가 구분 상품 정보 취득(전체)
+        List<ProductComparisonDTO> comparisonList = productService.findByProductKeyword(keyword,0);
+
+        log.info("Controller search comparisonList: {}", comparisonList);
+
+        // 쇼핑몰 정보 취득
+        for (ProductComparisonDTO comparison : comparisonList){
+            List<ProductDTO> productList = productService.findByProductPriceToComparisonNo(comparison.getComparisonNo());
+            comparison.setShoppingMallInfo(productList);
+        }
+
+        model.addAttribute("category",null);
         model.addAttribute("comparisonList", comparisonList);
         return "product/list";
     }
@@ -52,6 +81,19 @@ public class UserProductController {
     @GetMapping("/user/low/{comparisonNo}")
     public String userDetail(@PathVariable Long comparisonNo ,Model model) {
         log.info("comparisonNo ===== {}", comparisonNo);
+
+
+        //최저가 비교 상품 구분
+        ProductComparisonDTO comparison = productService.findByComparisonNo(comparisonNo);
+        log.info("최저가 비교 상품 구분 ================== {}",comparison);
+
+        // 쇼핑몰 정보
+        List<ProductDTO> productList = productService.findByProductPriceToComparisonNo(comparison.getComparisonNo());
+        log.info("쇼핑몰 정보 리스트 ================== {}",productList);
+
+        model.addAttribute("comparison", comparison);
+        model.addAttribute("productList", productList);
+
         return "product/low";
     }
 
@@ -68,7 +110,7 @@ public class UserProductController {
     //장바구니 추가
     @PostMapping("/addCart")
     @ResponseBody
-    public String addCart(@RequestParam Long productNo, @RequestParam Integer quantity, @RequestParam Integer totalPrice, Authentication authentication) {
+    public String addCart(@RequestParam Long productNo, @RequestParam Integer quantity, @RequestParam Integer totalPrice, Authentication authentication, HttpServletRequest request) {
 
         log.info("authentication: {}", authentication);
         log.info("productNo: {}", productNo);
@@ -100,6 +142,10 @@ public class UserProductController {
         }else{
             productService.addCart(cartDTO);
         }
+        int cartList = cartService.findCartCountByUserId(userId);
+
+        HttpSession session = request.getSession();
+        session.setAttribute("cartList", cartList);
         return "success";
     }
 
