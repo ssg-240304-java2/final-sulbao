@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -34,10 +35,12 @@ public class UserProductController {
 
     // 사용자 페이지 상품목록
     @GetMapping("/user/list")
-    public String userList(Model model) {
+    public String userList(Model model, @RequestParam(required = false) String category) {
 
-        //상품 최저가 구분 상품 정보 취득
-        List<ProductComparisonDTO> comparisonList =  productService.findByComparisonList();
+        log.info("Controller search Category: {}", category);
+
+        //상품 최저가 구분 상품 정보 취득(전체)
+        List<ProductComparisonDTO> comparisonList =  productService.findByComparisonList(category);
 
         // 쇼핑몰 정보 취득
         for (ProductComparisonDTO comparison : comparisonList){
@@ -45,6 +48,31 @@ public class UserProductController {
             comparison.setShoppingMallInfo(productList);
         }
 
+        log.info("Controller search comparisonList index : {}", comparisonList);
+
+        model.addAttribute("category",category);
+        model.addAttribute("comparisonList", comparisonList);
+        return "product/list";
+    }
+
+    // 사용자 페이지 키워드 검색 -> 더보기
+    @GetMapping("/search/list")
+    public String searchProductMore(Model model, @RequestParam String keyword) {
+
+        log.info("Controller search keyword: {}", keyword);
+
+        //상품 최저가 구분 상품 정보 취득(전체)
+        List<ProductComparisonDTO> comparisonList = productService.findByProductKeyword(keyword,0);
+
+        log.info("Controller search comparisonList: {}", comparisonList);
+
+        // 쇼핑몰 정보 취득
+        for (ProductComparisonDTO comparison : comparisonList){
+            List<ProductDTO> productList = productService.findByProductPriceToComparisonNo(comparison.getComparisonNo());
+            comparison.setShoppingMallInfo(productList);
+        }
+
+        model.addAttribute("category",null);
         model.addAttribute("comparisonList", comparisonList);
         return "product/list";
     }

@@ -3,6 +3,7 @@ package com.finalproject.sulbao.login.controller;
 import com.finalproject.sulbao.login.model.dto.MemberProfileDto;
 import com.finalproject.sulbao.login.model.dto.ProFormDto;
 import com.finalproject.sulbao.login.model.service.LoginService;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -77,18 +78,19 @@ public class MemberProfileController {
 
     // 프로필 업데이트
     @PostMapping("/updateProfile")
-    public String saveProfile(@ModelAttribute MemberProfileDto memberProfile, RedirectAttributes redirectAttributes){
+    public String saveProfile(@ModelAttribute MemberProfileDto memberProfile, RedirectAttributes redirectAttributes, HttpSession session){
 
         String message ="";
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 
         try {
-            service.updateMemberInfo(memberProfile, userId);
+            service.updateMemberInfo(memberProfile, userId, session);
             message = "프로필이 업데이트 되었습니다.";
         } catch (Exception e) {
             message = "프로필 업데이트 중 오류가 발생했습니다. 나중에 다시 시도해주세요.";
             log.info("Error =============================== {}", e.toString());
         }
+
 
         redirectAttributes.addFlashAttribute("message", message);
         return "redirect:/mypage/myprofile";

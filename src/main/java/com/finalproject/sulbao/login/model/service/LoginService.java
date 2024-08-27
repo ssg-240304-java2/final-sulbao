@@ -9,7 +9,11 @@ import com.finalproject.sulbao.login.model.entity.RoleType;
 import com.finalproject.sulbao.login.model.repository.LoginRepository;
 import com.finalproject.sulbao.login.model.repository.MemberInfoRepository;
 import com.finalproject.sulbao.login.model.vo.MemberImage;
+import com.finalproject.sulbao.login.model.vo.ProMemberInfo;
 import com.finalproject.sulbao.login.model.vo.SellerInfo;
+import com.finalproject.sulbao.member.dto.MemberDto;
+import com.finalproject.sulbao.product.model.entity.Product;
+import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +21,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import javax.swing.text.html.Option;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -132,7 +141,7 @@ public class LoginService {
 
     // 프로필 - 업데이트
     @Transactional
-    public void updateMemberInfo(MemberProfileDto memberProfile, String userId) {
+    public void updateMemberInfo(MemberProfileDto memberProfile, String userId, HttpSession session) {
 
         Login login = loginRepository.findByUserId(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 사용자 입니다."));
@@ -152,6 +161,8 @@ public class LoginService {
             memberImage.setSaveName(fileDto.getUploadFileName());
             memberImage.setSaveImgUrl(fileDto.getUploadFileUrl());
             memberInfo.setMemberImage(memberImage);
+            session.setAttribute("profileUrl", fileDto.getUploadFileUrl());
+
         }
 
         // 프로필 이름 업데이트
@@ -194,5 +205,346 @@ public class LoginService {
     public void deleteProForm(String userId) {
         Long memberNo = memberRepository.findByUserId(userId).getMemberNo();
         memberRepository.deleteProForm(memberNo);
+    }
+
+
+    public List<MemberDto> findMemberList() {
+
+        List<Login> members = loginRepository.findAll();
+        List<MemberDto> memberList = new ArrayList<>();
+
+        for(Login login : members) {
+            MemberDto member = MemberDto.builder()
+                    .userNo(login.getUserNo())
+                    .userId(login.getUserId())
+                    .gender(login.getGender())
+                    .email(login.getEmail())
+                    .phone(login.getPhone())
+                    .role(strRole(login.getUserRole().toString()))
+                    .registDate(login.getCreatedAt().toString().substring(0,10))
+                    .isAblable(login.isEnabled())
+                    .build();
+            memberList.add(member);
+        }
+
+        return memberList;
+    }
+
+    private String strRole(String role) {
+
+        String result ="";
+        if (role.equals("MEMBER")){
+            result = "일반회원";
+        } else if(role.equals("PRO_MEMBER")){
+            result = "전문가";
+        } else if(role.equals("SELLER")){
+            result = "입점사";
+        } else {
+            result = "관리자";
+        }
+        return result;
+    }
+
+    public List<MemberDto> findProMemberList() {
+
+        List<Login> members = loginRepository.findProMembers();
+        List<MemberDto> memberList = new ArrayList<>();
+
+        for(Login login : members) {
+            MemberDto member = MemberDto.builder()
+                    .userNo(login.getUserNo())
+                    .registDate(login.getMemberInfo().getProMemberInfo().getUpdatedAt().toString().substring(0,10))
+                    .userId(login.getUserId())
+                    .name(login.getMemberInfo().getProfileName())
+                    .role(login.getUserRole().toString())
+                    .email(login.getEmail())
+                    .businessNum(login.getMemberInfo().getProMemberInfo().getBusinessNumber())
+                    .businessLink(login.getMemberInfo().getProMemberInfo().getBusinessLink())
+                    .status(login.getMemberInfo().getProMemberInfo().getProStatus())
+                    .build();
+            memberList.add(member);
+        }
+        return memberList;
+    }
+
+    public List<MemberDto> findSellerList() {
+
+        List<Login> sellers = loginRepository.findSellerList();
+        List<MemberDto> sellerList = new ArrayList<>();
+
+        for(Login login : sellers) {
+            MemberDto seller = MemberDto.builder()
+                    .userNo(login.getUserNo())
+                    .registDate(login.getCreatedAt().toString().substring(0,10))
+                    .userId(login.getUserId())
+                    .email(login.getEmail())
+                    .phone(login.getPhone())
+                    .businessNum(login.getSellerInfo().getBusinessNumber())
+                    .businessName(login.getSellerInfo().getBusinessName())
+                    .status(login.getSellerInfo().getSellerStatus())
+                    .isAblable(login.isEnabled())
+                    .build();
+            sellerList.add(seller);
+        }
+        return sellerList;
+    }
+
+    // 회원 비활성화
+    @Transactional
+    public void updateEnable(String memberList, String type, String available) {
+
+        String[] memberNoArray = memberList.split(",");
+
+        for(String userNo : memberNoArray) {
+            Optional<Login> login = loginRepository.findByUserNo(userNo);
+
+            if(login.isPresent()) {
+                if(available.equals("true")){
+                    login.get().setEnabled(true);
+                } else {
+                    login.get().setEnabled(false);
+                }
+            }
+        }
+    }
+
+    // 전문가 승인
+    @Transactional
+    public void updateProStatus(String memberList, String type, String proStatus) {
+
+        String[] memberNoArray = memberList.split(",");
+
+        for(String userNo : memberNoArray) {
+            Optional<Login> login = loginRepository.findByUserNo(userNo);
+
+            if(login.isPresent()) {
+
+                ProMemberInfo proMember = login.get().getMemberInfo().getProMemberInfo();
+                if(proStatus.equals("approve")){
+                    proMember.setStatusApprove();
+                    login.get().setApprovePro();
+                }
+            }
+        }
+    }
+
+    // 입점 승인
+    @Transactional
+    public void updateSellStatus(String sellerList, String type, String sellStatus) {
+        String[] memberNoArray = sellerList.split(",");
+
+        for(String userNo : memberNoArray) {
+            Optional<Login> login = loginRepository.findByUserNo(userNo);
+
+            if(login.isPresent()) {
+
+                SellerInfo seller = login.get().getSellerInfo();
+                if(sellStatus.equals("approve")){
+                    seller.setStatusApprove();
+                }
+            }
+        }
+    }
+
+    public List<MemberDto> findMemberBySearch(String searchType, String searchInput) {
+
+        List<MemberDto> memberDtoList = new ArrayList<>();
+        List<Login> loginlist = new ArrayList<>();
+
+
+        if(searchType.equals("userId")){
+            loginlist =  loginRepository.findMemberBySearchUserId(searchInput);
+        } else if(searchType.equals("name")){
+            loginlist =  loginRepository.findMemberBySearchName(searchInput);
+        } else if(searchType.equals("email")){
+            loginlist =  loginRepository.findMemberBySearchEmail(searchInput);
+        }
+
+        for(Login login : loginlist) {
+            MemberDto member = MemberDto.builder()
+                    .userNo(login.getUserNo())
+                    .userId(login.getUserId())
+                    .gender(login.getGender())
+                    .email(login.getEmail())
+                    .phone(login.getPhone())
+                    .role(strRole(login.getUserRole().toString()))
+                    .registDate(login.getCreatedAt().toString().substring(0,10))
+                    .isAblable(login.isEnabled())
+                    .build();
+            memberDtoList.add(member);
+        }
+
+
+        return memberDtoList;
+    }
+
+    public List<MemberDto> findMemberByRole(String roleCategory) {
+        RoleType role = RoleType.MEMBER;
+
+        switch (roleCategory){
+            case "일반" : role = RoleType.MEMBER; break;
+            case "전문가" : role = RoleType.PRO_MEMBER; break;
+            case "판매자" : role = RoleType.SELLER; break;
+            case "관리자" : role = RoleType.ADMIN; break;
+        }
+
+
+        List<MemberDto> memberDtoList = new ArrayList<>();
+        List<Login> loginlist = loginRepository.findMemberByRole(role);
+
+        for(Login login : loginlist) {
+            MemberDto member = MemberDto.builder()
+                    .userNo(login.getUserNo())
+                    .userId(login.getUserId())
+                    .gender(login.getGender())
+                    .email(login.getEmail())
+                    .phone(login.getPhone())
+                    .role(strRole(login.getUserRole().toString()))
+                    .registDate(login.getCreatedAt().toString().substring(0,10))
+                    .isAblable(login.isEnabled())
+                    .build();
+            memberDtoList.add(member);
+        }
+
+        return memberDtoList;
+    }
+
+    public List<MemberDto> findProMemberBySearch(String searchType, String searchInput) {
+
+        List<MemberDto> memberList = new ArrayList<>();
+        List<Login> loginlist = new ArrayList<>();
+
+
+        if(searchType.equals("userId")){
+            loginlist =  loginRepository.findProMemberBySearchUserId(searchInput, RoleType.PRO_MEMBER);
+        } else if(searchType.equals("name")){
+            loginlist =  loginRepository.findProMemberBySearchName(searchInput, RoleType.PRO_MEMBER);
+        } else if(searchType.equals("email")){
+            loginlist =  loginRepository.findProMemberBySearchEmail(searchInput, RoleType.PRO_MEMBER);
+        } else if(searchType.equals("number")){
+            loginlist =  loginRepository.findProMemberBySearchBusinessNum(searchInput, RoleType.PRO_MEMBER);
+        }
+
+        for(Login login : loginlist) {
+            MemberDto member = MemberDto.builder()
+                    .userNo(login.getUserNo())
+                    .registDate(login.getMemberInfo().getProMemberInfo().getUpdatedAt().toString().substring(0,10))
+                    .userId(login.getUserId())
+                    .name(login.getMemberInfo().getProfileName())
+                    .role(login.getUserRole().toString())
+                    .email(login.getEmail())
+                    .businessNum(login.getMemberInfo().getProMemberInfo().getBusinessNumber())
+                    .businessLink(login.getMemberInfo().getProMemberInfo().getBusinessLink())
+                    .status(login.getMemberInfo().getProMemberInfo().getProStatus())
+                    .build();
+            memberList.add(member);
+        }
+
+        return memberList;
+    }
+
+    public List<MemberDto> findProMemberByStatus(String statusAll) {
+
+        List<MemberDto> memberList = new ArrayList<>();
+        List<Login> loginlist = loginRepository.findProMemberByStatus(statusAll, RoleType.PRO_MEMBER);
+
+        for(Login login : loginlist) {
+            MemberDto member = MemberDto.builder()
+                    .userNo(login.getUserNo())
+                    .registDate(login.getMemberInfo().getProMemberInfo().getUpdatedAt().toString().substring(0,10))
+                    .userId(login.getUserId())
+                    .name(login.getMemberInfo().getProfileName())
+                    .role(login.getUserRole().toString())
+                    .email(login.getEmail())
+                    .businessNum(login.getMemberInfo().getProMemberInfo().getBusinessNumber())
+                    .businessLink(login.getMemberInfo().getProMemberInfo().getBusinessLink())
+                    .status(login.getMemberInfo().getProMemberInfo().getProStatus())
+                    .build();
+            memberList.add(member);
+        }
+
+        return memberList;
+    }
+
+    public List<MemberDto> findSellerBySearch(String searchType, String searchInput) {
+
+        List<MemberDto> memberDtoList = new ArrayList<>();
+        List<Login> loginlist = new ArrayList<>();
+
+        if(searchType.equals("id")){
+            loginlist =  loginRepository.findSellerBySearchUserId(searchInput, RoleType.SELLER);
+            System.out.println("loginlist.get(0) =------------------------->>>>>>>>>>>>> " + loginlist.get(0));
+        } else if(searchType.equals("name")){
+            loginlist =  loginRepository.findSellerBySearchName(searchInput, RoleType.SELLER);
+        } else if(searchType.equals("email")){
+            loginlist =  loginRepository.findSellerBySearchEmail(searchInput, RoleType.SELLER);
+        } else if(searchType.equals("number")){
+            loginlist =  loginRepository.findSellerBySearchBusinessNum(searchInput, RoleType.SELLER);
+        }
+
+        for(Login login : loginlist) {
+            MemberDto seller = MemberDto.builder()
+                    .userNo(login.getUserNo())
+                    .registDate(login.getCreatedAt().toString().substring(0,10))
+                    .userId(login.getUserId())
+                    .email(login.getEmail())
+                    .phone(login.getPhone())
+                    .businessNum(login.getSellerInfo().getBusinessNumber())
+                    .businessName(login.getSellerInfo().getBusinessName())
+                    .status(login.getSellerInfo().getSellerStatus())
+                    .isAblable(login.isEnabled())
+                    .build();
+            memberDtoList.add(seller);
+        }
+
+        return memberDtoList;
+    }
+
+    public List<MemberDto> findSellerByStatus(String statusAll) {
+
+        List<MemberDto> memberDtoList = new ArrayList<>();
+        List<Login> loginlist = loginRepository.findSellerByStatus(statusAll, RoleType.SELLER);
+
+        for(Login login : loginlist) {
+            MemberDto seller = MemberDto.builder()
+                    .userNo(login.getUserNo())
+                    .registDate(login.getCreatedAt().toString().substring(0,10))
+                    .userId(login.getUserId())
+                    .email(login.getEmail())
+                    .phone(login.getPhone())
+                    .businessNum(login.getSellerInfo().getBusinessNumber())
+                    .businessName(login.getSellerInfo().getBusinessName())
+                    .status(login.getSellerInfo().getSellerStatus())
+                    .isAblable(login.isEnabled())
+                    .build();
+            memberDtoList.add(seller);
+        }
+
+        return memberDtoList;
+
+    }
+
+    public List<MemberDto> findMemberByAvailable(String availableYn) {
+
+        Boolean isAvailbale = Boolean.valueOf(availableYn);
+
+        List<MemberDto> memberDtoList = new ArrayList<>();
+        List<Login> loginlist = loginRepository.findMemberByAvailable(isAvailbale);
+
+        for(Login login : loginlist) {
+            MemberDto member = MemberDto.builder()
+                    .userNo(login.getUserNo())
+                    .userId(login.getUserId())
+                    .gender(login.getGender())
+                    .email(login.getEmail())
+                    .phone(login.getPhone())
+                    .role(strRole(login.getUserRole().toString()))
+                    .registDate(login.getCreatedAt().toString().substring(0,10))
+                    .isAblable(login.isEnabled())
+                    .build();
+            memberDtoList.add(member);
+        }
+
+        return memberDtoList;
     }
 }

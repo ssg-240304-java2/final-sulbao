@@ -46,7 +46,7 @@ public class LoginDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return login.isEnabled();
     }
 
     @Override

@@ -1,11 +1,15 @@
 package com.finalproject.sulbao.product.model.entity;
 
+import com.finalproject.sulbao.common.entity.BaseEntity;
+import com.finalproject.sulbao.magazine.model.dto.MagazineDTO;
+import com.finalproject.sulbao.product.model.dto.ProductDTO;
 import com.finalproject.sulbao.product.model.vo.MagazineImage;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -16,7 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Magazine {
+public class Magazine extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,34 +30,20 @@ public class Magazine {
     @Column(name = "magazine_title")
     private String magazineTitle;
 
-    @Column(name = "magazine_category")
-    private int magazineCategory;
-
-    @Column(name = "publish_date")
-    private LocalDateTime publishDate;
-
     @Column(name = "magazine_summary")
     private String magazineSummary;
 
-    @Column(name = "magazine_content")
+    @Column(name = "magazine_content", columnDefinition = "TEXT")
     private String magazineContent;
 
-    @Column(name = "display_yn")
-    private String displayYn;
-
     @Column(name = "magazine_tag")
-    private String magazineTage;
+    private String magazineTag;
 
-    @Column(name = "magazine_template")
-    private int magazineTemplate;
+    @Column(name = "publish_date")
+    private LocalDate publishDate;
 
-    @Column(name = "create_at")
-    @CreationTimestamp
-    private LocalDateTime createAt;
-
-    @Column(name = "update_date")
-    @UpdateTimestamp
-    private LocalDateTime updateDate;
+    @Column(name = "display_yn", length = 1, columnDefinition = "CHAR(1) DEFAULT 'n'")
+    private String displayYn;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
@@ -61,4 +51,17 @@ public class Magazine {
     )
     @OrderColumn(name = "idx")
     private List<MagazineImage> magazineImages;
+
+    public void update(MagazineDTO magazineDTO){
+
+        this.id = magazineDTO.getMagazineNo();
+        this.magazineTitle = magazineDTO.getMagazineTitle();
+        this.magazineSummary = magazineDTO.getMagazineSummary();
+        this.magazineContent = magazineDTO.getMagazineContent();
+        this.magazineTag = magazineDTO.getMagazineTag();
+        this.publishDate = LocalDate.parse(magazineDTO.getPublishDate());
+        this.displayYn = magazineDTO.getDisplayYn();
+        this.magazineImages = magazineDTO.getMagazineImagesList();
+
+    }
 }

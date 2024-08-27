@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>계정 승인 메일</title>
+    <style media="all" type="text/css">
+
+        body {
+            font-family: Helvetica, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            font-size: 16px;
+            line-height: 1.3;
+            -ms-text-size-adjust: 100%;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        table {
+            border-collapse: separate;
+            mso-table-lspace: 0pt;
+            mso-table-rspace: 0pt;
+            width: 100%;
+        }
+
+        table td {
+            font-family: Helvetica, sans-serif;
+            font-size: 16px;
+            vertical-align: top;
+        }
+
+        body {
+            background-color: #f4f5f6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .body {
+            background-color: #f4f5f6;
+            width: 100%;
+        }
+
+        .container {
+            margin: 0 auto !important;
+            max-width: 600px;
+            padding: 0;
+            padding-top: 24px;
+            width: 600px;
+        }
+
+        .content {
+            box-sizing: border-box;
+            display: block;
+            margin: 0 auto;
+            max-width: 600px;
+            padding: 0;
+        }
+
+        .main {
+            background: #ffffff;
+            border: 1px solid #eaebed;
+            border-radius: 16px;
+            width: 100%;
+        }
+
+        .wrapper {
+            box-sizing: border-box;
+            padding: 24px;
+        }
+
+        .footer {
+            clear: both;
+            padding-top: 24px;
+            text-align: center;
+            width: 100%;
+        }
+
+        .footer td,
+        .footer p,
+        .footer span,
+        .footer a {
+            color: #9a9ea6;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        p {
+            font-family: Helvetica, sans-serif;
+            font-size: 16px;
+            font-weight: normal;
+            margin: 0;
+            margin-bottom: 16px;
+        }
+
+        a {
+            color: #0867ec;
+            text-decoration: underline;
+        }
+
+        .btn > tbody > tr > td {
+            padding-bottom: 16px;
+        }
+
+        .btn table {
+            width: auto;
+        }
+
+        .btn table td {
+            background-color: #ffffff;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .btn-primary table td {
+            background-color: #0867ec;
+        }
+
+        .btn-primary a {
+            background-color: #0867ec;
+            border-color: #0867ec;
+            color: #ffffff;
+        }
+
+        #code {
+            color: #ffffff;
+            background-color: #0867ec;
+            padding: 10px 10px 10px 10px;
+            display: inline-block;
+            border-radius: 4px;
+            margin-bottom: 18px;
+        }
+
+        .preheader {
+            color: transparent;
+            display: none;
+            height: 0;
+            max-height: 0;
+            max-width: 0;
+            opacity: 0;
+            overflow: hidden;
+            mso-hide: all;
+            visibility: hidden;
+            width: 0;
+        }
+
+        .powered-by a {
+            text-decoration: none;
+        }
+
+    </style>
+</head>
+<body>
+<table role="presentation" border="0" cellpadding="0" cellspacing="0" class="body">
+    <tr>
+        <td>&nbsp;</td>
+        <td class="container">
+            <div class="content">
+
+                <!-- START CENTERED WHITE CONTAINER -->
+                <span class="preheader">[술기로운한잔] 판매자 계정 승인 안내</span>
+                <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="main">
+
+                    <!-- START MAIN CONTENT AREA -->
+                    <tr>
+                        <td class="wrapper">
+                            <img th:src="${photo}" alt="img" style="width: 100px;"/>
+                            <hr>
+                            <p>술기로운 한 잔에 입점 승인되었습니다.</p>
+                            <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                                <tbody>
+                                <tr>
+                                    <td align="left">
+                                        <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                                            <tbody>
+                                            <tr>
+                                                <a href="https://hansool.shop/login">술기로운 한잔 바로가기</a>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <p>전통술 최저가 비교 커뮤니티! 술기로운 한 잔</p>
+                        </td>
+                    </tr>
+
+                    <!-- END MAIN CONTENT AREA -->
+                </table>
+
+                <!-- START FOOTER -->
+                <div class="footer">
+                    <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td class="content-block">
+                                <span class="apple-link">Company Inc, 7-11 Commercial Ct, Belfast BT1 2NB</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="content-block powered-by">
+                                Powered by <a href="http://hansool.shop">hansool.shop</a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+        </div>
+        </td>
+        <td>&nbsp;</td>
+    </tr>
+</table>
+</body>
+</html>
