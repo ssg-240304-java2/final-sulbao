@@ -26,4 +26,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     @Query(value = "select k from Order k where k.userId = :userId order by k.orderCode")
     List<Order> findByUserId(String userId);
+
+    @Query(value = "SELECT * FROM tbl_order WHERE is_present = TRUE AND DATE_FORMAT(DATE_ADD(created_at,INTERVAL 6 DAY), '%Y-%m-%d') =  DATE_FORMAT(now(), '%Y-%m-%d')", nativeQuery = true)
+    List<Order> findByPresentInfo();
 }

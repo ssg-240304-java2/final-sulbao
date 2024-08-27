@@ -156,4 +156,59 @@ public class EmailService {
 
         return isVerified;
     }
+
+    // 배송지 등록요청 메일
+    public void presentDelaySendMail(EmailMessage emailMessage, String link, String type) {
+
+//        try {
+//            InternetAddress emailAddr = new InternetAddress(emailMessage.getTo());
+//            emailAddr.validate();
+//        } catch (AddressException ex) {
+//            System.out.println(emailMessage.getTo() + "=========================================이메일 서버 false");
+//        }
+//
+//        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+//
+//        try {
+//            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
+//            mimeMessageHelper.setTo("lucinda96@naver.com"); // 메일 수신자
+//            mimeMessageHelper.setSubject("[🍶술기로운 한 잔] 선물 받은 상품의 배송지를 입력해주세요"); // 메일 제목
+//
+//            String htmlContent = "<a id='code' href='" + link + "'>링크를 눌러 배송지를 등록해주세요.</a>";
+//            mimeMessageHelper.setText(htmlContent, true);
+//            mimeMessageHelper.setText(setContext(link, type), true);
+//            javaMailSender.send(mimeMessage);
+//
+//            log.info("Maile Send Success");
+//
+//        } catch (MessagingException e) {
+//            log.info("Maile Send fail");
+//            throw new RuntimeException(e);
+//        }
+        try {
+            InternetAddress emailAddr = new InternetAddress(emailMessage.getTo());
+            emailAddr.validate();
+        } catch (AddressException ex) {
+            System.out.println(emailMessage.getTo() + "=========================================이메일 서버 false");
+        }
+
+
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+
+        try {
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
+            mimeMessageHelper.setTo(emailMessage.getTo()); // 메일 수신자
+            mimeMessageHelper.setSubject(emailMessage.getSubject()); // 메일 제목
+
+            String htmlContent = "<a id='code' href='" + link + "'>링크를 눌러 배송지를 등록해주세요.</a>";
+
+            mimeMessageHelper.setText(htmlContent, true); // 메일 본문 내용, HTML 여부
+            mimeMessageHelper.setText(setContext(link, type), true); // 메일 본문 내용, HTML 여부
+            javaMailSender.send(mimeMessage);
+
+
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
