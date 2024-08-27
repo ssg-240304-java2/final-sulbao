@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{common/layouts/adminDefault}">
+<head>
+    <meta charset="UTF-8">
+    <title>한술 - 입점사 목록</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="content-wrapper">
+            <div class="content">
+
+                <div class="card card-default">
+                    <div class="card-header">
+                        <h2>입점사 목록</h2>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="mr-3 mb-4">
+                            <form action="/member/sellerSearch" method="get">
+                                <table class="table table-bordered">
+                                <tr>
+                                    <tr>
+                                        <th>입점사 찾기</th>
+                                        <td colspan="3">
+                                            <div class="form-row">
+                                                <select class="form-control col-3 ml-2" name="type" >
+                                                    <option value="id">아이디</option>
+                                                    <option value="email">이메일</option>
+                                                    <option value="name">상호명</option>
+                                                    <option value="number">사업자번호</option>
+                                                </select>
+                                                <input class="form-control col-4" name="search">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <tr>
+                                    <th>승인상태</th>
+                                    <td>
+                                        <div class="custom-control custom-radio d-inline-block mr-3">
+                                            <input type="radio" id="statusAll" name="statusAll" value="all" class="custom-control-input" checked>
+                                            <label class="custom-control-label" for="statusAll">전체</label>
+                                        </div>
+                                        <div class="custom-control custom-radio d-inline-block mr-3">
+                                            <input type="radio" id="wait" name="statusAll" value="wait" class="custom-control-input">
+                                            <label class="custom-control-label" for="wait">대기중</label>
+                                        </div>
+                                        <div class="custom-control custom-radio d-inline-block mr-3">
+                                            <input type="radio" id="approve" name="statusAll" value="approve" class="custom-control-input" >
+                                            <label class="custom-control-label" for="approve">승인됨</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                                <div class="row mt-5 mb-5">
+                                    <div class="col text-center">
+                                        <button type="submit" class="btn btn-sm btn-primary">조회</button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="location.href='/member/sellerList'">초기화</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="mr-3 mb-4">
+                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="changeApprove('sellStatus','approve')">입점 승인하기</button>
+                        </div>
+
+                        <table id="productsTable" class="table table-product" style="width:100%">
+                            <thead>
+                            <tr>
+                                <th><input type="checkbox" id="cbx_chkAll"></th>
+                                <th>가입일</th>
+                                <th>아이디</th>
+                                <th>이메일</th>
+                                <th>휴대전화</th>
+                                <th>상호명</th>
+                                <th>사업자번호</th>
+                                <th>승인상태</th>
+                                <th>활성상태</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="seller : ${sellerList}">
+                                <td><input type="checkbox" name="chk" th:value="${seller.userNo}"></td>
+                                <td th:text="${seller.registDate}">Coach Swagger</td>
+                                <td th:text="${seller.userId}">Coach Swagger</td>
+                                <td th:text="${seller.email}">Coach Swagger</td>
+                                <td th:text="${seller.phone}">Coach Swagger</td>
+                                <td th:text="${seller.businessName}">Coach Swagger</td>
+                                <td th:text="${seller.businessNum}">Coach Swagger</td>
+                                <td th:text="${seller.status == 'WAIT'}? '대기중' : '승인'">2</td>
+                                <td th:text="${seller.isAblable == true}? '활성': '비활성'">2</td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <script>
+            //상품 체크박스
+            $(document).ready(function() {
+                // 상품리스트
+                $("#cbx_chkAll").click(function() {
+                    if($("#cbx_chkAll").is(":checked")) $("input[name=chk]").prop("checked", true);
+                    else $("input[name=chk]").prop("checked", false);
+                });
+
+                $("input[name=chk]").click(function() {
+                    var total = $("input[name=chk]").length;
+                    var checked = $("input[name=chk]:checked").length;
+
+                    if(total != checked) $("#cbx_chkAll").prop("checked", false);
+                    else $("#cbx_chkAll").prop("checked", true);
+                });
+
+            });
+
+            // 승인 상태 변경
+            function changeApprove(type,sellStatus){
+
+                let check_arr=[];
+                $("input[name=chk]:checked").each(function(){
+                    let chk = $(this).val();
+                    check_arr.push(chk);
+                });
+
+                $.ajax({
+                    url: "/member/updateSellStatus",
+                    data: {
+                        "sellerList": check_arr,
+                        "type": type,
+                        "sellStatus": sellStatus
+                    },
+                    type: "put",
+                    success: function(data){
+                        if(data === 'success'){
+                            alert("선택하신 입점사가 승인되었습니다.");
+
+                            // 승인 완료 이메일 전송
+                            $.ajax({
+                                url: "/email/approve",
+                                data: {
+                                    "memberList": check_arr,
+                                    "type": "seller",
+                                },
+                                type: "POST",
+                                success: function(data){
+                                    if(data){
+                                        alert("입점 승인 메일이 전송되었습니다.");
+                                    }
+                                },error: function (error){
+                                    alert("메일 전송에 실패했습니다.");
+                                }
+                            });
+
+                            location.reload();
+                        }else{
+                            alert("입점상태 변경에 실패했습니다.");
+                        }
+                    },error: function (error){
+                        alert("입점상태 변경에 실패했습니다.");
+                    }
+                });
+
+            }
+        </script>
+    </div>
+
+</body>
+</html>
