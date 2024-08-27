@@ -8,22 +8,6 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <div class="hero hero-inner">
-        <div class="my-container">
-            <div class="row align-items-center">
-                <div class="col-lg-6 mx-auto text-center">
-                    <div class="intro-wrap">
-                        <h1 class="mb-0">술 포스트</h1>
-                        <p class="text-white">
-                            술 포스트는 술에 대한 모든 것을 다룹니다.<br>
-                            술의 역사, 문화, 맛, 그리고 다양한 이야기를 만나보세요.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="guideline-container">
         <h2>게시글 작성 가이드라인</h2>
         <p>안녕하세요, 술포스트에 오신 것을 환영합니다. 이곳은 전통주 전문가분들만이 게시글을 작성할 수 있는 게시판입니다.<br>
@@ -55,6 +39,7 @@
                 <ul>
                     <li>커뮤니티 규정을 준수해 주세요.</li>
                     <li>가이드라인에 어긋나는 게시글은 사전 경고 없이 삭제될 수 있습니다.</li>
+                    <li style="color: red">비속어 필터링이 동작하고 있습니다. 바르고 고운말을 사용해주세요.</li>
                 </ul>
             </li>
         </ul>
@@ -67,10 +52,10 @@
     <input accept="image/*" id="thumbnail" name="thumbnail" type="file">
 
     <div class="cover-upload-container" id="coverPreview">
-        커버 사진을 업로드해주세요.
+        썸네일 사진을 업로드해주세요.
         <div class="upload-button-container">
             <button class="upload-button" id="uploadButton">
-                커버사진 추가하기
+                썸네일 사진 추가하기
             </button>
         </div>
     </div>
@@ -85,6 +70,7 @@
 
     <div class="editor-container">
         <div id="summernote"></div>
+        <div id="content-warning" style="margin-top: 10px; font-size: 1.1rem"></div>
     </div>
 
     <div class="submit-button-container">
@@ -95,9 +81,35 @@
         $(document).ready(function () {
             $('#summernote').summernote({
                 height: 650,
-                disableResizeEditor: true
+                disableResizeEditor: true,
+                callbacks: {
+                    onChange: function(contents, $editable) {
+                        filterContent(contents);
+                    }
+                }
             });
         });
+
+        function filterContent(contents) {
+            $.ajax({
+                url: '/zzanposts/filter-contents',
+                type: 'POST',
+                data: JSON.stringify({ content: contents }),
+                contentType: 'application/json',
+                success: function (response) {
+                    if (response.hasBadWords) {
+                        $('#content-warning').text('⚠️ 현재 본문에 비속어가 포함되어 있습니다. ⚠️').css('color', 'red');
+                        $('.submit-button').prop('disabled', true).css('background-color', 'gray').css('color', 'darkgray');
+                    } else {
+                        $('#content-warning').text('');
+                        $('.submit-button').prop('disabled', false).css('background-color', '#1A374D').css('color', 'white');
+                    }
+                },
+                error: function () {
+                    console.log('비속어 검사를 실패했습니다.');
+                }
+            });
+        }
 
         $('#uploadButton').click(function () {
             $('#thumbnail').click();
@@ -129,7 +141,7 @@
             if (fileInput) {
                 formData.append('multipartFile', fileInput);
             } else {
-                alert('커버사진을 등록해주시기 바랍니다.');
+                alert('썸네일 이미지를 등록해주시기 바랍니다.');
                 return;
             }
 

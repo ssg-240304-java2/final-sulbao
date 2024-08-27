@@ -32,7 +32,7 @@
 
                     <li>
                         <form action="/search" method="GET">
-                            <input type="text" name="keyword" id="search" class="search" placeholder="요즘 핫한 막걸리?" style="padding-left: 30px; width: 250px;">
+                            <input th:value="${keyword}" type="text" name="keyword" id="search" class="search" placeholder="요즘 핫한 막걸리?" style="padding-left: 30px; width: 250px;">
                             <button type="submit" style="border: none; background: none; cursor: pointer; margin-left: -36px; position: absolute;">
                                 <span class="material-icons">search</span>
                             </button>

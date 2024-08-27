@@ -1,18 +1,3 @@
-.hero {
-    background: #f8f9fa;
-    padding: 50px 0;
-}
-
-.hero h1 {
-    font-size: 2.5rem;
-}
-
-.hero p {
-    font-size: 1.25rem;
-    color: #6c757d;
-    margin-top: 30px;
-}
-
 #thumbnail {
     display: none;
 }
@@ -23,13 +8,13 @@
     text-align: center;
     padding: 20px;
     border-radius: 5px;
-    width: 60%;
+    width: 25%;
     height: 400px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 30px auto 0;
+    margin: 7% auto 0;
 }
 
 .title-container {
@@ -43,8 +28,7 @@
 
 .form-control {
     height: 60px;
-    border: none;
-    border-bottom: 1px solid #ccc;
+    border: 1px solid #ccc;
     padding: 10px;
     font-size: 1.25rem;
     width: calc(100% - 100px);
@@ -83,12 +67,6 @@
     justify-content: center;
 }
 
-.some_class_name {
-    width: 100%;
-    max-width: 700px;
-    box-sizing: border-box;
-}
-
 .editor-wrapper {
     display: flex;
     justify-content: center;
@@ -101,6 +79,11 @@
 .editor-container {
     width: 50%;
     padding: 10px;
+    flex-direction: column;
+}
+
+.content-warning {
+    margin-left: 10px;
 }
 
 .square-box {
@@ -129,6 +112,10 @@
     margin-bottom: 20px;
 }
 
+.note-editor {
+    width: 100%;
+}
+
 .upload-button {
     margin-top: 15px;
     padding: 10px 20px;
@@ -144,6 +131,7 @@
 .editor-container {
     display: flex;
     align-items: flex-start;
+    position: relative;
 }
 
 .add-wrapper {
@@ -157,8 +145,8 @@
     background-color: #d3d3d3;
     color: black;
     font-size: 1.2rem;
-    width: 40px;
-    height: 40px;
+    width: 60px;
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -170,6 +158,24 @@
 
 .add-box:hover {
     background-color: #c0c0c0;
+    transform: scale(1.03);
+}
+
+.delete-button {
+    top: 1px;
+    right: 15px;
+    background: none;
+    color: red;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    margin-top: 15px;
+    position: absolute;
+}
+
+.delete-button:hover {
+    color: darkred;
 }
 
 .add-content {
