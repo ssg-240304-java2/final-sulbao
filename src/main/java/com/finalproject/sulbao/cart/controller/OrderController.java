@@ -187,41 +187,15 @@ public class OrderController {
         System.out.println("shippingStatus = "+shippingStatus);
         System.out.println("orderType = "+orderType);
 
+        SellerDto sellerDto = sessionHandler.getSeller(authentication);
 
-//        if(session.getAttribute("userNo") == null){
-//            return "redirect:/login";
-//        }
-
-        UserDto userdto = sessionHandler.getUser(authentication);
-
-        if(!sessionHandler.isLogin(authentication)){
-            return "redirect:/login";
-        }
-
-
-//        List<ProductDTO> productLists;
-//        if(session.getAttribute("role").equals("ROLE_ADMIN")){
-//            productLists = orderProductService.findAll();
-//        }else{
-//            Long userNo = (Long) session.getAttribute("userNo");
-//            // 2. 1번을 이용해 판매자의 상품 정보 조회 -> 상품 코드, 상품명
-//            productLists = orderProductService.findByUserNo(userNo);
-//        }
-//        String role = session.getAttribute("role").toString();
-
-        String role = "";
-        List<ProductDTO> productLists;
-        if(userdto.getRoleType() == RoleType.ADMIN){
-            productLists = orderProductService.findAll();
-            role = "ROLE_ADMIN";
-        }else if(userdto.getRoleType() == RoleType.SELLER){
-            Long userNo = (Long) session.getAttribute("userNo");
-            // 2. 1번을 이용해 판매자의 상품 정보 조회 -> 상품 코드, 상품명
+                if(!sessionHandler.isLogin(authentication)){
+                    return "redirect:/login";
+                }
+                System.out.println(sellerDto + "아약스");
+                String role = "";List<ProductDTO> productLists;if(sellerDto.getRoleType() == RoleType.ADMIN){productLists = orderProductService.findAll();role = "ROLE_ADMIN";}else if(sellerDto.getRoleType() == RoleType.SELLER){Long userNo = (Long) session.getAttribute("userNo");// 2. 1번을 이용해 판매자의 상품 정보 조회 -> 상품 코드, 상품명
             productLists = orderProductService.findByUserNo(userNo);
-            role = "ROLE_SELLER";
-        }else{
-            return "error";
-        }
+            role = "ROLE_SELLER";}else{return "error";}
 
         List<Long>productIdList = new ArrayList<>();
         for (ProductDTO productDTO : productLists) {
@@ -288,6 +262,13 @@ public class OrderController {
         System.out.println("orderCodes = " + orderCodes);
         // 처리 성공 시
         orderService.updateDeliveryByOrderCode(orderCodes, status);
+        if(status.equals("환불완료")){
+            List<Integer> amount = orderService.findByOrderCodes(orderCodes);
+            List<Long> productNo = orderService.findByProductNos(orderCodes);
+            for (int i = 0; i < amount.size(); i++) {
+                productService.updateProductRefund(amount.get(i), productNo.get(i));
+            }
+        }
         // 업데이트문
         return "redirect:/orderlist";
     }
@@ -328,6 +309,7 @@ public class OrderController {
                     break;
                 }
             }
+            orderListDTO.setOrderCode(orderDTOList.get(i).getOrderCode());
             orderListDTO.setAmount(orderDTOList.get(i).getOrderItems().iterator().next().getAmount());
             orderListDTO.setTotalPirce(orderDTOList.get(i).getOrderItems().iterator().next().getTotalPrice());
             orderListDTO.setStatus(orderDTOList.get(i).getDelivery());
@@ -335,10 +317,21 @@ public class OrderController {
             orderListDTOList.add(orderListDTO);
         }
 
-        System.out.println("orderListDTOList = " + orderListDTOList);
+//        System.out.println("orderListDTOList = " + orderListDTOList);
+        System.out.println(orderListDTOList);
+        System.out.println("아약스");
         model.addAttribute("orders", orderListDTOList);
         model.addAttribute("menu","order");
         return "cart/memberorder";
     }
+
+    @GetMapping("/refund")
+        public String processRefund(@RequestParam("orderCode") String orderCode, Model model) {
+            // orderCode를 사용하여 환불 로직 처리
+            // 예: 주문 상태 변경, 환불 처리 로직 등
+            Long orderNo = Long.valueOf(orderCode);
+            orderService.refundOrder(orderNo);
+            return "redirect:/myorder"; // 환불 처리 후 리다이렉트
+        }
 
 }

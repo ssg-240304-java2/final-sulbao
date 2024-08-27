@@ -300,4 +300,14 @@ public class ProductService {
         return productComparisonList;
 
     }
+
+    @Transactional
+    public void updateProductStock(Long productNo, int amount) {
+        productRepository.updateProductStock(productNo, amount);
+    }
+
+    @Transactional
+    public void updateProductRefund(Integer integer, Long aLong) {
+        productRepository.updateProductRefund(integer, aLong);
+    }
 }
