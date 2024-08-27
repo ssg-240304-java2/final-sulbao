@@ -50,9 +50,12 @@ public class WebSecurityConfig {
 
         http.authorizeHttpRequests((authorizationManagerRequestMatcherRegistry -> {
             authorizationManagerRequestMatcherRegistry
-                    .requestMatchers("/", "/index").permitAll()
+                    .requestMatchers("/signup", "/signupAccess/", "/signupAccess/", "/login", "verifyagePage", "/signup-seller").anonymous()
+                    .requestMatchers("/", "/index", "/board/**").permitAll()
                     .requestMatchers("/payments/**").permitAll()
-                    .requestMatchers("/**").permitAll()
+                    .requestMatchers("/mypage/**").authenticated()
+                    .requestMatchers("/admin/member/**").hasRole("ADMIN")
+//                    .requestMatchers("/**").permitAll()
                     .anyRequest().authenticated();
         }));
 
