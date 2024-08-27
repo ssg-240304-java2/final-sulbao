@@ -111,4 +111,18 @@ public class OrderService {
                 .map(order -> modelMapper.map(order, OrderDTO.class))
                 .collect(Collectors.toList());
     }
+
+    public void refundOrder(Long orderCode) {
+        orderRepository.refundOrder(orderCode);
+    }
+
+    public List<Integer> findByOrderCodes(List<Long> orderCodes) {
+        List<Integer> amounts = orderRepository.findByOrderCodes(orderCodes);
+        return amounts;
+    }
+
+    public List<Long> findByProductNos(List<Long> orderCodes) {
+        List<Long> productNos = orderRepository.findByProductNos(orderCodes);
+        return productNos;
+    }
 }
