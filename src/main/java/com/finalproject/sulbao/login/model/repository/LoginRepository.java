@@ -47,37 +47,37 @@ public interface LoginRepository extends JpaRepository<Login, Long> {
     @Query("SELECT u FROM Login u WHERE u.userRole = :role")
     List<Login> findMemberByRole(RoleType role);
 
-    @Query("SELECT u FROM Login u WHERE u.memberInfo.profileName LIKE CONCAT('%', :searchInput, '%') AND u.userRole='PRO_MEMBER'")
-    List<Login> findProMemberBySearchUserId(String searchInput);
+    @Query("SELECT u FROM Login u WHERE u.userId LIKE CONCAT('%', :searchInput, '%') AND u.userRole=:role")
+    List<Login> findProMemberBySearchUserId(String searchInput, RoleType role);
 
-    @Query("SELECT u FROM Login u WHERE u.email LIKE CONCAT('%', :searchInput, '%') AND u.userRole='PRO_MEMBER'")
-    List<Login> findProMemberBySearchName(String searchInput);
+    @Query("SELECT u FROM Login u WHERE u.memberInfo.profileName LIKE CONCAT('%', :searchInput, '%') AND u.userRole=:role")
+    List<Login> findProMemberBySearchName(String searchInput, RoleType role);
 
-    @Query("SELECT u FROM Login u WHERE u.email LIKE CONCAT('%', :searchInput, '%') AND u.userRole='PRO_MEMBER'")
-    List<Login> findProMemberBySearchEmail(String searchInput);
+    @Query("SELECT u FROM Login u WHERE u.email LIKE CONCAT('%', :searchInput, '%') AND u.userRole=:role")
+    List<Login> findProMemberBySearchEmail(String searchInput, RoleType role);
 
-    @Query("SELECT u FROM Login u WHERE u.memberInfo.proMemberInfo.businessNumber = :searchInput  AND u.userRole='PRO_MEMBER'")
-    List<Login> findProMemberBySearchBusinessNum(String searchInput);
+    @Query("SELECT u FROM Login u WHERE u.memberInfo.proMemberInfo.businessNumber LIKE CONCAT('%', :searchInput, '%')  AND u.userRole=:role")
+    List<Login> findProMemberBySearchBusinessNum(String searchInput, RoleType role);
 
-    @Query("SELECT u FROM Login u WHERE u.memberInfo.proMemberInfo.proStatus = :statusAll  AND u.userRole='PRO_MEMBER'")
-    List<Login> findProMemberByStatus(String statusAll);
+    @Query("SELECT u FROM Login u WHERE u.memberInfo.proMemberInfo.proStatus = :statusAll  AND u.userRole=:role")
+    List<Login> findProMemberByStatus(String statusAll, RoleType role);
 
-    @Query("SELECT u FROM Login u WHERE u.userId LIKE CONCAT('%', :searchInput, '%')  AND u.userRole='SELLER'")
-    List<Login> findSellerBySearchUserId(String searchInput);
+    @Query("SELECT u FROM Login u WHERE u.userId LIKE CONCAT('%', :searchInput, '%')  AND u.userRole=:role")
+    List<Login> findSellerBySearchUserId(String searchInput, RoleType role);
 
 
-    @Query("SELECT u FROM Login u WHERE u.sellerInfo.businessName = :searchInput AND u.userRole='SELLER'")
-    List<Login> findSellerBySearchName(String searchInput);
+    @Query("SELECT u FROM Login u WHERE u.sellerInfo.businessName = :searchInput AND u.userRole=:role")
+    List<Login> findSellerBySearchName(String searchInput, RoleType role);
 
-    @Query("SELECT u FROM Login u WHERE u.email LIKE CONCAT('%', :searchInput, '%')  AND u.userRole='SELLER'")
-    List<Login> findSellerBySearchEmail(String searchInput);
+    @Query("SELECT u FROM Login u WHERE u.email LIKE CONCAT('%', :searchInput, '%')  AND u.userRole=:role")
+    List<Login> findSellerBySearchEmail(String searchInput, RoleType role);
 
-    @Query("SELECT u FROM Login u WHERE u.sellerInfo.businessNumber = :searchInput AND u.userRole='SELLER'")
-    List<Login> findSellerBySearchBusinessNum(String searchInput);
+    @Query("SELECT u FROM Login u WHERE u.sellerInfo.businessNumber = :searchInput AND u.userRole=:role")
+    List<Login> findSellerBySearchBusinessNum(String searchInput, RoleType role);
 
-    @Query("SELECT u FROM Login u WHERE u.sellerInfo.sellerStatus = :statusAll  AND u.userRole='SELLER'")
-    List<Login> findSellerByStatus(String statusAll);
+    @Query("SELECT u FROM Login u WHERE u.sellerInfo.sellerStatus = :statusAll  AND u.userRole=:role")
+    List<Login> findSellerByStatus(String statusAll, RoleType role);
 
     @Query("SELECT u FROM Login u WHERE u.isEnabled = :availableYn")
-    List<Login> findMemberByAvailable(String availableYn);
+    List<Login> findMemberByAvailable(Boolean availableYn);
 }

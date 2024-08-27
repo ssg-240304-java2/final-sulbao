@@ -411,57 +411,59 @@ public class LoginService {
 
     public List<MemberDto> findProMemberBySearch(String searchType, String searchInput) {
 
-        List<MemberDto> memberDtoList = new ArrayList<>();
+        List<MemberDto> memberList = new ArrayList<>();
         List<Login> loginlist = new ArrayList<>();
 
 
         if(searchType.equals("userId")){
-            loginlist =  loginRepository.findProMemberBySearchUserId(searchInput);
+            loginlist =  loginRepository.findProMemberBySearchUserId(searchInput, RoleType.PRO_MEMBER);
         } else if(searchType.equals("name")){
-            loginlist =  loginRepository.findProMemberBySearchName(searchInput);
+            loginlist =  loginRepository.findProMemberBySearchName(searchInput, RoleType.PRO_MEMBER);
         } else if(searchType.equals("email")){
-            loginlist =  loginRepository.findProMemberBySearchEmail(searchInput);
+            loginlist =  loginRepository.findProMemberBySearchEmail(searchInput, RoleType.PRO_MEMBER);
         } else if(searchType.equals("number")){
-            loginlist =  loginRepository.findProMemberBySearchBusinessNum(searchInput);
+            loginlist =  loginRepository.findProMemberBySearchBusinessNum(searchInput, RoleType.PRO_MEMBER);
         }
 
         for(Login login : loginlist) {
             MemberDto member = MemberDto.builder()
                     .userNo(login.getUserNo())
+                    .registDate(login.getMemberInfo().getProMemberInfo().getUpdatedAt().toString().substring(0,10))
                     .userId(login.getUserId())
-                    .gender(login.getGender())
+                    .name(login.getMemberInfo().getProfileName())
+                    .role(login.getUserRole().toString())
                     .email(login.getEmail())
-                    .phone(login.getPhone())
-                    .role(strRole(login.getUserRole().toString()))
-                    .registDate(login.getCreatedAt().toString().substring(0,10))
-                    .isAblable(login.isEnabled())
+                    .businessNum(login.getMemberInfo().getProMemberInfo().getBusinessNumber())
+                    .businessLink(login.getMemberInfo().getProMemberInfo().getBusinessLink())
+                    .status(login.getMemberInfo().getProMemberInfo().getProStatus())
                     .build();
-            memberDtoList.add(member);
+            memberList.add(member);
         }
 
-        return memberDtoList;
+        return memberList;
     }
 
     public List<MemberDto> findProMemberByStatus(String statusAll) {
 
-        List<MemberDto> memberDtoList = new ArrayList<>();
-        List<Login> loginlist = loginRepository.findProMemberByStatus(statusAll);
+        List<MemberDto> memberList = new ArrayList<>();
+        List<Login> loginlist = loginRepository.findProMemberByStatus(statusAll, RoleType.PRO_MEMBER);
 
         for(Login login : loginlist) {
             MemberDto member = MemberDto.builder()
                     .userNo(login.getUserNo())
+                    .registDate(login.getMemberInfo().getProMemberInfo().getUpdatedAt().toString().substring(0,10))
                     .userId(login.getUserId())
-                    .gender(login.getGender())
+                    .name(login.getMemberInfo().getProfileName())
+                    .role(login.getUserRole().toString())
                     .email(login.getEmail())
-                    .phone(login.getPhone())
-                    .role(strRole(login.getUserRole().toString()))
-                    .registDate(login.getCreatedAt().toString().substring(0,10))
-                    .isAblable(login.isEnabled())
+                    .businessNum(login.getMemberInfo().getProMemberInfo().getBusinessNumber())
+                    .businessLink(login.getMemberInfo().getProMemberInfo().getBusinessLink())
+                    .status(login.getMemberInfo().getProMemberInfo().getProStatus())
                     .build();
-            memberDtoList.add(member);
+            memberList.add(member);
         }
 
-        return memberDtoList;
+        return memberList;
     }
 
     public List<MemberDto> findSellerBySearch(String searchType, String searchInput) {
@@ -469,14 +471,15 @@ public class LoginService {
         List<MemberDto> memberDtoList = new ArrayList<>();
         List<Login> loginlist = new ArrayList<>();
 
-        if(searchType.equals("userId")){
-            loginlist =  loginRepository.findSellerBySearchUserId(searchInput);
+        if(searchType.equals("id")){
+            loginlist =  loginRepository.findSellerBySearchUserId(searchInput, RoleType.SELLER);
+            System.out.println("loginlist.get(0) =------------------------->>>>>>>>>>>>> " + loginlist.get(0));
         } else if(searchType.equals("name")){
-            loginlist =  loginRepository.findSellerBySearchName(searchInput);
+            loginlist =  loginRepository.findSellerBySearchName(searchInput, RoleType.SELLER);
         } else if(searchType.equals("email")){
-            loginlist =  loginRepository.findSellerBySearchEmail(searchInput);
+            loginlist =  loginRepository.findSellerBySearchEmail(searchInput, RoleType.SELLER);
         } else if(searchType.equals("number")){
-            loginlist =  loginRepository.findSellerBySearchBusinessNum(searchInput);
+            loginlist =  loginRepository.findSellerBySearchBusinessNum(searchInput, RoleType.SELLER);
         }
 
         for(Login login : loginlist) {
@@ -500,7 +503,7 @@ public class LoginService {
     public List<MemberDto> findSellerByStatus(String statusAll) {
 
         List<MemberDto> memberDtoList = new ArrayList<>();
-        List<Login> loginlist = loginRepository.findSellerByStatus(statusAll);
+        List<Login> loginlist = loginRepository.findSellerByStatus(statusAll, RoleType.SELLER);
 
         for(Login login : loginlist) {
             MemberDto seller = MemberDto.builder()
@@ -523,8 +526,10 @@ public class LoginService {
 
     public List<MemberDto> findMemberByAvailable(String availableYn) {
 
+        Boolean isAvailbale = Boolean.valueOf(availableYn);
+
         List<MemberDto> memberDtoList = new ArrayList<>();
-        List<Login> loginlist = loginRepository.findMemberByAvailable(availableYn);
+        List<Login> loginlist = loginRepository.findMemberByAvailable(isAvailbale);
 
         for(Login login : loginlist) {
             MemberDto member = MemberDto.builder()

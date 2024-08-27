@@ -44,12 +44,12 @@
                                             <label class="custom-control-label" for="statusAll">전체</label>
                                         </div>
                                         <div class="custom-control custom-radio d-inline-block mr-3">
-                                            <input type="radio" id="wait" name="wait" value="wait" class="custom-control-input">
+                                            <input type="radio" id="wait" name="statusAll" value="wait" class="custom-control-input">
                                             <label class="custom-control-label" for="wait">대기중</label>
                                         </div>
                                         <div class="custom-control custom-radio d-inline-block mr-3">
-                                            <input type="radio" id="approve" name="approve" value="approve" class="custom-control-input" >
-                                            <label class="custom-control-label" for="approve">승인함</label>
+                                            <input type="radio" id="approve" name="statusAll" value="approve" class="custom-control-input" >
+                                            <label class="custom-control-label" for="approve">승인됨</label>
                                         </div>
                                     </td>
                                 </tr>
@@ -64,7 +64,7 @@
                         </div>
 
                         <div class="mr-3 mb-4">
-                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="changeApprove('sellStatus','approve')">승인함</button>
+                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="changeApprove('sellStatus','approve')">입점 승인하기</button>
                         </div>
 
                         <table id="productsTable" class="table table-product" style="width:100%">

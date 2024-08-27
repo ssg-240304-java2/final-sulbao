@@ -133,23 +133,18 @@ public class MemberController {
     @GetMapping("/sellerSearch")
     public String sellerSearch(Model model, @ModelAttribute SearchDto inputMap){
 
-        List<MemberDto> memberList = new ArrayList<>();
+        List<MemberDto> sellerList = new ArrayList<>();
         String searchType = inputMap.getType();
         String searchInput = inputMap.getSearch();
         String statusAll = inputMap.getStatusAll();
 
-        System.out.println("searchType = " + searchType);
-        System.out.println("searchInput = " + searchInput);
-        System.out.println("statusAll = " + statusAll);
-
-
             if(searchInput.length() > 1) {
-                memberList = service.findSellerBySearch(searchType, searchInput);
+                sellerList = service.findSellerBySearch(searchType, searchInput);
             } else if(statusAll.length() > 1) {
-                memberList = service.findSellerByStatus(statusAll);
+                sellerList = service.findSellerByStatus(statusAll);
             }
 
-        model.addAttribute("memberList", memberList);
+        model.addAttribute("sellerList", sellerList);
         return "admin/member/sellerList";
     }
 
