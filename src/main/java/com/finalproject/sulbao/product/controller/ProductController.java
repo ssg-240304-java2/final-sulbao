@@ -1,6 +1,7 @@
 package com.finalproject.sulbao.product.controller;
 
 import com.finalproject.sulbao.board.common.SessionHandler;
+import com.finalproject.sulbao.login.model.dto.LoginDetails;
 import com.finalproject.sulbao.login.model.entity.RoleType;
 import com.finalproject.sulbao.product.model.dto.ProductComparisonDTO;
 import com.finalproject.sulbao.product.model.dto.ProductDTO;
@@ -9,11 +10,13 @@ import com.finalproject.sulbao.product.service.ProductService;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @Slf4j
@@ -35,8 +38,12 @@ public class ProductController {
         if(!sessionHandler.isLogin(authentication)){
             return "redirect:/login";
         }
-
-        if(!RoleType.MEMBER.name().equals(sessionHandler.getUser(authentication).getRoleType())){
+        LoginDetails login = (LoginDetails) authentication.getPrincipal();
+        String role = login.getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+        if("MEMBER".equals(role)){
             return "redirect:/";
         }
 
@@ -58,8 +65,12 @@ public class ProductController {
         if(!sessionHandler.isLogin(authentication)){
             return "redirect:/login";
         }
-
-        if(!RoleType.MEMBER.name().equals(sessionHandler.getUser(authentication).getRoleType())){
+        LoginDetails login = (LoginDetails) authentication.getPrincipal();
+        String role = login.getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+        if("MEMBER".equals(role)){
             return "redirect:/";
         }
 
@@ -79,8 +90,12 @@ public class ProductController {
         if(!sessionHandler.isLogin(authentication)){
             return "redirect:/login";
         }
-
-        if(!RoleType.MEMBER.name().equals(sessionHandler.getUser(authentication).getRoleType())){
+        LoginDetails login = (LoginDetails) authentication.getPrincipal();
+        String role = login.getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+        if("MEMBER".equals(role)){
             return "redirect:/";
         }
 
@@ -100,8 +115,12 @@ public class ProductController {
         if(!sessionHandler.isLogin(authentication)){
             return "redirect:/login";
         }
-
-        if(!RoleType.MEMBER.name().equals(sessionHandler.getUser(authentication).getRoleType())){
+        LoginDetails login = (LoginDetails) authentication.getPrincipal();
+        String role = login.getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+        if("MEMBER".equals(role)){
             return "redirect:/";
         }
         List<ProductComparisonDTO> productComparisonList = productService.findByComparison();
@@ -121,8 +140,12 @@ public class ProductController {
         if(!sessionHandler.isLogin(authentication)){
             return "redirect:/login";
         }
-
-        if(!RoleType.MEMBER.name().equals(sessionHandler.getUser(authentication).getRoleType())){
+        LoginDetails login = (LoginDetails) authentication.getPrincipal();
+        String role = login.getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+        if("MEMBER".equals(role)){
             return "redirect:/";
         }
         productDTO.setUserNo((Long) session.getAttribute("userNo"));
@@ -138,8 +161,12 @@ public class ProductController {
         if(!sessionHandler.isLogin(authentication)){
             return "redirect:/login";
         }
-
-        if(!RoleType.MEMBER.name().equals(sessionHandler.getUser(authentication).getRoleType())){
+        LoginDetails login = (LoginDetails) authentication.getPrincipal();
+        String role = login.getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+        if("MEMBER".equals(role)){
             return "redirect:/";
         }
         productDTO.setUserNo((Long) session.getAttribute("userNo"));
@@ -155,8 +182,12 @@ public class ProductController {
         if(!sessionHandler.isLogin(authentication)){
             return "redirect:/login";
         }
-
-        if(!RoleType.MEMBER.name().equals(sessionHandler.getUser(authentication).getRoleType())){
+        LoginDetails login = (LoginDetails) authentication.getPrincipal();
+        String role = login.getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+        if("MEMBER".equals(role)){
             return "redirect:/";
         }
         productService.delete(productNoList);
@@ -167,11 +198,16 @@ public class ProductController {
     @PutMapping("/status")
     @ResponseBody
     public String updateStatus(String productNoList, Authentication authentication, String type, String status, HttpSession session) {
+
         if(!sessionHandler.isLogin(authentication)){
             return "redirect:/login";
         }
-
-        if(!RoleType.MEMBER.name().equals(sessionHandler.getUser(authentication).getRoleType())){
+        LoginDetails login = (LoginDetails) authentication.getPrincipal();
+        String role = login.getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+        if("MEMBER".equals(role)){
             return "redirect:/";
         }
 
