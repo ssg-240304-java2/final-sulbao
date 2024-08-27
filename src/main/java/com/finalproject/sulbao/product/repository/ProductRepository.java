@@ -2,6 +2,7 @@ package com.finalproject.sulbao.product.repository;
 
 import com.finalproject.sulbao.product.model.dto.ProductDTO;
 import com.finalproject.sulbao.product.model.entity.Product;
+import com.finalproject.sulbao.product.model.entity.ProductComparison;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -49,6 +50,15 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     Integer findByMinProductPrice(Long comparisonNo);
 
     List<Product> findByComparison_comparisonNoOrderByProductPriceAsc(long comparisonNo);
+
+    @Query(value = "select DISTINCT(comparison_no) from tbl_product where product_name like concat('%',:keyword,'%') OR product_hashtag like concat('%',:keyword,'%')", nativeQuery = true)
+    List<Long> findByProductComparisonKeyword(String keyword);
+
+    @Query(value = "select p from ProductComparison p where p.comparisonNo IN :productComparisonNoList order by p.createdAt desc limit :limit")
+    List<ProductComparison> findByProductComparisonInfo(List<Long> productComparisonNoList, int limit);
+
+    @Query(value = "select p from ProductComparison p where p.comparisonNo IN :productComparisonNoList order by p.createdAt desc")
+    List<ProductComparison> findByProductComparisonInfoAll(List<Long> productComparisonNoList);
 
     @Modifying
     @Transactional

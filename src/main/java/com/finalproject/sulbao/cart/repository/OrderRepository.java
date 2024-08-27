@@ -1,5 +1,6 @@
 package com.finalproject.sulbao.cart.repository;
 
+import com.finalproject.sulbao.auth.model.dto.OrderStatus;
 import com.finalproject.sulbao.cart.domain.Order;
 import com.finalproject.sulbao.cart.vo.OrderItem;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -36,4 +37,11 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     @Query(value = "select j.productNo from Order k join k.orderItems j where k.orderCode IN (:orderCodes)")
     List<Long> findByProductNos(List<Long> orderCodes);
+
+    @Query(value = "SELECT * FROM tbl_order WHERE is_present = TRUE AND DATE_FORMAT(DATE_ADD(created_at,INTERVAL 6 DAY), '%Y-%m-%d') =  DATE_FORMAT(now(), '%Y-%m-%d') and zip_code = null", nativeQuery = true)
+    List<Order> findByPresentInfo();
+
+    @Query(value = "select p.orderItems from Order p where p.delivery= :delivery")
+    List<OrderItem> findByOrderStatusProductNo(String delivery );
+
 }

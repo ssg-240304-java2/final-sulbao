@@ -18,11 +18,13 @@
 
             <div class="navbar-right ">
                 <ul class="nav navbar-nav">
+                    <li class="custom-dropdown">
+                        <button class="btn btn-outline-primary" onclick="location.href='/'">쇼핑몰 가기</button>
+                    </li>
                     <!-- User Account -->
                     <li class="dropdown user-menu">
                         <button class="dropdown-toggle nav-link" data-toggle="dropdown">
-                            <img src="/admin/images/user/user-xs-01.jpg" class="user-image rounded-circle" alt="User Image">
-                            <span class="d-none d-lg-inline-block">John Doe</span>
+                            <span class="d-none d-lg-inline-block">[[${session.userId}]]</span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-right">
                             <li class="dropdown-footer" style="border: none; margin-top: 0">
