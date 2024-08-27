@@ -36,4 +36,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     @Query(value = "select j.productNo from Order k join k.orderItems j where k.orderCode IN (:orderCodes)")
     List<Long> findByProductNos(List<Long> orderCodes);
+
+    @Query(value = "SELECT * FROM tbl_order WHERE is_present = TRUE AND DATE_FORMAT(DATE_ADD(created_at,INTERVAL 6 DAY), '%Y-%m-%d') =  DATE_FORMAT(now(), '%Y-%m-%d')", nativeQuery = true)
+    List<Order> findByPresentInfo();
 }

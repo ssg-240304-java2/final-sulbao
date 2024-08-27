@@ -301,6 +301,34 @@ public class ProductService {
 
     }
 
+    public List<ProductComparisonDTO> findByProductKeyword(String keyword, int limit) {
+
+        List<Long> productComparisonNoList = productRepository.findByProductComparisonKeyword(keyword);
+        log.info("ProductComparisonNoList ============== {}",productComparisonNoList.toString());
+        List<ProductComparison> productList = new ArrayList<>();
+        if(limit == 0){
+            productList = productRepository.findByProductComparisonInfoAll(productComparisonNoList);
+        }else{
+            productList = productRepository.findByProductComparisonInfo(productComparisonNoList,limit);
+        }
+        log.info("productList ============== {}",productList.toString());
+
+        List<ProductComparisonDTO> productComparisonList = new ArrayList<>();
+        for (ProductComparison comparison : productList) {
+            Integer minPrice = productRepository.findByMinProductPrice(comparison.getComparisonNo());
+            ProductComparisonDTO productComparisonDTO = ProductComparisonDTO.builder()
+                    .comparisonNo(comparison.getComparisonNo())
+                    .comparisonName(comparison.getComparisonName())
+                    .comparisonDescription(comparison.getComparisonDescription())
+                    .comparisonCategory(comparison.getComparisonCategory())
+                    .minPrice(minPrice)
+                    .productImages(comparison.getComparisonImages())
+                    .build();
+            productComparisonList.add(productComparisonDTO);
+        }
+        return productComparisonList;
+    }
+
     @Transactional
     public void updateProductStock(Long productNo, int amount) {
         productRepository.updateProductStock(productNo, amount);
