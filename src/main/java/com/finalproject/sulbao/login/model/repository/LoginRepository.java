@@ -30,4 +30,7 @@ public interface LoginRepository extends JpaRepository<Login, Long> {
 
     @Query("SELECT u FROM Login u WHERE u.userRole = 'SELLER'")
     List<Login> findSellerList();
+
+    @Query("SELECT u FROM Login u WHERE u.userNo = :userNo")
+    Optional<Login> findByUserNo(String userNo);
 }

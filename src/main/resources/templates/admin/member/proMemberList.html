@@ -64,9 +64,7 @@
                         </div>
 
                         <div class="mr-3 mb-4">
-                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="changeStatusYn('proStatus','approve')">승인함</button>
-                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="changeStatusYn('proStatus','cancel')">승인취소</button>
-<!--                            <button type="button" class="btn btn-sm btn-danger" onclick="deleteProduct()">삭제</button>-->
+                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="changeApprove('proStatus','approve')">승인함</button>
                         </div>
 
                         <table id="productsTable" class="table table-product" style="width:100%">
@@ -133,9 +131,9 @@
                 });
 
                 $.ajax({
-                    url: "/member/proStatus",
+                    url: "/member/updateProStatus",
                     data: {
-                        "sellerList": check_arr,
+                        "memberList": check_arr,
                         "type": type,
                         "proStatus": proStatus
                     },
@@ -151,7 +149,7 @@
                         alert("입점상태 변경에 실패했습니다.");
                     }
                 });
-            }
+
             }
         </script>
     </div>

@@ -38,7 +38,7 @@
                                     </tr>
                                 <tr>
                                     <th>승인상태</th>
-                                    <td colspan="3">
+                                    <td>
                                         <div class="custom-control custom-radio d-inline-block mr-3">
                                             <input type="radio" id="statusAll" name="statusAll" value="all" class="custom-control-input" checked>
                                             <label class="custom-control-label" for="statusAll">전체</label>
@@ -50,21 +50,6 @@
                                         <div class="custom-control custom-radio d-inline-block mr-3">
                                             <input type="radio" id="approve" name="approve" value="approve" class="custom-control-input" >
                                             <label class="custom-control-label" for="approve">승인함</label>
-                                        </div>
-                                    </td>
-                                    <th>활성상태</th>
-                                    <td rowspan="3">
-                                        <div class="custom-control custom-radio d-inline-block mr-3">
-                                            <input type="radio" id="isAblableYn" name="isAblableYn" value="" class="custom-control-input" checked>
-                                            <label class="custom-control-label" for="isAblableYn">전체</label>
-                                        </div>
-                                        <div class="custom-control custom-radio d-inline-block mr-3">
-                                            <input type="radio" id="isAblableY" name="isAblableY" value="Y" class="custom-control-input">
-                                            <label class="custom-control-label" for="isAblableY">활성</label>
-                                        </div>
-                                        <div class="custom-control custom-radio d-inline-block mr-3">
-                                            <input type="radio" id="isAblableN" name="isAblableN" value="N" class="custom-control-input">
-                                            <label class="custom-control-label" for="isAblableYn">비활성</label>
                                         </div>
                                     </td>
                                 </tr>
@@ -79,10 +64,7 @@
                         </div>
 
                         <div class="mr-3 mb-4">
-                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="changeStatusYn('sellStatus','approve')">승인함</button>
-                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="changeStatusYn('sellStatus','cancel')">승인취소</button>
-                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="changeStatusYn('isAblable','Y')">활성화</button>
-                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="changeStatusYn('isAblable','N')">비활성화</button>
+                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="changeApprove('sellStatus','approve')">승인함</button>
                         </div>
 
                         <table id="productsTable" class="table table-product" style="width:100%">
@@ -149,7 +131,7 @@
                 });
 
                 $.ajax({
-                    url: "/member/sellStatus",
+                    url: "/member/updateSellStatus",
                     data: {
                         "sellerList": check_arr,
                         "type": type,
@@ -167,36 +149,7 @@
                         alert("입점상태 변경에 실패했습니다.");
                     }
                 });
-            }
 
-            // 활성 상태 변경
-            function changeStatusYn(type,available){
-
-                let check_arr=[];
-                $("input[name=chk]:checked").each(function(){
-                    let chk = $(this).val();
-                    check_arr.push(chk);
-                });
-
-                $.ajax({
-                    url: "/member/status",
-                    data: {
-                        "memberList": check_arr,
-                        "type": type,
-                        "available": available
-                    },
-                    type: "put",
-                    success: function(data){
-                        if(data === 'success'){
-                            alert("선택하신 회원의 활성 상태가 변경되었습니다.");
-                            location.reload();
-                        }else{
-                            alert("활성 상태변경에 실패했습니다.");
-                        }
-                    },error: function (error){
-                        alert("활성 상태변경에 실패했습니다.");
-                    }
-                });
             }
         </script>
     </div>

@@ -9,6 +9,7 @@ import com.finalproject.sulbao.login.model.entity.RoleType;
 import com.finalproject.sulbao.login.model.repository.LoginRepository;
 import com.finalproject.sulbao.login.model.repository.MemberInfoRepository;
 import com.finalproject.sulbao.login.model.vo.MemberImage;
+import com.finalproject.sulbao.login.model.vo.ProMemberInfo;
 import com.finalproject.sulbao.login.model.vo.SellerInfo;
 import com.finalproject.sulbao.member.dto.MemberDto;
 import jakarta.servlet.http.HttpSession;
@@ -20,8 +21,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -283,5 +286,58 @@ public class LoginService {
             sellerList.add(seller);
         }
         return sellerList;
+    }
+
+    @Transactional
+    public void updateEnable(String memberList, String type, String available) {
+
+        String[] memberNoArray = memberList.split(",");
+
+        for(String userNo : memberNoArray) {
+            Optional<Login> login = loginRepository.findByUserNo(userNo);
+
+            if(login.isPresent()) {
+                if(type.equals("true")){
+                    login.get().setEnabled(true);
+                } else {
+                    login.get().setEnabled(false);
+                }
+            }
+        }
+    }
+
+    @Transactional
+    public void updateProStatus(String memberList, String type, String proStatus) {
+
+        String[] memberNoArray = memberList.split(",");
+
+        for(String userNo : memberNoArray) {
+            Optional<Login> login = loginRepository.findByUserNo(userNo);
+
+            if(login.isPresent()) {
+
+                ProMemberInfo proMember = login.get().getMemberInfo().getProMemberInfo();
+                if(type.equals("approve")){
+                    proMember.setStatusApprove();
+                }
+            }
+        }
+    }
+
+    @Transactional
+    public void updateSellStatus(String sellerList, String type, String sellStatus) {
+        String[] memberNoArray = sellerList.split(",");
+
+        for(String userNo : memberNoArray) {
+            Optional<Login> login = loginRepository.findByUserNo(userNo);
+
+            if(login.isPresent()) {
+
+                SellerInfo seller = login.get().getSellerInfo();
+                if(type.equals("approve")){
+                    seller.setStatusApprove();
+                }
+            }
+        }
     }
 }
