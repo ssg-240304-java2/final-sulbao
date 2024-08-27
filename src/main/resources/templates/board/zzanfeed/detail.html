@@ -31,7 +31,10 @@
         <div class="post-meta">
             <img alt="작성자 프로필 사진"
                  th:src="@{${post.userDto.getProfileImageFileUrl()}}">
-            <div class="username" th:text="${post.userDto.getProfileName()}"></div>
+            <div class="username-and-date">
+                <div class="username" th:text="${post.userDto.getProfileName()}"></div>
+                <div class="post-created-at" th:text="${#temporals.format(post.createdAt, 'yyyy년 MM월 dd일 HH시 mm분')}"></div>
+            </div>
             <div class="edit-buttons" th:if="${user.id == post.userDto.id or isAdmin}">
                 <button onclick="editPost()">수정</button>
                 <button onclick="deletePost()">삭제</button>

@@ -175,6 +175,7 @@
             <div class="editor-container">
                 <div class="summernote"></div>
             </div>
+            <button class="delete-button" onclick="deleteEditorWrapper(this)">X</button>
         </div>
     `;
 
@@ -191,6 +192,11 @@
             });
 
             $('.note-editor').css('width', '100%'); // 원하는 너비로 조정
+        }
+
+        function deleteEditorWrapper(button) {
+            const editorWrapper = button.closest('.editor-wrapper');
+            editorWrapper.remove();
         }
 
         function uploadImage(button) {
