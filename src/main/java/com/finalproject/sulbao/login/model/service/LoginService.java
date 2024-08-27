@@ -10,6 +10,7 @@ import com.finalproject.sulbao.login.model.repository.LoginRepository;
 import com.finalproject.sulbao.login.model.repository.MemberInfoRepository;
 import com.finalproject.sulbao.login.model.vo.MemberImage;
 import com.finalproject.sulbao.login.model.vo.SellerInfo;
+import com.finalproject.sulbao.member.dto.MemberDto;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -197,5 +201,87 @@ public class LoginService {
     public void deleteProForm(String userId) {
         Long memberNo = memberRepository.findByUserId(userId).getMemberNo();
         memberRepository.deleteProForm(memberNo);
+    }
+
+
+    public List<MemberDto> findMemberList() {
+
+        List<Login> members = loginRepository.findAll();
+        List<MemberDto> memberList = new ArrayList<>();
+
+        for(Login login : members) {
+            MemberDto member = MemberDto.builder()
+                    .userNo(login.getUserNo())
+                    .userId(login.getUserId())
+                    .gender(login.getGender())
+                    .email(login.getEmail())
+                    .phone(login.getPhone())
+                    .role(strRole(login.getUserRole().toString()))
+                    .registDate(login.getCreatedAt().toString().substring(0,10))
+                    .isAblable(login.isEnabled())
+                    .build();
+            memberList.add(member);
+        }
+
+        return memberList;
+    }
+
+    private String strRole(String role) {
+
+        String result ="";
+        if (role.equals("MEMBER")){
+            result = "일반회원";
+        } else if(role.equals("PRO_MEMBER")){
+            result = "전문가";
+        } else if(role.equals("SELLER")){
+            result = "입점사";
+        } else {
+            result = "관리자";
+        }
+        return result;
+    }
+
+    public List<MemberDto> findProMemberList() {
+
+        List<Login> members = loginRepository.findProMembers();
+        List<MemberDto> memberList = new ArrayList<>();
+
+        for(Login login : members) {
+            MemberDto member = MemberDto.builder()
+                    .userNo(login.getUserNo())
+                    .registDate(login.getMemberInfo().getProMemberInfo().getUpdatedAt().toString().substring(0,10))
+                    .userId(login.getUserId())
+                    .name(login.getMemberInfo().getProfileName())
+                    .role(login.getUserRole().toString())
+                    .email(login.getEmail())
+                    .businessNum(login.getMemberInfo().getProMemberInfo().getBusinessNumber())
+                    .businessLink(login.getMemberInfo().getProMemberInfo().getBusinessLink())
+                    .status(login.getMemberInfo().getProMemberInfo().getProStatus())
+                    .build();
+            memberList.add(member);
+        }
+        return memberList;
+    }
+
+    public List<MemberDto> findSellerList() {
+
+        List<Login> sellers = loginRepository.findSellerList();
+        List<MemberDto> sellerList = new ArrayList<>();
+
+        for(Login login : sellers) {
+            MemberDto seller = MemberDto.builder()
+                    .userNo(login.getUserNo())
+                    .registDate(login.getCreatedAt().toString().substring(0,10))
+                    .userId(login.getUserId())
+                    .email(login.getEmail())
+                    .phone(login.getPhone())
+                    .businessNum(login.getSellerInfo().getBusinessNumber())
+                    .businessName(login.getSellerInfo().getBusinessName())
+                    .status(login.getSellerInfo().getSellerStatus())
+                    .isAblable(login.isEnabled())
+                    .build();
+            sellerList.add(seller);
+        }
+        return sellerList;
     }
 }

@@ -4,6 +4,7 @@ import com.finalproject.sulbao.common.entity.BaseEntity;
 import com.finalproject.sulbao.login.model.vo.SellerInfo;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Table(name = "tbl_login")
@@ -55,6 +56,8 @@ public class Login extends BaseEntity {
     })
     private SellerInfo sellerInfo;
 
+    private boolean isEnabled;
+
 
     @Builder
     public Login(String userId, String userPw, RoleType userRole, String gender, String phone, String email, SellerInfo sellerInfo) {
@@ -65,5 +68,6 @@ public class Login extends BaseEntity {
         this.phone = phone;
         this.email = email;
         this.sellerInfo = sellerInfo;
+        this.isEnabled = true;
     }
 }
