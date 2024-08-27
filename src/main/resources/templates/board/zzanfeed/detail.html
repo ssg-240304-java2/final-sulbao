@@ -54,8 +54,6 @@
         <div class="comments-section">
             <div class="comments-count">댓글 <span th:text="${comments.size()}"></span></div>
 
-
-
             <div class="comment-container" th:each="comment : ${comments}">
                 <div class="comment">
                     <img alt="comment writer's profile image"
@@ -73,7 +71,7 @@
                 </div>
 
                 <form action="/comments/update" class="comment-edit-form" method="post" style="display: none">
-                    <div class="comment-input">
+                    <div class="comment-edit-input">
                         <img alt="comment writer's profile image"
                              th:src="@{${comment.userDto.profileImageFileUrl}}">
                         <label>

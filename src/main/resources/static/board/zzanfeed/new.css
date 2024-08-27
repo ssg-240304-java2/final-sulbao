@@ -1,7 +1,3 @@
-.my-container {
-    margin-top: 6%;
-}
-
 #thumbnail {
     display: none;
 }
@@ -18,7 +14,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 30px auto 4%;
+    margin: 7% auto 0;
 }
 
 .title-container {
@@ -41,7 +37,6 @@
 .tagify {
     width: 100%;
     max-width: 700px;
-    height: 80px;
 }
 
 .tags-look .tagify__dropdown__item {
@@ -67,7 +62,7 @@
 
 .hashtag-container {
     margin: 20px auto;
-    width: 100%;
+    width: 60%;
     display: flex;
     justify-content: center;
 }
@@ -84,6 +79,11 @@
 .editor-container {
     width: 50%;
     padding: 10px;
+    flex-direction: column;
+}
+
+.content-warning {
+    margin-left: 10px;
 }
 
 .square-box {
@@ -112,6 +112,10 @@
     margin-bottom: 20px;
 }
 
+.note-editor {
+    width: 100%;
+}
+
 .upload-button {
     margin-top: 15px;
     padding: 10px 20px;
@@ -125,23 +129,9 @@
 }
 
 .editor-container {
+    display: flex;
     align-items: flex-start;
-}
-
-.delete-button {
-    top: 10px;
-    right: 10px;
-    background: none;
-    color: red;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    transition: color 0.3s ease;
-    margin-top: 30px;
-}
-
-.delete-button:hover {
-    color: darkred;
+    position: relative;
 }
 
 .add-wrapper {
@@ -161,14 +151,31 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
+    transition: background-color 0.3s;
     border-radius: 5px;
     margin-top: 5%;
 }
 
 .add-box:hover {
     background-color: #c0c0c0;
-    transform: scale(1.1);
+    transform: scale(1.03);
+}
+
+.delete-button {
+    top: 1px;
+    right: 15px;
+    background: none;
+    color: red;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    margin-top: 15px;
+    position: absolute;
+}
+
+.delete-button:hover {
+    color: darkred;
 }
 
 .add-content {
@@ -188,10 +195,6 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
+    transition: background-color 0.3s;
     margin: 5%;
-}
-
-.submit-button:hover {
-    transform: scale(1.1);
 }

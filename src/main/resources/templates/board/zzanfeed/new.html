@@ -10,13 +10,13 @@
     <link href="/board/zzanfeed/new.css" rel="stylesheet">
 </head>
 <body>
-<div class="my-container" layout:fragment="content">
+<div layout:fragment="content">
     <input accept="image/*" id="thumbnail" name="thumbnail" type="file">
     <div class="cover-upload-container" id="coverPreview">
-        썸네일 이미지를 업로드해주세요.
+        커버 사진을 업로드해주세요.
         <div class="upload-button-container">
             <button class="upload-button" id="uploadButton">
-                썸네일 추가하기
+                커버사진 추가하기
             </button>
         </div>
     </div>
@@ -26,6 +26,10 @@
             <label for="postTitle"></label>
             <input class="form-control" id="postTitle" placeholder="제목을 입력해주세요." type="text">
         </div>
+    </div>
+
+    <div class="hashtag-container">
+        <input class='some_class_name' name='tags' placeholder='해시태그를 추가해주세요.'>
     </div>
 
     <div class="editor-wrapper">
@@ -38,11 +42,8 @@
             </div>
         </div>
         <div class="editor-container">
-            <div class="hashtag-container">
-                <input class='hashtag-input' name='tags' placeholder='해시태그를 추가해주세요.'>
-            </div>
             <div class="summernote"></div>
-            <div id="content-warning" style="margin-top: 10px;"></div>
+            <div class="content-warning" style="margin-top: 10px; font-size: 1.1rem; margin-left: 17%"></div>
         </div>
     </div>
 
@@ -57,8 +58,6 @@
     </div>
 
     <script th:inline="javascript">
-        let tagifyInstances = [];
-
         $('#uploadButton').click(function () {
             $('#thumbnail').click();
         });
@@ -107,39 +106,41 @@
             }
         })
 
-        tagifyInstances.push(tagify);
-
         $(document).ready(function () {
             $('.summernote').summernote({
                 lang: 'ko-KR',
-                height: 220,
+                height: 200,
                 disableResizeEditor: true,
-                callbacks: {
-                    onChange: function(contents, $editable) {
-                        filterContent(contents);
-                    }
-                },
                 toolbar: [
                     ['style', ['style']],
                     ['font', ['bold', 'italic', 'underline', 'clear']],
                     ['fontname', ['fontname']],
-                ]
+                ],
+                callbacks: {
+                    onChange: function(contents, $editable) {
+                        filterContent(contents, $(this));
+                    }
+                }
             });
-
-            $('.note-editor').css('width', '100%');
         });
 
-        function filterContent(contents) {
+        function filterContent(contents, editor) {
+            console.log("hihihi");
             $.ajax({
                 url: '/zzanposts/filter-contents',
                 type: 'POST',
                 data: JSON.stringify({ content: contents }),
                 contentType: 'application/json',
                 success: function (response) {
+                    const contentWarning = editor.closest('.editor-wrapper').find('.content-warning');
+                    const submitButton = $('.submit-button');
+
                     if (response.hasBadWords) {
-                        $('#badword-warning').text('비속어가 포함되어 있습니다.').css('color', 'red');
+                        contentWarning.text('⚠️ 현재 본문에 비속어가 포함되어 있습니다. ⚠️').css('color', 'red');
+                        submitButton.prop('disabled', true).css('background-color', 'gray').css('color', 'darkgray');
                     } else {
-                        $('#badword-warning').text('');
+                        contentWarning.text('');
+                        submitButton.prop('disabled', false).css('background-color', '#7E8EF1').css('color', 'white');
                     }
                 },
                 error: function () {
@@ -160,45 +161,29 @@
                 </div>
             </div>
             <div class="editor-container">
-                <div class="hashtag-container">
-                    <input class='hashtag-input' name='tags' placeholder='해시태그를 추가해주세요.'>
-                </div>
                 <div class="summernote"></div>
+                <div class="content-warning" style="margin-top: 10px; font-size: 1.1rem; margin-left: 17%"></div>
+                <button class="delete-button" onclick="deleteEditorWrapper(this)">X</button>
             </div>
-            <button class="delete-button" onclick="deleteEditorWrapper(this)">X</button>
         </div>
     `;
 
             $(newWrapper).insertBefore('.add-wrapper');
 
-            const newHashtagInput = document.querySelectorAll('.hashtag-input');
-            const lastInput = newHashtagInput[newHashtagInput.length - 1];
-
-            // 새로운 입력 필드에 대해 Tagify 인스턴스 생성
-            let tagify = new Tagify(lastInput, {
-                whitelist: whitelist,
-                maxTags: 10,
-                dropdown: {
-                    maxItems: 20,
-                    classname: "tags-look",
-                    enabled: 0,
-                    closeOnSelect: false
-                }
-            });
-
-            tagifyInstances.push(tagify);
-
             $('.summernote').last().summernote({
-                height: 220,
+                height: 200,
                 disableResizeEditor: true,
                 toolbar: [
-                    ['style', ['style']],       // 스타일 드롭다운 (헤딩 등)
-                    ['font', ['bold', 'italic', 'underline', 'clear']], // 글꼴 스타일
-                    ['fontname', ['fontname']], // 글꼴 이름 변경
-                ]
+                    ['style', ['style']],
+                    ['font', ['bold', 'italic', 'underline', 'clear']],
+                    ['fontname', ['fontname']],
+                ],
+                callbacks: {
+                    onChange: function(contents, $editable) {
+                        filterContent(contents, $(this));
+                    }
+                }
             });
-
-            $('.note-editor').css('width', '100%'); // 원하는 너비로 조정
         }
 
         function deleteEditorWrapper(button) {
@@ -238,15 +223,8 @@
             }
             formData.append('title', title);
 
-            let allTags = [];
-
-            tagifyInstances.forEach(tagify => {
-                let tags = tagify.value.map(tag => tag.value);
-                allTags.push(tags.join(','));
-            });
-
-            let formattedTags = allTags.join('|'); // 서로 다른 입력 칸의 태그를 |로 연결
-            formData.append('tags', formattedTags);
+            let tags = tagify.value.map(tag => tag.value);
+            tags.forEach(tag => formData.append('tags', tag));
 
             const thumbnailFile = document.getElementById('thumbnail').files[0];
             if (thumbnailFile == null) {

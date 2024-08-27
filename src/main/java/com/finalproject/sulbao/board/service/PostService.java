@@ -29,7 +29,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoField;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static com.finalproject.sulbao.board.common.BoardCategoryConstants.*;
@@ -68,16 +67,9 @@ public class PostService {
         Login login = loginRepository.findById(userId).orElseThrow();
         BoardCategory boardCategory = boardCategoryRepository.findById(boardCategoryId).orElseThrow();
         String thumbnail = fileService.uploadFiles(requestDto.getThumbnail(), uploadDir).getUploadFileName();
-        String tagString = requestDto.getTags();
+        List<String> tags = requestDto.getTags();
         String title = requestDto.getTitle();
         String content = String.join("|", requestDto.getContents());
-        List<String> tags = new ArrayList<>();
-
-        String[] eachTags = tagString.split("\\|");
-        Arrays.stream(eachTags).forEach(eachTag -> {
-            String[] tagArray = eachTag.split(",");
-            tags.addAll(Arrays.asList(tagArray));
-        });
 
         List<PostImage> postImages = requestDto.getContentImages().stream()
                 .map(contentImage -> {
@@ -86,7 +78,7 @@ public class PostService {
                 })
                 .toList();
 
-        Post post = Post.createPost(login, boardCategory, title, content, thumbnail, postImages, tags, tagString);
+        Post post = Post.createPost(login, boardCategory, title, content, thumbnail, postImages, tags);
         postRepository.save(post);
         return PostDto.toPostDto(post);
     }
