@@ -9,6 +9,16 @@
 
 <body>
 <div layout:fragment="content">
+
+	<style>
+		.product-category::before {
+			display: inline-block;
+			margin: 0px 4px;
+			color: rgb(172, 172, 172);
+			content: ">";
+		}
+	</style>
+
 	<div class="hero">
 		<div class="container">
 			<div class="align-items-center">
@@ -197,7 +207,7 @@
 						<div class = "row product-card"  th:each=" product : ${productList}">
 							<a class="col-sm-4"  th:href="@{/product/user/low/}+${product.comparisonNo}"><img style="width: 100%; height: 200px; object-fit: contain; margin-top: 15px;" th:src="${product.productImages[0].saveImgUrl}"/></a>
 							<div class="col-sm-8" style="position: relative;display: table-cell;padding: 4px 18px 0 21px; vertical-align: top;">
-								<div class="mt-4">
+								<div class="mt-4 ">
 									<div style="overflow: hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;word-break:break-all;overflow-wrap:break-word;max-height: 40px;line-height: 20px;">
 										<a th:href="@{/product/user/low/}+${product.comparisonNo}" style="font-weight: 700;color: black;word-break: break-all" th:text="${product.comparisonName}">상품명</a>
 									</div><!-- 상품명 -->
@@ -295,8 +305,6 @@
 
 	</script>
 
-
 </div>
 </body>
-
 </html>
