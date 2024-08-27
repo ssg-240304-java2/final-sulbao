@@ -114,4 +114,15 @@ public class CartService {
     public void updateTotalPriceByCartNo(Long cartCode, int totalPirce) {
         cartRepository.updateTotalPriceByCartNo(cartCode, totalPirce);
     }
+
+    public int findCartCountByUserId(String userId) {
+        return cartRepository.findCartCountByUserId(userId);
+    }
+
+    public List<CartDTO> findCartByCartCodes(List<Long> orderCodeLists) {
+        List<Carts> orders = cartRepository.findByCartCodesIn(orderCodeLists);
+                return orders.stream()
+                                .map(cart -> modelMapper.map(cart, CartDTO.class))
+                                .collect(Collectors.toList());
+    }
 }

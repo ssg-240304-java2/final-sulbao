@@ -125,30 +125,30 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <div class="hero hero-inner">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6 mx-auto text-center">
-                    <div class="intro-wrap">
-                        <h1 class="mb-0">Gift</h1>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<!--    <div class="hero hero-inner">-->
+<!--        <div class="container">-->
+<!--            <div class="row align-items-center">-->
+<!--                <div class="col-lg-6 mx-auto text-center">-->
+<!--                    <div class="intro-wrap">-->
+<!--                        <h1 class="mb-0">선물결제</h1>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
     <!--    여기부터 내용-->
     <section class="ftco-section">
-        <div class="container">
+        <div class="container" style="margin-top: 140px">
             <div class="row">
                 <div class="table-wrap">
                     <table class="table">
                         <thead class="thead-primary">
                         <tr>
                             <th style="width: 20%">&nbsp;</th>
-                            <th style="width: 35%">Product</th>
-                            <th style="width: 10%">Price</th>
-                            <th style="width: 15%">Quantity</th>
-                            <th style="width: 20%">Total</th>
+                            <th style="width: 35%">상품명</th>
+                            <th style="width: 10%">가격</th>
+                            <th style="width: 15%">수량</th>
+                            <th style="width: 20%">총 가격</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -191,9 +191,9 @@
                             });
                         });
                     </script>
-                    <h3>Email</h3>
+                    <h3>이메일</h3>
                     <hr>
-                    <span class="company-name">Enter the email address of the gift recipient</span>
+                    <span class="company-name">선물을 보낼 이메일 주소를 입력해 주세요.</span>
                     <br>
                     <br>
                     <input type="text" id="emailId" placeholder="이메일 입력">
@@ -210,16 +210,16 @@
                 </div>
                 <div class="total-section">
                     <div class="cart-total mb-3">
-                        <h3>Total Price</h3>
+                        <h3>결제예상 금액</h3>
                         <hr>
                         <p class="d-flex total-price" style="justify-content: space-between;">
-                            <span>Total Purchase Price</span>
+                            <span>결제 금액</span>
                             <span class="total-purchase-price" style="text-align: right" th:text="${totalPurchasePrice}"></span>
                         </p>
                     </div>
                     <br>
                         <div class="cart-buttons">
-                            <a class="btn btn-primary py-3 px-4">Payment</a>
+                            <a class="btn btn-primary py-3 px-4">결제하기</a>
                         </div>
                     <br>
                 </div>

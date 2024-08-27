@@ -9,6 +9,16 @@
 
 <body>
 <div layout:fragment="content">
+
+	<style>
+		.product-category::before {
+			display: inline-block;
+			margin: 0px 4px;
+			color: rgb(172, 172, 172);
+			content: ">";
+		}
+	</style>
+
 	<div class="hero">
 		<div class="container">
 			<div class="align-items-center">
@@ -179,38 +189,31 @@
 				<div class="shopping-block col-lg-8">
 					<div class="caption">
 						<p class="main-h3">쇼핑하기 🛍</p>
-						<a class="more" href="#">더보기</a>
-					</div>
-					<div class="tag-container mb-2">
-						<span class="tag">
-							<a href="#" class="active">#전체</a>
-							<a href="#">#핫이슈</a>
-							<a href="#">#막믈리에</a>
-							<a href="#">#페어링</a>
-							<a href="#">#추석선물추천</a>
-							<a href="#">#오늘의한잔</a>
-							<a href="#">#전통주린이</a>
-							<a href="#">#양조장리뷰</a>
-						</span>
+						<a class="more" href="/product/user/list">더보기</a>
 					</div>
 					<div class="product-container">
-						<div class = "product-card">
-							<img style="width: 100%; height: 200px; object-fit: contain; margin-left: -240px; margin-top: 15px;" src="/user/images/mainpage/profile-02.jpg"/>
-						</div>
-						<div class = "product-card">
-							<img style="width: 100%; height: 200px; object-fit: contain; margin-left: -240px; margin-top: 15px;" src="/user/images/mainpage/profile-02.jpg"/>
-						</div>
-						<div class = "product-card">
-							<img style="width: 100%; height: 200px; object-fit: contain; margin-left: -240px; margin-top: 15px;" src="/user/images/mainpage/profile-02.jpg"/>
-						</div>
-						<div class = "product-card">
-							<img style="width: 100%; height: 200px; object-fit: contain; margin-left: -240px; margin-top: 15px;" src="/user/images/mainpage/profile-02.jpg"/>
-						</div>
-						<div class = "product-card">
-							<img style="width: 100%; height: 200px; object-fit: contain; margin-left: -240px; margin-top: 15px;" src="/user/images/mainpage/profile-02.jpg"/>
-						</div>
-						<div class = "product-card">
-							<img style="width: 100%; height: 200px; object-fit: contain; margin-left: -240px; margin-top: 15px;" src="/user/images/mainpage/profile-02.jpg"/>
+						<div class="row row-cols-1 row-cols-md-3 g-4">
+							<div class="col mb-5" th:each="product : ${productList}">
+								<a th:href="@{/product/user/low/}+${product.comparisonNo}" style="text-decoration: none; color: black;">
+									<div class="card h-100">
+										<img th:src="${product.productImages[0].saveImgUrl}" class="card-img-top" alt="상품이미지">
+										<div class="card-body">
+											<h6 class="card-title" th:text="${product.comparisonName}">상품명</h6>
+											<p>
+												<strong style="display: inline-block;margin-right: 6px; font-size: 14px; font-weight: 700; line-height: 25px; color: rgb(212, 0, 34); vertical-align: top;">
+                                        <span>
+                                          <span style="padding-right:4px;">최저</span>
+                                          <span style="margin-right: 4px;" th:text="|${#numbers.formatInteger(product.minPrice, 3, 'COMMA')}원|">
+                                            4,100원 <!-- 가격 -->
+                                          </span>
+                                        </span>
+												</strong>
+											</p>
+											<p class="card-text" th:text="${product.comparisonCategory}">상품 내용</p>
+										</div>
+									</div>
+								</a>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -252,9 +255,7 @@
 			</div>
 		</div>
 	</div>
-
-
-
+	</div>
 
 	<script>
 		$(function() {
@@ -292,5 +293,4 @@
 
 </div>
 </body>
-
 </html>

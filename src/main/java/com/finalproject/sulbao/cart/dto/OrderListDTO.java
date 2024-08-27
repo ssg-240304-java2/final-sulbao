@@ -10,6 +10,7 @@ import java.time.LocalDate;
 @Setter
 @ToString
 public class OrderListDTO {
+    private Long orderCode;
     private String picture;
     private String company;
     private String name;

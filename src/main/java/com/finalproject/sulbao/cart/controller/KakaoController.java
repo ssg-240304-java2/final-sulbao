@@ -10,6 +10,8 @@ import com.finalproject.sulbao.cart.service.OrderService;
 import com.finalproject.sulbao.cart.session.SessionUtils;
 import com.finalproject.sulbao.login.model.dto.EmailMessage;
 import com.finalproject.sulbao.login.model.service.EmailService;
+import com.finalproject.sulbao.login.model.service.LoginService;
+import com.finalproject.sulbao.product.service.ProductService;
 import groovy.util.logging.Slf4j;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -39,16 +41,20 @@ public class KakaoController {
     private final CartService cartService;
     private final EmailService emailService;
     private final SessionHandler sessionHandler;
+    private final ProductService productService;
+    private final LoginService loginService;
 
 
     @Autowired
-        public KakaoController(KakaoPayService kakaoPayService,OrderService orderService, OrderItemService orderItemService, CartService cartService, EmailService emailService, SessionHandler sessionHandler) {
+        public KakaoController(KakaoPayService kakaoPayService, OrderService orderService, OrderItemService orderItemService, CartService cartService, EmailService emailService, SessionHandler sessionHandler, ProductService productService, LoginService loginService) {
         this.kakaoPayService = kakaoPayService;
         this.orderService = orderService;
         this.orderItemService = orderItemService;
         this.cartService = cartService;
         this.emailService = emailService;
         this.sessionHandler = sessionHandler;
+        this.productService = productService;
+        this.loginService = loginService;
     }
 
     @PostMapping("/kakaopay")
@@ -133,7 +139,7 @@ public class KakaoController {
         int len = orderCodeList.size();
         System.out.println("len = " + len);
         System.out.println("orderCodeList = " + orderCodeList);
-
+        List<Long> orderCodeLists = (List<Long>) session.getAttribute("orderCodeList");
 
 
         OrderDTO orderDTO = new OrderDTO();
@@ -148,7 +154,9 @@ public class KakaoController {
                     .to(email)
                     .subject("[술기로운한잔] 선물하기 주소 입력")
                     .build();
-            String code = emailService.presentSendMail(emailMessage, orderCodeList.get(0), "present-email");
+            List<CartDTO> cartLists = cartService.findCartByCartCodes(orderCodeLists);
+            String nickname = loginService.findMemberByUserId(cartLists.get(0).getUserId()).getProfileName();
+            String code = emailService.presentSendMail(emailMessage, cartLists, nickname, "present-email");
             orderDTO.setToken(code);
         }
         LocalDate currentDate = LocalDate.now();
@@ -176,10 +184,16 @@ public class KakaoController {
             Long orderPk = orderService.saveOrder(orderDTO);
             System.out.println(orderPk);
 
+
+
             cartService.updateIsOrder(cartDTO.getCartCode());
             cartService.updateToken(cartDTO.getCartCode(),orderDTO.getToken());
+
+            productService.updateProductStock(productNo, amount);
         }
 
+        int cartList = cartService.findCartCountByUserId(userId);
+        session.setAttribute("cartList", cartList);
 
         return "cart/ordercomplete";
     }

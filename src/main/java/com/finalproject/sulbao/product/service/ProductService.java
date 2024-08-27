@@ -218,9 +218,15 @@ public class ProductService {
         cartRepository.save(carts);
     }
 
-    public List<ProductComparisonDTO> findByComparisonList() {
+    public List<ProductComparisonDTO> findByComparisonList(String category) {
 
-        List<ProductComparison> comparisonList = productComparisonRepository.findAllByComparison();
+        List<ProductComparison> comparisonList = new ArrayList<>();
+
+        if(category == null || category.isBlank()){
+            comparisonList = productComparisonRepository.findAllByComparison();
+        }else{
+            comparisonList = productComparisonRepository.findByComparisonCategory(category);
+        }
         log.info("Service comparisonList ============== {}",comparisonList.toString());
 
         List<ProductComparisonDTO> productComparisonList = new ArrayList<>();
@@ -242,12 +248,94 @@ public class ProductService {
     }
 
     //최저가 상품 정보
-    public List<ProductDTO> findByComparisonNo(Long comparisonNo) {
+    public List<ProductDTO> findByProductPriceToComparisonNo(Long comparisonNo) {
 
         List<Product> productList = productRepository.findByComparison_comparisonNoOrderByProductPriceAsc(comparisonNo);
 
         return productList.stream()
                 .map(product -> new ProductDTO().toDTO(product))
                 .collect(Collectors.toList());
+    }
+
+    public ProductComparisonDTO findByComparisonNo(Long comparisonNo) {
+
+        // 최저가 비교 상품 정보 취득
+        ProductComparison productComparison = productComparisonRepository.findById(comparisonNo).get();
+
+        // 최저 금액 정보 취득
+        Integer minPrice = productRepository.findByMinProductPrice(productComparison.getComparisonNo());
+
+        ProductComparisonDTO productComparisonDTO = new ProductComparisonDTO();
+        productComparisonDTO.setComparisonNo(productComparison.getComparisonNo());
+        productComparisonDTO.setComparisonName(productComparison.getComparisonName());
+        productComparisonDTO.setComparisonDescription(productComparison.getComparisonDescription());
+        productComparisonDTO.setComparisonCategory(productComparison.getComparisonCategory());
+        productComparisonDTO.setProductImages(productComparison.getComparisonImages());
+        productComparisonDTO.setMinPrice(minPrice);
+
+        return productComparisonDTO;
+
+    }
+
+    public List<ProductComparisonDTO> findByProductComparsionOrderByDesc() {
+
+        List<ProductComparison> comparisonList = productComparisonRepository.findAllByComparisonOrderByCreateAtDesc();
+        log.info("최근 등록된 최저가 비교 상품   comparisonList ============== {}",comparisonList.toString());
+
+        List<ProductComparisonDTO> productComparisonList = new ArrayList<>();
+
+        for (ProductComparison comparison : comparisonList) {
+            Integer minPrice = productRepository.findByMinProductPrice(comparison.getComparisonNo());
+            ProductComparisonDTO productComparisonDTO = ProductComparisonDTO.builder()
+                    .comparisonNo(comparison.getComparisonNo())
+                    .comparisonName(comparison.getComparisonName())
+                    .comparisonDescription(comparison.getComparisonDescription())
+                    .comparisonCategory(comparison.getComparisonCategory())
+                    .minPrice(minPrice)
+                    .productImages(comparison.getComparisonImages())
+                    .build();
+            productComparisonList.add(productComparisonDTO);
+        }
+
+        return productComparisonList;
+
+    }
+
+    public List<ProductComparisonDTO> findByProductKeyword(String keyword, int limit) {
+
+        List<Long> productComparisonNoList = productRepository.findByProductComparisonKeyword(keyword);
+        log.info("ProductComparisonNoList ============== {}",productComparisonNoList.toString());
+        List<ProductComparison> productList = new ArrayList<>();
+        if(limit == 0){
+            productList = productRepository.findByProductComparisonInfoAll(productComparisonNoList);
+        }else{
+            productList = productRepository.findByProductComparisonInfo(productComparisonNoList,limit);
+        }
+        log.info("productList ============== {}",productList.toString());
+
+        List<ProductComparisonDTO> productComparisonList = new ArrayList<>();
+        for (ProductComparison comparison : productList) {
+            Integer minPrice = productRepository.findByMinProductPrice(comparison.getComparisonNo());
+            ProductComparisonDTO productComparisonDTO = ProductComparisonDTO.builder()
+                    .comparisonNo(comparison.getComparisonNo())
+                    .comparisonName(comparison.getComparisonName())
+                    .comparisonDescription(comparison.getComparisonDescription())
+                    .comparisonCategory(comparison.getComparisonCategory())
+                    .minPrice(minPrice)
+                    .productImages(comparison.getComparisonImages())
+                    .build();
+            productComparisonList.add(productComparisonDTO);
+        }
+        return productComparisonList;
+    }
+
+    @Transactional
+    public void updateProductStock(Long productNo, int amount) {
+        productRepository.updateProductStock(productNo, amount);
+    }
+
+    @Transactional
+    public void updateProductRefund(Integer integer, Long aLong) {
+        productRepository.updateProductRefund(integer, aLong);
     }
 }

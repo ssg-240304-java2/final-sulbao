@@ -11,4 +11,10 @@ public interface ProductComparisonRepository extends JpaRepository<ProductCompar
 
     @Query(value = "SELECT c FROM ProductComparison c WHERE c.comparisonNo IN (SELECT p.comparison.comparisonNo FROM Product p GROUP BY p.comparison.comparisonNo HAVING COUNT(p.comparison.comparisonNo) > 0)")
     List<ProductComparison> findAllByComparison();
+
+    @Query(value = "SELECT c FROM ProductComparison c WHERE c.comparisonNo IN (SELECT p.comparison.comparisonNo FROM Product p GROUP BY p.comparison.comparisonNo HAVING COUNT(p.comparison.comparisonNo) > 0) order by c.createdAt desc limit 6")
+    List<ProductComparison> findAllByComparisonOrderByCreateAtDesc();
+
+    @Query(value = "SELECT c FROM ProductComparison c WHERE c.comparisonNo IN (SELECT p.comparison.comparisonNo FROM Product p GROUP BY p.comparison.comparisonNo HAVING COUNT(p.comparison.comparisonNo) > 0) AND c.comparisonCategory =:category")
+    List<ProductComparison> findByComparisonCategory(String category);
 }

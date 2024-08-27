@@ -37,4 +37,11 @@ public interface CartRepository extends JpaRepository<Carts, Integer> {
     @Modifying
     @Query(value = "update Carts k set k.totalPrice = :totalPrice where k.cartCode = :cartCode")
     void updateTotalPriceByCartNo(Long cartCode, int totalPrice);
+
+    @Query(value = "select count(k) from Carts k where k.userId= :userId and k.isOrder = false ")
+    int findCartCountByUserId(String userId);
+
+
+    @Query(value = "select C from Carts C where C.cartCode In (:orderCodeLists)")
+    List<Carts> findByCartCodesIn(List<Long> orderCodeLists);
 }
