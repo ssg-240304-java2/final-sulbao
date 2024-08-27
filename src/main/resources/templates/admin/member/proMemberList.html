@@ -19,7 +19,7 @@
 
                     <div class="card-body">
                         <div class="mr-3 mb-4">
-                            <form action="/product/search" method="get">
+                            <form action="/member/proSearch" method="get">
                                 <table class="table table-bordered">
                                 <tr>
                                     <tr>
@@ -40,15 +40,15 @@
                                     <th>승인상태</th>
                                     <td>
                                         <div class="custom-control custom-radio d-inline-block mr-3">
-                                            <input type="radio" id="statusAll" name="statusAll" value="all" class="custom-control-input" checked>
+                                            <input type="radio" id="statusAll" name="statusAll" value="" class="custom-control-input" checked>
                                             <label class="custom-control-label" for="statusAll">전체</label>
                                         </div>
                                         <div class="custom-control custom-radio d-inline-block mr-3">
-                                            <input type="radio" id="wait" name="wait" value="wait" class="custom-control-input">
+                                            <input type="radio" id="wait" name="statusAll" value="wait" class="custom-control-input">
                                             <label class="custom-control-label" for="wait">대기중</label>
                                         </div>
                                         <div class="custom-control custom-radio d-inline-block mr-3">
-                                            <input type="radio" id="approve" name="approve" value="approve" class="custom-control-input" >
+                                            <input type="radio" id="approve" name="statusAll" value="approve" class="custom-control-input" >
                                             <label class="custom-control-label" for="approve">승인함</label>
                                         </div>
                                     </td>
@@ -150,8 +150,8 @@
                                         "type": "pro",
                                     },
                                     type: "POST",
-                                    success: function(data){
-                                        if(data){
+                                    success: function(result){
+                                        if(result){
                                             alert("전문가 승인 메일이 전송되었습니다.");
                                         }
                                     },error: function (error){

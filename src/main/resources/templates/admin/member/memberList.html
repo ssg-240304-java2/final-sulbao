@@ -19,7 +19,7 @@
 
                     <div class="card-body">
                         <div class="mr-3 mb-4">
-                            <form action="/product/search" method="get">
+                            <form action="/member/memberSearch" method="get">
                                 <table class="table table-bordered">
                                 <tr>
                                     <tr>
@@ -30,7 +30,6 @@
                                                     <option value="userId">아이디</option>
                                                     <option value="name">프로필명</option>
                                                     <option value="email">이메일</option>
-                                                    <option value="number">사업자번호</option>
                                                 </select>
                                                 <input class="form-control col-4" name="search">
                                             </div>
@@ -42,23 +41,23 @@
                                     </th>
                                     <td colspan="3">
                                         <div class="custom-control custom-radio d-inline-block mr-3">
-                                            <input type="radio" class="custom-control-input" id="searchAll" name="productCategory" value="" checked>
+                                            <input type="radio" class="custom-control-input" id="searchAll" name="roleCategory" value="" checked>
                                             <label class="custom-control-label" for="searchAll">전체</label>
                                         </div>
                                         <div class="custom-control custom-radio d-inline-block mr-3">
-                                            <input type="radio" class="custom-control-input" id="customCheck1" name="productCategory" value="일반">
+                                            <input type="radio" class="custom-control-input" id="customCheck1" name="roleCategory" value="일반">
                                             <label class="custom-control-label" for="customCheck1">일반</label>
                                         </div>
                                         <div class="custom-control custom-radio d-inline-block mr-3">
-                                            <input type="radio" class="custom-control-input" id="customCheck2" name="productCategory" value="전문가">
+                                            <input type="radio" class="custom-control-input" id="customCheck2" name="roleCategory" value="전문가">
                                             <label class="custom-control-label" for="customCheck2">전문가</label>
                                         </div>
                                         <div class="custom-control custom-radio d-inline-block mr-3">
-                                            <input type="radio" class="custom-control-input" id="customCheck3" name="productCategory" value="전문가">
-                                            <label class="custom-control-label" for="customCheck3">관리자</label>
+                                            <input type="radio" class="custom-control-input" id="customCheck3" name="roleCategory" value="판매자">
+                                            <label class="custom-control-label" for="customCheck3">판매자</label>
                                         </div>
                                         <div class="custom-control custom-radio d-inline-block mr-3">
-                                            <input type="radio" class="custom-control-input" id="customCheck4" name="productCategory" value="전문가">
+                                            <input type="radio" class="custom-control-input" id="customCheck4" name="roleCategory" value="전문가">
                                             <label class="custom-control-label" for="customCheck4">관리자</label>
                                         </div>
                                     </td>
@@ -71,11 +70,11 @@
                                             <label class="custom-control-label" for="availableYn">전체</label>
                                         </div>
                                         <div class="custom-control custom-radio d-inline-block mr-3">
-                                            <input type="radio" id="availableY" name="availableY" value="Y" class="custom-control-input">
+                                            <input type="radio" id="availableY" name="availableYn" value="true" class="custom-control-input">
                                             <label class="custom-control-label" for="availableY">활성</label>
                                         </div>
                                         <div class="custom-control custom-radio d-inline-block mr-3">
-                                            <input type="radio" id="availableN" name="availableN" value="N" class="custom-control-input">
+                                            <input type="radio" id="availableN" name="availableYn" value="false" class="custom-control-input">
                                             <label class="custom-control-label" for="availableN">비활성</label>
                                         </div>
                                     </td>

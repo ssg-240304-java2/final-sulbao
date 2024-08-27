@@ -77,8 +77,10 @@ public class EmailController {
     @ResponseBody
     public Boolean sendApproveMail(String memberList, String type, Model model) {
 
+        boolean result = false;
+
         if(memberList == null || memberList.isEmpty()){
-            return false;
+            return result;
         }
 
         String[] memberNoArray = memberList.split(",");
@@ -94,6 +96,7 @@ public class EmailController {
                         .build();
 
                 emailService.sendApproveMail(emailMessage, "admin/member/approvePro-email");
+                result = true;
             } else if (type.equals("seller")) {
 
                 EmailMessage emailMessage = EmailMessage.builder()
@@ -102,8 +105,10 @@ public class EmailController {
                         .build();
 
                 emailService.sendApproveMail(emailMessage, "admin/member/approveSeller-email");
+                result = true;
+
             }
       }
-        return true;
+        return result;
     }
 }
