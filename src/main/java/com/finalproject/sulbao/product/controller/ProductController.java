@@ -1,11 +1,14 @@
 package com.finalproject.sulbao.product.controller;
 
+import com.finalproject.sulbao.board.common.SessionHandler;
+import com.finalproject.sulbao.login.model.entity.RoleType;
 import com.finalproject.sulbao.product.model.dto.ProductComparisonDTO;
 import com.finalproject.sulbao.product.model.dto.ProductDTO;
 import com.finalproject.sulbao.product.model.entity.ProductCategory;
 import com.finalproject.sulbao.product.service.ProductService;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,21 +21,27 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
+    private final SessionHandler sessionHandler;
 
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, SessionHandler sessionHandler) {
         this.productService = productService;
+        this.sessionHandler = sessionHandler;
     }
 
     //목록화면
     @GetMapping("/list")
-    public String productList(Model model, HttpSession session) {
+    public String productList(Model model, Authentication authentication) {
 
-        if(session.getAttribute("userNo") == null){
+        if(!sessionHandler.isLogin(authentication)){
             return "redirect:/login";
         }
 
+        if(!RoleType.MEMBER.name().equals(sessionHandler.getUser(authentication).getRoleType())){
+            return "redirect:/";
+        }
+
         ProductDTO productDTO = new ProductDTO();
-        productDTO.setUserNo((Long) session.getAttribute("userNo"));
+        productDTO.setUserNo(sessionHandler.getUser(authentication).getId());
         List<ProductDTO> productList = productService.findByUserNo(productDTO);
 
         model.addAttribute("menu","product");
@@ -44,10 +53,14 @@ public class ProductController {
 
     // 관리자 페이지 조회
     @GetMapping("/search")
-    public String productSearch(Model model, @ModelAttribute ProductDTO productDTO, HttpSession session) {
+    public String productSearch(Model model, Authentication authentication, @ModelAttribute ProductDTO productDTO, HttpSession session) {
 
-        if(session.getAttribute("userNo") == null){
+        if(!sessionHandler.isLogin(authentication)){
             return "redirect:/login";
+        }
+
+        if(!RoleType.MEMBER.name().equals(sessionHandler.getUser(authentication).getRoleType())){
+            return "redirect:/";
         }
 
         productDTO.setUserNo((Long) session.getAttribute("userNo"));
@@ -61,10 +74,14 @@ public class ProductController {
 
     //등록화면으로 이동
     @GetMapping("/detail")
-    public String productRegist(Model model, HttpSession session) {
+    public String productRegist(Model model, Authentication authentication, HttpSession session) {
 
-        if(session.getAttribute("userNo") == null){
+        if(!sessionHandler.isLogin(authentication)){
             return "redirect:/login";
+        }
+
+        if(!RoleType.MEMBER.name().equals(sessionHandler.getUser(authentication).getRoleType())){
+            return "redirect:/";
         }
 
         List<ProductComparisonDTO> productComparisonList = productService.findByComparison();
@@ -78,12 +95,15 @@ public class ProductController {
 
     //수정화면으로 이동
     @GetMapping("/update/{productNo}")
-    public String productUpdate(Model model,@PathVariable(required = false,name = "productNo") Long productNo, HttpSession session) {
+    public String productUpdate(Model model,Authentication authentication,@PathVariable(required = false,name = "productNo") Long productNo, HttpSession session) {
 
-        if(session.getAttribute("userNo") == null){
+        if(!sessionHandler.isLogin(authentication)){
             return "redirect:/login";
         }
 
+        if(!RoleType.MEMBER.name().equals(sessionHandler.getUser(authentication).getRoleType())){
+            return "redirect:/";
+        }
         List<ProductComparisonDTO> productComparisonList = productService.findByComparison();
         model.addAttribute("productComparisonList", productComparisonList);
 
@@ -95,11 +115,15 @@ public class ProductController {
 
     //상품등록
     @PostMapping("/regist")
-    public String saveProduct(@ModelAttribute ProductDTO productDTO, HttpSession session) {
+    public String saveProduct(@ModelAttribute ProductDTO productDTO, Authentication authentication,HttpSession session) {
 
         log.info("productController saveProduct : {}", productDTO);
-        if(session.getAttribute("userNo") == null){
+        if(!sessionHandler.isLogin(authentication)){
             return "redirect:/login";
+        }
+
+        if(!RoleType.MEMBER.name().equals(sessionHandler.getUser(authentication).getRoleType())){
+            return "redirect:/";
         }
         productDTO.setUserNo((Long) session.getAttribute("userNo"));
         // 저장
@@ -109,10 +133,14 @@ public class ProductController {
 
     //상품수정
     @PostMapping("/update")
-    public String updateProduct(@ModelAttribute ProductDTO productDTO, HttpSession session) {
+    public String updateProduct(@ModelAttribute ProductDTO productDTO, Authentication authentication, HttpSession session) {
 
-        if(session.getAttribute("userNo") == null){
+        if(!sessionHandler.isLogin(authentication)){
             return "redirect:/login";
+        }
+
+        if(!RoleType.MEMBER.name().equals(sessionHandler.getUser(authentication).getRoleType())){
+            return "redirect:/";
         }
         productDTO.setUserNo((Long) session.getAttribute("userNo"));
         productService.updateProduct(productDTO);
@@ -123,9 +151,13 @@ public class ProductController {
     //상품삭제
     @DeleteMapping("/delete")
     @ResponseBody
-    public String deleteProduct(String productNoList, HttpSession session) {
-        if(session.getAttribute("userNo") == null){
+    public String deleteProduct(String productNoList, Authentication authentication) {
+        if(!sessionHandler.isLogin(authentication)){
             return "redirect:/login";
+        }
+
+        if(!RoleType.MEMBER.name().equals(sessionHandler.getUser(authentication).getRoleType())){
+            return "redirect:/";
         }
         productService.delete(productNoList);
         return "success";
@@ -134,10 +166,15 @@ public class ProductController {
     //상품상태변경
     @PutMapping("/status")
     @ResponseBody
-    public String updateStatus(String productNoList, String type, String status, HttpSession session) {
-        if(session.getAttribute("userNo") == null){
+    public String updateStatus(String productNoList, Authentication authentication, String type, String status, HttpSession session) {
+        if(!sessionHandler.isLogin(authentication)){
             return "redirect:/login";
         }
+
+        if(!RoleType.MEMBER.name().equals(sessionHandler.getUser(authentication).getRoleType())){
+            return "redirect:/";
+        }
+
         if(productNoList == null || productNoList.isEmpty()){
             return "fail";
         }
