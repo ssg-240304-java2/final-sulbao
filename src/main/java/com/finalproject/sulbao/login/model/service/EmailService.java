@@ -52,7 +52,9 @@ public class EmailService {
     // thymeleaf를 통한 html 적용
     public String setContext(String code, String type) {
         Context context = new Context();
+        String photo = "https://kr.object.ncloudstorage.com/sulbao-file/main/sulbao-blue.png";
         context.setVariable("code", code);
+        context.setVariable("photo", photo);
         return templateEngine.process(type, context);
     }
 
@@ -72,7 +74,7 @@ public class EmailService {
 
 //        String link = "http://localhost:8080/validateOrder?token=" + token;
         String link = "https://hansool.shop/validateOrder?token=" + token;
-
+        String photo = "https://kr.object.ncloudstorage.com/sulbao-file/main/sulbao-blue.png";
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
         try {
@@ -89,6 +91,7 @@ public class EmailService {
             context.setVariable("nickname", nickname);
             context.setVariable("cartLists", cartLists);
             context.setVariable("link", link);
+            context.setVariable("photo", photo);
             // Thymeleaf 템플릿 처리
             String htmlContent = templateEngine.process("present-email", context);
             mimeMessageHelper.setText(htmlContent, true); // 메일 본문 내용, HTML 여부
