@@ -2,9 +2,6 @@ spring:
   application:
     name: sulbao
 
-  profiles:
-    active: secret-local
-
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${{ secrets.DB_HOST }}
