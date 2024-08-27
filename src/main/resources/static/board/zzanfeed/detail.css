@@ -45,16 +45,24 @@
     margin-right: 10px;
 }
 
-.post-meta .username {
+.username-and-date {
     flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    margin-right: 10px;
+}
+
+.username {
     font-weight: bold;
     font-size: 1.05rem;
 }
 
-.post-meta .edit-buttons {
-    display: flex;
-    gap: 5px;
+.post-created-at {
+    font-size: 0.9rem;
+    color: #aaa;
+    margin-top: 5px;
 }
+
 
 .post-meta .edit-buttons button {
     background-color: #7E8EF1;
@@ -250,17 +258,13 @@
     font-size: 0.8rem;
 }
 
-.comment .edit-buttons {
+.edit-buttons {
     display: flex;
     gap: 5px;
-    position: absolute;
-    right: 0;
-    top: 10px;
-    margin-top: 30px;
 }
 
-.comment .edit-buttons button {
-    background-color: #7E8EF1;
+.edit-buttons button {
+    background-color: #1A374D;
     color: #ffffff;
     border: none;
     border-radius: 5px;
@@ -271,7 +275,8 @@
     font-weight: bold;
 }
 
-.comment .edit-buttons button:hover {
+.edit-buttons button:hover {
+    background-color: #2A4D6E;
     transform: scale(1.05);
 }
 

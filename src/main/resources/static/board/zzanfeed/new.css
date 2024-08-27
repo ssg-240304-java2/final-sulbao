@@ -146,6 +146,22 @@
     align-items: flex-start;
 }
 
+.delete-button {
+    top: 10px;
+    right: 10px;
+    background: none;
+    color: red;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    margin-top: 1%;
+}
+
+.delete-button:hover {
+    color: darkred;
+}
+
 .add-wrapper {
     display: flex;
     justify-content: center;
