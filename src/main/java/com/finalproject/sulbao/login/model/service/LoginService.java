@@ -288,6 +288,7 @@ public class LoginService {
         return sellerList;
     }
 
+    // 회원 비활성화
     @Transactional
     public void updateEnable(String memberList, String type, String available) {
 
@@ -297,7 +298,7 @@ public class LoginService {
             Optional<Login> login = loginRepository.findByUserNo(userNo);
 
             if(login.isPresent()) {
-                if(type.equals("true")){
+                if(available.equals("true")){
                     login.get().setEnabled(true);
                 } else {
                     login.get().setEnabled(false);
@@ -306,6 +307,7 @@ public class LoginService {
         }
     }
 
+    // 전문가 승인
     @Transactional
     public void updateProStatus(String memberList, String type, String proStatus) {
 
@@ -317,13 +319,15 @@ public class LoginService {
             if(login.isPresent()) {
 
                 ProMemberInfo proMember = login.get().getMemberInfo().getProMemberInfo();
-                if(type.equals("approve")){
+                if(proStatus.equals("approve")){
                     proMember.setStatusApprove();
+                    login.get().setApprovePro();
                 }
             }
         }
     }
 
+    // 입점 승인
     @Transactional
     public void updateSellStatus(String sellerList, String type, String sellStatus) {
         String[] memberNoArray = sellerList.split(",");
@@ -334,7 +338,7 @@ public class LoginService {
             if(login.isPresent()) {
 
                 SellerInfo seller = login.get().getSellerInfo();
-                if(type.equals("approve")){
+                if(sellStatus.equals("approve")){
                     seller.setStatusApprove();
                 }
             }

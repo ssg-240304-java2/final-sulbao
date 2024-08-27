@@ -70,4 +70,8 @@ public class Login extends BaseEntity {
         this.sellerInfo = sellerInfo;
         this.isEnabled = true;
     }
+
+    public void setApprovePro() {
+        this.userRole = RoleType.PRO_MEMBER;
+    }
 }

@@ -140,13 +140,31 @@
                     type: "put",
                     success: function(data){
                         if(data === 'success'){
-                            alert("선택하신 입점사가 승인되었습니다.");
+                            alert("선택한 전문가 신청을 승인되었습니다.");
+
+                                // 승인 완료 이메일 전송
+                                $.ajax({
+                                    url: "/email/approve",
+                                    data: {
+                                        "memberList": check_arr,
+                                        "type": "pro",
+                                    },
+                                    type: "POST",
+                                    success: function(data){
+                                        if(data){
+                                            alert("전문가 승인 메일이 전송되었습니다.");
+                                        }
+                                    },error: function (error){
+                                        alert("메일 전송에 실패했습니다.");
+                                    }
+                                });
+
                             location.reload();
                         }else{
-                            alert("입점상태 변경에 실패했습니다.");
+                            alert("상태 변경에 실패했습니다.");
                         }
                     },error: function (error){
-                        alert("입점상태 변경에 실패했습니다.");
+                        alert("상태 변경에 실패했습니다.");
                     }
                 });
 

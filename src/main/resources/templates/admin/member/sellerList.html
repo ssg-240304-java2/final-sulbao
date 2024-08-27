@@ -141,6 +141,24 @@
                     success: function(data){
                         if(data === 'success'){
                             alert("선택하신 입점사가 승인되었습니다.");
+
+                            // 승인 완료 이메일 전송
+                            $.ajax({
+                                url: "/email/approve",
+                                data: {
+                                    "memberList": check_arr,
+                                    "type": "seller",
+                                },
+                                type: "POST",
+                                success: function(data){
+                                    if(data){
+                                        alert("입점 승인 메일이 전송되었습니다.");
+                                    }
+                                },error: function (error){
+                                    alert("메일 전송에 실패했습니다.");
+                                }
+                            });
+
                             location.reload();
                         }else{
                             alert("입점상태 변경에 실패했습니다.");

@@ -1,9 +1,12 @@
 package com.finalproject.sulbao.login.controller;
 
+import com.finalproject.sulbao.cart.dto.CartDTO;
 import com.finalproject.sulbao.login.model.dto.EmailConfirmDto;
 import com.finalproject.sulbao.login.model.dto.EmailMessage;
 import com.finalproject.sulbao.login.model.dto.EmailResponseDto;
 import com.finalproject.sulbao.login.model.entity.EmailVerify;
+import com.finalproject.sulbao.login.model.entity.Login;
+import com.finalproject.sulbao.login.model.repository.LoginRepository;
 import com.finalproject.sulbao.login.model.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +15,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,6 +25,8 @@ import java.util.Map;
 public class EmailController {
 
     private final EmailService emailService;
+    private final LoginRepository loginRepository;
+
 
     // 이메일 인증 코드 전송
     @PostMapping("/email")
@@ -62,6 +69,41 @@ public class EmailController {
             return false;
         }
         model.addAttribute("valid_confirmEmail", "true");
+        return true;
+    }
+
+    // 권한 승인 이메일
+    @PostMapping("/email/approve")
+    @ResponseBody
+    public Boolean sendApproveMail(String memberList, String type, Model model) {
+
+        if(memberList == null || memberList.isEmpty()){
+            return false;
+        }
+
+        String[] memberNoArray = memberList.split(",");
+
+        for(String userNo : memberNoArray) {
+            String email = loginRepository.findByUserNo(userNo).get().getEmail();
+
+            if (type.equals("pro")) {
+
+                EmailMessage emailMessage = EmailMessage.builder()
+                        .to(email)
+                        .subject("[술기로운한잔] 전문가 멤버십 계정 승인 안내")
+                        .build();
+
+                emailService.sendApproveMail(emailMessage, "admin/member/approvePro-email");
+            } else if (type.equals("seller")) {
+
+                EmailMessage emailMessage = EmailMessage.builder()
+                        .to(email)
+                        .subject("[술기로운한잔] 판매자 계정 승인 안내")
+                        .build();
+
+                emailService.sendApproveMail(emailMessage, "admin/member/approveSeller-email");
+            }
+      }
         return true;
     }
 }
