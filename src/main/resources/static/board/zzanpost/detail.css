@@ -4,21 +4,6 @@
     margin: 30px auto 0;
 }
 
-.hero {
-    background: #f8f9fa;
-    padding: 50px 0;
-}
-
-.hero h1 {
-    font-size: 2.5rem;
-}
-
-.hero p {
-    font-size: 1.25rem;
-    color: #6c757d;
-    margin-top: 30px;
-}
-
 .post-container {
     width: 60%;
     margin: 7% auto 0;
@@ -109,8 +94,8 @@
 }
 
 .thumbs-up {
-    width: 70px;
-    height: 70px;
+    font-size: 3.5rem;
+    margin-top: 40%;
 }
 
 .recommend-button img {

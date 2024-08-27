@@ -4,6 +4,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <title>전통술 최저가 비교 커뮤니티! 술기로운 한 잔</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="/board/zzanpost/detail.css" rel="stylesheet">
 </head>
 <body>
@@ -31,10 +32,8 @@
             <div class="recommendation-section">
                 <div class="recommend-container">
                     <button class="recommend-button">
-                        <img alt="thumbs up" class="thumbs-up" src="/board/image/thumbs-up.png"
-                             th:if="${!isPostLikedByUser}">
-                        <img alt="thumbs up" class="thumbs-up" src="/board/image/thumbs-up-colored.png"
-                             th:if="${isPostLikedByUser}">
+                        <i class="far fa-thumbs-up thumbs-up" th:if="${!isPostLikedByUser}"></i>
+                        <i class="fas fa-thumbs-up thumbs-up" th:if="${isPostLikedByUser}"></i>
                     </button>
                     <span class="recommend-count" th:text="${post.like}"></span>
                 </div>
