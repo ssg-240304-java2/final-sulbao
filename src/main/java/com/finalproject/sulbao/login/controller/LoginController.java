@@ -42,8 +42,8 @@ public class LoginController {
     public String redirect(HttpServletRequest request, @RequestParam String code, Model model) throws ParseException {
         System.out.println("code ======================= " + request.getParameter("code"));
         RestTemplate restTemplate = new RestTemplate();
-        String credentials = "JDJhJDA0JHpwblZnQmNOSjVJVHZjQ2pFSTZ3Q3VEN1g5dWRCbDZwM1FQb1VJ:NEdBU2xHaktYcUNXNVhx"; // hansool.shop  배포키
-//        String credentials = "JDJhJDA0JGkyLmt0MEFDNWoxZkRCWUcvVjJ6RS5zdWdwY1AyZnUxbGZscy4w:SHdHUVprLkgxYXVCQUh1";   // local 키
+//        String credentials = "JDJhJDA0JHpwblZnQmNOSjVJVHZjQ2pFSTZ3Q3VEN1g5dWRCbDZwM1FQb1VJ:NEdBU2xHaktYcUNXNVhx"; // hansool.shop  배포키
+        String credentials = "JDJhJDA0JGkyLmt0MEFDNWoxZkRCWUcvVjJ6RS5zdWdwY1AyZnUxbGZscy4w:SHdHUVprLkgxYXVCQUh1";   // local 키
         String encodedCredentials = new String(Base64.encodeBase64(credentials.getBytes()));
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -51,8 +51,8 @@ public class LoginController {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("code", code);
         params.add("grant_type", "authorization_code");
-        params.add("redirect_uri", "https://hansool.shop/signupAccess/");   // hansool.shop  배포키
-//        params.add("redirect_uri", "http://localhost:8080/signupAccess/");  // local 키
+//        params.add("redirect_uri", "https://hansool.shop/signupAccess/");   // hansool.shop  배포키
+        params.add("redirect_uri", "http://localhost:8080/signupAccess/");  // local 키
         HttpEntity<MultiValueMap<String, String>> requestParams = new HttpEntity<>(params, headers);
         ResponseEntity<?> response = restTemplate.postForEntity("https://bauth.bbaton.com/oauth/token", requestParams, String.class);
         String responseBody = (String) response.getBody();
@@ -109,6 +109,8 @@ public class LoginController {
     @PostMapping("/regist/member")
     public String registNewMember(@Valid @ModelAttribute("member") SignupMemberDto member, BindingResult bindingResult,
                                   HttpServletRequest httpServletRequest, Model model, RedirectAttributes redirectAttributes) {
+
+        log.info("member ============================= {}", member);
         try{
             HttpSession session = httpServletRequest.getSession(true);
             model.addAttribute("id", session.getAttribute("id"));

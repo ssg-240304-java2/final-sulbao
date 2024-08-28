@@ -3,6 +3,8 @@ package com.finalproject.sulbao.login.controller;
 import com.finalproject.sulbao.login.model.dto.MemberProfileDto;
 import com.finalproject.sulbao.login.model.dto.ProFormDto;
 import com.finalproject.sulbao.login.model.service.LoginService;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -133,5 +135,19 @@ public class MemberProfileController {
         service.deleteProForm(userId);
         redirectAttributes.addFlashAttribute("message", "전문가 신청이 취소되었습니다.");
         return "redirect:/mypage/proform";
+    }
+
+    // 회원 탈퇴
+    @PostMapping("/deleteAccount")
+    public void deleteAccount(RedirectAttributes redirectAttributes, HttpSession session, HttpServletRequest request){
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        service.deleteAccount(userId);
+        session.invalidate();
+
+        try {
+            request.logout(); // 로그아웃 처리
+        } catch (ServletException e) {
+            e.printStackTrace(); // 로그아웃 실패 처리
+        }
     }
 }
