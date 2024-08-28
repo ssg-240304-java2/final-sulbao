@@ -29,8 +29,8 @@ public interface LoginRepository extends JpaRepository<Login, Long> {
     @Query("SELECT u FROM Login u WHERE u.memberInfo.proMemberInfo.proStatus IN ('WAIT','APPROVE')")
     List<Login> findProMembers();
 
-    @Query("SELECT u FROM Login u WHERE u.userRole = 'ROLE_SELLER'")
-    List<Login> findSellerList();
+    @Query("SELECT u FROM Login u WHERE u.userRole = :role")
+    List<Login> findSellerList(RoleType role);
 
     @Query("SELECT u FROM Login u WHERE u.userNo = :userNo")
     Optional<Login> findByUserNo(String userNo);

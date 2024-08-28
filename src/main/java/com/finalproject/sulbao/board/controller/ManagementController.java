@@ -7,7 +7,6 @@ import com.finalproject.sulbao.board.dto.UserDto;
 import com.finalproject.sulbao.board.repository.PostRepository;
 import com.finalproject.sulbao.board.service.PostService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,7 +29,6 @@ public class ManagementController {
     private final PostService postService;
     private final PostRepository postRepository;
     private final SessionHandler sessionHandler;
-    private final DataSourceTransactionManagerAutoConfiguration dataSourceTransactionManagerAutoConfiguration;
 
     @GetMapping("/mypage/board")
     public String mypageBoard(
@@ -62,17 +60,12 @@ public class ManagementController {
         model.addAttribute("hasPreviousGroup", currentGroup > 0);
         model.addAttribute("hasNextGroup", endPage < totalPages);
         model.addAttribute("menu","board");
-
         return "board/user/list";
     }
 
     @GetMapping("/board/list")
     public String boardList(Model model) {
-//        List<PostDto> posts = postRepository.findAll().stream().map(PostDto::toPostDto).toList();
-
-        Pageable pageable = PageRequest.of(0,30);
-        List<PostDto> posts = postRepository.findAll(pageable).stream().map(PostDto::toPostDto).toList();
-
+        List<PostDto> posts = postRepository.findAll().stream().map(PostDto::toPostDto).toList();
         model.addAttribute("menu", "board");
         model.addAttribute("submenu", "list");
         model.addAttribute("posts", posts);

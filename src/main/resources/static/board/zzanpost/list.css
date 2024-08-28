@@ -23,7 +23,7 @@
 
 .post-item img {
     width: 100%;
-    height: auto;
+    height: 260px;
     max-width: 400px;
     max-height: 300px;
     object-fit: cover;

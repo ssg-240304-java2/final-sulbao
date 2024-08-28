@@ -44,4 +44,5 @@ public class PostSpecification {
         return (root, query, criteriaBuilder) ->
                 criteriaBuilder.between(root.get("createdAt"), startDate.atStartOfDay(), endDate.atTime(23, 59, 59));
     }
+
 }
