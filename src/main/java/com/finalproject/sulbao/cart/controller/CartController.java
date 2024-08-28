@@ -50,8 +50,6 @@ public class CartController {
         Login login1 = loginRepository.findById(userNo).orElseThrow();
         String userId1 = login1.getUserId();
 
-
-
         List<CartDTO> cartList = cartService.findCartByUserId(userId1);
         model.addAttribute("carts", cartList);
         return "cart/cart";
@@ -95,6 +93,11 @@ public class CartController {
     }
 
 
+    @GetMapping("/cart/order_form")
+    public String orderForm(){
+        return "redirect:/login";
+    }
+
     /***
      * 일반 주문 페이지로 이동 메소드
      * @param cartCodes
@@ -102,15 +105,13 @@ public class CartController {
      */
     @PostMapping("/cart/order_form")
     public String orderForm(@RequestParam("cartCodes") List<Long> cartCodes, Model model, HttpSession session, Authentication authentication) {
-        Long userNo = sessionHandler.getUserId(authentication);
-        Login login1 = loginRepository.findById(userNo).orElseThrow();
-        String userId1 = login1.getUserId();
-
+        System.out.println("이끄어");
         if(!sessionHandler.isLogin(authentication)){
             return "redirect:/login";
         }
-
-
+        Long userNo = sessionHandler.getUserId(authentication);
+        Login login1 = loginRepository.findById(userNo).orElseThrow();
+        String userId1 = login1.getUserId();
 
         if (cartCodes == null || cartCodes.isEmpty()) {
             throw new IllegalArgumentException("No products selected.");
@@ -125,6 +126,11 @@ public class CartController {
     }
 
 
+    @GetMapping("/cart/present_form")
+    public String presentForm(){
+        return "redirect:/login";
+    }
+
     /***
      * 선물하기 주문 페이지로 이동 메소드
      * @param cartCodes
@@ -133,20 +139,13 @@ public class CartController {
      */
     @PostMapping("/cart/present_form")
     public String presentForm(@RequestParam("cartCodes") List<Long> cartCodes, Model model, HttpSession session, Authentication authentication) {
-//        if(session.getAttribute("userNo") == null){
-//            return "redirect:/login";
-//        }
-
         Long userNo = sessionHandler.getUserId(authentication);
         Login login1 = loginRepository.findById(userNo).orElseThrow();
 
         String userId1 = login1.getUserId();
-
         if(!sessionHandler.isLogin(authentication)){
             return "redirect:/login";
         }
-
-
 
         if (cartCodes == null || cartCodes.isEmpty()) {
             throw new IllegalArgumentException("No products selected.");

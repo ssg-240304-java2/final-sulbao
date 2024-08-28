@@ -47,7 +47,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr style="display: none;">
                                     <th>카테고리</th>
                                     <td>
                                         <select class="form-control" name="productCategory" id="productCategory">
@@ -121,12 +121,12 @@
             function checkValidate(){
 
                 // 상품카테고리
-                const productCategory = $("#productCategory option:selected").val();
-                if(productCategory === ''){
-                    alert('상품카테고리를 선택해주세요.');
-                    $('#productCategory').focus();
-                    return false;
-                }
+                // const productCategory = $("#productCategory option:selected").val();
+                // if(productCategory === ''){
+                //     alert('상품카테고리를 선택해주세요.');
+                //     $('#productCategory').focus();
+                //     return false;
+                // }
                 //상품명
                 const productName = $('#productName').val();
                 if(productName === ''){

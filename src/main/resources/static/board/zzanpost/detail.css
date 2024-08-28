@@ -4,24 +4,9 @@
     margin: 30px auto 0;
 }
 
-.hero {
-    background: #f8f9fa;
-    padding: 50px 0;
-}
-
-.hero h1 {
-    font-size: 2.5rem;
-}
-
-.hero p {
-    font-size: 1.25rem;
-    color: #6c757d;
-    margin-top: 30px;
-}
-
 .post-container {
     width: 60%;
-    margin: 30px auto 0;
+    margin: 7% auto 0;
 }
 
 .post-title {
@@ -45,19 +30,31 @@
     margin-right: 10px;
 }
 
-.post-meta .username {
+.username-and-date {
     flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    margin-right: 10px;
+}
+
+.username {
     font-weight: bold;
     font-size: 1.05rem;
 }
 
-.post-meta .edit-buttons {
+.post-created-at {
+    font-size: 0.9rem;
+    color: #aaa;
+    margin-top: 5px;
+}
+
+.edit-buttons {
     display: flex;
     gap: 5px;
 }
 
-.post-meta .edit-buttons button {
-    background-color: #1A374D;
+.edit-buttons button {
+    background-color: #7E8EF1;
     color: #ffffff;
     border: none;
     border-radius: 5px;
@@ -97,8 +94,8 @@
 }
 
 .thumbs-up {
-    width: 70px;
-    height: 70px;
+    font-size: 3.5rem;
+    margin-top: 40%;
 }
 
 .recommend-button img {
@@ -144,7 +141,21 @@
     padding-top: 30px;
 }
 
+.comment-edit-input {
+    display: flex;
+    align-items: center;
+    margin-bottom: 40px;
+    padding-top: 30px;
+}
+
 .comment-input img {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.comment-edit-input img {
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -160,20 +171,28 @@
     margin-right: 1%;
 }
 
+.comment-edit-input input {
+    flex-grow: 1;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    height: 50px;
+    margin-right: 1%;
+}
+
 .comment-input button {
-    background-color: #1A374D;
+    background-color: #7E8EF1;
     color: #ffffff;
     border: none;
     border-radius: 5px;
     padding: 8px 16px;
-    /*font-size: 0.9rem;*/
     cursor: pointer;
     transition: background-color 0.3s, transform 0.2s;
     font-weight: bold;
 }
 
 .comment-input button:hover {
-    background-color: #2A4D6E;
+    background-color: #6D7BF7;
     transform: scale(1.05);
 }
 
@@ -212,6 +231,7 @@
 .comment-content .timestamp {
     color: #aaa;
     font-size: 0.8rem;
+    margin-top: 3%;
 }
 
 .comment .edit-buttons {
@@ -224,7 +244,7 @@
 }
 
 .comment .edit-buttons button {
-    background-color: #1A374D;
+    background-color: #7E8EF1;
     color: #ffffff;
     border: none;
     border-radius: 5px;
@@ -236,7 +256,7 @@
 }
 
 .comment .edit-buttons button:hover {
-    background-color: #2A4D6E;
+    background-color: #6D7BF7;
     transform: scale(1.05);
 }
 
@@ -261,7 +281,7 @@
 }
 
 .comment-edit-form button {
-    background-color: #1A374D;
+    background-color: #6D7BF7;
     color: #ffffff;
     border: none;
     border-radius: 5px;

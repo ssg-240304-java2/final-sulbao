@@ -343,13 +343,12 @@
                         </div>
                     </div>
                     <div class="profile-row">
-<!--                        <label for="date"><a href="#">탈퇴 하기 ></a></label>-->
+                        <a href="javascript:void(0);" id="delete" onclick="deleteAccount()">탈퇴 하기 ></a>
                     </div>
                     <button type="submit" class="save-button">저장</button>
                 </div>
             </form>
         </div>
-    </div>
     <script>
         $(document).ready(function () {
             $('#profile').on('submit', function (e) {
@@ -405,7 +404,27 @@
             });
         });
 
+
+        // 회원 탈퇴
+        function deleteAccount() {
+            var userResponse = confirm("회원 탈퇴하시겠습니까?");
+
+            if (userResponse) {
+                $.ajax({
+                    url: '/mypage/deleteAccount',
+                    type: 'POST',
+                    success: function(response) {
+                        alert('회원 탈퇴가 완료되었습니다.');
+                        window.location.reload();
+                    },
+                    error: function(error) {
+                        alert('오류가 발생했습니다. 다시 시도해 주세요.');
+                    }
+                });
+            }
+        }
+
     </script>
-    </div>
+</div>
 </body>
 </html>
