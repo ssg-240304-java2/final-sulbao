@@ -29,9 +29,10 @@ public class UserMagazineController {
         return "magazine/list";
     }
 
-    @GetMapping("/magazine/{magazineNo}")
+    @GetMapping("/magazine/user/{magazineNo}")
     public String hansoolList(Model model, @PathVariable int magazineNo){
 
+        log.info("magazineNo: {}", magazineNo);
         return "magazine/detail";
     }
 }
