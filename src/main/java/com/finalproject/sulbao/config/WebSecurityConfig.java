@@ -50,8 +50,8 @@ public class WebSecurityConfig {
 
         http.authorizeHttpRequests((authorizationManagerRequestMatcherRegistry -> {
             authorizationManagerRequestMatcherRegistry
-                    .requestMatchers("/signup", "/signupAccess/", "/signupAccess/", "/login", "/verifyagePage", "/signup-seller","/regist/**","/signupAccess/**").anonymous()
-                    .requestMatchers("/", "/index", "/board/**", "/payments/**", "/submitOrder", "/search","/zzanfeeds"
+                    .requestMatchers("/signup", "/signupAccess/", "/signupAccess/", "/login", "/verifyagePage", "/signup-seller","/regist/**","/signupAccess/**","/submitOrder/**","/validateOrder/**").anonymous()
+                    .requestMatchers("/", "/index", "/board/**", "/payments/**", "/search","/zzanfeeds"
                             ,"/zzanfeeds/more","/zzanfeeds/{postId}","/zzanposts","/zzanposts/more","/zzanposts/{postId}"
                             ,"/zzanposts/filter-contents","/product/user/**","product/search/**" ,"/magazine","/email/**", "/signupAccess/**","/magazine/user/**").permitAll()
                     .requestMatchers("/mypage/**","/orders/**","/myorder","/refund","/comments/**","/likes/**","/mypage/board","/zzanfeeds/**"
