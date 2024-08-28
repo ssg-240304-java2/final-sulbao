@@ -115,6 +115,7 @@ public class Post extends BaseEntity {
         } else {
             postImages.set(0, postImage);
         }
+        thumbnail = postImage.getFileName();
     }
 
     public void updateHit() {

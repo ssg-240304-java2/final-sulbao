@@ -52,7 +52,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     testImplementation 'io.projectreactor:reactor-test'
 
-
+    implementation 'io.github.vaneproject:badwordfiltering:1.0.0'
 }
 
 tasks.named('test') {
