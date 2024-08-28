@@ -50,12 +50,13 @@ public class WebSecurityConfig {
 
         http.authorizeHttpRequests((authorizationManagerRequestMatcherRegistry -> {
             authorizationManagerRequestMatcherRegistry
-                    .requestMatchers("/signup", "/signupAccess/", "/signupAccess/", "/login", "/verifyagePage", "/signup-seller","/regist/**","/signupAccess/**","/submitOrder/**","/validateOrder/**").anonymous()
-                    .requestMatchers("/", "/index", "/board/**", "/payments/**", "/search","/zzanfeeds"
+                    .requestMatchers("/signup", "/signupAccess/", "/signupAccess/", "/login", "/verifyagePage", "/signup-seller","/regist/**","/signupAccess/**","/submitOrder/**","/validateOrder/**", "/presentcomplete" ).anonymous()
+                    .requestMatchers("/", "/index", "/board/**", "/search","/zzanfeeds"
                             ,"/zzanfeeds/more","/zzanfeeds/{postId}","/zzanposts","/zzanposts/more","/zzanposts/{postId}"
                             ,"/zzanposts/filter-contents","/product/user/**","product/search/**" ,"/magazine","/email/**", "/signupAccess/**","/magazine/user/**").permitAll()
-                    .requestMatchers("/mypage/**","/orders/**","/myorder","/refund","/comments/**","/likes/**","/mypage/board","/zzanfeeds/**"
+                    .requestMatchers("/mypage/**","/comments/**","/likes/**","/mypage/board","/zzanfeeds/**"
                             ,"product/addCart","/review/**","/mypage/**").authenticated()
+                    .requestMatchers( "/orders/**","/payments/**","/myorder","/refund", "/ordercomplete").hasAnyRole("PRO_MEMBER", "MEMBER")
                     .requestMatchers("/orderlist","/searchorderlist","product/**","/magazine/**").hasAnyRole("ADMIN", "SELLER")
                     .requestMatchers("/admin/member/**").hasRole("ADMIN")
                     .requestMatchers("/changeStatus").hasRole("SELLER")

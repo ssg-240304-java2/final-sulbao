@@ -80,4 +80,7 @@ public interface LoginRepository extends JpaRepository<Login, Long> {
 
     @Query("SELECT u FROM Login u WHERE u.isEnabled = :availableYn")
     List<Login> findMemberByAvailable(Boolean availableYn);
+
+    @Query(value="SELECT k.profileName FROM Login u JOIN u.memberInfo k WHERE u.userId = :userId")
+    String findMemberByUserIds(String userId);
 }
