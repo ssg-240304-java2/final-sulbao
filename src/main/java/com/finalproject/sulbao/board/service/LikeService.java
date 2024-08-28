@@ -32,4 +32,5 @@ public class LikeService {
     public boolean isPostLikedByUser(Long postId, Long userId) {
         return likeRepository.findByPostIdAndUserId(postId, userId).isPresent();
     }
+
 }

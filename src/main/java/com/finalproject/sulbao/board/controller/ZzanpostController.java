@@ -136,10 +136,8 @@ public class ZzanpostController {
     public ResponseEntity<Map<String, Boolean>> filterContents(@RequestBody Map<String, String> requestBody) {
         String content = requestBody.get("content");
         boolean hasBadWords = contentFilter.check(content);
-
         Map<String, Boolean> response = new HashMap<>();
         response.put("hasBadWords", hasBadWords);
-
         return ResponseEntity.ok(response);
     }
 

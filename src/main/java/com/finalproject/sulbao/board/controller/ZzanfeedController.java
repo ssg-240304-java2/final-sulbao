@@ -4,7 +4,6 @@ import com.finalproject.sulbao.board.common.SessionHandler;
 import com.finalproject.sulbao.board.dto.*;
 import com.finalproject.sulbao.board.service.LikeService;
 import com.finalproject.sulbao.board.service.PostService;
-import com.vane.badwordfiltering.BadWordFiltering;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +28,6 @@ public class ZzanfeedController {
     private final PostService postService;
     private final SessionHandler sessionHandler;
     private final LikeService likeService;
-    private final BadWordFiltering contentFilter;
 
     @GetMapping("/new")
     public String newPost() {
@@ -109,6 +107,7 @@ public class ZzanfeedController {
         String[] texts = post.getContent().split("\\|");
         List<String> tags = post.getTags();
         List<Content> contents = new ArrayList<>();
+
         for (int i = 0; i < images.size(); i++) {
             contents.add(new Content(images.get(i).getFileName(), texts[i]));
         }

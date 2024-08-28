@@ -58,7 +58,7 @@
                 <a th:if="${!zzanfeeds.isEmpty()}" th:href="@{/zzanfeeds}" class="more-link">더보기</a>
             </div>
 
-            <div class="no-content" th:if="${zzanposts.isEmpty() && zzanfeeds.isEmpty()}">
+            <div class="no-content" th:if="${zzanfeeds.isEmpty()}">
                 <img src="https://kr.object.ncloudstorage.com/sulbao-file/no-content.gif" alt="No Content" class="no-content-image" />
                 <p class="no-content-text"><a th:href="@{/zzanfeeds}">짠피드 구경하러가기 >> </a></p>
             </div>
@@ -101,7 +101,7 @@
                 <a th:if="${!zzanposts.isEmpty()}" th:href="@{/zzanposts}" class="more-link">더보기</a>
             </div>
 
-            <div class="no-content" th:if="${zzanposts.isEmpty() && zzanfeeds.isEmpty()}">
+            <div class="no-content" th:if="${zzanposts.isEmpty()}">
                 <img src="https://kr.object.ncloudstorage.com/sulbao-file/no-content.gif" alt="No Content" class="no-content-image" />
                 <p class="no-content-text"><a th:href="@{/zzanposts}">술포스트 구경하러가기 >> </a></p>
             </div>

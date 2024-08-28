@@ -95,6 +95,7 @@ public class PostService {
         if (tag.isEmpty()) {
             return loadMorePosts(boardCategoryId, page);
         }
+
         BoardCategory boardCategory = boardCategoryRepository.findById(boardCategoryId).orElseThrow();
         int pageSize = (boardCategoryId.equals(ZZANPOST_ID) ? ZZANPOST_PAGE_SIZE : ZZANFEED_PAGE_SIZE);
         Pageable pageable = PageRequest.of(page, pageSize);
@@ -176,16 +177,15 @@ public class PostService {
 
     public List<String> findTopTags() {
         return topTagScheduler.getTopTagNames();
-//        return postRepository.findTopTags().stream().limit(15).toList();
     }
 
     public List<PostDto> findByCategoryAndKeyword(String keyword, Long boardCategoryId) {
         BoardCategory boardCategory = boardCategoryRepository.findById(boardCategoryId).orElseThrow();
+        List<Post> posts = postRepository.findByBoardCategoryAndKeyword(boardCategory, keyword);
+
         if (boardCategoryId.equals(ZZANFEED_ID)) {
-            List<Post> posts = postRepository.findByBoardCategoryAndKeyword(boardCategory, keyword);
             return posts.stream().limit(ZZANFEED_SEARCH_PAGE_SIZE).map(PostDto::toPostDto).toList();
         } else {
-            List<Post> posts = postRepository.findByBoardCategoryAndKeyword(boardCategory, keyword);
             return posts.stream().limit(ZZANPOST_SEARCH_PAGE_SIZE).map(PostDto::toPostDto).toList();
         }
     }

@@ -111,9 +111,6 @@
 
         document.addEventListener('DOMContentLoaded', function () {
             const recommendButton = document.querySelector('.recommend-button');
-            const recommendImg = document.querySelector('.recommend-button img');
-            // const defaultImageUrl = '/board/image/thumbs-up.png';
-            // const activeImageUrl = '/board/image/thumbs-up-colored.png';
             const recommendIcon = recommendButton.querySelector('i');
             let flag = [[${isPostLikedByUser}]];
 
@@ -134,7 +131,6 @@
                 updateLike(user, post);
 
                 setTimeout(() => {
-                    // recommendImg.src = (flag ? defaultImageUrl : activeImageUrl);
                     recommendIcon.classList.toggle('far', flag);
                     recommendIcon.classList.toggle('fas', !flag);
                     flag = !flag;
