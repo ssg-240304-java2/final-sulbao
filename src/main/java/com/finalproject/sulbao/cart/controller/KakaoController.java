@@ -155,7 +155,7 @@ public class KakaoController {
                     .subject("[술기로운한잔] 선물하기 주소 입력")
                     .build();
             List<CartDTO> cartLists = cartService.findCartByCartCodes(orderCodeLists);
-            String nickname = loginService.findMemberByUserId(cartLists.get(0).getUserId()).getProfileName();
+            String nickname = loginService.findMemberByUserIds(cartLists.get(0).getUserId());
             String code = emailService.presentSendMail(emailMessage, cartLists, nickname, "present-email");
             orderDTO.setToken(code);
         }

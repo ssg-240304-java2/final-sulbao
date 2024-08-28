@@ -1,12 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layouts/userDefault}">
 <head>
-    <meta charset="UTF-8">
-    <title>자살</title>
+    <title>비정상 접근</title>
+    <style>
+        /* 주문 완료 메시지 및 버튼 스타일 */
+        .order-complete-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 20vh; /* 페이지 높이를 반으로 설정 */
+            text-align: center;
+        }
+
+        .home-button {
+            padding: 15px 40px;
+            font-size: 1.5rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none; /* 링크 밑줄 제거 */
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        .home-button:hover {
+            background-color: #0056b3;
+        }
+
+        .home-button:focus {
+            outline: none;
+        }
+    </style>
 </head>
 <body>
-<h1>🤷‍🤷‍🤷‍🤷‍🤷‍에러났는데 뭐 어쩔꺼야?🤷🤷🤷‍🤷‍🤷‍</h1>
-<h1>살자살자살자살자살자살자살자살자살</h1>
-<h1>에러 문의(는 🍇가 먹고 찌푼데...)</h1>
+<div layout:fragment="content" style="margin-top: 130px">
+    <br>
+    <br>
+    <h1 style="text-align: center">서비스에 접할 수 없습니다.</h1>
+    <div class="order-complete-container">
+        <a href="/" class="home-button">홈으로 가기</a>
+    </div>
+</div>
 </body>
 </html>

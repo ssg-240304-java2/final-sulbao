@@ -1,5 +1,6 @@
 package com.finalproject.sulbao.login.model.service;
 
+import com.amazonaws.auth.profile.internal.BasicProfile;
 import com.finalproject.sulbao.common.file.FileDto;
 import com.finalproject.sulbao.common.file.FileService;
 import com.finalproject.sulbao.login.model.dto.*;
@@ -556,5 +557,10 @@ public class LoginService {
         } else {
             throw new RuntimeException("User not found");
         }
+    }
+
+
+    public String findMemberByUserIds(String userId) {
+        return loginRepository.findMemberByUserIds(userId);
     }
 }
