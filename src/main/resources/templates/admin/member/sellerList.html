@@ -78,7 +78,6 @@
                                 <th>상호명</th>
                                 <th>사업자번호</th>
                                 <th>승인상태</th>
-                                <th>활성상태</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -91,7 +90,6 @@
                                 <td th:text="${seller.businessName}">Coach Swagger</td>
                                 <td th:text="${seller.businessNum}">Coach Swagger</td>
                                 <td th:text="${seller.status == 'WAIT'}? '대기중' : '승인'">2</td>
-                                <td th:text="${seller.isAblable == true}? '활성': '비활성'">2</td>
                             </tr>
 
                             </tbody>

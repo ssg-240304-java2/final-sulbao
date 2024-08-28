@@ -269,7 +269,8 @@ public class LoginService {
 
     public List<MemberDto> findSellerList() {
 
-        List<Login> sellers = loginRepository.findSellerList();
+        RoleType role = RoleType.SELLER;
+        List<Login> sellers = loginRepository.findSellerList(role);
         List<MemberDto> sellerList = new ArrayList<>();
 
         for(Login login : sellers) {
@@ -282,7 +283,6 @@ public class LoginService {
                     .businessNum(login.getSellerInfo().getBusinessNumber())
                     .businessName(login.getSellerInfo().getBusinessName())
                     .status(login.getSellerInfo().getSellerStatus())
-                    .isAblable(login.isEnabled())
                     .build();
             sellerList.add(seller);
         }
