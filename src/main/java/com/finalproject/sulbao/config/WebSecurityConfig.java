@@ -57,8 +57,9 @@ public class WebSecurityConfig {
                     .requestMatchers("/mypage/**","/refund","/comments/**","/likes/**","/mypage/board","/zzanfeeds/**"
                             ,"product/addCart","/review/**","/mypage/**").authenticated()
                     .requestMatchers("/orderlist","/searchorderlist","product/**","/magazine/**").hasAnyRole("ADMIN", "SELLER")
+                    .requestMatchers("/orders/**", "/payments/**","/myorder").hasAnyRole("PRO_MEMBER", "MEMBER")
                     .requestMatchers("/admin/member/**").hasRole("ADMIN")
-                    .requestMatchers("/changeStatus","/orders/**", "/payments/**","/myorder").hasRole("SELLER")
+                    .requestMatchers("/changeStatus").hasRole("SELLER")
                     .requestMatchers("/board/list", "/member/**").hasRole("ADMIN")
                     .requestMatchers("/zzanposts/**").hasRole("PRO_MEMBER")
 //                    .requestMatchers("/**").permitAll()
