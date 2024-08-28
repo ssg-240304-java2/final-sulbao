@@ -9,29 +9,16 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <div class="hero hero-inner">
-        <div class="my-container">
-            <div class="row align-items-center">
-                <div class="col-lg-6 mx-auto text-center">
-                    <div class="intro-wrap">
-                        <h1 class="mb-0"># Hashtag</h1>
-                        <p class="text-white">
-                            전통주와 함께한 특별한 순간을 짠피드에 업로드하세요.<br/>
-                            지금 당신의 전통주 이야기를 들려주세요.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="post-container">
         <div class="post-title" th:text="${post.title}"></div>
 
         <div class="post-meta">
             <img alt="작성자 프로필 사진"
                  th:src="@{${post.userDto.getProfileImageFileUrl()}}">
-            <div class="username" th:text="${post.userDto.getProfileName()}"></div>
+            <div class="username-and-date">
+                <div class="username" th:text="${post.userDto.getProfileName()}"></div>
+                <div class="post-created-at" th:text="${#temporals.format(post.createdAt, 'yyyy년 MM월 dd일 HH시 mm분')}"></div>
+            </div>
             <div class="edit-buttons" th:if="${user.id == post.userDto.id or isAdmin}">
                 <button onclick="editPost()">수정</button>
                 <button onclick="deletePost()">삭제</button>
@@ -67,8 +54,6 @@
         <div class="comments-section">
             <div class="comments-count">댓글 <span th:text="${comments.size()}"></span></div>
 
-
-
             <div class="comment-container" th:each="comment : ${comments}">
                 <div class="comment">
                     <img alt="comment writer's profile image"
@@ -86,7 +71,7 @@
                 </div>
 
                 <form action="/comments/update" class="comment-edit-form" method="post" style="display: none">
-                    <div class="comment-input">
+                    <div class="comment-edit-input">
                         <img alt="comment writer's profile image"
                              th:src="@{${comment.userDto.profileImageFileUrl}}">
                         <label>
@@ -104,7 +89,8 @@
             </div>
 
             <div class="comment-input">
-                <img alt="default profile"
+                <img th:if="${user.id != 0}" th:src="${user.profileImageFileUrl}" alt="user profile">
+                <img th:if="${user.id == 0}" alt="default profile"
                      src="https://kr.object.ncloudstorage.com/sulbao-file/profile/default-profile.png">
                 <label for="commentContent"></label>
                 <input id="commentContent" th:placeholder='${user.id == 0 ? "로그인 후 작성 가능합니다." : "댓글을 입력하세요."}' type="text" th:disabled="${user.id == 0}">

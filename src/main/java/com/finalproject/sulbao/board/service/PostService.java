@@ -1,5 +1,6 @@
 package com.finalproject.sulbao.board.service;
 
+import com.finalproject.sulbao.board.common.TopTagScheduler;
 import com.finalproject.sulbao.board.domain.BoardCategory;
 import com.finalproject.sulbao.board.domain.Post;
 import com.finalproject.sulbao.board.domain.PostImage;
@@ -17,11 +18,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +45,7 @@ public class PostService {
     private final LoginRepository loginRepository;
     private final BoardCategoryRepository boardCategoryRepository;
     private final FileService fileService;
+    private final TopTagScheduler topTagScheduler;
 
     public void updateHit(Long id) {
         postRepository.findById(id).orElseThrow().updateHit();
@@ -168,7 +175,8 @@ public class PostService {
     }
 
     public List<String> findTopTags() {
-        return postRepository.findTopTags().stream().limit(15).toList();
+        return topTagScheduler.getTopTagNames();
+//        return postRepository.findTopTags().stream().limit(15).toList();
     }
 
     public List<PostDto> findByCategoryAndKeyword(String keyword, Long boardCategoryId) {
@@ -208,7 +216,26 @@ public class PostService {
         }
 
         return postRepository.findAll(spec).stream().map(PostDto::toPostDto).toList();
-
     }
 
+
+    public List<PostDto> getWeeklyposts(Long boardCategoryId) {
+        LocalDate now = LocalDate.now();
+        LocalDate startOfWeek = now.with(ChronoField.DAY_OF_WEEK, 1);
+        LocalDate endOfWeek = now.with(ChronoField.DAY_OF_WEEK, 7);
+        LocalDateTime startOfWeekDateTime = startOfWeek.atStartOfDay();
+        LocalDateTime endOfWeekDateTime = endOfWeek.atTime(LocalTime.MAX);
+
+        BoardCategory boardCategory = boardCategoryRepository.findById(boardCategoryId).orElseThrow();
+        int pageSize = (boardCategoryId.equals(ZZANFEED_ID) ? ZZANFEED_SEARCH_PAGE_SIZE : ZZANPOST_SEARCH_PAGE_SIZE);
+
+        List<Post> posts = postRepository.findTopPostsByBoardCategoryAndDateRange(
+                boardCategory,
+                startOfWeekDateTime,
+                endOfWeekDateTime,
+                PageRequest.of(0, pageSize, Sort.by(Sort.Direction.DESC, "hit"))
+        );
+
+        return posts.stream().map(PostDto::toPostDto).toList();
+    }
 }

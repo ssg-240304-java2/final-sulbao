@@ -1,32 +1,16 @@
-.container {
+.my-container {
     max-width: 1300px;
     padding: 20px;
     margin: 30px auto 0;
-}
-
-.hero {
-    background: #f8f9fa;
-    padding: 50px 0;
-}
-
-.hero h1 {
-    font-size: 2.5rem;
-}
-
-.hero p {
-    font-size: 1.25rem;
-    color: #6c757d;
-    margin-top: 30px;
 }
 
 .guideline-container {
     background-color: #f9f9f9;
     padding: 20px;
     border-radius: 8px;
-    /*margin-top: 20px;*/
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     width: 60%;
-    margin: 50px auto;
+    margin: 6% auto 50px;
 }
 
 .guideline-container h2 {
@@ -65,28 +49,32 @@
     text-align: center;
     padding: 20px;
     border-radius: 5px;
-    width: 60%;
-    margin: 0 auto;
+    width: 25%;
     height: 400px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin: 0 auto 3%;
 }
 
 .upload-button-container {
     text-align: center;
     margin-top: 10px;
-
 }
 
 .upload-button {
-    background-color: #333;
+    background-color: #7E8EF1;
     color: #fff;
     border: none;
     border-radius: 5px;
     padding: 10px 20px;
     cursor: pointer;
+}
+
+.upload-button:hover {
+    background-color: #6D7BF7;
+    transform: scale(1.05);
 }
 
 .title-container {
@@ -106,7 +94,7 @@
 }
 
 .submit-button {
-    background-color: #1A374D;
+    background-color: #7E8EF1;
     color: #ffffff;
     border: none;
     border-radius: 5px;
@@ -115,10 +103,12 @@
     cursor: pointer;
     transition: background-color 0.3s, transform 0.2s;
     font-weight: bold;
+    margin-top: 2%;
+    margin-bottom: 10%;
 }
 
 .submit-button:hover {
-    background-color: #2A4D6E;
+    background-color: #6D7BF7;
     transform: scale(1.05);
 }
 
@@ -133,8 +123,7 @@
 
 .form-control {
     height: 60px;
-    border: none;
-    border-bottom: 1px solid #ccc;
+    border: 1px solid #ccc;
     padding: 10px;
     font-size: 1.25rem;
     width: calc(100% - 100px);

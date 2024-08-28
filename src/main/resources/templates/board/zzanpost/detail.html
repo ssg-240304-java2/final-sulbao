@@ -4,33 +4,21 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <title>전통술 최저가 비교 커뮤니티! 술기로운 한 잔</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="/board/zzanpost/detail.css" rel="stylesheet">
 </head>
 <body>
 <div layout:fragment="content">
-    <div class="hero hero-inner">
-        <div class="my-container">
-            <div class="row align-items-center">
-                <div class="col-lg-6 mx-auto text-center">
-                    <div class="intro-wrap">
-                        <h1 class="mb-0">술 포스트</h1>
-                        <p class="text-white">
-                            술 포스트는 술에 대한 모든 것을 다룹니다.<br>
-                            술의 역사, 문화, 맛, 그리고 다양한 이야기를 만나보세요.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="post-container">
         <div class="post-title" th:text="${post.title}"></div>
 
         <div class="post-meta">
             <img alt="작성자 프로필 사진"
                  th:src="@{${post.userDto.profileImageFileUrl}}">
-            <div class="username" th:text="${post.userDto.getProfileName()}"></div>
+            <div class="username-and-date">
+                <div class="username" th:text="${post.userDto.getProfileName()}"></div>
+                <div class="post-created-at" th:text="${#temporals.format(post.createdAt, 'yyyy년 MM월 dd일 HH시 mm분')}"></div>
+            </div>
             <div class="edit-buttons" th:if="${user.id == post.userDto.id or isAdmin}">
                 <button onclick="editPost()">수정</button>
                 <button onclick="deletePost()">삭제</button>
@@ -44,10 +32,8 @@
             <div class="recommendation-section">
                 <div class="recommend-container">
                     <button class="recommend-button">
-                        <img alt="thumbs up" class="thumbs-up" src="/board/image/thumbs-up.png"
-                             th:if="${!isPostLikedByUser}">
-                        <img alt="thumbs up" class="thumbs-up" src="/board/image/thumbs-up-colored.png"
-                             th:if="${isPostLikedByUser}">
+                        <i class="far fa-thumbs-up thumbs-up" th:if="${!isPostLikedByUser}"></i>
+                        <i class="fas fa-thumbs-up thumbs-up" th:if="${isPostLikedByUser}"></i>
                     </button>
                     <span class="recommend-count" th:text="${post.like}"></span>
                 </div>
@@ -64,7 +50,7 @@
                     <div class="comment-content">
                         <div class="username" th:text="${comment.userDto.profileName}"></div>
                         <div class="comment-text" th:text="${comment.content}"></div>
-                        <div class="timestamp" th:text="${comment.createdAt}"></div>
+                        <div class="timestamp" th:text="${#temporals.format(comment.createdAt, 'yyyy년 MM월 dd일 HH시 mm분')}"></div>
                     </div>
 
                     <div class="edit-buttons" th:if="${user.id == comment.userDto.id or isAdmin}">
@@ -74,7 +60,7 @@
                 </div>
 
                 <form action="/comments/update" class="comment-edit-form" method="post" style="display: none">
-                    <div class="comment-input">
+                    <div class="comment-edit-input">
                         <img alt="comment writer's profile image"
                              th:src="@{${comment.userDto.profileImageFileUrl}}">
                         <label>
@@ -92,7 +78,8 @@
             </div>
 
             <div class="comment-input">
-                <img alt="default profile"
+                <img th:if="${user.id != 0}" th:src="${user.profileImageFileUrl}" alt="user profile">
+                <img th:if="${user.id == 0}" alt="default profile"
                      src="https://kr.object.ncloudstorage.com/sulbao-file/profile/default-profile.png">
                 <label for="commentContent"></label>
                 <input id="commentContent" placeholder="댓글을 입력하세요" type="text" th:disabled="${user.id == 0}">
