@@ -300,9 +300,9 @@ public class LoginService {
 
             if(login.isPresent()) {
                 if(available.equals("true")){
-                    login.get().setEnabled(true);
+                    login.get().setEnabled();
                 } else {
-                    login.get().setEnabled(false);
+                    login.get().setDisabled();
                 }
             }
         }

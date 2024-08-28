@@ -76,5 +76,6 @@ public class Login extends BaseEntity {
     }
 
     public void setDisabled() { this.isEnabled = false; }
+    public void setEnabled() { this.isEnabled = true; }
 
 }
