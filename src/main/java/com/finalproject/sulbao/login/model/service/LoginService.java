@@ -283,7 +283,6 @@ public class LoginService {
                     .businessNum(login.getSellerInfo().getBusinessNumber())
                     .businessName(login.getSellerInfo().getBusinessName())
                     .status(login.getSellerInfo().getSellerStatus())
-                    .isAblable(login.isEnabled())
                     .build();
             sellerList.add(seller);
         }
