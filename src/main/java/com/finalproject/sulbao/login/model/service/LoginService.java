@@ -269,7 +269,8 @@ public class LoginService {
 
     public List<MemberDto> findSellerList() {
 
-        List<Login> sellers = loginRepository.findSellerList();
+        RoleType role = RoleType.SELLER;
+        List<Login> sellers = loginRepository.findSellerList(role);
         List<MemberDto> sellerList = new ArrayList<>();
 
         for(Login login : sellers) {
