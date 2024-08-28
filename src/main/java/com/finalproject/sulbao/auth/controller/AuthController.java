@@ -7,6 +7,7 @@ import com.finalproject.sulbao.board.common.SessionHandler;
 import com.finalproject.sulbao.board.dto.PostDto;
 import com.finalproject.sulbao.board.service.PostService;
 import com.finalproject.sulbao.login.model.dto.LoginDetails;
+import com.finalproject.sulbao.login.model.entity.RoleType;
 import com.finalproject.sulbao.product.model.dto.ProductComparisonDTO;
 import com.finalproject.sulbao.product.model.dto.ProductDTO;
 import com.finalproject.sulbao.product.service.ProductService;
@@ -70,19 +71,19 @@ public class AuthController {
 
         List<OrderStatus> statusList = new ArrayList<>();
         Long userNo = login.getUserNo();
-        if("ADMIN".equals(role)) {
+        if(RoleType.ADMIN.name().equals(role)) {
             userNo = null;
         }
 
         OrderStatus paymentCompleted = authService.OrderStatusCountList(userNo,"결제완료");
-        OrderStatus deliveryCompleted = authService.OrderStatusCountList(userNo,"배송완료");
+        OrderStatus deliveryCompleted = authService.OrderStatusCountList(userNo,"배송준비");
         OrderStatus refund = authService.OrderStatusCountList(userNo,"환불중");
         OrderStatus purchaseCompleted = authService.OrderStatusCountList(userNo,"구매확정");
 
         statusList.add(paymentCompleted);
         statusList.add(deliveryCompleted);
-        statusList.add(refund);
         statusList.add(purchaseCompleted);
+        statusList.add(refund);
 
         model.addAttribute("statusList", statusList);
 
