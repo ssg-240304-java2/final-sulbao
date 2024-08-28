@@ -74,4 +74,7 @@ public class Login extends BaseEntity {
     public void setApprovePro() {
         this.userRole = RoleType.PRO_MEMBER;
     }
+
+    public void setDisabled() { this.isEnabled = false; }
+
 }

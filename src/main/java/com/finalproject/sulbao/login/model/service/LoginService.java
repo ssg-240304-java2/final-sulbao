@@ -547,4 +547,14 @@ public class LoginService {
 
         return memberDtoList;
     }
+
+    @Transactional
+    public void deleteAccount(String userId) {
+        Optional<Login> login = loginRepository.findByUserId(userId);
+        if(login.isPresent()){
+           login.get().setDisabled();
+        } else {
+            throw new RuntimeException("User not found");
+        }
+    }
 }
