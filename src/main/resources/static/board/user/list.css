@@ -2,11 +2,6 @@ body {
     font-family: "Noto-Sans", sans-serif;
 }
 
-/*.mypage-content {
-    padding: 7rem 0 10rem 0;
-    display: flex;
-}*/
-
 .sidebar {
     width: 200px;
     padding: 20px;
@@ -238,8 +233,8 @@ button:hover {
 
 .pagination {
     display: flex;
-    justify-content: center; /* 버튼을 가운데 정렬 */
-    align-items: center;     /* 수직 가운데 정렬 */
+    justify-content: center;
+    align-items: center;
     margin-top: 30px;
 }
 

@@ -57,6 +57,11 @@ public class KakaoController {
         this.loginService = loginService;
     }
 
+    @GetMapping("/kakaopay")
+    public String payReady(){
+        return "redirect:/login";
+    }
+
     @PostMapping("/kakaopay")
     public @ResponseBody ReadyResponse payReady(HttpServletRequest request,@RequestBody Map<String, Object> params) {
         HttpSession session = request.getSession();
@@ -68,7 +73,6 @@ public class KakaoController {
 
         List<String> orderCodeList = (List<String>) params.get("orderCode");
         int orderCode = Integer.parseInt(orderCodeList.get(0));
-        System.out.println("orderCode = " + orderCode);
 
         int quantity = (int) params.get("quantity");
         String orderName = (String) params.get("orderName");
@@ -80,7 +84,6 @@ public class KakaoController {
 
         String email = (String) params.get("email");
         log.info("params {}", params);
-        System.out.println(orderCodeList);
 
 
         session.setAttribute("orderCodeList", orderCodeList);
@@ -135,10 +138,7 @@ public class KakaoController {
         String detailAddress = (String) session.getAttribute("detailAddress");
         String zipCode = (String) session.getAttribute("postcode");
 
-
         int len = orderCodeList.size();
-        System.out.println("len = " + len);
-        System.out.println("orderCodeList = " + orderCodeList);
         List<Long> orderCodeLists = (List<Long>) session.getAttribute("orderCodeList");
 
 
@@ -175,17 +175,13 @@ public class KakaoController {
             int amount = cartDTO.getAmount();
             int totalPrice = cartDTO.getTotalPrice();
             Long productNo = cartDTO.getProducts().getProductNo();
-            System.out.println("productNo = " + productNo);
+
             orderItemDTO.setAmount(amount);
             orderItemDTO.setProductNo(productNo);
             orderItemDTO.setTotalPrice(totalPrice);
             orderDTO.setOrderItems(Set.of(orderItemDTO));
 
             Long orderPk = orderService.saveOrder(orderDTO);
-            System.out.println(orderPk);
-
-
-
             cartService.updateIsOrder(cartDTO.getCartCode());
             cartService.updateToken(cartDTO.getCartCode(),orderDTO.getToken());
 

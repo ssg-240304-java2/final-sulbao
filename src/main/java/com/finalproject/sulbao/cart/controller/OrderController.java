@@ -72,8 +72,6 @@ public class OrderController {
             // orderCodeList를 사용해 필요한 작업 수행
             // 예: 주문 처리, 상태 업데이트 등
             // 작업 완료 후 토큰과 orderCodeList 매핑 삭제
-            System.out.println("cartLists = " + cartLists);
-            System.out.println("-------------------->>>>>>>>>>>>>>>>>>"+orderCodeList);
             model.addAttribute("carts", cartLists);
 
             return "cart/success"; // 성공 페이지로 리다이렉션
@@ -114,13 +112,13 @@ public class OrderController {
 //        if(session.getAttribute("userNo") == null){
 //            return "redirect:/login";
 //        }
-        System.out.println("인증 전");
+
         SellerDto sellerDto = sessionHandler.getSeller(authentication);
 
         if(!sessionHandler.isLogin(authentication)){
             return "redirect:/login";
         }
-        System.out.println(sellerDto + "아약스");
+
 
         String role = "";
         List<ProductDTO> productLists;
@@ -148,7 +146,7 @@ public class OrderController {
         List<OrderDTO> orderList = orderService.findByProductNo(productIdList);
         List<OrderProductDTO> orderProductList = new ArrayList<>();
 
-        System.out.println(orderList);
+
 
         for (int i = 0; i < orderItemList.size(); i++) {
             OrderProductDTO orderProductDTO = new OrderProductDTO();
@@ -173,7 +171,7 @@ public class OrderController {
         model.addAttribute("submenu", "option");
         model.addAttribute("orderProductList", orderProductList);
         model.addAttribute("role", role);
-        System.out.println("테스트");
+
         return "cart/sellerorder";
     }
 
@@ -183,19 +181,21 @@ public class OrderController {
                 @RequestParam(name = "shippingStatus", required = false) String shippingStatus,
                 @RequestParam(name = "orderType", required = false) String orderType, Authentication authentication) {
 
-        System.out.println("searchInput = "+searchInput);
-        System.out.println("shippingStatus = "+shippingStatus);
-        System.out.println("orderType = "+orderType);
-
         SellerDto sellerDto = sessionHandler.getSeller(authentication);
 
-                if(!sessionHandler.isLogin(authentication)){
-                    return "redirect:/login";
-                }
-                System.out.println(sellerDto + "아약스");
-                String role = "";List<ProductDTO> productLists;if(sellerDto.getRoleType() == RoleType.ADMIN){productLists = orderProductService.findAll();role = "ROLE_ADMIN";}else if(sellerDto.getRoleType() == RoleType.SELLER){Long userNo = (Long) session.getAttribute("userNo");// 2. 1번을 이용해 판매자의 상품 정보 조회 -> 상품 코드, 상품명
-            productLists = orderProductService.findByUserNo(userNo);
-            role = "ROLE_SELLER";}else{return "error";}
+        if(!sessionHandler.isLogin(authentication)){
+            return "redirect:/login";
+        }
+
+        String role = "";
+        List<ProductDTO> productLists;if(sellerDto.getRoleType() == RoleType.ADMIN){
+            productLists = orderProductService.findAll();role = "ROLE_ADMIN";
+        }else if(sellerDto.getRoleType() == RoleType.SELLER){
+            Long userNo = (Long) session.getAttribute("userNo");
+            productLists = orderProductService.findByUserNo(userNo);role = "ROLE_SELLER";
+        }else{
+            return "error";
+        }
 
         List<Long>productIdList = new ArrayList<>();
         for (ProductDTO productDTO : productLists) {
@@ -219,6 +219,7 @@ public class OrderController {
             }else{
                 orderProductDTO.setPresent("일반결제");
             }
+
             if(searchInput == null){
 
             }else if(!orderProductDTO.getName().contains(searchInput)){
@@ -317,9 +318,6 @@ public class OrderController {
             orderListDTOList.add(orderListDTO);
         }
 
-//        System.out.println("orderListDTOList = " + orderListDTOList);
-        System.out.println(orderListDTOList);
-        System.out.println("아약스");
         model.addAttribute("orders", orderListDTOList);
         model.addAttribute("menu","order");
         return "cart/memberorder";

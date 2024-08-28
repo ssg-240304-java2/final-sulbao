@@ -51,18 +51,19 @@
     </div>
 
     <div class="container">
-        <div class="no-content" th:if="${zzanposts.isEmpty() && zzanfeeds.isEmpty()}">
-            <img src="https://kr.object.ncloudstorage.com/sulbao-file/no-content.gif" alt="No Content" class="no-content-image" />
-            <p class="no-content-text">게시판 검색 내용이 없어요...</p>
-        </div>
-
-        <div class="zzanfeed-container" th:if="${!zzanfeeds.isEmpty()}">
+        <div class="zzanfeed-container">
             <p class="guide-text main-guide">#짠피드 📸</p>
             <div class="guide-section">
                 <p class="guide-text sub-guide">전통주와 함께한 특별한 순간을 짠피드에 업로드하세요.</p>
-                <a th:href="@{/zzanfeeds}" class="more-link">더보기</a>
+                <a th:if="${!zzanfeeds.isEmpty()}" th:href="@{/zzanfeeds}" class="more-link">더보기</a>
             </div>
-            <div class="zzanfeed-post-grid" id="zzanfeed-postGrid">
+
+            <div class="no-content" th:if="${zzanposts.isEmpty() && zzanfeeds.isEmpty()}">
+                <img src="https://kr.object.ncloudstorage.com/sulbao-file/no-content.gif" alt="No Content" class="no-content-image" />
+                <p class="no-content-text"><a th:href="@{/zzanfeeds}">짠피드 구경하러가기 >> </a></p>
+            </div>
+
+            <div class="zzanfeed-post-grid" id="zzanfeed-postGrid" th:if="${!zzanfeeds.isEmpty()}">
                 <div class="zzanfeed-post-item" th:each="post : ${zzanfeeds}">
                     <div class="author-info">
                         <img class="profile-picture"
@@ -93,12 +94,18 @@
             </div>
         </div>
 
-        <div class="zzanpost-container" th:if="${!zzanposts.isEmpty()}">
+        <div class="zzanpost-container">
             <p class="guide-text main-guide">술포스트 🍸</p>
             <div class="guide-section">
                 <p class="guide-text sub-guide">술의 역사, 문화, 맛, 그리고 다양한 이야기를 만나보세요.</p>
-                <a th:href="@{/zzanposts}" class="more-link">더보기</a>
+                <a th:if="${!zzanposts.isEmpty()}" th:href="@{/zzanposts}" class="more-link">더보기</a>
             </div>
+
+            <div class="no-content" th:if="${zzanposts.isEmpty() && zzanfeeds.isEmpty()}">
+                <img src="https://kr.object.ncloudstorage.com/sulbao-file/no-content.gif" alt="No Content" class="no-content-image" />
+                <p class="no-content-text"><a th:href="@{/zzanposts}">술포스트 구경하러가기 >> </a></p>
+            </div>
+
             <div class="zzanpost-post-grid" id="zzanpost-postGrid">
                 <div class="zzanpost-post-item" th:each="post : ${zzanposts}">
                     <a th:href="@{|zzanposts/${post.id}|}">
