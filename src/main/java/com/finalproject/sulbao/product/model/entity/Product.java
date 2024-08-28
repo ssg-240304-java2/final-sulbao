@@ -30,10 +30,10 @@ public class Product extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ProductCategory productCategory;
 
-    @Column(name="product_description", columnDefinition = "TEXT")
+    @Column(name="product_description", columnDefinition = "LONGTEXT")
     private String productDescription;
 
-    @Column(name="product_summary")
+    @Column(name="product_summary", columnDefinition = "LONGTEXT")
     private String productSummary;
 
     @Column(name="product_price")
