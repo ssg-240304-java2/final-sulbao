@@ -417,6 +417,7 @@
                     type: 'POST',
                     success: function(response) {
                         alert('전문가 신청이 취소되었습니다.');
+                        window.location.reload();
                     },
                     error: function(error) {
                         alert('취소 과정에서 오류가 발생했습니다. 다시 시도해 주세요.');

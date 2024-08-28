@@ -300,9 +300,9 @@ public class LoginService {
 
             if(login.isPresent()) {
                 if(available.equals("true")){
-                    login.get().setEnabled(true);
+                    login.get().setEnabled();
                 } else {
-                    login.get().setEnabled(false);
+                    login.get().setDisabled();
                 }
             }
         }
@@ -546,5 +546,15 @@ public class LoginService {
         }
 
         return memberDtoList;
+    }
+
+    @Transactional
+    public void deleteAccount(String userId) {
+        Optional<Login> login = loginRepository.findByUserId(userId);
+        if(login.isPresent()){
+           login.get().setDisabled();
+        } else {
+            throw new RuntimeException("User not found");
+        }
     }
 }

@@ -48,7 +48,7 @@ public class ProductController {
         }
 
         ProductDTO productDTO = new ProductDTO();
-        productDTO.setUserNo(sessionHandler.getUser(authentication).getId());
+        productDTO.setUserNo(login.getUserNo());
         List<ProductDTO> productList = productService.findByUserNo(productDTO);
 
         model.addAttribute("menu","product");
@@ -74,7 +74,7 @@ public class ProductController {
             return "redirect:/";
         }
 
-        productDTO.setUserNo((Long) session.getAttribute("userNo"));
+        productDTO.setUserNo(login.getUserNo());
         List<ProductDTO> productList = productService.findBySearchInfo(productDTO);
         model.addAttribute("menu","product");
         model.addAttribute("submenu","list");
@@ -169,7 +169,7 @@ public class ProductController {
         if("MEMBER".equals(role)){
             return "redirect:/";
         }
-        productDTO.setUserNo((Long) session.getAttribute("userNo"));
+        productDTO.setUserNo(login.getUserNo());
         productService.updateProduct(productDTO);
 
         return "redirect:/product/list";
