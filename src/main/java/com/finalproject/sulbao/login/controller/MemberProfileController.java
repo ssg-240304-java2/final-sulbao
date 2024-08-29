@@ -7,6 +7,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -139,7 +141,8 @@ public class MemberProfileController {
 
     // 회원 탈퇴
     @PostMapping("/deleteAccount")
-    public void deleteAccount(RedirectAttributes redirectAttributes, HttpSession session, HttpServletRequest request){
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteAccount(HttpSession session, HttpServletRequest request){
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         service.deleteAccount(userId);
         session.invalidate();
