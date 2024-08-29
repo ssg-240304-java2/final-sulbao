@@ -29,11 +29,11 @@ public class FileController {
         return "testEditor";
     }
 
-    @PostMapping("/image-upload")
+    @PostMapping("/product/image-upload")
     @ResponseBody
     public String uploadImage(@RequestParam MultipartFile file) throws IOException {
 
-        log.debug("check");
+        log.debug("File Upload check");
         // 1. 파일업로드 처리
 
         if (!file.isEmpty()) {

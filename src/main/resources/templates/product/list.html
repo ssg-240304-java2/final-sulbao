@@ -28,13 +28,6 @@
             <button type="button" th:class="${category} == '탁주' ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-outline-primary'" onclick="location.href='/product/user/list?category=탁주'">탁주</button>
             <button type="button" th:class="${category} == '기타' ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-outline-primary'" onclick="location.href='/product/user/list?category=기타'">기타</button>
 
-            <!-- TODO: 기능작업예정 -->
-<!--            <select class="form-control form-control-sm mb-5"  style="display: inline-block; float: right; width: 15%;">-->
-<!--              <option value="">20개씩 보기</option>-->
-<!--              <option value="">40개씩 보기</option>-->
-<!--              <option value="">60개씩 보기</option>-->
-<!--              <option value="">80개씩 보기</option>-->
-<!--            </select>-->
           </div> <!-- 페이징 상품 select Box -->
           <div th:if="${comparisonList} == null or ${#lists.size(comparisonList)} == 0" >
 

@@ -47,15 +47,6 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr style="display: none;">
-                                    <th>카테고리</th>
-                                    <td>
-                                        <select class="form-control" name="productCategory" id="productCategory">
-                                            <option value="">카테고리를 선택해주세요</option>
-                                            <option th:each="category : ${productCategory}" th:text="${category.getValue()}" th:value="${category}"></option>
-                                        </select>
-                                    </td>
-                                </tr>
                                 <tr>
                                    <th colspan="2">기본정보</th>
                                 </tr>
@@ -71,10 +62,6 @@
                                             <option th:each="comparison : ${productComparisonList}" th:value="${comparison.comparisonNo}" th:text="${comparison.comparisonName}"></option>
                                         </select>
                                     </td>
-                                </tr>
-                                <tr style="display: none;">
-                                    <th>상품 간략설명</th>
-                                    <td><textarea class="form-control" rows="3" name="productSummary" th:text="${product.productSummary}"></textarea></td>
                                 </tr>
                                 <tr>
                                     <th>상품상세 설명</th>
@@ -120,25 +107,11 @@
         <script>
             function checkValidate(){
 
-                // 상품카테고리
-                // const productCategory = $("#productCategory option:selected").val();
-                // if(productCategory === ''){
-                //     alert('상품카테고리를 선택해주세요.');
-                //     $('#productCategory').focus();
-                //     return false;
-                // }
                 //상품명
                 const productName = $('#productName').val();
                 if(productName === ''){
                     alert('상품명을 입력해주세요.');
                     $('#productName').focus();
-                    return false;
-                }
-                //상품 간략설명
-                const productSummary= $('#productSummary').val();
-                if(productSummary === ''){
-                    alert('간략설명을 입력해주세요.');
-                    $('#productSummary').focus();
                     return false;
                 }
                 //상품 상세설명
@@ -149,8 +122,6 @@
                 }else{
                     $('#productDescription').val(productDescription);
                 }
-                //상품 검색 해시태그
-                // const searchHashTage= $('#productHashTag').val();
 
                 //상품가격
                 const productPrice = $('#productPrice').val();

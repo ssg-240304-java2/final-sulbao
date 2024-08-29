@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface MagazineRepository extends JpaRepository<Magazine, Long> {
 
-    @Query(value = "select m from Magazine m where m.displayYn = 'Y' ")
+    @Query(value = "select m from Magazine m where m.displayYn = 'Y' and m.publishDate <= now() order by m.publishDate desc")
     List<Magazine> findByDisplayYn();
 }
