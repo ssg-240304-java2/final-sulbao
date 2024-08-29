@@ -158,7 +158,7 @@
 
       /* 사업자번호 중복 확인 */
       $.ajax({
-        url:"/seller/number",
+        url: window.location.origin + "/seller/number",
         type: "POST",
         dataType: "text",
         data: {businessNumber:businessNumber},
