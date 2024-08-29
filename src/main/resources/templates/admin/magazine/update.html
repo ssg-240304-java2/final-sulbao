@@ -20,16 +20,12 @@
                             <input type="hidden" name="magazineNo" th:value="${magazine.magazineNo}">
                             <table class="table table-bordered">
                                 <tr>
-                                    <th>메인페이지 이미지</th>
-                                    <td><input type="file" class="form-control-file" id="mainImage" name="magazineImages" th:value="${magazine.magazineImagesList[0].originName}"></td>
-                                </tr>
-                                <tr>
                                     <th>썸네일</th>
-                                    <td><input type="file" class="form-control-file" id="magazineThumbnail" name="magazineImages" th:value="${magazine.magazineImagesList[1].originName}"></td>
+                                    <td><input type="file" class="form-control-file" id="magazineThumbnail" name="magazineImages" th:value="${magazine.magazineImagesList[0].originName}"></td>
                                 </tr>
                                 <tr>
                                     <th>상단 이미지</th>
-                                    <td><input type="file" class="form-control-file" id="topImage" name="magazineImages" th:value="${magazine.magazineImagesList[2].originName}"></td>
+                                    <td><input type="file" class="form-control-file" id="topImage" name="magazineImages" th:value="${magazine.magazineImagesList[1].originName}"></td>
                                 </tr>
                                 <tr>
                                     <th>출간일</th>
@@ -69,7 +65,7 @@
                                 </tr>
                             </table>
                             <div class="form-footer mt-6 float-right">
-                                <button type="submit" class="btn btn-primary btn-pill">매거진 등록</button>
+                                <button type="submit" class="btn btn-primary btn-pill">매거진 수정</button>
                                 <button type="button" onclick="window.location.href='/magazine/list'" class="btn btn-light btn-pill">목록으로</button>
                             </div>
                         </form>
@@ -102,27 +98,6 @@
                 }else{
                     $('#magazineContent').val(magazineContent);
                 }
-                //
-                // //썸네일
-                // const magazineThumbnail = $('#magazineThumbnail').val();
-                // if(magazineThumbnail === ''){
-                //     alert("매거진 썸네일을 등록해주세요");
-                //     return false;
-                // }
-                //
-                // // 상단이미지
-                // const topImage = $('#topImage').val();
-                // if(topImage === ''){
-                //     alert("매거진 상단이미지를 등록해주세요");
-                //     return false;
-                // }
-                //
-                // // 메인이미지
-                // const mainImage = $('#mainImage').val();
-                // if(mainImage === ''){
-                //     alert("매거진 메인페이지 이미지를 등록해주세요");
-                //     return false;
-                // }
 
                 return true;
             }

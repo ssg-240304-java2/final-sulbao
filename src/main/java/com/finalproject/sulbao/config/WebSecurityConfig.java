@@ -50,7 +50,7 @@ public class WebSecurityConfig {
 
         http.authorizeHttpRequests((authorizationManagerRequestMatcherRegistry -> {
             authorizationManagerRequestMatcherRegistry
-                    .requestMatchers("/signup", "/signupAccess/", "/signupAccess/", "/login", "/verifyagePage", "/signup-seller","/regist/**","/signupAccess/**","/submitOrder/**","/validateOrder/**", "/presentcomplete" ).anonymous()
+                    .requestMatchers("/signup", "/signupAccess/", "/signupAccess/", "/login", "/verifyagePage", "/signup-seller","/regist/**","/signupAccess/**","/submitOrder/**","/validateOrder/**", "/presentcomplete" ,"/image-upload/**").anonymous()
                     .requestMatchers("/", "/index", "/board/**", "/search","/zzanfeeds"
                             ,"/zzanfeeds/more","/zzanfeeds/{postId}","/zzanposts","/zzanposts/more","/zzanposts/{postId}"
                             ,"/zzanposts/filter-contents","/product/user/**","product/search/**" ,"/magazine","/email/**", "/signupAccess/**","/magazine/user/**").permitAll()
