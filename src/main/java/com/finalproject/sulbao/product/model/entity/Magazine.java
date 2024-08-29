@@ -61,7 +61,10 @@ public class Magazine extends BaseEntity {
         this.magazineTag = magazineDTO.getMagazineTag();
         this.publishDate = LocalDate.parse(magazineDTO.getPublishDate());
         this.displayYn = magazineDTO.getDisplayYn();
-        this.magazineImages = magazineDTO.getMagazineImagesList();
+        if(this.magazineImages != null){
+            System.out.println("HIIIII");
+            this.magazineImages = magazineDTO.getMagazineImagesList();
+        }
 
     }
 }

@@ -119,7 +119,6 @@
                             <tr>
                                 <th><input type="checkbox" id="cbx_chkAll"></th>
                                 <th>상품이미지</th>
-                                <th>상품카테고리</th>
                                 <th>상품 명</th>
                                 <th>상품 가격</th>
                                 <th>재고 수</th>
@@ -133,7 +132,6 @@
                                 <td class="py-1">
                                     <img style="max-height: 100px; max-width: 100px;" th:src="|https://kr.object.ncloudstorage.com/sulbao-file/product/@{${product.productImages[0].saveName}}|" alt="Product Image">
                                 </td>
-                                <td th:text="${product.productCategory}">Coach Swagger</td>
                                 <td><a th:href="@{'/product/update/'+${product.productNo}}">[[${product.productName}]]</a></td>
                                 <td th:text="${product.productPrice}">27</td>
                                 <td th:text="${product.productStock}">1</td>

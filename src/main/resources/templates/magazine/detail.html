@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html
-        xmlns:th="http://www.thymeleaf.org"
-        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-        xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+        xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>한술 매거진</title>
   <meta charset="utf-8">
@@ -45,7 +43,7 @@
 
     .banner {
       height: 450px;
-      background-image: url('https://via.placeholder.com/1920x450');
+      background-image: url('${magazineDTO.magazineImagesList.get(1).saveImgUrl}');
       background-size: cover;
       background-position: center;
       display: flex;
@@ -74,41 +72,15 @@
     font-size: 15px;font-weight: 500;
     word-break: keep-all;
     line-height: 28px;
-    color: #444;
-">
+    color: #444;"
+             >
           프리미엄 전통주는 지역 고유의 맛과 장인의 열정이 만나 빚어낸 예술이다.<br>
           오랫동안 사랑받아온 막걸리부터 새로운 술을 찾는 이들의 기호에 맞춘<br>
           트렌디한 전통주까지 탐미해보자.</div>
       </div>
       <div style="margin: 0 auto 20px;"><br></div>
-      <div>
-        상세내용
-      </div>
-      <div> 해시태그</div>
-      <br>
-      <br>
+      <div th:utext="${magazineDTO.magazineContent}">
 
-      <h3 style="border-bottom: 2px solid #000; padding-top: 20px; padding-bottom: 5px; margin-bottom: 25px; font-size: 24px; font-family: helvetica, Arial, NanumGothic, sans-serif; font-weight: 700;">소개된 상품 </h3>
-      <!--   상품 표시    -->
-      <div class="row row-cols-1 row-cols-md-4 g-4">
-        <div class="col mb-5">
-          <div class="card h-100">
-            <img src="/user/images/default-profile.png" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">상품명</h5>
-              <p class="card-text">상품 내용</p>
-            </div>
-          </div>
-        </div>
-        <div class="col mb-5">
-          <div class="card h-100">
-            <img src="/user/images/default-profile.png" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">This is a short card.</p>
-            </div>
-          </div>
-        </div>
       </div>
 
     </div>

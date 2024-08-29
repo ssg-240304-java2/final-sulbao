@@ -7,6 +7,7 @@ import com.finalproject.sulbao.product.model.dto.ProductDTO;
 import com.finalproject.sulbao.product.model.entity.Magazine;
 import com.finalproject.sulbao.product.model.entity.Product;
 import com.finalproject.sulbao.product.model.vo.MagazineImage;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.LocalDateTime;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,7 @@ public class MagazineService {
     }
 
 
+    @Transactional
     public void save(MagazineDTO magazineDTO, List<FileDto> fileDtoList) {
 
         List<MagazineImage> magazineImageList = new ArrayList<>();
@@ -52,6 +54,7 @@ public class MagazineService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public void update(MagazineDTO magazineDTO) {
 
         log.info("Service DTO : {}", magazineDTO);
@@ -71,6 +74,7 @@ public class MagazineService {
     public List<MagazineDTO> findByDisplayYn() {
 
         List<Magazine> magazineList = magazineRepository.findByDisplayYn();
+        log.info("Service magazineList ==================== {}", magazineList);
         return magazineList.stream()
                 .map(magazine -> new MagazineDTO().toDTO(magazine))
                 .collect(Collectors.toList());

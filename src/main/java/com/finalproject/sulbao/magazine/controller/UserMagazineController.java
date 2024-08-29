@@ -30,9 +30,11 @@ public class UserMagazineController {
     }
 
     @GetMapping("/magazine/user/{magazineNo}")
-    public String hansoolList(Model model, @PathVariable int magazineNo){
+    public String hansoolList(Model model, @PathVariable Long magazineNo){
 
-        log.info("magazineNo: {}", magazineNo);
+        MagazineDTO magazineDTO= magazineService.findById(magazineNo);
+        log.info("magazineNo: {}", magazineDTO);
+        model.addAttribute("magazineDTO", magazineDTO);
         return "magazine/detail";
     }
 }

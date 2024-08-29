@@ -19,10 +19,6 @@
                         <form action="/magazine/regist" method="post" enctype="multipart/form-data" onsubmit="return checkValidate()">
                             <table class="table table-bordered">
                                 <tr>
-                                    <th>메인페이지 이미지</th>
-                                    <td><input type="file" class="form-control-file" id="mainImage" name="magazineImages"></td>
-                                </tr>
-                                <tr>
                                     <th>썸네일</th>
                                     <td><input type="file" class="form-control-file" id="magazineThumbnail" name="magazineImages"></td>
                                 </tr>
@@ -54,15 +50,15 @@
                                     <td><textarea class="form-control" rows="3" name="magazineTag"></textarea></td>
                                 </tr>
                                 <tr>
-                                    <th>진열상태</th>
+                                    <th>표시상태</th>
                                     <td>
                                         <div class="custom-control custom-radio d-inline-block mr-3">
                                             <input type="radio" id="displayY" name="displayYn" value="Y" class="custom-control-input" >
-                                            <label class="custom-control-label" for="displayY">진열함</label>
+                                            <label class="custom-control-label" for="displayY">표시함</label>
                                         </div>
                                         <div class="custom-control custom-radio d-inline-block mr-3">
                                             <input type="radio" id="displayN" name="displayYn" value="N" class="custom-control-input" checked>
-                                            <label class="custom-control-label" for="displayN">진열안함</label>
+                                            <label class="custom-control-label" for="displayN">표시안함</label>
                                         </div>
                                     </td>
                                 </tr>
@@ -100,27 +96,6 @@
                     return false;
                 }else{
                     $('#magazineContent').val(magazineContent);
-                }
-
-                //썸네일
-                const magazineThumbnail = $('#magazineThumbnail').val();
-                if(magazineThumbnail === ''){
-                    alert("매거진 썸네일을 등록해주세요");
-                    return false;
-                }
-
-                // 상단이미지
-                const topImage = $('#topImage').val();
-                if(topImage === ''){
-                    alert("매거진 상단이미지를 등록해주세요");
-                    return false;
-                }
-
-                // 메인이미지
-                const mainImage = $('#mainImage').val();
-                if(mainImage === ''){
-                    alert("매거진 메인페이지 이미지를 등록해주세요");
-                    return false;
                 }
 
                 return true;
