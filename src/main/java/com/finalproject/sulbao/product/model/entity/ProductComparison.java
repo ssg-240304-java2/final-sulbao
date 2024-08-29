@@ -24,7 +24,7 @@ public class ProductComparison extends BaseEntity {
     @Column(name = "comparison_name")
     private String comparisonName;
 
-    @Column(name = "comparison_description")
+    @Column(name = "comparison_description", columnDefinition = "LONGTEXT" )
     private String comparisonDescription;
 
     @Column(name = "comparison_category")

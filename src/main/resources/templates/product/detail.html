@@ -64,8 +64,8 @@
                   <div class="ml-5" style="width: 520px;">
                     <div style="padding-bottom: 28px;">
                       <h2 style="font-family: NanumGothic, sans-serif;font-size: 24px; line-height: 32px; font-weight: 700; word-break: break-all;" th:text="${product.productName}">복순도가 찹쌀탁주 9도</h2>
-                      <div class="text-right" style="overflow: hidden; font-family: NanumGothic, sans-serif; text-overflow: ellipsis; white-space: nowrap; display: block; font-size: 22px; font-weight: 700; line-height: 40px; color: #d40022;" th:text="|${#numbers.formatInteger(product.productPrice, 3, 'COMMA')}원|">
-                      </div><!-- 최저 가격 정보-->
+<!--                      <div class="text-right" style="overflow: hidden; font-family: NanumGothic, sans-serif; text-overflow: ellipsis; white-space: nowrap; display: block; font-size: 22px; font-weight: 700; line-height: 40px; color: #d40022;" th:text="|${#numbers.formatInteger(product.productPrice, 3, 'COMMA')}원|"></div>-->
+                      <!-- 최저 가격 정보-->
                     </div> <!-- 가격 정보 영역-->
                     <input type="hidden" id="productPrice" name="productPrice" th:value="${product.productPrice}">
                     <div style="margin: -5px 0 28px; padding: 10px 0 12px; border: 1px solid #e9edf0; background-color: #fafbfc; font-size: 11px; line-height: 18px; color: #444; letter-spacing: -.5px; text-align: center;">
