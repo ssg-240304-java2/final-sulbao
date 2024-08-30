@@ -315,6 +315,7 @@ public class OrderController {
             orderListDTO.setTotalPirce(orderDTOList.get(i).getOrderItems().iterator().next().getTotalPrice());
             orderListDTO.setStatus(orderDTOList.get(i).getDelivery());
             orderListDTO.setOrderDate(orderDTOList.get(i).getOrderDate());
+            orderListDTO.setReviewed(orderDTOList.get(i).isReviewed());
             orderListDTOList.add(orderListDTO);
         }
 

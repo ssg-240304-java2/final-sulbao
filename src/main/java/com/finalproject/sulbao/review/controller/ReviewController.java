@@ -23,10 +23,6 @@ public class ReviewController {
         this.reviewService = reviewService;
     }
 
-    // 주문 목록 화면 이동
-    @GetMapping("/orderList")
-    public void orderList(Model model){}
-
 
     // 리뷰 등록 페이지 이동
     @GetMapping("/regist/{orderNo}")
@@ -40,6 +36,7 @@ public class ReviewController {
 
         model.addAttribute("order", orderDTO);
         model.addAttribute("product", product);
+        model.addAttribute("menu", "review");
         return "review/regist";
     }
 
@@ -55,7 +52,7 @@ public class ReviewController {
         reviewDTO.setUserNo((Long) session.getAttribute("userNo"));
         reviewService.saveReview(reviewDTO);
 
-        return "redirect:/review/orderList";
+        return "redirect:/myorder";
     }
 
     // 상세조회(리뷰목록에서)
@@ -108,9 +105,6 @@ public class ReviewController {
     @DeleteMapping("/delete/{reviewId}")
     @ResponseBody
     public String delete(@PathVariable Long reviewId){
-//        if(session.getAttribute("userNo") == null){
-//            return "redirect:/login";
-//        }
         reviewService.deleteReview(reviewId);
         return "success";
     }
