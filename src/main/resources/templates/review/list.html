@@ -21,7 +21,7 @@
           </div>
           <div class="m-auto">
             <button class="btn btn-outline-primary" th:onclick="'location.href=\'' + @{/review/detail/}+${review.reviewId} + '\''">상세보기</button>
-            <button class="btn btn-outline-danger" th:onclick="deleteReview([[${review.reviewId}]])">삭제하기</button>
+            <button class="btn btn-outline-danger" th:if="${#temporals.format(review.createDate.plusDays(3), 'yyyy-MM-dd')} >= ${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}" th:onclick="deleteReview([[${review.reviewId}]])">삭제하기</button>
           </div>
 
         </div>
