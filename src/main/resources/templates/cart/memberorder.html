@@ -39,12 +39,13 @@
         <thead class="thead-primary">
         <tr>
           <th style="width: 20%">&nbsp;</th>
-          <th style="width: 30%">상품명</th>
+          <th style="width: 25%">상품명</th>
           <th style="width: 5%; text-align: center" >수량</th>
           <th style="width: 10%; text-align: center">총 가격</th>
-          <th style="width: 15%; text-align: center">상태</th>
+          <th style="width: 10%; text-align: center">상태</th>
           <th style="width: 10%; text-align: center">날짜</th>
           <th style="width: 10%; text-align: center">환불</th>
+            <th style="width: 10%; text-align: center">리뷰</th>
         </tr>
         </thead>
         <tbody>
@@ -80,6 +81,12 @@
                                th:text="'환불신청'" style="text-align: center">
                             </a>
                 <span th:if="${order.getStatus()} == '환불중' or ${order.getStatus()} == '환불완료'"  th:text="${order.getStatus()}" style="text-align: center"></span>
+                <span th:if="${order.getStatus()} == '구매확정'"  th:text="${order.getStatus()}" style="text-align: center"></span>
+            </td>
+            <td style="text-align: center; vertical-align: center;">
+                    <p th:if="${order.isReviewed() == false} and ${#temporals.format(order.getOrderDate.plusDays(3), 'yyyy-MM-dd')} >= ${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}"> <a th:href="@{/review/regist/}+${order.orderCode}"> 리뷰작성</a>  </p>
+                    <p th:if="${order.isReviewed() == false} and ${#temporals.format(order.getOrderDate.plusDays(3), 'yyyy-MM-dd')} < ${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}"> - </p>
+                <p th:if="${order.isReviewed() == true}">리뷰완료</p>
             </td>
         </tr>
         <!-- 추가 항목은 이와 유사한 구조로 작성 -->

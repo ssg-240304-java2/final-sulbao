@@ -110,7 +110,7 @@
                         <tbody>
                         <tr class="alert" role="alert" th:each="cart:${carts}">
                             <td>
-                                <div class="img" th:style="'background-image:url(' + 'https://kr.object.ncloudstorage.com/sulbao-file/product/' + ${cart.products.productImages[0].saveName} + ');'"></div>
+                                <div class="img" th:style="'background-image:url(' + ${cart.products.productImages[0].saveImgUrl} + ');'"></div>
                             </td>
                             <td>
                                 <div class="product-info">

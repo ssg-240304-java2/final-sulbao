@@ -18,4 +18,5 @@ public class OrderListDTO {
     private int totalPirce;
     private String status;
     private LocalDate orderDate;
+    private boolean isReviewed;
 }
