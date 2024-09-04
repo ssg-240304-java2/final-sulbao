@@ -16,7 +16,7 @@
 <div align="center">
 
 | **연이현** | **이정훈** | **이창연** | **이은솔** |
-| :------: |  :------: | :------: |
+| :------: |  :------: | :------: | :------: |
 |[@DISNOTACAT](https://github.com/DISNOTACAT)|[@leejeonghun99](https://github.com/leejeonghun99)|[@cylcoder](https://github.com/cylcoder)|[@lucinda96](https://github.com/lucinda96)| 
      
 </div>
