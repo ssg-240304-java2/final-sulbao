@@ -45,7 +45,8 @@
 <br>
 ## 3. 작업 관리
 - GitHub Projects와 Issues를 사용하여 진행 상황을 공유
- ![깃헙 이슈](https://github.com/user-attachments/assets/74ad9654-95c9-4c5f-9581-9f81ce6a7a37)
+ ![이슈등록](https://github.com/user-attachments/assets/fc930592-fa24-4aff-a3fc-1894f6d6eb19)
+
 <br><br>
 
 
