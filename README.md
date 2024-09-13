@@ -1,12 +1,11 @@
- 
-# 🍶술기로운 한 잔
-
+[<img src="https://github.com/user-attachments/assets/be4600f7-af0a-4cc1-a71f-4c5f5a15d10a">](https://hansool.shop)
 <br>
 
-## 프로젝트 소개
+## 🍶 프로젝트 소개 : 프로젝트    ([술기로운 한 잔 홈페이지로 가기](https://hansool.shop))
 - 전통주 최저가 비교 구매, 주류 생활 커뮤니티
-- 정확한 정보 습득 및 건전한 주류문화 형성, 최저가 전통주 구매 및 선물 서비스
-
+- 특징 : 정확한 정보 습득 및 건전한 주류문화 형성, 최저가 전통주 구매 및 선물 서비스
+- 타겟층 : 전통주를 좋아하기 시작한 초심자, 사회초년생(20~30대)
+- 발표 영상(유튜브) : https://youtu.be/HAzRysviANc?si=XI0sNz72qPKOkoID
 
 <br>
 
@@ -15,36 +14,56 @@
 
 | **연이현** | **이정훈** | **이창연** | **이은솔** |
 | :------: |  :------: | :------: | :------: |
-|[@DISNOTACAT](https://github.com/DISNOTACAT)|[@leejeonghun99](https://github.com/leejeonghun99)|[@cylcoder](https://github.com/cylcoder)|[@lucinda96](https://github.com/lucinda96)| 
+|[<img src="https://github.com/user-attachments/assets/9195b18f-d663-4281-800e-e3a45d057790" width="150"><br>@DISNOTACAT](https://github.com/DISNOTACAT)|[<img src="https://github.com/user-attachments/assets/07e17c7c-b3ea-491f-8c28-1e7b9bda9dc5" width="150"><br>@leejeonghun99](https://github.com/leejeonghun99)|[<img src="https://github.com/user-attachments/assets/2d2305d6-0e79-429d-941c-579d66e9869e" width="150"><br>@cylcoder](https://github.com/cylcoder)|[<img src="https://github.com/user-attachments/assets/c05aae3d-f76b-4747-8c7a-150ad013114b" width="150"><br>@lucinda96](https://github.com/lucinda96)|
+로그인, 계정|주문, 결제|커뮤니티|상품,매거진|
      
 </div>
 
 <br>
 
-
 ## 1. 개발 환경
-
-- **java 버전 : 17**
-- **백앤드 : Spring Boot, JPA, mysql, ubuntu**
-- **프론트앤드 : Thymeleaf, css, js, bootstrap**
-- **개발툴 : intelliJ IDEA**
-- **버전 및 이슈관리 : Github, Github Issues**
-- **협업 툴 : Notion**
-
+![개발환경](https://github.com/user-attachments/assets/e90604d9-881d-4f7c-884e-a420f597cadd)
 
 <br>
-
-## 2. 개발 기간
-- 2024-07-17 ~ 2024-08-30
-
 <br>
 
+## 2. 개발 기간 및 일정
+![wbs](https://github.com/user-attachments/assets/bbfe5e56-4cec-46e5-8d3b-f13406611a76)
+
+<br>
+<br>
+
+## 3. 기획문서
+### 밴치마킹 기능
+![밴치마킹](https://github.com/user-attachments/assets/a7020bb5-ae39-43ad-99ba-11e789fd0d8c)
+<br>
+### 이벤트 스토밍
+![이벤트스토밍](https://github.com/user-attachments/assets/442cf46b-1a31-48ec-9351-1caf89fbca85)
+<br>
+### 유스케이스 다이어그램
+![유스케이스 다이어그램](https://github.com/user-attachments/assets/3ae79be3-0768-4f80-8d15-30200b01acda)
+<br>
+<br>
 ## 3. 작업 관리
-- GitHub Projects와 Issues를 사용하여 진행 상황을 공유했습니다.
+- GitHub Projects와 Issues를 사용하여 진행 상황을 공유
+ ![이슈등록](https://github.com/user-attachments/assets/fc930592-fa24-4aff-a3fc-1894f6d6eb19)
+
+<br><br>
+
+
+## 4. 테스트 진행
+### 단위테스트 
+- Github 이슈에 단위테스트 내용을 추가하여 종료하기전에 단위테스트를 진행하도록함
+- ![단위테스트](https://github.com/user-attachments/assets/54dd7cd7-55d4-4529-8a0b-1be59a767589)
 
 <br>
 
-## 4. 프로젝트 후기
+### 통합테스트
+- 매주 월요일 배포이후 개발전에 작성한 테스트 문서를 기반으로 통합테스트 진행
+![통합테스트](https://github.com/user-attachments/assets/23e04ad0-2576-4c5c-9d64-3c68dc5267b4)
+
+<br><br>
+## 5. 프로젝트 후기
 
 ### 연이현
 - 회원 등급 시스템 프로세스를 디테일하게 설정하여 성공적으로 구현하였다.
