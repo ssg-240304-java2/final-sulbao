@@ -46,3 +46,5 @@ bin/
 ### Config
 src/main/resources/config/connection-info.properties
 src/main/resources/application.yml
+
+META-INF/
